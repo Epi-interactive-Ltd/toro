@@ -1,0 +1,22 @@
+dependencies:
+  - name: cluster-utils
+    version: 1.0.0
+    script: cluster-utils.js
+    src: htmlwidgets
+  - name: layer-utils
+    version: 1.0.0
+    script: layer-utils.js
+    src: htmlwidgets
+  - name: control-utils
+    version: 1.0.0
+    script: control-utils.js
+    src: htmlwidgets
+  - name: map-utils
+    version: 1.0.0
+    script: map-utils.js
+    src: htmlwidgets
+  - name: map
+    version: 1.0.0
+    src: htmlwidgets
+    script: map.js
+    style: map.css

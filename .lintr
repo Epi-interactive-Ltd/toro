@@ -1,0 +1,11 @@
+linters: linters_with_defaults(
+  indentation_linter(
+    indent = 2L,
+    hanging_indent_style = c("tidy")),
+  trailing_whitespace_linter(allow_empty_lines = TRUE),
+  object_usage_linter = NULL,
+  object_name_linter(styles = c("snake_case", "SNAKE_CASE", "CamelCase", "camelCase")),
+  line_length_linter(length = 100L),
+  pipe_consistency_linter("%>%"),
+  return_linter = NULL)
+encoding: "UTF-8"
