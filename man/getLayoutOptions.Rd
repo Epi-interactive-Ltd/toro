@@ -25,6 +25,6 @@ getLayoutOptions("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
 
 }
 \seealso{
-\code{\link{getColumn}}, \code{\link{getColumnGroupColours}},
+\code{\link{getColumn}}, \code{\link{getColumnGroupValues}},
 \code{\link{getColumnStepColours}}
 }

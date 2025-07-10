@@ -185,6 +185,43 @@ MaplibreMap <- R6::R6Class(
       )
     },
 
+    #' Add an image source to the map.
+    #'
+    #' @param image_name  The name of the image source.
+    #' @param image_url   The URL of the image to add.
+    #' @return            NULL
+    add_image = function(image_name, image_url) {
+      self$session$sendCustomMessage(
+        "addImageSource",
+        list(
+          id = self$id,
+          imageId = image_name,
+          imageUrl = image_url
+        )
+      )
+    },
+
+    #' Set data for a source on the map.
+    #'
+    #' @param source_id The ID of the source to update.
+    #' @param data      The data for the source, typically in GeoJSON format.
+    #' @param type      The type of the source. Default is `"geojson"`.
+    #'                  Other options include `"vector"` or `"raster"`.
+    #' @return          NULL
+    set_source_data = function(source_id, data, type = "geojson") {
+      if (type == "geojson" && !"geojson" %in% class(data)) {
+        data <- geojsonsf::sf_geojson(data)
+      }
+      self$session$sendCustomMessage(
+        "updateSourceData",
+        list(
+          id = self$id,
+          sourceId = source_id,
+          data = data
+        )
+      )
+    },
+
     #' Add a grid of latitude and longitude lines to the map.
     #'
     #' @param grid_colour The colour of the grid lines. Default is `"#000000"`.
@@ -322,16 +359,18 @@ MaplibreMap <- R6::R6Class(
 
     #' Add a layer to the map.
     #'
-    #' @param layer_options A list of options for the layer, including `id`, `type`, `source`, and any paint or layout properties.
-    #' @param can_cluster   Whether the layer can be clustered. Default is `FALSE`.
-    #' @param popup_column  The column name to use for popups. Default is `NULL`.
-    #' @param hover_column  The column name to use for hover effects. Default is `NULL`.
-    #' @return              NULL
+    #' @param layer_options     A list of options for the layer, including `id`, `type`, `source`, and any paint or layout properties.
+    #' @param can_cluster       Whether the layer can be clustered. Default is `FALSE`.
+    #' @param popup_column      The column name to use for popups. Default is `NULL`.
+    #' @param hover_column      The column name to use for hover effects. Default is `NULL`.
+    #' @param on_feature_click  Whether to enable click events on features. Default is `FALSE`.
+    #' @return                  NULL
     add_layer = function(
       layer_options,
       can_cluster = FALSE,
       popup_column = NULL,
-      hover_column = NULL
+      hover_column = NULL,
+      on_feature_click = FALSE
     ) {
       if (any(c("sf", "data.frame", "tbl") %in% class(layer_options$source))) {
         layer_options$source <- geojsonsf::sf_geojson(layer_options$source)
@@ -343,7 +382,8 @@ MaplibreMap <- R6::R6Class(
           layerOptions = layer_options,
           canCluster = can_cluster,
           popupColumn = popup_column,
-          hoverColumn = hover_column
+          hoverColumn = hover_column,
+          onFeatureClick = on_feature_click
         )
       )
     },
@@ -374,38 +414,6 @@ MaplibreMap <- R6::R6Class(
         list(
           id = self$id,
           layerId = layer_id
-        )
-      )
-    },
-
-    #' Add an image source to the map.
-    #'
-    #' @param image_name  The name of the image source.
-    #' @param image_url   The URL of the image to add.
-    #' @return            NULL
-    add_image = function(image_name, image_url) {
-      self$session$sendCustomMessage(
-        "addImageSource",
-        list(
-          id = self$id,
-          imageId = image_name,
-          imageUrl = image_url
-        )
-      )
-    },
-
-    #' Set data for a source on the map.
-    #'
-    #' @param source_id The ID of the source to update.
-    #' @param json_data The JSON data to set for the source.
-    #' @return          NULL
-    set_source_data = function(source_id, json_data) {
-      self$session$sendCustomMessage(
-        "updateSourceData",
-        list(
-          id = self$id,
-          sourceId = source_id,
-          data = json_data
         )
       )
     },

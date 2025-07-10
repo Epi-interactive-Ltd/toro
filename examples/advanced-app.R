@@ -21,7 +21,8 @@ quakes_data <- quakes %>%
   st_as_sf(coords = c("long", "lat"), crs = 4326)
 
 nz_data <- spData::nz %>%
-  rename(geometry = geom)
+  rename(geometry = geom) %>%
+  mutate(supported = Island == "South")
 nz_data <- st_transform(nz_data, 4326)
 
 nz_data_points <- nz_data %>%
@@ -78,6 +79,12 @@ server <- function(input, output, session) {
     map$ui()
   })
 
+  observe({
+    req(input$map_feature_click)
+    feat <- maplibReGL::getClickedFeature(input$map_feature_click)
+    print(feat)
+  })
+
   # Add sources and layers to the map once it is loaded
   observeEvent(input$map_loaded, {
     map$add_layer(
@@ -85,9 +92,20 @@ server <- function(input, output, session) {
         id = "nz_polygons",
         type = "fill",
         source = nz_data,
-        paint = maplibReGL::getPaintOptions("fill", options = list(opacity = 0.6))
+        paint = maplibReGL::getPaintOptions(
+          "fill",
+          options = list(
+            opacity = 0.6,
+            colour = maplibReGL::getColumnBooleanValues(
+              "supported",
+              "#808080",
+              "#FF4F00"
+            )
+          )
+        )
       ),
-      hover_column = "Name"
+      hover_column = "Name",
+      on_feature_click = TRUE
     )
     map$add_layer(
       layer_options = list(

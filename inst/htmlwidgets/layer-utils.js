@@ -2,6 +2,9 @@
  * Map layer utilities for MapLibre maps.
  *
  * - initiateTiles: Adds all necessary tiles to the map instance once it has loaded.
+ * - addLayerToMap: Adds a layer to the map instance and handles popups, hovers, and clustering.
+ * - addLayerOnFeatureClick: Adds a feature click event to a specific layer in a MapLibre map.
+ * - setTileLayer: Sets the map tile layer based on the selected layer ID.
  * - hideLayer: Hides a specific layer in a MapLibre map.
  * - showLayer: Shows a specific layer in a MapLibre map.
  * - addNatGeoTiles: Adds the National Geographic World Map tiles to the MapLibre map.
@@ -116,6 +119,32 @@ function addLayerToMap(el, message) {
   if (message.canCluster) {
     addClusterLayer(el, layerId, message.layerOptions.source);
   }
+
+  if (message.onFeatureClick) {
+    addLayerOnFeatureClick(el, layerId);
+  }
+}
+
+/**
+ * Add a feature click event to a specific layer in a MapLibre map.
+ *
+ * @param {object} el       Widget element containing the map instance.
+ * @param {string} layerId  Layer ID to add the feature click event to.
+ * @returns {void}
+ */
+function addLayerOnFeatureClick(el, layerId) {
+  el.mapInstance.on("click", layerId, (e) => {
+    const feature = e.features[0];
+    if (feature) {
+      // Trigger a Shiny input event with the clicked feature's properties
+      Shiny.setInputValue(`${el.id}_feature_click`, {
+        layerId: layerId,
+        properties: feature.properties,
+        geometry: feature.geometry,
+        time: new Date().toISOString(), // For multiple clicks on the same feature
+      });
+    }
+  });
 }
 
 /**

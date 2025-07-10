@@ -6,7 +6,7 @@
 #' @param layer_type  A string indicating the type of layer (e.g., "fill", "circle", "line").
 #' @param options     A list of additional options to customize the layout properties.
 #' @returns           A list of layout options suitable for the specified layer type.
-#' @seealso \code{\link{getColumn}}, \code{\link{getColumnGroupColours}},
+#' @seealso \code{\link{getColumn}}, \code{\link{getColumnGroupValues}},
 #'          \code{\link{getColumnStepColours}}
 #' @examples
 #' getLayoutOptions("line", list(line_cap = "butt", line_join = "bevel"))

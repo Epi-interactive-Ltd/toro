@@ -25,7 +25,7 @@ getPaintOptions("circle", list(colour = "red", circle_radius = 10, outline_colou
 # Use with getColumn for data-driven styling:
 getPaintOptions("fill", list(colour = getColumn("color"), opacity = getColumn("opacity")))
 getPaintOptions("fill", list(
-   colour = getColumnGroupColours("group", c("A" = "green", "B" = "blue")
+   colour = getColumnGroupValues("group", c("A" = "green", "B" = "blue")
 ))
 getPaintOptions("fill", list(
    opacity = getColumnStepColours("percent", c(25, 75), c("red", "orange", "yellow"))
@@ -33,6 +33,6 @@ getPaintOptions("fill", list(
 
 }
 \seealso{
-\code{\link{getColumn}}, \code{\link{getColumnGroupColours}},
+\code{\link{getColumn}}, \code{\link{getColumnGroupValues}},
 \code{\link{getColumnStepColours}}
 }

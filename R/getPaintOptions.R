@@ -6,7 +6,7 @@
 #' @param layer_type  A string indicating the type of layer (e.g., "fill", "circle", "line").
 #' @param options     A list of additional options to customize the paint properties.
 #' @returns           A list of paint options suitable for the specified layer type.
-#' @seealso \code{\link{getColumn}}, \code{\link{getColumnGroupColours}},
+#' @seealso \code{\link{getColumn}}, \code{\link{getColumnGroupValues}},
 #'          \code{\link{getColumnStepColours}}
 #' @examples
 #' getPaintOptions("line", list(colour = "blue", opacity = 0.8, line_width = 2))
@@ -14,7 +14,7 @@
 #' # Use with getColumn for data-driven styling:
 #' getPaintOptions("fill", list(colour = getColumn("color"), opacity = getColumn("opacity")))
 #' getPaintOptions("fill", list(
-#'    colour = getColumnGroupColours("group", c("A" = "green", "B" = "blue")
+#'    colour = getColumnGroupValues("group", c("A" = "green", "B" = "blue")
 #' ))
 #' getPaintOptions("fill", list(
 #'    opacity = getColumnStepColours("percent", c(25, 75), c("red", "orange", "yellow"))

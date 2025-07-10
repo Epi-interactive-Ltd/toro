@@ -22,3 +22,8 @@ detach("package:maplibReGL", unload = TRUE)
 install.packages("maplibReGL_0.0.0.9000.tar.gz", repos = NULL, type = "source")
 library(maplibReGL)
 ```
+
+## TODOs
+
+- [ ] Add more examples to the `examples` directory.
+- [ ] Split the `add_layer` function into smaller functions for each layer type (e.g., `add_polygon_layer`, `add_line_layer`, etc.).

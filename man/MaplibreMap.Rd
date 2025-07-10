@@ -45,6 +45,8 @@ Create a new MaplibreMap object.}
 \item \href{#method-maplibReGL-ui}{\code{MaplibreMap$ui()}}
 \item \href{#method-maplibReGL-add_source}{\code{MaplibreMap$add_source()}}
 \item \href{#method-maplibReGL-add_feature_server_source}{\code{MaplibreMap$add_feature_server_source()}}
+\item \href{#method-maplibReGL-add_image}{\code{MaplibreMap$add_image()}}
+\item \href{#method-maplibReGL-set_source_data}{\code{MaplibreMap$set_source_data()}}
 \item \href{#method-maplibReGL-add_lat_lng_grid}{\code{MaplibreMap$add_lat_lng_grid()}}
 \item \href{#method-maplibReGL-hide_lat_lng_grid}{\code{MaplibreMap$hide_lat_lng_grid()}}
 \item \href{#method-maplibReGL-show_lat_lng_grid}{\code{MaplibreMap$show_lat_lng_grid()}}
@@ -57,8 +59,6 @@ Create a new MaplibreMap object.}
 \item \href{#method-maplibReGL-add_layer}{\code{MaplibreMap$add_layer()}}
 \item \href{#method-maplibReGL-hide_layer}{\code{MaplibreMap$hide_layer()}}
 \item \href{#method-maplibReGL-show_layer}{\code{MaplibreMap$show_layer()}}
-\item \href{#method-maplibReGL-add_image}{\code{MaplibreMap$add_image()}}
-\item \href{#method-maplibReGL-set_source_data}{\code{MaplibreMap$set_source_data()}}
 \item \href{#method-maplibReGL-set_paint_property}{\code{MaplibreMap$set_paint_property()}}
 \item \href{#method-maplibReGL-set_layout_property}{\code{MaplibreMap$set_layout_property()}}
 \item \href{#method-maplibReGL-toggle_clustering}{\code{MaplibreMap$toggle_clustering()}}
@@ -304,6 +304,57 @@ Add a FeatureServer source to the map.
 \if{html}{\out{<div class="sourceCode">}}\preformatted{       NULL
 }\if{html}{\out{</div>}}
 
+Add an image source to the map.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-maplibReGL-add_image"></a>}}
+\if{latex}{\out{\hypertarget{method-maplibReGL-add_image}{}}}
+\subsection{Method \code{add_image()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MaplibreMap$add_image(image_name, image_url)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{image_name}}{The name of the image source.}
+
+\item{\code{image_url}}{The URL of the image to add.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{       NULL
+}\if{html}{\out{</div>}}
+
+Set data for a source on the map.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-maplibReGL-set_source_data"></a>}}
+\if{latex}{\out{\hypertarget{method-maplibReGL-set_source_data}{}}}
+\subsection{Method \code{set_source_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MaplibreMap$set_source_data(source_id, data, type = "geojson")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{source_id}}{The ID of the source to update.}
+
+\item{\code{data}}{The data for the source, typically in GeoJSON format.}
+
+\item{\code{type}}{The type of the source. Default is \code{"geojson"}.
+Other options include \code{"vector"} or \code{"raster"}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     NULL
+}\if{html}{\out{</div>}}
+
 Add a grid of latitude and longitude lines to the map.
 }
 }
@@ -511,7 +562,8 @@ Add a layer to the map.
   layer_options,
   can_cluster = FALSE,
   popup_column = NULL,
-  hover_column = NULL
+  hover_column = NULL,
+  on_feature_click = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -525,11 +577,13 @@ Add a layer to the map.
 \item{\code{popup_column}}{The column name to use for popups. Default is \code{NULL}.}
 
 \item{\code{hover_column}}{The column name to use for hover effects. Default is \code{NULL}.}
+
+\item{\code{on_feature_click}}{Whether to enable click events on features. Default is \code{FALSE}.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         NULL
+\if{html}{\out{<div class="sourceCode">}}\preformatted{             NULL
 }\if{html}{\out{</div>}}
 
 Hide a layer from the map.
@@ -567,54 +621,6 @@ Hide a layer from the map.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{layer_id}}{The ID of the layer to show.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     NULL
-}\if{html}{\out{</div>}}
-
-Add an image source to the map.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-maplibReGL-add_image"></a>}}
-\if{latex}{\out{\hypertarget{method-maplibReGL-add_image}{}}}
-\subsection{Method \code{add_image()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MaplibreMap$add_image(image_name, image_url)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{image_name}}{The name of the image source.}
-
-\item{\code{image_url}}{The URL of the image to add.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       NULL
-}\if{html}{\out{</div>}}
-
-Set data for a source on the map.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-maplibReGL-set_source_data"></a>}}
-\if{latex}{\out{\hypertarget{method-maplibReGL-set_source_data}{}}}
-\subsection{Method \code{set_source_data()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MaplibreMap$set_source_data(source_id, json_data)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{source_id}}{The ID of the source to update.}
-
-\item{\code{json_data}}{The JSON data to set for the source.}
 }
 \if{html}{\out{</div>}}
 }
