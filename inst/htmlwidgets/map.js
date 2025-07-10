@@ -181,7 +181,8 @@ Shiny.addCustomMessageHandler("addDraw", function (message) {
       message.position,
       message.modes,
       message.activeColour,
-      message.inactiveColour
+      message.inactiveColour,
+      message.modeLabels
     );
   });
 });

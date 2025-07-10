@@ -396,7 +396,8 @@ Add a draw control to the map
   position = "top-right",
   modes = c("polygon", "trash"),
   active_colour = "#0FB3CE",
-  inactive_colour = "#0FB3CE"
+  inactive_colour = "#0FB3CE",
+  mode_labels = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -413,6 +414,9 @@ Options include "polygon", "trash", "line".}
 \item{\code{active_colour}}{The colour for the drawn shapes. Default is \code{"#0FB3CE"}.}
 
 \item{\code{inactive_colour}}{The colour for the inactive shapes. Default is \code{"#0FB3CE"}.}
+
+\item{\code{mode_labels}}{A named list of labels for each mode.
+For example, \code{list(polygon = "Draw Polygon", trash = "Delete Shape")}.}
 }
 \if{html}{\out{</div>}}
 }

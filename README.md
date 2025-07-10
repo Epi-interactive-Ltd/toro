@@ -3,3 +3,22 @@
 Maplibre GL JS integration for R
 
 Examples can be found in the `examples` directory.
+
+## Updates to the package
+
+If any updates are made to the package it needs to be rebuilt:
+
+```r
+devtools::document()
+devtools::install()
+devtools::build()
+```
+
+If you are using the package in an app and copy the updated `.zip` file.
+You will need to uninstall the old version of the package before installing the new one:
+
+```r
+detach("package:maplibReGL", unload = TRUE)
+install.packages("maplibReGL_0.0.0.9000.tar.gz", repos = NULL, type = "source")
+library(maplibReGL)
+```

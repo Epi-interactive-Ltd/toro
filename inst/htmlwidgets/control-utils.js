@@ -35,9 +35,18 @@ const validDrawModes = ["polygon", "trash", "line", "point"]; // Accepted draw m
  * @param {string[]} modes        Draw modes to enable in the control.
  * @param {string} activeColour   Colour for the shape currently being drawn.
  * @param {string} inactiveColour Colour for shapes that are not currently being drawn.
+ * @param {object} modeLabels     A named list of labels for each mode.
+ *                                For example, `{ polygon: "Draw Polygon", trash: "Delete Shape" }
  * @returns {void}
  */
-function addDrawControl(el, position, modes, activeColour, inactiveColour) {
+function addDrawControl(
+  el,
+  position,
+  modes,
+  activeColour,
+  inactiveColour,
+  modeLabels
+) {
   modes = modes.flat ? modes.flat() : [].concat(...modes);
   modes = modes.filter((mode) => validDrawModes.includes(mode));
 
@@ -81,6 +90,13 @@ function addDrawControl(el, position, modes, activeColour, inactiveColour) {
 
       if (controlBtn) {
         controlBtn.style.pointerEvents = "auto";
+
+        var label = modeLabels[mode];
+        if (label) {
+          controlBtn.classList.add("draw-control-custom-label");
+          controlBtn.innerHTML = label; // Set the button label if provided
+          controlBtn.style.backgroundImage = "none"; // Remove default background image
+        }
       }
     }, 0);
   });

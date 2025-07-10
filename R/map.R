@@ -244,12 +244,15 @@ MaplibreMap <- R6::R6Class(
     #'                        Options include "polygon", "trash", "line".
     #' @param active_colour   The colour for the drawn shapes. Default is `"#0FB3CE"`.
     #' @param inactive_colour The colour for the inactive shapes. Default is `"#0FB3CE"`.
+    #' @param mode_labels     A named list of labels for each mode.
+    #'                        For example, `list(polygon = "Draw Polygon", trash = "Delete Shape")`.
     #' @return          NULL
     add_draw_control = function(
       position = "top-right",
       modes = c("polygon", "trash"),
       active_colour = "#0FB3CE",
-      inactive_colour = "#0FB3CE"
+      inactive_colour = "#0FB3CE",
+      mode_labels = list()
     ) {
       self$session$sendCustomMessage(
         "addDraw",
@@ -258,7 +261,8 @@ MaplibreMap <- R6::R6Class(
           position = position,
           modes = list(modes),
           activeColour = active_colour,
-          inactiveColour = inactive_colour
+          inactiveColour = inactive_colour,
+          modeLabels = mode_labels
         )
       )
     },

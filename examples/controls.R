@@ -44,8 +44,14 @@ server <- function(input, output, session) {
   observeEvent(input$map_loaded, {
     map$add_draw_control(
       position = "top-left",
-      modes = c("polygon", "point"),
-      inactive_colour = "#c41e12"
+      modes = c("polygon", "trash", "point"),
+      inactive_colour = "#c41e12",
+      mode_labels = list(
+        polygon = as.character(span(
+          "Drawn polygon",
+          style = "padding: 0 5px; text-wrap: nowrap; margin: 0;"
+        ))
+      )
     )
     map$add_custom_control(
       html = "<div style='background: white; padding: 5px;'>I am a custom div</div>"
