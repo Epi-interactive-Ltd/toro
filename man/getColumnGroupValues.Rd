@@ -26,7 +26,12 @@ Default is "#cccccc".}
 \description{
 Allows the data to be styled by the group option in the column.
 }
+\note{
+If using numbers as the group values, then you need to use \code{setNames} rather
+than a named vector, as the names of the vector will be coerced to strings.
+}
 \examples{
 getColumnGroupValues("group", c("A" = "red", "B" = "blue"), "grey")
+getColumnGroupValues("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
 
 }

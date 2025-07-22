@@ -57,21 +57,62 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: white;
   z-index: 9999;
+  background: var(--loader-bg-colour);
+}
+
+.maplibre-loading-overlay.busy-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .maplibre-loading-overlay .loader {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #0001 33%, #0005 50%, #0001 66%) #f2f2f2;
-  background-size: 300% 100%;
-  animation: l1 4s infinite linear;
-  opacity: 0.7;
 }
 
-@keyframes l1 {
+.maplibre-loading-overlay.initial-loader .loader {
+  background: linear-gradient(
+      90deg,
+      rgba(var(--loader-colour), 0.05) 33%,
+      rgba(var(--loader-colour), 0.3) 50%,
+      rgba(var(--loader-colour), 0.05) 66%
+    )
+    var(--loader-bg-colour);
+  background-size: 300% 100%;
+  animation: initialloader 4s infinite linear;
+}
+
+@keyframes initialloader {
   0% {
     background-position: right;
+  }
+}
+
+.maplibre-loading-overlay.busy-loader .loader {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+  margin: 15px auto;
+  position: relative;
+  color: var(--loader-colour);
+  box-sizing: border-box;
+  animation: busyloader 1s linear infinite alternate;
+}
+
+@keyframes busyloader {
+  0% {
+    box-shadow: -38px -12px, -14px 0, 14px 0, 38px 0;
+  }
+  33% {
+    box-shadow: -38px 0px, -14px -12px, 14px 0, 38px 0;
+  }
+  66% {
+    box-shadow: -38px 0px, -14px 0, 14px -12px, 38px 0;
+  }
+  100% {
+    box-shadow: -38px 0, -14px 0, 14px 0, 38px -12px;
   }
 }

@@ -45,7 +45,12 @@ HTMLWidgets.widget({
         el.initiallyLoaded = x.initialLoadedLayers == null ? true : false; // Track if the map was initially loaded without a loader
 
         if (!el.initiallyLoaded && x.initialLoadedLayers) {
-          addMapLoader(el);
+          addMapLoader(
+            el,
+            false,
+            x.initialLoaderBgColour,
+            toRgbValues(x.initialLoaderColour)
+          );
         }
 
         if (x.imageSources) {
@@ -83,8 +88,8 @@ HTMLWidgets.widget({
         });
 
         // Idle event when sources and layers are loaded
-        el.mapInstance.on("idle", function () {
-          if (!el.initiallyLoaded && x.initialLoadedLayers) {
+        if (!el.initiallyLoaded && x.initialLoadedLayers) {
+          function initialMapLoaderHandler(e) {
             var currentLayers = el.mapInstance
               .getStyle()
               .layers.map((layer) => layer.id)
@@ -99,7 +104,53 @@ HTMLWidgets.widget({
               el.initiallyLoaded = true;
             }
           }
-        });
+          el.mapInstance.on("idle", initialMapLoaderHandler);
+        } else if (el.initiallyLoaded) {
+          el.mapInstance.off("idle", initialMapLoaderHandler);
+        }
+        if (x.spinnerWhileBusy) {
+
+          function showSpinner() {
+            addMapLoader(
+              el,
+              (changeLoader = true),
+              x.busyLoaderBgColour,
+              x.busyLoaderColour
+            );
+          }
+          function hideSpinner() {
+            removeMapLoader(el);
+          }
+          el.busyTimer = null;
+          el.spinnerShown = false;
+
+          $(document).on("shiny:busy", function () {
+            // Start timer only if not already started
+            if (!el.busyTimer && el.initiallyLoaded) {
+              el.busyTimer = setTimeout(function () {
+                // Shiny has been busy for more than 1 second
+                el.spinnerShown = true;
+                showSpinner(); // <-- your function to show spinner
+              }, 10);
+            }
+          });
+
+          $(document).on("shiny:idle", function () {
+            if (!el.initiallyLoaded) {
+              return; // Don't hide spinner if map is not initially loaded
+            }
+            if (el.busyTimer) {
+              // Cancel timer if busy < 1s
+              clearTimeout(el.busyTimer);
+              el.busyTimer = null;
+            }
+            if (el.spinnerShown) {
+              // If spinner was shown, hide it
+              hideSpinner(); // <-- your function to hide spinner
+              el.spinnerShown = false;
+            }
+          });
+        }
       },
 
       resize: function (width, height) {

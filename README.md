@@ -19,9 +19,11 @@ You will need to uninstall the old version of the package before installing the 
 
 ```r
 detach("package:maplibReGL", unload = TRUE)
-install.packages("maplibReGL_0.0.0.9000.tar.gz", repos = NULL, type = "source")
+install.packages("maplibReGL_<version>.tar.gz", repos = NULL, type = "source")
 library(maplibReGL)
 ```
+
+To add it as a local package to the `renv.lock` file: `renv::install("maplibReGL_<version>.tar.gz")`.
 
 ## TODOs
 

@@ -1,1 +1,5 @@
 *.toml
+examples/app.R
+
+renv
+.Rprofile

@@ -1,7 +1,6 @@
 /**
  * General map utilities for MapLibre maps.
  *
- * - copyLayerStyle: Copies the style from one layer to another in a MapLibre map.
  * - addImageToMapSource: Adds an image (for pin icons) to the map source.
  * - getPointFeaturesBounds: Gets the bounds of point features in a MapLibre map.
  * - addFeatureServerSource: Adds a FeatureServer layer to the map instance.
@@ -9,36 +8,11 @@
  * - closeAttribution: Closes the attribution control on a MapLibre map once it has loaded.
  * - addMapLoader: Adds a loading overlay to the map element until the map loads initially.
  * - removeMapLoader: Removes the loading overlay from the map element.
+ * - hexToRgbValues: Converts a hex colour string to RGB values.
+ * - rgbToRgbValues: Converts a rgb colour string to RGB values.
+ * - nameToRgbValues: Converts a css colour name string to RGB values.
+ * - toRgbValues: Converts a css colour string to RGB values.
  */
-
-/**
- * Copy the style from one layer to another in a MapLibre map.
- *
- * @param {object} map Maplibre map instance.
- * @param {string} fromLayerId ID of the layer to copy style from.
- * @param {string} toLayerId ID of the layer to copy style to.
- * @returns {void}
- */
-function copyLayerStyle(map, fromLayerId, toLayerId) {
-  const fromLayer = map.getLayer(fromLayerId);
-  if (!fromLayer) return;
-
-  // Copy paint properties
-  const paintProps =
-    map.getStyle().layers.find((l) => l.id === fromLayerId).paint || {};
-  Object.keys(paintProps).forEach((prop) => {
-    const value = map.getPaintProperty(fromLayerId, prop);
-    map.setPaintProperty(toLayerId, prop, value);
-  });
-
-  // Copy layout properties
-  const layoutProps =
-    map.getStyle().layers.find((l) => l.id === fromLayerId).layout || {};
-  Object.keys(layoutProps).forEach((prop) => {
-    const value = map.getLayoutProperty(fromLayerId, prop);
-    map.setLayoutProperty(toLayerId, prop, value);
-  });
-}
 
 /**
  * Add an image (for pin icons) to the map source.
@@ -124,14 +98,26 @@ function closeAttribution(mapId) {
 /**
  * Add a loading overlay to the map element until the map loads initially.
  *
- * @param {object} el Widget element containing the map instance.
+ * @param {object} el                     Widget element containing the map instance.
+ * @param {boolean} [changeLoader=false]  Whether to use the iniial or busy loader style.
+ * @param {string} [bgColour="white"]     Background colour of the loading overlay.
+ * @param {string} [loaderColour="black"] Colour of the loader.
  * @returns {void}
  */
-function addMapLoader(el) {
+function addMapLoader(
+  el,
+  changeLoader = false,
+  bgColour = "white",
+  loaderColour = "black"
+) {
   // Add a loading overlay div
   const loadingDiv = document.createElement("div");
-  loadingDiv.className = "maplibre-loading-overlay";
-  loadingDiv.innerHTML = '<div class="loader"></div>';
+  loadingDiv.className =
+    "maplibre-loading-overlay" +
+    (changeLoader ? " busy-loader" : " initial-loader");
+  loadingDiv.style.setProperty("--loader-bg-colour", bgColour);
+  loadingDiv.innerHTML =
+    '<div class="loader" style="--loader-colour:' + loaderColour + ';"></div>';
   el.appendChild(loadingDiv);
 }
 
@@ -148,3 +134,68 @@ function removeMapLoader(el) {
   loadingDiv.remove();
 }
 
+/**
+ * Convert a hex colour string to RGB values.
+ *
+ * @param {string} hex  Hex colour string (e.g., "#000000").
+ * @returns {string}    RGB values as a string (e.g., "0,0,0").
+ */
+function hexToRgbValues(hex) {
+  let c = hex.replace("#", "");
+  if (c.length === 3)
+    c = c
+      .split("")
+      .map((x) => x + x)
+      .join("");
+  const num = parseInt(c, 16);
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return `${r},${g},${b}`;
+}
+
+/**
+ * Convert a rgb colour string to RGB values.
+ *
+ * @param {string} rgb  RGB colour string (e.g., "rgb(0,0,0)").
+ * @returns {string}    RGB values as a string (e.g., "0,0,0").
+ */
+function rgbToRgbValues(rgb) {
+  return rgb.replace(/^rgb\((.*)\)$/i, "$1");
+}
+
+/**
+ * Convert a css colour name string to RGB values.
+ *
+ * @param {string} name   Colour string name (e.g., "black").
+ * @returns {string}      RGB values as a string (e.g., "0,0,0").
+ */
+function nameToRgbValues(name) {
+  const ctx = document.createElement("canvas").getContext("2d");
+  ctx.fillStyle = name;
+  const hex = ctx.fillStyle;
+  return hexToRgbValues(hex);
+}
+
+/**
+ * Convert a css colour string to RGB values.
+ * Can handle hex, rgb, rgba, and named colours.
+ *
+ * @param {string} colour  Colour string (e.g., "#000000", "rgb(0,0,0)", "black").
+ * @returns {string}       RGB values as a string (e.g., "0,0,0").
+ */
+function toRgbValues(colour) {
+  if (colour.startsWith("#")) {
+    return hexToRgbValues(colour);
+  } else if (colour.startsWith("rgb(")) {
+    return rgbToRgbValues(colour);
+  } else if (colour.startsWith("rgba(")) {
+    // Optionally replace the alpha value
+    return colour.replace(
+      /rgba\(([^,]+),([^,]+),([^,]+),([^)]+)\)/,
+      `$1,$2,$3`
+    );
+  } else {
+    return nameToRgbValues(colour);
+  }
+}

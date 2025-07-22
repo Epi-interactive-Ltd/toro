@@ -1,3 +1,5 @@
+^renv\.lock$
 ^maplibReGL\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^renv$

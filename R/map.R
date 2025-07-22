@@ -67,7 +67,12 @@ MaplibreMap <- R6::R6Class(
           imageSources = image_sources,
           backgroundColour = props$backgroundColour %||% "#D0CFD4",
           enable3D = props$enable3D %||% FALSE,
-          initialLoadedLayers = props$initialLoadedLayers %||% NULL
+          initialLoadedLayers = props$initialLoadedLayers %||% NULL,
+          spinnerWhileBusy = props$spinnerWhileBusy %||% FALSE,
+          busyLoaderBgColour = props$busyLoaderBgColour %||% "rgba(0, 0, 0, 0.2)",
+          busyLoaderColour = props$busyLoaderColour %||% "white",
+          initialLoaderBgColour = props$initialLoaderBgColour %||% "white",
+          initialLoaderColour = props$initialLoaderColour %||% "black"
         ),
         width = width,
         height = height,

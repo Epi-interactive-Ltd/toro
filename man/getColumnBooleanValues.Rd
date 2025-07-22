@@ -2,7 +2,7 @@
 % Please edit documentation in R/getColumnBooleanValues.R
 \name{getColumnBooleanValues}
 \alias{getColumnBooleanValues}
-\title{Get the value for a paint or layout option in a map layer based on a column value.}
+\title{Get the value for a paint or layout option in a map layer based on a column boolean value.}
 \usage{
 getColumnBooleanValues(column_name, true_value, false_value)
 }

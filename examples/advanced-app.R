@@ -41,22 +41,34 @@ ui <- fluidPage(
     maplibReGL::addMaplibreDependencies()
   ),
   maplibReGL::mapOutput("map"),
-  h2("Circle options"),
-  p("using local data (earthquake data)"),
-  selectInput(
-    "small",
-    "Magnitude <= 4.0",
-    choices = colours
-  ),
-  selectInput(
-    "med",
-    "5.0 <= Magnitude <= 6.0",
-    choices = colours
-  ),
-  selectInput(
-    "large",
-    "Magnitude > 6.0",
-    choices = colours
+  div(
+    class = "row",
+    div(
+      class = "col",
+      h2("Circle options"),
+      p("using local data (earthquake data)"),
+      selectInput(
+        "small",
+        "Magnitude <= 4.0",
+        choices = colours
+      ),
+      selectInput(
+        "med",
+        "5.0 <= Magnitude <= 6.0",
+        choices = colours
+      ),
+      selectInput(
+        "large",
+        "Magnitude > 6.0",
+        choices = colours
+      ),
+    ),
+    div(
+      class = "col",
+      h2("Polygon(fill) options"),
+      p("using NZ polygons data"),
+      selectInput("target_region", "Target Region", choices = sort(unique(nz_data$Name)))
+    )
   )
 )
 
@@ -71,9 +83,25 @@ server <- function(input, output, session) {
           id = "cat",
           url = "https://upload.wikimedia.org/wikipedia/commons/7/7c/201408_cat.png"
         )
-      )
+      ),
+      spinnerWhileBusy = TRUE # Have a secondary loader for when shiny is busy
     )
   )
+
+  #' Update the opacity of the target polygon
+  observe({
+    req(input$map_loaded)
+    map$set_paint_property(
+      layer_id = "nz_polygons",
+      property_name = "fill-opacity",
+      value = maplibReGL::getColumnGroupValues(
+        "Name",
+        setNames(0.6, input$target_region),
+        0.3
+      )
+    )
+  }) %>%
+    bindEvent(input$target_region)
 
   output$map <- maplibReGL::renderMap({
     map$ui()

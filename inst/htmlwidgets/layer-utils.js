@@ -17,6 +17,7 @@
  * - addLayerPopup: Adds a popup to a specific layer in a MapLibre map.
  * - addLayerHover: Adds a hover to a specific layer in a MapLibre map.
  * - addLayerCursor: Adds a cursor style to a specific layer on hover in a MapLibre map.
+ * - copyLayerStyle: Copies the style from one layer to another in a MapLibre map.
  */
 
 /**
@@ -593,5 +594,34 @@ function addLayerCursor(map, layerIds, cursorStyle = "pointer") {
   // Change it back to a pointer when it leaves.
   map.on("mouseleave", layerIds, () => {
     map.getCanvas().style.cursor = "";
+  });
+}
+
+/**
+ * Copy the style from one layer to another in a MapLibre map.
+ *
+ * @param {object} map Maplibre map instance.
+ * @param {string} fromLayerId ID of the layer to copy style from.
+ * @param {string} toLayerId ID of the layer to copy style to.
+ * @returns {void}
+ */
+function copyLayerStyle(map, fromLayerId, toLayerId) {
+  const fromLayer = map.getLayer(fromLayerId);
+  if (!fromLayer) return;
+
+  // Copy paint properties
+  const paintProps =
+    map.getStyle().layers.find((l) => l.id === fromLayerId).paint || {};
+  Object.keys(paintProps).forEach((prop) => {
+    const value = map.getPaintProperty(fromLayerId, prop);
+    map.setPaintProperty(toLayerId, prop, value);
+  });
+
+  // Copy layout properties
+  const layoutProps =
+    map.getStyle().layers.find((l) => l.id === fromLayerId).layout || {};
+  Object.keys(layoutProps).forEach((prop) => {
+    const value = map.getLayoutProperty(fromLayerId, prop);
+    map.setLayoutProperty(toLayerId, prop, value);
   });
 }
