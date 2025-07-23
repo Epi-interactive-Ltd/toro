@@ -377,8 +377,14 @@ MaplibreMap <- R6::R6Class(
       hover_column = NULL,
       on_feature_click = FALSE
     ) {
-      if (any(c("sf", "data.frame", "tbl") %in% class(layer_options$source))) {
-        layer_options$source <- geojsonsf::sf_geojson(layer_options$source)
+      source <- layer_options$source
+      if (any(c("sf", "data.frame", "tbl") %in% class(source))) {
+        if (length(colnames(source)) == 1) {
+          #' There is only a geometry column.
+          #' To conver to geojson, we need to add a dummy column.
+          source$id <- seq_len(nrow(source))
+        }
+        layer_options$source <- geojsonsf::sf_geojson(source)
       }
       self$session$sendCustomMessage(
         "addLayer",
