@@ -99,7 +99,7 @@ function closeAttribution(mapId) {
  * Add a loading overlay to the map element until the map loads initially.
  *
  * @param {object} el                     Widget element containing the map instance.
- * @param {boolean} [changeLoader=false]  Whether to use the iniial or busy loader style.
+ * @param {boolean} [changeLoader=false]  Whether to use the initial or busy loader style.
  * @param {string} [bgColour="white"]     Background colour of the loading overlay.
  * @param {string} [loaderColour="black"] Colour of the loader.
  * @returns {void}

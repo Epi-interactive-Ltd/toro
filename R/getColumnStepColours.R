@@ -3,7 +3,7 @@
 #' Allows the data to be styled by the step breaks in the column.
 #'
 #' @param column_name     String representing the name of the column to be used.
-#' @param breaks          Numberic vector of thresholds (must be sorted ascending).
+#' @param breaks          Numeric vector of thresholds (must be sorted ascending).
 #' @param colours         Vector of colours, length = length(breaks) + 1.
 #' @returns               List containing the paint or layout option to be set.
 #' @examples

@@ -159,7 +159,7 @@ function setTileLayer(el, layerId) {
   el.tileLayers.forEach(function (id) {
     var visibility = id === layerId ? "visible" : "none";
     if (id === "satellite") {
-      visibility = "visible"; // Always show satellite layer undeneath
+      visibility = "visible"; // Always show satellite layer underneath
     }
     el.mapInstance.setLayoutProperty(id, "visibility", visibility);
   });
@@ -196,8 +196,8 @@ function showLayer(map, layerId) {
 /**
  * Add the National Geographic World Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
  * @note The National Geographic world map tiles are only fully available up to
  *        zoom level 11. After that, the tiles in the middle of the ocean are blank.
@@ -229,8 +229,8 @@ function addNatGeoTiles(map) {
 /**
  * Add the Light Grey Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
  * @param {object} map A MapLibre map instance.
  * @returns {void}
@@ -304,7 +304,7 @@ function addLatLngGrid(el, gridColour = "#000000") {
                     maxzoom: maxZoomLevels[layerId],
                     minzoom: minZoomLevels[layerId],
                   },
-                  el.ourLayers[0] // Add before any other layer adde by user
+                  el.ourLayers[0] // Add before any other layer added by user
                 );
                 el.ourLayers.push(`lat-lng-grid-zoom${layerId}`);
               }
@@ -334,8 +334,8 @@ function toggleLatLngGrid(el, hide) {
 /**
  * Add the Topographic World Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
  * @note The Topographic world map tiles are only fully available up to
  *        zoom level 14. After that, the tiles in the middle of the ocean are blank.
@@ -367,8 +367,8 @@ function addTopoTiles(map) {
 /**
  * Add the Terrain Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
  * @note The Terrain world map tiles are only fully available up to
  *        zoom level 8. After that, the tiles in the middle of the ocean are blank.
@@ -399,8 +399,8 @@ function addTerrainTiles(map) {
 /**
  * Add the Streets Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
  * @note The Streets world map tiles are only fully available up to
  *        zoom level 14. After that, the tiles in the middle of the ocean are blank.
@@ -434,10 +434,10 @@ function addStreetsTiles(map) {
 /**
  * Add the Shaded Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
- * @note The Shadded world map tiles are only fully available up to
+ * @note The shaded world map tiles are only fully available up to
  *        zoom level 12. After that, the tiles in the middle of the ocean are blank.
  *        They can still zoom a bit further on land, but set this as max
  *        so that there are no blank tiles overall.
@@ -466,8 +466,8 @@ function addShadedTiles(map) {
 /**
  * Add the Satellite Imagery Map tiles to the MapLibre map.
  *
- * This is needed if the map tiles ever need to be changed to this tileset
- * regardless of what tiles show initally.
+ * This is needed if the map tiles ever need to be changed to this tile set
+ * regardless of what tiles show initially.
  *
  * @note The Satellite map tiles are only available up to zoom level 12.
  *        After that, the tiles in the middle of the ocean are blank.

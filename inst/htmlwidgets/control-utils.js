@@ -3,7 +3,7 @@
  *
  * Utility functions for managing map controls in Maplibre GL JS.
  *
- * Current contols include:
+ * Current controls include:
  * - Draw control
  *
  * Functions:

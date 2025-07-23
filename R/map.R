@@ -381,7 +381,7 @@ MaplibreMap <- R6::R6Class(
       if (any(c("sf", "data.frame", "tbl") %in% class(source))) {
         if (length(colnames(source)) == 1) {
           #' There is only a geometry column.
-          #' To conver to geojson, we need to add a dummy column.
+          #' To convert to geojson, we need to add a dummy column.
           source$id <- seq_len(nrow(source))
         }
         layer_options$source <- geojsonsf::sf_geojson(source)
@@ -515,7 +515,7 @@ mapOutput <- function(outputId, width = "100%", height = "600px") {
   htmlwidgets::shinyWidgetOutput(outputId, "map", width, height, package = "maplibReGL")
 }
 
-#' @rdname map-shiny
+#' @name map-shiny
 #' @export
 renderMap <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {

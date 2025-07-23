@@ -3,3 +3,5 @@ examples/app.R
 
 renv
 .Rprofile
+
+.vscode

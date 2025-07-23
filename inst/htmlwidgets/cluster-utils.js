@@ -247,13 +247,13 @@ async function onClusterClick(e, el, layerId, sourceId) {
     // Get all features that are in the cluster
     var clusterFeatures = await el.mapInstance.getSource(sourceId).getClusterLeaves(clusterId, 200);
     // Copy the features and change coords for spiderfying
-    const spiderfyiedFeatures = getSpiderfiedFeatures(el.mapInstance, clusterFeatures, clusterCoords);
+    const spiderfiedFeatures = getSpiderfiedFeatures(el.mapInstance, clusterFeatures, clusterCoords);
     // Get the lines between the spiderfied points
-    const spiderfyLines = getSpiderfyLines(clusterCoords, spiderfyiedFeatures);
+    const spiderfyLines = getSpiderfyLines(clusterCoords, spiderfiedFeatures);
     el.mapInstance.getSource('spiderfy-lines-source').setData(spiderfyLines);
-    el.mapInstance.getSource('spiderfy-pins-source').setData({
-      type: 'FeatureCollection',
-      features: spiderfyiedFeatures
+    el.mapInstance.getSource("spiderfy-pins-source").setData({
+      type: "FeatureCollection",
+      features: spiderfiedFeatures
     });
     copyLayerStyle(el.mapInstance, layerId, 'spiderfy-pins'); // Make sure the style matches the original layer
     return;
@@ -267,7 +267,7 @@ async function onClusterClick(e, el, layerId, sourceId) {
 }
 
 /**
- * Turn clustering on/off for a specfic layer in a MapLibre map.
+ * Turn clustering on/off for a specific layer in a MapLibre map.
  *
  * @param {object} map      A MapLibre map instance.
  * @param {string} layerId  Layer ID to toggle clustering for.

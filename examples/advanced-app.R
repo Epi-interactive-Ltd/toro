@@ -141,7 +141,7 @@ server <- function(input, output, session) {
         type = "circle",
         source = quakes_data
       ),
-      hover_colum = "description"
+      hover_column = "description"
     )
     # Add labels to the center of the polygons
     map$add_layer(
