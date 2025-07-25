@@ -238,6 +238,12 @@ Shiny.addCustomMessageHandler("addDraw", function (message) {
   });
 });
 
+Shiny.addCustomMessageHandler("addZoomControl", function (message) {
+  withMapInstance(message.id, function (el) {
+    addZoomControl(el.mapInstance, message.position, message.controlOptions);
+  });
+});
+
 Shiny.addCustomMessageHandler("addCustomControl", function (message) {
   withMapInstance(message.id, function (el) {
     addCustomControl(el.mapInstance, message.html, message.position);

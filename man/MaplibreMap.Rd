@@ -9,6 +9,9 @@ MaplibreMap: R6 class for interactive Maplibre maps in Shiny
 MaplibreMap: R6 class for interactive Maplibre maps in Shiny
 }
 \note{
+See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/}{Maplibre NavigationControl docs}
+for more information on available options.
+
 This does not remove the layer, it only hides it from view.
 Show a previously hidden layer on the map.
 }
@@ -52,6 +55,7 @@ Create a new MaplibreMap object.}
 \item \href{#method-maplibReGL-show_lat_lng_grid}{\code{MaplibreMap$show_lat_lng_grid()}}
 \item \href{#method-maplibReGL-add_cursor_coords_control}{\code{MaplibreMap$add_cursor_coords_control()}}
 \item \href{#method-maplibReGL-add_draw_control}{\code{MaplibreMap$add_draw_control()}}
+\item \href{#method-maplibReGL-add_zoom_control}{\code{MaplibreMap$add_zoom_control()}}
 \item \href{#method-maplibReGL-add_custom_control}{\code{MaplibreMap$add_custom_control()}}
 \item \href{#method-maplibReGL-delete_drawn_shape}{\code{MaplibreMap$delete_drawn_shape()}}
 \item \href{#method-maplibReGL-hide_draw_controls}{\code{MaplibreMap$hide_draw_controls()}}
@@ -432,7 +436,7 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     NULL
+\if{html}{\out{<div class="sourceCode">}}\preformatted{       NULL
 }\if{html}{\out{</div>}}
 
 Add a draw control to the map
@@ -472,7 +476,33 @@ For example, \code{list(polygon = "Draw Polygon", trash = "Delete Shape")}.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     NULL
+\if{html}{\out{<div class="sourceCode">}}\preformatted{           NULL
+}\if{html}{\out{</div>}}
+
+Add a zoom control to the map.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-maplibReGL-add_zoom_control"></a>}}
+\if{latex}{\out{\hypertarget{method-maplibReGL-add_zoom_control}{}}}
+\subsection{Method \code{add_zoom_control()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MaplibreMap$add_zoom_control(position = "top-right", control_options = list())}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{position}}{The position of the zoom control on the map.
+Default is \code{"top-right"}.}
+
+\item{\code{control_options}}{Additional options for the zoom control.
+Default is an empty list.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{           NULL
 }\if{html}{\out{</div>}}
 
 Add a custom HTML control to the map.
@@ -586,6 +616,8 @@ Add a layer to the map.
 \if{html}{\out{<div class="sourceCode">}}\preformatted{             NULL
 }\if{html}{\out{</div>}}
 
+There is only a geometry column.
+To convert to geojson, we need to add a dummy column.
 Hide a layer from the map.
 }
 }

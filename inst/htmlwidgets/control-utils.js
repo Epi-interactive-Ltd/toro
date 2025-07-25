@@ -14,6 +14,7 @@
  * - _getDrawnStyle: Returns the style configuration for drawn shapes.
  * - addCursorCoordinateControl: Adds a control to display cursor coordinates on the map.
  * - addCustomControl: Adds a custom control to the map with specified HTML content.
+ * - addZoomControl: Adds a zoom control to the map.
  *
  * @note Draw controls are based on Mapbox GL Draw, which is compatible with Maplibre GL JS.
  *       For more information: `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
@@ -470,4 +471,42 @@ function addCustomControl(map, html, position = "top-right") {
     }
   }
   map.addControl(new CustomControl(), position);
+}
+
+/**
+ * Add a zoom control to the map.
+ *
+ * See [Maplibre NavigationControl docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/) for more.
+ *
+ * @param {object} map      Maplibre map instance.
+ * @param {string} position Position to place the control in the map.
+ *                          Default is "top-right".
+ * @param {object} options  Options for the zoom control.
+ *                          Can include:
+ *                           - showZoom: boolean (default true)
+ *                          - showCompass: boolean (default false)
+ *                          - visualizePitch: boolean (default false)
+ *                          - visualizeRoll: boolean (default false)
+ * @return {void}
+ */
+function addZoomControl(map, position, options) {
+  if (Array.isArray(options) || options.length === 0) {
+    options = {};
+  }
+
+  // Set defaults
+  if (options.showZoom === undefined) {
+    options.showZoom = true;
+  }
+  if (options.showCompass === undefined) {
+    options.showCompass = false;
+  }
+  if (options.visualizePitch === undefined) {
+    options.visualizePitch = false;
+  }
+  if (options.visualizeRoll === undefined) {
+    options.visualizeRoll = false;
+  }
+  let nav = new maplibregl.NavigationControl(options);
+  map.addControl(nav, position);
 }

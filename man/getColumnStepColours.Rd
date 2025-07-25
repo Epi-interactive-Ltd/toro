@@ -9,7 +9,7 @@ getColumnStepColours(column_name, breaks, colours)
 \arguments{
 \item{column_name}{String representing the name of the column to be used.}
 
-\item{breaks}{Numberic vector of thresholds (must be sorted ascending).}
+\item{breaks}{Numeric vector of thresholds (must be sorted ascending).}
 
 \item{colours}{Vector of colours, length = length(breaks) + 1.}
 }

@@ -58,6 +58,7 @@ server <- function(input, output, session) {
     )
     map$add_cursor_coords_control("bottom-left")
     map$add_lat_lng_grid()
+    map$add_zoom_control()
   })
 
   observe({

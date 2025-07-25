@@ -260,12 +260,12 @@ MaplibreMap <- R6::R6Class(
 
     #' Add a cursor coordinates control to the map.
     #'
-    #' @param position  The position of the cursor coordinates control on the map.
-    #'                  Default is `"bottom-left"`.
-    #'                  Options include "top-left", "top-right", "bottom-left", "bottom-right".
-    #' @param long_label The label for the longitude coordinate. Default is `"Lng"`.
-    #' @param lat_label  The label for the latitude coordinate. Default is `"Lat"`.
-    #' @return          NULL
+    #' @param position    The position of the cursor coordinates control on the map.
+    #'                    Default is `"bottom-left"`.
+    #'                    Options include "top-left", "top-right", "bottom-left", "bottom-right".
+    #' @param long_label  The label for the longitude coordinate. Default is `"Lng"`.
+    #' @param lat_label   The label for the latitude coordinate. Default is `"Lat"`.
+    #' @return            NULL
     add_cursor_coords_control = function(
       position = "bottom-left",
       long_label = "Lng",
@@ -288,7 +288,7 @@ MaplibreMap <- R6::R6Class(
     #' @param inactive_colour The colour for the inactive shapes. Default is `"#0FB3CE"`.
     #' @param mode_labels     A named list of labels for each mode.
     #'                        For example, `list(polygon = "Draw Polygon", trash = "Delete Shape")`.
-    #' @return          NULL
+    #' @return                NULL
     add_draw_control = function(
       position = "top-right",
       modes = c("polygon", "trash"),
@@ -305,6 +305,27 @@ MaplibreMap <- R6::R6Class(
           activeColour = active_colour,
           inactiveColour = inactive_colour,
           modeLabels = mode_labels
+        )
+      )
+    },
+
+    #' Add a zoom control to the map.
+    #'
+    #' @note See [Maplibre NavigationControl docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/)
+    #' for more information on available options.
+    #'
+    #' @param position        The position of the zoom control on the map.
+    #'                        Default is `"top-right"`.
+    #' @param control_options Additional options for the zoom control.
+    #'                        Default is an empty list.
+    #' @return                NULL
+    add_zoom_control = function(position = "top-right", control_options = list()) {
+      self$session$sendCustomMessage(
+        "addZoomControl",
+        list(
+          id = self$id,
+          position = position,
+          controlOptions = control_options
         )
       )
     },
