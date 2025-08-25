@@ -28,4 +28,4 @@ To add it as a local package to the `renv.lock` file: `renv::install("maplibReGL
 ## TODOs
 
 - [ ] Add more examples to the `examples` directory.
-- [ ] Split the `add_layer` function into smaller functions for each layer type (e.g., `add_polygon_layer`, `add_line_layer`, etc.).
+- [x] Split the `add_layer` function into smaller functions for each layer type (e.g., `add_polygon_layer`, `add_line_layer`, etc.).
