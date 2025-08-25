@@ -37,9 +37,6 @@ colours <- c("red", "orange", "yellow", "green", "blue", "purple", "pink")
 ui <- fluidPage(
   theme = bslib::bs_theme(version = 5),
   shinyjs::useShinyjs(),
-  tags$head(
-    maplibReGL::addMaplibreDependencies()
-  ),
   maplibReGL::mapOutput("map"),
   div(
     class = "row",
@@ -73,9 +70,10 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  map <- maplibReGL::map(
-    elementId = "map",
-    props = list(
+  # Render UI -------------------------------------------------------
+
+  output$map <- maplibReGL::renderMap({
+    maplibReGL::map(
       # Have a map loader until these layers are loaded
       initialLoadedLayers = c("quakes", "nz_polygons"),
       imageSources = list(
@@ -85,98 +83,91 @@ server <- function(input, output, session) {
         )
       ),
       spinnerWhileBusy = TRUE # Have a secondary loader for when shiny is busy
-    )
-  )
+    ) |>
 
-  #' Update the opacity of the target polygon
-  observe({
-    req(input$map_loaded)
-    map$set_paint_property(
-      layer_id = "nz_polygons",
-      property_name = "fill-opacity",
-      value = maplibReGL::getColumnGroupValues(
-        "Name",
-        setNames(0.6, input$target_region),
-        0.3
-      )
-    )
-  }) %>%
-    bindEvent(input$target_region)
-
-  output$map <- maplibReGL::renderMap({
-    map$ui()
-  })
-
-  observe({
-    req(input$map_feature_click)
-    feat <- maplibReGL::getClickedFeature(input$map_feature_click)
-    print(feat)
-  })
-
-  # Add sources and layers to the map once it is loaded
-  observeEvent(input$map_loaded, {
-    map$add_layer(
-      layer_options = list(
+      set_zoom(3) |>
+      add_feature_server_source(
+        "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
+        "eez"
+      ) |>
+      add_line_layer(id = "eez_lines", source = "eez") |>
+      add_fill_layer(
         id = "nz_polygons",
-        type = "fill",
         source = nz_data,
-        paint = maplibReGL::getPaintOptions(
+        paint = maplibReGL::get_paint_options(
           "fill",
           options = list(
             opacity = 0.6,
-            colour = maplibReGL::getColumnBooleanValues(
+            colour = maplibReGL::get_column_boolean(
               "supported",
               "#808080",
               "#FF4F00"
             )
           )
-        )
-      ),
-      hover_column = "Name",
-      on_feature_click = TRUE
-    )
-    map$add_layer(
-      layer_options = list(
+        ),
+        hover_column = "Name"
+      ) |>
+      add_circle_layer(
         id = "quakes",
-        type = "circle",
-        source = quakes_data
-      ),
-      hover_column = "description"
-    )
-    # Add labels to the center of the polygons
-    map$add_layer(
-      layer_options = list(
+        source = quakes_data,
+        hover_column = "description"
+      ) |>
+      # Add labels to the center of the polygons
+      add_symbol_layer(
         id = "text_layer",
-        type = "symbol",
         source = nz_height_data,
-        layout = maplibReGL::getLayoutOptions(
+        layout = maplibReGL::get_layout_options(
           "symbol",
           options = list(
             icon_image = "cat",
             icon_size = 0.2
           )
-        )
-      ),
-      can_cluster = TRUE,
-      popup_column = "elevation"
-    )
+        ),
+        can_cluster = TRUE,
+        popup_column = "elevation"
+      )
   })
+
+  # Observers -------------------------------------------------------------
 
   #' Observe the colour inputs and update the circle colour based on the magnitude
   #' of the earthquake data.
   observe({
     req(input$map_loaded)
-    map$set_paint_property(
-      layer_id = "quakes",
-      property_name = "circle-color",
-      value = maplibReGL::getColumnStepColours(
-        column_name = "mag",
-        breaks = c(4, 5, 6),
-        colours = c("black", input$small, input$med, input$large)
+    maplibReGL::mapProxy("map") %>%
+      set_paint_property(
+        layer_id = "quakes",
+        property_name = "circle-color",
+        value = maplibReGL::get_column_step_colours(
+          column_name = "mag",
+          breaks = c(4, 5, 6),
+          colours = c("black", input$small, input$med, input$large)
+        )
       )
-    )
   }) %>%
     bindEvent(input$small, input$med, input$large, input$map_loaded)
+
+  #' Update the opacity of the target polygon
+  observe({
+    req(input$map_loaded)
+    maplibReGL::mapProxy("map") %>%
+      set_paint_property(
+        layer_id = "nz_polygons",
+        property_name = "fill-opacity",
+        value = maplibReGL::get_column_group(
+          "Name",
+          setNames(0.6, input$target_region),
+          0.3
+        )
+      )
+  }) %>%
+    bindEvent(input$target_region)
+
+  #' Get clicked feature information
+  observe({
+    req(input$map_feature_click)
+    print(maplibReGL::get_clicked_feature(input$map_feature_click))
+  })
 }
 
 if (interactive()) {

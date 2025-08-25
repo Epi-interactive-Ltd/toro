@@ -3,21 +3,28 @@ library(dplyr)
 library(sf)
 library(maplibReGL)
 
+all_controls <- c(
+  "Zoom Control" = "zoom_control",
+  "Cursor Coordinates" = "cursor_coords",
+  "Custom Control 1" = "custom_1",
+  "Custom Control 2" = "custom_2",
+  "Draw Control" = "draw_control"
+)
+
 ui <- fluidPage(
   theme = bslib::bs_theme(version = 5),
   shinyjs::useShinyjs(),
-  tags$head(
-    maplibReGL::addMaplibreDependencies()
-  ),
   maplibReGL::mapOutput("map"),
+  checkboxGroupInput(
+    inputId = "controls",
+    label = "Visible Controls",
+    choices = all_controls,
+    selected = all_controls
+  ),
   uiOutput("drawn_shapes")
 )
 
 server <- function(input, output, session) {
-  map <- maplibReGL::map(
-    elementId = "map"
-  )
-
   shapes <- reactiveVal(sf::st_sf(
     data.frame(
       id = character()
@@ -27,7 +34,19 @@ server <- function(input, output, session) {
   ))
 
   output$map <- maplibReGL::renderMap({
-    map$ui()
+    maplibReGL::map(style = "satellite") |>
+      add_lat_lng_grid("green") |>
+      add_cursor_coords_control() |>
+      add_zoom_control() |>
+      add_custom_control(
+        id = "custom_1",
+        html = "<div style='background: white; padding: 5px;'>I am a custom div</div>"
+      ) |>
+      add_custom_control(
+        id = "custom_2",
+        html = "<div style='background: white; padding: 5px;'>I am a second custom div</div>"
+      ) |>
+      add_draw_control()
   })
 
   output$drawn_shapes <- renderUI({
@@ -41,33 +60,23 @@ server <- function(input, output, session) {
     )
   })
 
-  observeEvent(input$map_loaded, {
-    map$add_draw_control(
-      position = "top-left",
-      modes = c("polygon", "trash", "point"),
-      inactive_colour = "#c41e12",
-      mode_labels = list(
-        polygon = as.character(span(
-          "Drawn polygon",
-          style = "padding: 0 5px; text-wrap: nowrap; margin: 0;"
-        ))
-      )
-    )
-    map$add_custom_control(
-      html = "<div style='background: white; padding: 5px;'>I am a custom div</div>"
-    )
-    map$add_cursor_coords_control("bottom-left")
-    map$add_lat_lng_grid()
-    map$add_zoom_control()
-  })
-
   observe({
     req(input$map_shape_created)
-    new_shape <- maplibReGL::getDrawnShape(input$map_shape_created)
+    new_shape <- maplibReGL::get_drawn_shape(input$map_shape_created)
 
     shapes(rbind(shapes(), new_shape))
   }) %>%
     bindEvent(input$map_shape_created)
+
+  # Show/hide controls
+  observe({
+    req(input$controls)
+    proxy <- maplibReGL::mapProxy("map")
+
+    for (control in all_controls) {
+      toggle_control(proxy, control, show = control %in% input$controls)
+    }
+  })
 }
 
 if (interactive()) {

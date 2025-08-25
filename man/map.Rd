@@ -2,10 +2,37 @@
 % Please edit documentation in R/map.R
 \name{map}
 \alias{map}
-\title{Create a map widget.}
+\title{Create a Maplibre map widget.}
 \usage{
-map(props = list(), width = NULL, height = NULL, elementId = NULL)
+map(
+  style = "light-grey",
+  center = c(174, -41),
+  zoom = 2,
+  width = "100\%",
+  height = "100\%",
+  session = shiny::getDefaultReactiveDomain(),
+  ...
+)
+}
+\arguments{
+\item{style}{The style of the map. Default is "light-grey".}
+
+\item{center}{The initial center of the map as a longitude/latitude pair. Default is c(174, -41).}
+
+\item{zoom}{The initial zoom level of the map. Default is 2.}
+
+\item{width}{The width of the widget. Optional.}
+
+\item{height}{The height of the widget. Optional.}
+
+\item{session}{The Shiny session object. Default is the current session.}
+
+\item{...}{Additional options to customize the map.}
+}
+\value{
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     An object of class \code{htmlwidget} representing the gauge plot.
+}\if{html}{\out{</div>}}
 }
 \description{
-Using maplibre...
+This function creates a map htmlwidget for use in R and Shiny applications.
 }

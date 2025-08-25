@@ -1,34 +1,28 @@
 library(shiny)
 library(maplibReGL)
 
-all_tiles <- c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "light-grey")
 
 ui <- fluidPage(
   theme = bslib::bs_theme(version = 5),
   shinyjs::useShinyjs(),
-  tags$head(
-    maplibReGL::addMaplibreDependencies()
-  ),
   maplibReGL::mapOutput("map"),
-  selectInput("tiles", "Tiles", choices = all_tiles, selected = "satellite")
+  selectInput(
+    "tiles",
+    "Tiles",
+    choices = maplibReGL::get_tile_options(),
+    selected = "satellite"
+  ),
 )
 
 server <- function(input, output, session) {
-  map <- maplibReGL::map(
-    elementId = "map",
-    props = list(
-      loadedTiles = all_tiles,
-      initialTileLayer = "satellite"
-    )
-  )
-
   output$map <- maplibReGL::renderMap({
-    map$ui()
+    maplibReGL::map(style = "satellite", loadedTiles = maplibReGL::get_tile_options())
   })
 
   observe({
     req(input$tiles)
-    map$set_tile_layer(input$tiles)
+    maplibReGL::mapProxy("map") |>
+      set_tile_layer(input$tiles)
   })
 }
 

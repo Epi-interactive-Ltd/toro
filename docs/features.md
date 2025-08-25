@@ -19,25 +19,26 @@ observe({
 
 ## Feature click events
 
-If you want a click on a feature (polygon, line, point) to return the feature as an `sf` object, you can set `on_feature_click = TRUE` in the `add_layer` function and then have an observer that listens for the `input$<map-id>_feature_click` input.
-This input will be a list containing the `layerId`, `properties`, `geometry`, and `time` of the clicked feature. You can then use the `getClickedFeature` function to convert this list into an `sf` object.
+Anytime a feature (polygon, line, point) is clicked on the map, a `feature_click` event is fired. You can listen for this event using an observer in your Shiny app. Just append `_feature_click` to the map ID to get the input ID.
 
 ```r
-map <- maplibReGL::map(elementId = "map")
+observe({
+  # If map ID is "map", the input ID will be "map_feature_click"
+  print(get_clicked_feature(input$map_feature_click))
+})
+```
+
+## Map view status
+
+Whenever the map view changes (zoom/bounds) a `bounds` / `zoom` event is fired. You can listen for this event using an observer in your Shiny app. Just append `_bounds` / `_zoom` to the map ID to get the input ID.
+
+```r
+# Assuming the map ID is "map"
+observe({
+  print(input$map_bounds)
+})
 
 observe({
-  req(input$map_loaded)
-  map$add_layer(
-    layer_options = list(...),
-    on_feature_click = TRUE
-  )
-}) %>%
-  bindEvent(input$map_loaded)
-
-observe({
-  req(input$map_feature_click)
-  clicked_feature <- maplibReGL::getClickedFeature(input$map_feature_click)
-  # Do something with the clicked feature sf
-}) %>%
-  bindEvent(input$map_feature_click)
+  print(input$map_zoom)
+})
 ```

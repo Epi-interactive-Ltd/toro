@@ -1,8 +1,9 @@
 Package: maplibReGL
 Title: Maplibre GL JS integration for R
-Version: 0.0.0.9003
-Authors@R: 
-    person("Poppy", "Schlaadt", , "poppy@epi-interactive.com", role = c("aut", "cre"))
+Version: 0.0.0.9004
+Authors@R: c(
+    person("Poppy", "Schlaadt", , "poppy@epi-interactive.com", role = c("aut", "cre")),
+    person("Epi", "", role = c("cph", "fnd")))
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.
 License: MIT + file LICENSE
 Encoding: UTF-8
