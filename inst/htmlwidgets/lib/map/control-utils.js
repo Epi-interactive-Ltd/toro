@@ -102,30 +102,32 @@ function addDrawControl(
     }, 0);
   });
 
-  // Trigger Shiny input when a feature is created
-  el.mapInstance.on("draw.create", function (e) {
-    const feature = e.features[0]; // The drawn feature
-    const geojson = JSON.stringify(feature);
-    Shiny.setInputValue(el.id + "_shape_created", geojson, {
-      priority: "event",
+  if (HTMLWidgets.shinyMode) {
+    // Trigger Shiny input when a feature is created
+    el.mapInstance.on("draw.create", function (e) {
+      const feature = e.features[0]; // The drawn feature
+      const geojson = JSON.stringify(feature);
+      Shiny.setInputValue(el.id + "_shape_created", geojson, {
+        priority: "event",
+      });
+      /**
+       * Change mode to static after a short delay to avoid recursion.
+       * Stops shapes from being editable after creation.
+       */
+      setTimeout(function () {
+        if (el.draw.getMode && el.draw.getMode() !== "static") {
+          el.draw.changeMode("static");
+        }
+      }, 50);
     });
-    /**
-     * Change mode to static after a short delay to avoid recursion.
-     * Stops shapes from being editable after creation.
-     */
-    setTimeout(function () {
-      if (el.draw.getMode && el.draw.getMode() !== "static") {
-        el.draw.changeMode("static");
-      }
-    }, 50);
-  });
 
-  // Trigger Shiny input when a feature is deleted
-  el.mapInstance.on("draw.delete", function (e) {
-    Shiny.setInputValue(el.id + "_shape_deleted", e.features.id, {
-      priority: "event",
+    // Trigger Shiny input when a feature is deleted
+    el.mapInstance.on("draw.delete", function (e) {
+      Shiny.setInputValue(el.id + "_shape_deleted", e.features.id, {
+        priority: "event",
+      });
     });
-  });
+  }
 }
 
 /**

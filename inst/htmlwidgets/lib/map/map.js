@@ -52,111 +52,114 @@ HTMLWidgets.widget({
           mapInstance.on(["load", "moveend"], function () {
             updateShinyView(el, mapInstance);
           });
+        }
+        /**
+         * Load only triggers once the map has fully loaded (one time).
+         * Add any layers/sources needed after the map is fully loaded.
+         * Also, update the Shiny input for the map's loaded state.
+         */
+        mapInstance.on("load", function () {
+          mapInstance.resize();
 
-          /**
-           * Load only triggers once the map has fully loaded (one time).
-           * Add any layers/sources needed after the map is fully loaded.
-           * Also, update the Shiny input for the map's loaded state.
-           */
-          mapInstance.on("load", function () {
-            if (x.sources) {
-              x.sources.forEach((source) =>
-                mapInstance.addSource(source.sourceId, source.sourceOptions)
+          if (x.sources) {
+            x.sources.forEach((source) =>
+              mapInstance.addSource(source.sourceId, source.sourceOptions)
+            );
+          }
+
+          if (x.featureSources) {
+            x.featureSources.forEach((featureSource) => {
+              addFeatureServerSource(
+                el,
+                featureSource.sourceUrl,
+                featureSource.sourceId
               );
-            }
+            });
+          }
 
-            if (x.featureSources) {
-              x.featureSources.forEach((featureSource) => {
-                addFeatureServerSource(
-                  el,
-                  featureSource.sourceUrl,
-                  featureSource.sourceId
-                );
-              });
-            }
-
-            if (x.imageSources) {
-              x.imageSources.forEach((imageSource) =>
-                addImageToMapSource(
-                  mapInstance,
-                  imageSource.imageId,
-                  imageSource.imageUrl
-                )
-              );
-            }
-
-            initiateTiles(el, x);
-            addSpiderfyingLayers(el.mapInstance);
-
-            if (x.layers) {
-              x.layers.forEach((layer) => addLayerToMap(el, layer));
-            }
-
-            if (!x.options.enable3D) {
-              disable3DView(el.mapInstance);
-            }
-
-            if (x.setBounds) {
-              setMapBounds(
+          if (x.imageSources) {
+            x.imageSources.forEach((imageSource) =>
+              addImageToMapSource(
                 mapInstance,
-                x.setBounds.bounds,
-                x.setBounds.maxZoom,
-                x.setBounds.padding
-              );
-            }
+                imageSource.imageId,
+                imageSource.imageUrl
+              )
+            );
+          }
 
-            if (x.setZoom) {
-              mapInstance.setZoom(x.setZoom);
-            }
+          initiateTiles(el, x);
+          addSpiderfyingLayers(el.mapInstance);
 
-            if (x.latLngGrid) {
-              addLatLngGrid(el, x.latLngGrid.gridColour);
-            }
+          if (x.layers) {
+            x.layers.forEach((layer) => addLayerToMap(el, layer));
+          }
 
-            // Ensures that the controls are added in the desired order
-            if (x.controls) {
-              x.controls.forEach((control) => {
-                if (control.type === "cursor") {
-                  addCursorCoordinateControl(
-                    mapInstance,
-                    control.position,
-                    control.longLabel,
-                    control.latLabel
-                  );
-                } else if (control.type === "zoom") {
-                  addZoomControl(
-                    mapInstance,
-                    control.position,
-                    control.controlOptions
-                  );
-                } else if (control.type === "custom") {
-                  addCustomControl(
-                    mapInstance,
-                    control.controlId,
-                    control.html,
-                    control.position
-                  );
-                } else if (control.type === "draw") {
-                  addDrawControl(
-                    el,
-                    control.position,
-                    control.modes,
-                    control.activeColour,
-                    control.inactiveColour,
-                    control.modeLabels
-                  );
-                }
-              });
-            }
+          if (!x.options.enable3D) {
+            disable3DView(el.mapInstance);
+          }
 
+          if (x.setBounds) {
+            setMapBounds(
+              mapInstance,
+              x.setBounds.bounds,
+              x.setBounds.maxZoom,
+              x.setBounds.padding
+            );
+          }
+
+          if (x.setZoom) {
+            mapInstance.setZoom(x.setZoom);
+          }
+
+          if (x.latLngGrid) {
+            addLatLngGrid(el, x.latLngGrid.gridColour);
+          }
+
+          // Ensures that the controls are added in the desired order
+          if (x.controls) {
+            x.controls.forEach((control) => {
+              if (control.type === "cursor") {
+                addCursorCoordinateControl(
+                  mapInstance,
+                  control.position,
+                  control.longLabel,
+                  control.latLabel
+                );
+              } else if (control.type === "zoom") {
+                addZoomControl(
+                  mapInstance,
+                  control.position,
+                  control.controlOptions
+                );
+              } else if (control.type === "custom") {
+                addCustomControl(
+                  mapInstance,
+                  control.controlId,
+                  control.html,
+                  control.position
+                );
+              } else if (control.type === "draw") {
+                addDrawControl(
+                  el,
+                  control.position,
+                  control.modes,
+                  control.activeColour,
+                  control.inactiveColour,
+                  control.modeLabels
+                );
+              }
+            });
+          }
+
+          if (HTMLWidgets.shinyMode) {
             // Trigger a input event to notify Shiny that the map is loaded
             Shiny.setInputValue(el.id + "_loaded", Math.random(), {
               priority: "event",
             });
+          }
 
-            closeAttribution(el.id); // By default, close the attribution panel
-          });
-        }
+          closeAttribution(el.id); // By default, close the attribution panel
+        });
 
         // ------------------------------------------------------------
 
@@ -171,7 +174,11 @@ HTMLWidgets.widget({
         el.initiallyLoaded =
           x.options.initialLoadedLayers == null ? true : false; // Track if the map was initially loaded without a loader
 
-        if (!el.initiallyLoaded && x.options.initialLoadedLayers) {
+        if (
+          HTMLWidgets.shinyMode &&
+          !el.initiallyLoaded &&
+          x.options.initialLoadedLayers
+        ) {
           addMapLoader(
             el,
             false,
@@ -180,31 +187,12 @@ HTMLWidgets.widget({
           );
         }
 
-        // el.mapInstance.on("load", function () {
-        //   // mapInstance.addLayer({
-        //   //   id: "background-blue",
-        //   //   type: "background",
-        //   //   paint: {
-        //   //     "background-color": x.options.backgroundColour,
-        //   //   },
-        //   // });
-        //   // initiateTiles(el, x.options.loadedTiles, x.options.initialTileLayer);
-        //   // addSpiderfyingLayers(el.mapInstance);
-
-        //   // if (!x.options.enable3D) {
-        //   //   disable3DView(el.mapInstance);
-        //   // }
-
-        //   // // Trigger a input event to notify Shiny that the map is loaded
-        //   // Shiny.setInputValue(el.id + "_loaded", Math.random(), {
-        //   //   priority: "event",
-        //   // });
-
-        //   // closeAttribution(el.id);
-        // });
-
         // Idle event when sources and layers are loaded
-        if (!el.initiallyLoaded && x.options.initialLoadedLayers) {
+        if (
+          HTMLWidgets.shinyMode &&
+          !el.initiallyLoaded &&
+          x.options.initialLoadedLayers
+        ) {
           function initialMapLoaderHandler(e) {
             var currentLayers = el.mapInstance
               .getStyle()
@@ -221,10 +209,10 @@ HTMLWidgets.widget({
             }
           }
           el.mapInstance.on("idle", initialMapLoaderHandler);
-        } else if (el.initiallyLoaded) {
+        } else if (HTMLWidgets.shinyMode && el.initiallyLoaded) {
           el.mapInstance.off("idle", initialMapLoaderHandler);
         }
-        if (x.options.spinnerWhileBusy) {
+        if (HTMLWidgets.shinyMode && x.options.spinnerWhileBusy) {
           function showSpinner() {
             addMapLoader(
               el,
@@ -272,6 +260,14 @@ HTMLWidgets.widget({
         if (mapInstance) {
           mapInstance.resize();
         }
+      },
+
+      getMap: function () {
+        return mapInstance;
+      },
+
+      getDraw: function () {
+        return el.draw;
       },
     };
   },
@@ -364,213 +360,215 @@ function saveElementAsHtml(elementId, filename = "content.html") {
   }
 }
 
-Shiny.addCustomMessageHandler("downloadMapImage", function (message) {
-  withMapInstance(message.id, function (el) {
-    console.log(message);
-    console.log(el);
-    // saveElementAsPng(el.id);
-    // saveElementAsHtml(el.id);
-    // exportElementBundled(el.id);
+if (HTMLWidgets.shinyMode) {
+  Shiny.addCustomMessageHandler("downloadMapImage", function (message) {
+    withMapInstance(message.id, function (el) {
+      console.log(message);
+      console.log(el);
+      // saveElementAsPng(el.id);
+      // saveElementAsHtml(el.id);
+      // exportElementBundled(el.id);
 
-    // const element = document.querySelector("#" + el.id + ".html-widget"); // or any selector
+      // const element = document.querySelector("#" + el.id + ".html-widget"); // or any selector
 
-    // setTimeout(function () {
-    //   html2canvas(element).then((canvas) => {
-    //     const imgData = canvas.toDataURL("image/png");
-    //     // Create a download link:
-    //     const link = document.createElement("a");
-    //     link.href = imgData;
-    //     link.download = "export.png";
-    //     link.click();
-    //   });
-    // }, 1000);
+      // setTimeout(function () {
+      //   html2canvas(element).then((canvas) => {
+      //     const imgData = canvas.toDataURL("image/png");
+      //     // Create a download link:
+      //     const link = document.createElement("a");
+      //     link.href = imgData;
+      //     link.download = "export.png";
+      //     link.click();
+      //   });
+      // }, 1000);
+    });
   });
-});
 
-Shiny.addCustomMessageHandler("addCursorCoordsControl", function (message) {
-  withMapInstance(message.id, function (el) {
-    addCursorCoordinateControl(
-      el.mapInstance,
-      message.position,
-      message.longLabel,
-      message.latLabel
-    );
-  });
-});
-
-Shiny.addCustomMessageHandler("setMapZoom", function (message) {
-  withMapInstance(message.id, function (el) {
-    el.mapInstance.setZoom(message.zoom);
-  });
-});
-
-Shiny.addCustomMessageHandler("addLatLngGrid", function (message) {
-  withMapInstance(message.id, function (el) {
-    addLatLngGrid(el, message.gridColour);
-  });
-});
-
-Shiny.addCustomMessageHandler("toggleLatLngGrid", function (message) {
-  withMapInstance(message.id, function (el) {
-    toggleLatLngGrid(el, (show = message.show));
-  });
-});
-
-Shiny.addCustomMessageHandler("hideDrawControls", function (message) {
-  withMapInstance(message.id, function (el) {
-    hideDrawControls(el);
-  });
-});
-
-Shiny.addCustomMessageHandler("showDrawControls", function (message) {
-  withMapInstance(message.id, function (el) {
-    showDrawControls(el);
-  });
-});
-
-Shiny.addCustomMessageHandler("addDraw", function (message) {
-  withMapInstance(message.id, function (el) {
-    addDrawControl(
-      el,
-      message.options.position,
-      message.options.modes,
-      message.options.activeColour,
-      message.options.inactiveColour,
-      message.options.modeLabels
-    );
-  });
-});
-
-Shiny.addCustomMessageHandler("addZoomControl", function (message) {
-  withMapInstance(message.id, function (el) {
-    addZoomControl(el.mapInstance, message.position, message.controlOptions);
-  });
-});
-
-Shiny.addCustomMessageHandler("addCustomControl", function (message) {
-  withMapInstance(message.id, function (el) {
-    addCustomControl(
-      el.mapInstance,
-      message.options.controlId,
-      message.options.html,
-      message.options.position
-    );
-  });
-});
-
-Shiny.addCustomMessageHandler("toggleControl", function (message) {
-  withMapInstance(message.id, function (el) {
-    toggleControl(el, message.controlId, message.show);
-  });
-});
-
-Shiny.addCustomMessageHandler("deleteDrawnShape", function (message) {
-  withMapInstance(message.id, function (el) {
-    deleteDrawnShape(el, message.shapeId);
-  });
-});
-
-Shiny.addCustomMessageHandler("setMapBounds", function (message) {
-  withMapInstance(message.id, function (el) {
-    setMapBounds(
-      el.mapInstance,
-      message.options.bounds,
-      message.options.maxZoom,
-      message.options.padding
-    );
-  });
-});
-
-Shiny.addCustomMessageHandler("setSelectedTiles", function (message) {
-  withMapInstance(message.id, function (el) {
-    setTileLayer(el, message.tiles);
-  });
-});
-
-Shiny.addCustomMessageHandler("addFilter", function (message) {
-  withMapInstance(message.id, function (el) {
-    addFilterToLayer(el.mapInstance, message.layerId, message.filter);
-  });
-});
-
-Shiny.addCustomMessageHandler("toggleClustering", function (message) {
-  withMapInstance(message.id, function (el) {
-    toggleLayerClustering(el.mapInstance, message.layerId, message.cluster);
-  });
-});
-
-Shiny.addCustomMessageHandler("addLayer", function (message) {
-  withMapInstance(message.id, function (el) {
-    addLayerToMap(el, message);
-  });
-});
-
-Shiny.addCustomMessageHandler("hideLayer", function (message) {
-  withMapInstance(message.id, function (el) {
-    if (message.layerId !== "satellite") {
-      /**
-       * Satellite layer should always be visible as a backup, and is
-       * under other layers if not the selected layer.
-       */
-      hideLayer(el.mapInstance, message.layerId);
-    }
-  });
-});
-
-Shiny.addCustomMessageHandler("showLayer", function (message) {
-  withMapInstance(message.id, function (el) {
-    showLayer(el.mapInstance, message.layerId);
-  });
-});
-
-Shiny.addCustomMessageHandler("addImageSource", function (message) {
-  withMapInstance(message.id, function (el) {
-    addImageToMapSource(el.mapInstance, message.imageId, message.imageUrl);
-  });
-});
-
-Shiny.addCustomMessageHandler("addMapSource", function (message) {
-  withMapInstance(message.id, function (el) {
-    el.mapInstance.addSource(message.sourceId, message.sourceOptions);
-  });
-});
-
-Shiny.addCustomMessageHandler("addFeatureServerSource", function (message) {
-  withMapInstance(message.id, function (el) {
-    addFeatureServerSource(el, message.sourceUrl, message.sourceId);
-  });
-});
-
-Shiny.addCustomMessageHandler("updateSourceData", function (message) {
-  withMapInstance(message.id, function (el) {
-    const src = el.mapInstance.getSource(message.sourceId);
-    if (src && src.setData) {
-      src.setData(message.data);
-    } else {
-      console.warn(
-        "Source not found or not a GeoJSON source:",
-        message.sourceId
+  Shiny.addCustomMessageHandler("addCursorCoordsControl", function (message) {
+    withMapInstance(message.id, function (el) {
+      addCursorCoordinateControl(
+        el.mapInstance,
+        message.position,
+        message.longLabel,
+        message.latLabel
       );
-    }
+    });
   });
-});
 
-Shiny.addCustomMessageHandler("setPaintProp", function (message) {
-  withMapInstance(message.id, function (el) {
-    el.mapInstance.setPaintProperty(
-      message.layerId,
-      message.property,
-      message.value
-    );
+  Shiny.addCustomMessageHandler("setMapZoom", function (message) {
+    withMapInstance(message.id, function (el) {
+      el.mapInstance.setZoom(message.zoom);
+    });
   });
-});
 
-Shiny.addCustomMessageHandler("setLayoutProp", function (message) {
-  withMapInstance(message.id, function (el) {
-    el.mapInstance.setLayoutProperty(
-      message.layerId,
-      message.property,
-      message.value
-    );
+  Shiny.addCustomMessageHandler("addLatLngGrid", function (message) {
+    withMapInstance(message.id, function (el) {
+      addLatLngGrid(el, message.gridColour);
+    });
   });
-});
+
+  Shiny.addCustomMessageHandler("toggleLatLngGrid", function (message) {
+    withMapInstance(message.id, function (el) {
+      toggleLatLngGrid(el, (show = message.show));
+    });
+  });
+
+  Shiny.addCustomMessageHandler("hideDrawControls", function (message) {
+    withMapInstance(message.id, function (el) {
+      hideDrawControls(el);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("showDrawControls", function (message) {
+    withMapInstance(message.id, function (el) {
+      showDrawControls(el);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addDraw", function (message) {
+    withMapInstance(message.id, function (el) {
+      addDrawControl(
+        el,
+        message.options.position,
+        message.options.modes,
+        message.options.activeColour,
+        message.options.inactiveColour,
+        message.options.modeLabels
+      );
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addZoomControl", function (message) {
+    withMapInstance(message.id, function (el) {
+      addZoomControl(el.mapInstance, message.position, message.controlOptions);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addCustomControl", function (message) {
+    withMapInstance(message.id, function (el) {
+      addCustomControl(
+        el.mapInstance,
+        message.options.controlId,
+        message.options.html,
+        message.options.position
+      );
+    });
+  });
+
+  Shiny.addCustomMessageHandler("toggleControl", function (message) {
+    withMapInstance(message.id, function (el) {
+      toggleControl(el, message.controlId, message.show);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("deleteDrawnShape", function (message) {
+    withMapInstance(message.id, function (el) {
+      deleteDrawnShape(el, message.shapeId);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("setMapBounds", function (message) {
+    withMapInstance(message.id, function (el) {
+      setMapBounds(
+        el.mapInstance,
+        message.options.bounds,
+        message.options.maxZoom,
+        message.options.padding
+      );
+    });
+  });
+
+  Shiny.addCustomMessageHandler("setSelectedTiles", function (message) {
+    withMapInstance(message.id, function (el) {
+      setTileLayer(el, message.tiles);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addFilter", function (message) {
+    withMapInstance(message.id, function (el) {
+      addFilterToLayer(el.mapInstance, message.layerId, message.filter);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("toggleClustering", function (message) {
+    withMapInstance(message.id, function (el) {
+      toggleLayerClustering(el.mapInstance, message.layerId, message.cluster);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addLayer", function (message) {
+    withMapInstance(message.id, function (el) {
+      addLayerToMap(el, message);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("hideLayer", function (message) {
+    withMapInstance(message.id, function (el) {
+      if (message.layerId !== "satellite") {
+        /**
+         * Satellite layer should always be visible as a backup, and is
+         * under other layers if not the selected layer.
+         */
+        hideLayer(el.mapInstance, message.layerId);
+      }
+    });
+  });
+
+  Shiny.addCustomMessageHandler("showLayer", function (message) {
+    withMapInstance(message.id, function (el) {
+      showLayer(el.mapInstance, message.layerId);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addImageSource", function (message) {
+    withMapInstance(message.id, function (el) {
+      addImageToMapSource(el.mapInstance, message.imageId, message.imageUrl);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addMapSource", function (message) {
+    withMapInstance(message.id, function (el) {
+      el.mapInstance.addSource(message.sourceId, message.sourceOptions);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addFeatureServerSource", function (message) {
+    withMapInstance(message.id, function (el) {
+      addFeatureServerSource(el, message.sourceUrl, message.sourceId);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("updateSourceData", function (message) {
+    withMapInstance(message.id, function (el) {
+      const src = el.mapInstance.getSource(message.sourceId);
+      if (src && src.setData) {
+        src.setData(message.data);
+      } else {
+        console.warn(
+          "Source not found or not a GeoJSON source:",
+          message.sourceId
+        );
+      }
+    });
+  });
+
+  Shiny.addCustomMessageHandler("setPaintProp", function (message) {
+    withMapInstance(message.id, function (el) {
+      el.mapInstance.setPaintProperty(
+        message.layerId,
+        message.property,
+        message.value
+      );
+    });
+  });
+
+  Shiny.addCustomMessageHandler("setLayoutProp", function (message) {
+    withMapInstance(message.id, function (el) {
+      el.mapInstance.setLayoutProperty(
+        message.layerId,
+        message.property,
+        message.value
+      );
+    });
+  });
+}

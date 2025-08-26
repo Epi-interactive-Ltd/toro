@@ -19,7 +19,7 @@ map <- function(
   center = c(174, -41),
   zoom = 2,
   width = "100%",
-  height = "100%",
+  height = NULL,
   session = shiny::getDefaultReactiveDomain(),
   ...
 ) {
@@ -54,7 +54,17 @@ map <- function(
     ),
     width = width,
     height = height,
-    package = "maplibReGL"
+    package = "maplibReGL",
+    sizingPolicy = htmlwidgets::sizingPolicy(
+      viewer.suppress = FALSE,
+      browser.fill = TRUE,
+      viewer.fill = TRUE,
+      knitr.figure = TRUE,
+      padding = 0,
+      knitr.defaultHeight = "500px",
+      viewer.defaultHeight = "100vh",
+      browser.defaultHeight = "100vh"
+    )
   )
 }
 

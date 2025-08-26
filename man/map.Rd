@@ -9,7 +9,7 @@ map(
   center = c(174, -41),
   zoom = 2,
   width = "100\%",
-  height = "100\%",
+  height = NULL,
   session = shiny::getDefaultReactiveDomain(),
   ...
 )
