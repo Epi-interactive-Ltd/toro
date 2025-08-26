@@ -30,6 +30,7 @@
 #' @param under_id      The ID of another layer to place this layer under. Default is `NULL`.
 #' @param filter        A filter expression to apply to the layer. Default is `NULL`.
 #' @return              The updated map object with the new layer added.
+#' @export
 add_layer <- function(
   map,
   id,
@@ -87,6 +88,7 @@ add_layer <- function(
 #'
 #' @inheritParams add_layer
 #' @return The updated map object with the fill layer added.
+#' @export
 add_fill_layer <- function(map, ...) {
   add_layer(map = map, type = "fill", ...)
 }
@@ -95,6 +97,7 @@ add_fill_layer <- function(map, ...) {
 #'
 #' @inheritParams add_layer
 #' @return The updated map object with the circle layer added.
+#' @export
 add_circle_layer <- function(map, ...) {
   add_layer(map = map, type = "circle", ...)
 }
@@ -103,6 +106,7 @@ add_circle_layer <- function(map, ...) {
 #'
 #' @inheritParams add_layer
 #' @return The updated map object with the line layer added.
+#' @export
 add_line_layer <- function(map, ...) {
   add_layer(map = map, type = "line", ...)
 }
@@ -112,6 +116,7 @@ add_line_layer <- function(map, ...) {
 #'
 #' @inheritParams add_layer
 #' @return The updated map object with the symbol layer added.
+#' @export
 add_symbol_layer <- function(map, ...) {
   add_layer(map = map, type = "symbol", ...)
 }
@@ -142,8 +147,8 @@ add_lat_lng_grid <- function(map, grid_colour = "#000000") {
 #' @return      The map proxy object for chaining.
 #' @export
 toggle_lat_lng_grid <- function(proxy, show = TRUE) {
-  map$session$sendCustomMessage("toggleLatLngGrid", list(id = map$id, show = show))
-  map
+  proxy$session$sendCustomMessage("toggleLatLngGrid", list(id = proxy$id, show = show))
+  proxy
 }
 
 #' Show a previously hidden layer on the map.

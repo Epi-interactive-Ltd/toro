@@ -14,6 +14,7 @@
 #' @param control_id  The ID of the control to toggle.
 #' @param show        Logical indicating whether to show or hide the control. Default is `TRUE`.
 #' @return            The map proxy object for chaining.
+#' @export
 toggle_control <- function(proxy, control_id, show = TRUE) {
   proxy$session$sendCustomMessage(
     "toggleControl",
@@ -43,13 +44,14 @@ add_cursor_coords_control <- function(
   long_label = "Lng",
   lat_label = "Lat"
 ) {
-  controls <- list(position = position, longLabel = long_label, latLabel = lat_label)
+  control <- list(type = "cursor", position = position, longLabel = long_label, latLabel = lat_label)
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, controls))
+    map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, control))
   }
 
   if (is.null(map$x$cursorControls)) {
-    map$x$cursorControls <- controls
+    map$x$cursorControls <- control
+    map$x$controls <- c(map$x$controls, list(control))
   }
   map
 }
@@ -79,7 +81,9 @@ add_zoom_control <- function(map, position = "top-right", control_options = list
   }
 
   if (is.null(map$x$zoomControl)) {
-    map$x$zoomControl <- list(position = position, controlOptions = control_options)
+    control <- list(type = "zoom", position = position, controlOptions = control_options)
+    map$x$zoomControl <- control
+    map$x$controls <- c(map$x$controls, list(control))
   }
   map
 }
@@ -94,16 +98,17 @@ add_zoom_control <- function(map, position = "top-right", control_options = list
 #' @return            The map or map proxy object for chaining.
 #' @export
 add_custom_control <- function(map, id, html, position = "top-right") {
-  options <- list(controlId = id, html = html, position = position)
+  control <- list(type = "custom", controlId = id, html = html, position = position)
 
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
       "addCustomControl",
-      list(id = map$id, options = options)
+      list(id = map$id, options = control)
     )
   }
 
-  map$x$customControls <- c(map$x$customControls, list(options))
+  map$x$customControls <- c(map$x$customControls, list(control))
+  map$x$controls <- c(map$x$controls, list(control))
   map
 }
 
@@ -131,7 +136,8 @@ add_draw_control <- function(
   inactive_colour = "#0FB3CE",
   mode_labels = list()
 ) {
-  options <- list(
+  control <- list(
+    type = "draw",
     position = position,
     modes = list(modes),
     activeColour = active_colour,
@@ -142,12 +148,13 @@ add_draw_control <- function(
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
       "addDraw",
-      list(id = map$id, options = options)
+      list(id = map$id, options = control)
     )
   }
 
   if (is.null(map$x$drawControl)) {
     map$x$drawControl <- options
+    map$x$controls <- c(map$x$controls, list(control))
   }
   map
 }

@@ -88,32 +88,6 @@ HTMLWidgets.widget({
             initiateTiles(el, x);
             addSpiderfyingLayers(el.mapInstance);
 
-            // new mapboxglEsriSources.TiledMapService(
-            //   "imagery-source",
-            //   mapInstance,
-            //   {
-            //     url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-            //   }
-            // );
-            // mapInstance.addLayer({
-            //   id: "imagery-layer",
-            //   type: "raster",
-            //   source: "imagery-source",
-            // });
-
-            // new mapboxglEsriSources.TiledMapService(
-            //   "natgeo-source",
-            //   mapInstance,
-            //   {
-            //     url: "https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer",
-            //   }
-            // );
-            // mapInstance.addLayer({
-            //   id: "natgeo-layer",
-            //   type: "raster",
-            //   source: "natgeo-source",
-            // });
-
             if (x.layers) {
               x.layers.forEach((layer) => addLayerToMap(el, layer));
             }
@@ -139,43 +113,40 @@ HTMLWidgets.widget({
               addLatLngGrid(el, x.latLngGrid.gridColour);
             }
 
-            if (x.cursorControls) {
-              addCursorCoordinateControl(
-                mapInstance,
-                x.cursorControls.position,
-                x.cursorControls.longLabel,
-                x.cursorControls.latLabel
-              );
-            }
-
-            if (x.zoomControl) {
-              addZoomControl(
-                mapInstance,
-                x.zoomControl.position,
-                x.zoomControl.controlOptions
-              );
-            }
-
-            if (x.customControls) {
-              x.customControls.forEach((control) => {
-                addCustomControl(
-                  mapInstance,
-                  control.controlId,
-                  control.html,
-                  control.position
-                );
+            // Ensures that the controls are added in the desired order
+            if (x.controls) {
+              x.controls.forEach((control) => {
+                if (control.type === "cursor") {
+                  addCursorCoordinateControl(
+                    mapInstance,
+                    control.position,
+                    control.longLabel,
+                    control.latLabel
+                  );
+                } else if (control.type === "zoom") {
+                  addZoomControl(
+                    mapInstance,
+                    control.position,
+                    control.controlOptions
+                  );
+                } else if (control.type === "custom") {
+                  addCustomControl(
+                    mapInstance,
+                    control.controlId,
+                    control.html,
+                    control.position
+                  );
+                } else if (control.type === "draw") {
+                  addDrawControl(
+                    el,
+                    control.position,
+                    control.modes,
+                    control.activeColour,
+                    control.inactiveColour,
+                    control.modeLabels
+                  );
+                }
               });
-            }
-
-            if (x.drawControl) {
-              addDrawControl(
-                el,
-                x.drawControl.position,
-                x.drawControl.modes,
-                x.drawControl.activeColour,
-                x.drawControl.inactiveColour,
-                x.drawControl.modeLabels
-              );
             }
 
             // Trigger a input event to notify Shiny that the map is loaded
@@ -441,7 +412,7 @@ Shiny.addCustomMessageHandler("addLatLngGrid", function (message) {
 
 Shiny.addCustomMessageHandler("toggleLatLngGrid", function (message) {
   withMapInstance(message.id, function (el) {
-    toggleLatLngGrid(el, (hide = message.show));
+    toggleLatLngGrid(el, (show = message.show));
   });
 });
 

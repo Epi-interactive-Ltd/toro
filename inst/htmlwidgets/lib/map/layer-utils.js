@@ -331,14 +331,14 @@ function addLatLngGrid(el, gridColour = "#000000") {
  * Hide or show the lat/lng grid layers on the map.
  * Does nothing if the layers are not present.
  *
- * @param {object} el Widget element containing the map instance.
- * @param {boolean} hide Hide or show the lat/lng grid layers.
+ * @param {object} el     Widget element containing the map instance.
+ * @param {boolean} show  Hide or show the lat/lng grid layers.
  * @returns {void}
  */
-function toggleLatLngGrid(el, hide) {
+function toggleLatLngGrid(el, show) {
   el.ourLayers.forEach((layerId) => {
     if (layerId.startsWith("lat-lng-grid-zoom")) {
-      const visibility = hide ? "none" : "visible";
+      const visibility = show === true ? "visible" : "none";
       el.mapInstance.setLayoutProperty(layerId, "visibility", visibility);
     }
   });
