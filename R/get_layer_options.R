@@ -112,11 +112,11 @@ get_paint_options <- function(layer_type, options = list()) {
 #' @returns           A list where the first element is "all" if multiple filters are provided,
 #'                    or a single filter condition.
 #' @examples
-#' layerFilter("layer_id == forests")
-#' layerFilter(c("layer_id == sites", "project_status == Confirmed"))
+#' get_layer_filter("layer_id == forests")
+#' get_layer_filter(c("layer_id == sites", "project_status == Confirmed"))
 #'
 #' @export
-layerFilter <- function(filter_str) {
+get_layer_filter <- function(filter_str) {
   filter_str <- as.character(filter_str)
 
   parse_one_filter <- function(str) {

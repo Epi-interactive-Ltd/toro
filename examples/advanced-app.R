@@ -5,7 +5,7 @@ library(spData)
 library(maplibReGL)
 
 data(quakes)
-quakes_data <- quakes %>%
+quakes_data <- quakes |>
   mutate(
     description = paste(
       "<div class='map-popup'>Location:",
@@ -17,26 +17,24 @@ quakes_data <- quakes %>%
       mag,
       "</div>"
     )
-  ) %>%
+  ) |>
   st_as_sf(coords = c("long", "lat"), crs = 4326)
 
-nz_data <- spData::nz %>%
-  rename(geometry = geom) %>%
+nz_data <- spData::nz |>
+  rename(geometry = geom) |>
   mutate(supported = Island == "South")
 nz_data <- st_transform(nz_data, 4326)
 
-nz_data_points <- nz_data %>%
+nz_data_points <- nz_data |>
   st_centroid()
 
-nz_height_data <- st_transform(spData::nz_height, 4326) %>%
-  arrange(desc(elevation)) %>%
+nz_height_data <- st_transform(spData::nz_height, 4326) |>
+  arrange(desc(elevation)) |>
   head(50)
 
 colours <- c("red", "orange", "yellow", "green", "blue", "purple", "pink")
 
 ui <- fluidPage(
-  theme = bslib::bs_theme(version = 5),
-  shinyjs::useShinyjs(),
   maplibReGL::mapOutput("map"),
   div(
     class = "row",
@@ -134,7 +132,7 @@ server <- function(input, output, session) {
   #' of the earthquake data.
   observe({
     req(input$map_loaded)
-    maplibReGL::mapProxy("map") %>%
+    maplibReGL::mapProxy("map") |>
       set_paint_property(
         layer_id = "quakes",
         property_name = "circle-color",
@@ -144,13 +142,13 @@ server <- function(input, output, session) {
           colours = c("black", input$small, input$med, input$large)
         )
       )
-  }) %>%
+  }) |>
     bindEvent(input$small, input$med, input$large, input$map_loaded)
 
   #' Update the opacity of the target polygon
   observe({
     req(input$map_loaded)
-    maplibReGL::mapProxy("map") %>%
+    maplibReGL::mapProxy("map") |>
       set_paint_property(
         layer_id = "nz_polygons",
         property_name = "fill-opacity",
@@ -160,7 +158,7 @@ server <- function(input, output, session) {
           0.3
         )
       )
-  }) %>%
+  }) |>
     bindEvent(input$target_region)
 
   #' Get clicked feature information

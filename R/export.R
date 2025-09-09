@@ -14,6 +14,7 @@
 #' @param height   The height of the image in pixels. Default is 600.
 #' @return         The map proxy object for chaining.
 #' @export
+#' @keywords internal
 download_map_image <- function(proxy, filename, format = "png", width = 800, height = 600) {
   message("!!! This function is a WIP !!!")
   if (!is.null(proxy$session)) {

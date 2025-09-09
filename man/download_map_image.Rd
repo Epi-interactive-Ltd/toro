@@ -31,3 +31,4 @@ Download the map as an image.
 \note{
 THIS IS A WIP !!!
 }
+\keyword{internal}

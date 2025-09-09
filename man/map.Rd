@@ -36,3 +36,8 @@ map(
 \description{
 This function creates a map htmlwidget for use in R and Shiny applications.
 }
+\examples{
+if (interactive()) {
+  map()
+}
+}

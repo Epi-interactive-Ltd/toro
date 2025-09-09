@@ -1,0 +1,95 @@
+---
+title: "Integration with Shiny"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{shiny-integration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+format: html
+editor: visual
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+```{r basic-app, results = 'asis'}
+library(shiny)
+library(maplibReGL)
+
+ui <- fluidPage(
+  mapOutput("map")
+)
+
+server <- function(input, output, session) {
+  output$map <- maplibReGL::renderMap({
+    map()
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
+}
+```
+
+
+### Map Loaded Event
+
+By default when the map initially loads it will trigger a *loaded* event in Shiny.
+
+You can use this event to trigger other actions in your Shiny app.
+
+The Shiny input value is available as `input$<mapId>_loaded`, where `<mapId>` is the output ID of the map.
+
+```{r map-loaded, eval=FALSE}
+# In UI
+mapOutput("my_map")
+
+# In server loaded events watching <map_id>_loaded input values
+observe({
+  req(input$my_map_loaded)
+  print("Map has loaded!")
+}) |>
+  bindEvent(input$my_map_loaded)
+```
+
+
+### Feature Click Events
+
+Anytime a feature (polygon, line, point) is clicked on the map, a *feature_click* event is fired.
+
+You can listen for this event using an observer in your Shiny app. Just append `_feature_click` to the map ID to get the input ID (`input$<mapId>_feature_click`).
+
+```{r feature-click, eval=FALSE}
+# In UI
+mapOutput("my_map")
+
+# In server feature click events watching <map_id>_feature_click input values
+observe({
+  print(get_clicked_feature(input$my_map_feature_click))
+})
+```
+
+
+### Map View Status
+
+Whenever the map view changes (zoom/bounds) a *bounds* / *zoom* event is fired. You can listen for this event using an observer in your Shiny app. Just append `_bounds` / `_zoom` to the map ID to get the input ID (`input$<mapId>_bounds` / `input$<mapId>_zoom`).
+
+```{r view-status, eval=FALSE}
+# In UI
+mapOutput("my_map")
+
+# In server bounds / zoom events watching <map_id>_bounds / <map_id>_zoom input values
+observe({
+  print(input$my_map_bounds)
+})
+
+observe({
+  print(input$my_map_zoom)
+})
+```

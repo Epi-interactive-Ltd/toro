@@ -5,3 +5,6 @@ renv
 .Rprofile
 
 .vscode
+inst/doc
+/doc/
+/Meta/

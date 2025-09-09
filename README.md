@@ -1,6 +1,14 @@
 # maplibReGL
 
-Maplibre GL JS integration for R
+**maplibReGL** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
+
+
+To learn how to use the package:
+
+- 
+
+
+
 
 Examples can be found in the `examples` directory.
 

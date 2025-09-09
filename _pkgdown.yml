@@ -1,0 +1,102 @@
+url: ~
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:
+      - home
+      - reference
+      - articles
+      - changelog
+
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+        - text: Getting started with maplibReGL
+          href: articles/getting-started.html
+        - text: Adding controls to your map
+          href: articles/controls.html
+        - text: Integrating with Shiny
+          href: articles/shiny-integration.html
+
+reference:
+  - title: "Map Creation"
+    desc: "Function to create maps"
+    contents:
+      - map
+  - title: "Map Controls"
+    desc: "Functions to add/edit controls for map interaction"
+    contents:
+      - add_zoom_control
+      - add_draw_control
+      - add_cursor_coords_control
+      - add_custom_control
+      - toggle_control
+      - delete_drawn_shape
+  - title: "Adding Layers"
+    desc: "Functions to add map layers"
+    contents:
+      - add_layer
+      - add_fill_layer
+      - add_circle_layer
+      - add_line_layer
+      - add_symbol_layer
+      - add_lat_lng_grid
+  - title: "Updating Layers"
+    desc: "Functions to update map layers"
+    contents:
+      - show_layer
+      - hide_layer
+      - toggle_clustering
+      - toggle_lat_lng_grid
+  - title: "Layer Styling"
+    desc: "Functions to update map layer styling"
+    contents:
+      - set_paint_property
+      - set_layout_property
+  - title: "Styling Helpers"
+    desc: "Functions to help with map/layer styling"
+    contents:
+      - get_layout_options
+      - get_paint_options
+      - get_layer_filter
+      - get_column
+      - get_column_boolean
+      - get_column_group
+      - get_column_step_colours
+  - title: "Data Sources"
+    desc: "Functions to interact with map data sources"
+    contents:
+      - add_source
+      - set_source_data
+      - add_feature_server_source
+      - add_image
+  - title: "Map Tiles"
+    desc: "Functions to update map tiles"
+    contents:
+      - set_tile_layer
+      - get_tile_options
+  - title: "Map view"
+    desc: "Functions to manipulate the map view"
+    contents:
+      - set_zoom
+      - set_bounds
+  - title: "Map Interaction"
+    desc: "Functions to get information from map interaction"
+    contents:
+      - get_clicked_feature
+      - get_drawn_shape
+  - title: "Shiny Integration"
+    desc: "Functions to get information from map interaction"
+    contents:
+      - mapOutput
+      - renderMap
+      - mapProxy

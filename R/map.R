@@ -13,6 +13,10 @@
 #'
 #' @import htmlwidgets
 #'
+#' @examples
+#' if (interactive()) {
+#'   map()
+#' }
 #' @export
 map <- function(
   style = "light-grey",

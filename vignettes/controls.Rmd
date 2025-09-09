@@ -1,0 +1,29 @@
+---
+title: "Map Controls"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{controls}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+format: html
+editor: visual
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+Various controls can be added to the map
+
+
+```{r setup}
+library(maplibReGL)
+
+map() |>
+  add_cursor_coords_control() |>
+  add_zoom_control()
+```

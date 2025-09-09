@@ -3,8 +3,6 @@ library(maplibReGL)
 
 
 ui <- fluidPage(
-  theme = bslib::bs_theme(version = 5),
-  shinyjs::useShinyjs(),
   maplibReGL::mapOutput("map"),
   selectInput(
     "tiles",
