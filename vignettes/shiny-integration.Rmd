@@ -20,14 +20,14 @@ knitr::opts_chunk$set(
 
 ```{r basic-app, results = 'asis'}
 library(shiny)
-library(maplibReGL)
+library(toro)
 
 ui <- fluidPage(
   mapOutput("map")
 )
 
 server <- function(input, output, session) {
-  output$map <- maplibReGL::renderMap({
+  output$map <- toro::renderMap({
     map()
   })
 }

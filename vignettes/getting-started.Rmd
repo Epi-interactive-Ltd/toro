@@ -1,5 +1,5 @@
 ---
-title: "Getting started with maplibReGL"
+title: "Getting started with toro"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{getting-started}
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(maplibReGL)
+library(toro)
 
 map()
 ```

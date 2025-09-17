@@ -10,23 +10,23 @@
   display: none;
 }
 
-.maplibregl-ctrl-top-left .mapboxgl-ctrl,
-.maplibregl-ctrl-top-left .maplibregl-ctrl {
+.toro-ctrl-top-left .mapboxgl-ctrl,
+.toro-ctrl-top-left .toro-ctrl {
   float: left;
   margin: 10px 0 0 10px;
 }
-.maplibregl-ctrl-top-right .mapboxgl-ctrl,
-.maplibregl-ctrl-top-right .maplibregl-ctrl {
+.toro-ctrl-top-right .mapboxgl-ctrl,
+.toro-ctrl-top-right .toro-ctrl {
   float: right;
   margin: 10px 10px 0 0;
 }
-.maplibregl-ctrl-bottom-left .mapboxgl-ctrl,
-.maplibregl-ctrl-bottom-left .maplibregl-ctrl {
+.toro-ctrl-bottom-left .mapboxgl-ctrl,
+.toro-ctrl-bottom-left .toro-ctrl {
   float: left;
   margin: 0 0 10px 10px;
 }
-.maplibregl-ctrl-bottom-right .mapboxgl-ctrl,
-.maplibregl-ctrl-bottom-right .maplibregl-ctrl {
+.toro-ctrl-bottom-right .mapboxgl-ctrl,
+.toro-ctrl-bottom-right .toro-ctrl {
   float: right;
   margin: 0 10px 10px 0;
 }
@@ -119,9 +119,9 @@
 
 /** Hide the export stuff **/
 
-.maplibregl-ctrl-group:has(.maplibregl-export-control),
-.maplibregl-ctrl-group:has(.maplibregl-export-list),
-.maplibregl-export-control,
-.maplibregl-export-list {
+.toro-ctrl-group:has(.toro-export-control),
+.toro-ctrl-group:has(.toro-export-list),
+.toro-export-control,
+.toro-export-list {
   display: none;
 }

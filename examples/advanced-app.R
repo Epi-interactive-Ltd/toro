@@ -2,7 +2,7 @@ library(shiny)
 library(dplyr)
 library(sf)
 library(spData)
-library(maplibReGL)
+library(toro)
 
 data(quakes)
 quakes_data <- quakes |>
@@ -35,7 +35,7 @@ nz_height_data <- st_transform(spData::nz_height, 4326) |>
 colours <- c("red", "orange", "yellow", "green", "blue", "purple", "pink")
 
 ui <- fluidPage(
-  maplibReGL::mapOutput("map"),
+  toro::mapOutput("map"),
   div(
     class = "row",
     div(
@@ -62,7 +62,11 @@ ui <- fluidPage(
       class = "col",
       h2("Polygon(fill) options"),
       p("using NZ polygons data"),
-      selectInput("target_region", "Target Region", choices = sort(unique(nz_data$Name)))
+      selectInput(
+        "target_region",
+        "Target Region",
+        choices = sort(unique(nz_data$Name))
+      )
     )
   )
 )
@@ -70,8 +74,8 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   # Render UI -------------------------------------------------------
 
-  output$map <- maplibReGL::renderMap({
-    maplibReGL::map(
+  output$map <- toro::renderMap({
+    toro::map(
       # Have a map loader until these layers are loaded
       initialLoadedLayers = c("quakes", "nz_polygons"),
       imageSources = list(
@@ -92,11 +96,11 @@ server <- function(input, output, session) {
       add_fill_layer(
         id = "nz_polygons",
         source = nz_data,
-        paint = maplibReGL::get_paint_options(
+        paint = toro::get_paint_options(
           "fill",
           options = list(
             opacity = 0.6,
-            colour = maplibReGL::get_column_boolean(
+            colour = toro::get_column_boolean(
               "supported",
               "#808080",
               "#FF4F00"
@@ -114,7 +118,7 @@ server <- function(input, output, session) {
       add_symbol_layer(
         id = "text_layer",
         source = nz_height_data,
-        layout = maplibReGL::get_layout_options(
+        layout = toro::get_layout_options(
           "symbol",
           options = list(
             icon_image = "cat",
@@ -132,11 +136,11 @@ server <- function(input, output, session) {
   #' of the earthquake data.
   observe({
     req(input$map_loaded)
-    maplibReGL::mapProxy("map") |>
+    toro::mapProxy("map") |>
       set_paint_property(
         layer_id = "quakes",
         property_name = "circle-color",
-        value = maplibReGL::get_column_step_colours(
+        value = toro::get_column_step_colours(
           column_name = "mag",
           breaks = c(4, 5, 6),
           colours = c("black", input$small, input$med, input$large)
@@ -148,11 +152,11 @@ server <- function(input, output, session) {
   #' Update the opacity of the target polygon
   observe({
     req(input$map_loaded)
-    maplibReGL::mapProxy("map") |>
+    toro::mapProxy("map") |>
       set_paint_property(
         layer_id = "nz_polygons",
         property_name = "fill-opacity",
-        value = maplibReGL::get_column_group(
+        value = toro::get_column_group(
           "Name",
           setNames(0.6, input$target_region),
           0.3
@@ -164,7 +168,7 @@ server <- function(input, output, session) {
   #' Get clicked feature information
   observe({
     req(input$map_feature_click)
-    print(maplibReGL::get_clicked_feature(input$map_feature_click))
+    print(toro::get_clicked_feature(input$map_feature_click))
   })
 }
 

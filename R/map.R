@@ -58,7 +58,7 @@ map <- function(
     ),
     width = width,
     height = height,
-    package = "maplibReGL",
+    package = "toro",
     sizingPolicy = htmlwidgets::sizingPolicy(
       viewer.suppress = FALSE,
       browser.fill = TRUE,
@@ -90,7 +90,13 @@ map <- function(
 #'
 #' @export
 mapOutput <- function(outputId, width = "100%", height = "600px") {
-  htmlwidgets::shinyWidgetOutput(outputId, "map", width, height, package = "maplibReGL")
+  htmlwidgets::shinyWidgetOutput(
+    outputId,
+    "map",
+    width,
+    height,
+    package = "toro"
+  )
 }
 
 #' @name map-shiny

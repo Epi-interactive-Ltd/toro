@@ -20,7 +20,7 @@ navbar:
     articles:
       text: Articles
       menu:
-        - text: Getting started with maplibReGL
+        - text: Getting started with toro
           href: articles/getting-started.html
         - text: Adding controls to your map
           href: articles/controls.html

@@ -90,9 +90,7 @@ function addFeatureServerSource(el, url, sourceId) {
  */
 function closeAttribution(mapId) {
   let map = document.getElementById(mapId);
-  const attributionControl = map.querySelector(
-    ".maplibregl-ctrl-attrib-button"
-  );
+  const attributionControl = map.querySelector(".toro-ctrl-attrib-button");
   if (attributionControl) {
     attributionControl.click();
   }

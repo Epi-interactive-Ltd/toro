@@ -1,7 +1,7 @@
 library(shiny)
 library(dplyr)
 library(sf)
-library(maplibReGL)
+library(toro)
 
 all_controls <- c(
   "Zoom Control" = "zoom_control",
@@ -12,7 +12,7 @@ all_controls <- c(
 )
 
 ui <- fluidPage(
-  maplibReGL::mapOutput("map"),
+  toro::mapOutput("map"),
   checkboxGroupInput(
     inputId = "controls",
     label = "Visible Controls",
@@ -31,8 +31,8 @@ server <- function(input, output, session) {
     crs = 4326
   ))
 
-  output$map <- maplibReGL::renderMap({
-    maplibReGL::map(style = "satellite") |>
+  output$map <- toro::renderMap({
+    toro::map(style = "satellite") |>
       add_lat_lng_grid("green") |>
       add_cursor_coords_control() |>
       add_zoom_control() |>
@@ -60,7 +60,7 @@ server <- function(input, output, session) {
 
   observe({
     req(input$map_shape_created)
-    new_shape <- maplibReGL::get_drawn_shape(input$map_shape_created)
+    new_shape <- toro::get_drawn_shape(input$map_shape_created)
 
     shapes(rbind(shapes(), new_shape))
   }) %>%
@@ -69,7 +69,7 @@ server <- function(input, output, session) {
   # Show/hide controls
   observe({
     req(input$controls)
-    proxy <- maplibReGL::mapProxy("map")
+    proxy <- toro::mapProxy("map")
 
     for (control in all_controls) {
       toggle_control(proxy, control, show = control %in% input$controls)

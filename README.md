@@ -1,14 +1,10 @@
-# maplibReGL
+# toro
 
-**maplibReGL** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
-
+**toro** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
 
 To learn how to use the package:
 
-- 
-
-
-
+-
 
 Examples can be found in the `examples` directory.
 
@@ -26,12 +22,12 @@ If you are using the package in an app and copy the updated `.zip` file.
 You will need to uninstall the old version of the package before installing the new one:
 
 ```r
-detach("package:maplibReGL", unload = TRUE)
-install.packages("maplibReGL_<version>.tar.gz", repos = NULL, type = "source")
-library(maplibReGL)
+detach("package:toro", unload = TRUE)
+install.packages("toro_<version>.tar.gz", repos = NULL, type = "source")
+library(toro)
 ```
 
-To add it as a local package to the `renv.lock` file: `renv::install("maplibReGL_<version>.tar.gz")`.
+To add it as a local package to the `renv.lock` file: `renv::install("toro_<version>.tar.gz")`.
 
 ## TODOs
 

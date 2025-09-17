@@ -21,7 +21,7 @@ Various controls can be added to the map
 
 
 ```{r setup}
-library(maplibReGL)
+library(toro)
 
 map() |>
   add_cursor_coords_control() |>

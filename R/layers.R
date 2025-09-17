@@ -45,10 +45,10 @@ add_layer <- function(
   filter = NULL
 ) {
   if (is.null(paint)) {
-    paint <- maplibReGL::get_paint_options(type)
+    paint <- toro::get_paint_options(type)
   }
   if (is.null(layout)) {
-    layout <- maplibReGL::get_layout_options(type)
+    layout <- toro::get_layout_options(type)
   }
 
   # Need source to be a GeoJSON
@@ -131,7 +131,10 @@ add_lat_lng_grid <- function(map, grid_colour = "#000000") {
   grid_control <- list(gridColour = grid_colour)
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage("addLatLngGrid", list(id = map$id, gridColour = grid_colour))
+    map$session$sendCustomMessage(
+      "addLatLngGrid",
+      list(id = map$id, gridColour = grid_colour)
+    )
   }
 
   if (is.null(map$x$latLngGrid)) {
@@ -147,7 +150,10 @@ add_lat_lng_grid <- function(map, grid_colour = "#000000") {
 #' @return      The map proxy object for chaining.
 #' @export
 toggle_lat_lng_grid <- function(proxy, show = TRUE) {
-  proxy$session$sendCustomMessage("toggleLatLngGrid", list(id = proxy$id, show = show))
+  proxy$session$sendCustomMessage(
+    "toggleLatLngGrid",
+    list(id = proxy$id, show = show)
+  )
   proxy
 }
 
@@ -158,7 +164,10 @@ toggle_lat_lng_grid <- function(proxy, show = TRUE) {
 #' @return          The map proxy object for chaining.
 #' @export
 show_layer <- function(proxy, layer_id) {
-  proxy$session$sendCustomMessage("showLayer", list(id = proxy$id, layerId = layer_id))
+  proxy$session$sendCustomMessage(
+    "showLayer",
+    list(id = proxy$id, layerId = layer_id)
+  )
   proxy
 }
 
@@ -172,7 +181,10 @@ show_layer <- function(proxy, layer_id) {
 #' @return          The map proxy object for chaining.
 #' @export
 hide_layer <- function(proxy, layer_id) {
-  proxy$session$sendCustomMessage("hideLayer", list(id = proxy$id, layerId = layer_id))
+  proxy$session$sendCustomMessage(
+    "hideLayer",
+    list(id = proxy$id, layerId = layer_id)
+  )
   proxy
 }
 
@@ -186,7 +198,10 @@ hide_layer <- function(proxy, layer_id) {
 #' @export
 set_tile_layer <- function(map, tiles) {
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage("setSelectedTiles", list(id = map$id, tiles = tiles))
+    map$session$sendCustomMessage(
+      "setSelectedTiles",
+      list(id = map$id, tiles = tiles)
+    )
   }
   map$x$initialTileLayer <- tiles
   map

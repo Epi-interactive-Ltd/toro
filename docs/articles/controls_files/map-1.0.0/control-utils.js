@@ -430,7 +430,7 @@ function addCursorCoordinateControl(map, position, longLabel, latLabel) {
   class CursorCoordsControl {
     onAdd(map) {
       this._container = document.createElement("div");
-      this._container.className = "maplibregl-ctrl cursor-coords-control";
+      this._container.className = "toro-ctrl cursor-coords-control";
       this._container.id = "cursor_coords";
       this._container.innerHTML = "<p id='map-cursor-coords'></p>";
       return this._container;
@@ -467,7 +467,7 @@ function addCustomControl(map, controlId, html, position = "top-right") {
     onAdd(mapInstance) {
       this._container = document.createElement("div");
       this._container.id = controlId;
-      this._container.className = "maplibregl-ctrl custom-control";
+      this._container.className = "toro-ctrl custom-control";
       this._container.innerHTML = html;
       return this._container;
     }
@@ -497,7 +497,7 @@ function toggleControl(el, controlId, show) {
 
   if (controlId == "zoom_control") {
     var buttons = el.querySelector(
-      ".maplibregl-ctrl-group .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group .maplibregl-ctrl-zoom-out, .maplibregl-ctrl-group .maplibregl-ctrl-compass"
+      ".toro-ctrl-group .toro-ctrl-zoom-in, .toro-ctrl-group .toro-ctrl-zoom-out, .toro-ctrl-group .toro-ctrl-compass"
     );
     if (buttons) {
       control = buttons.parentElement;

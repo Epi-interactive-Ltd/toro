@@ -1,13 +1,13 @@
 library(shiny)
-library(maplibReGL)
+library(toro)
 
 ui <- fluidPage(
-  maplibReGL::mapOutput("map")
+  toro::mapOutput("map")
 )
 
 server <- function(input, output, session) {
-  output$map <- maplibReGL::renderMap({
-    maplibReGL::map()
+  output$map <- toro::renderMap({
+    toro::map()
   })
 }
 

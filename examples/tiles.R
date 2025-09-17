@@ -1,25 +1,25 @@
 library(shiny)
-library(maplibReGL)
+library(toro)
 
 
 ui <- fluidPage(
-  maplibReGL::mapOutput("map"),
+  toro::mapOutput("map"),
   selectInput(
     "tiles",
     "Tiles",
-    choices = maplibReGL::get_tile_options(),
+    choices = toro::get_tile_options(),
     selected = "satellite"
   ),
 )
 
 server <- function(input, output, session) {
-  output$map <- maplibReGL::renderMap({
-    maplibReGL::map(style = "satellite", loadedTiles = maplibReGL::get_tile_options())
+  output$map <- toro::renderMap({
+    toro::map(style = "satellite", loadedTiles = toro::get_tile_options())
   })
 
   observe({
     req(input$tiles)
-    maplibReGL::mapProxy("map") |>
+    toro::mapProxy("map") |>
       set_tile_layer(input$tiles)
   })
 }

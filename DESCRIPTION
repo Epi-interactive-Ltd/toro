@@ -1,4 +1,4 @@
-Package: maplibReGL
+Package: toro
 Title: Maplibre GL JS integration for R
 Version: 0.0.0.9005
 Authors@R: c(
@@ -7,7 +7,7 @@ Authors@R: c(
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE, packages = c("roxy.shinylive"))
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Imports:
     shiny,
