@@ -1,6 +1,6 @@
 Package: toro
 Title: Maplibre GL JS integration for R
-Version: 0.0.0.9005
+Version: 0.0.1
 Authors@R: c(
     person("Poppy", "Schlaadt", , "poppy@epi-interactive.com", role = c("aut", "cre")),
     person("Epi", "", role = c("cph", "fnd")))

@@ -3,6 +3,11 @@ examples/app.R
 
 renv
 .Rprofile
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
 
 .vscode
 inst/doc
