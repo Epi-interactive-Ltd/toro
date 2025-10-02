@@ -571,4 +571,17 @@ if (HTMLWidgets.shinyMode) {
       );
     });
   });
+
+  Shiny.addCustomMessageHandler("addRoute", function (message) {
+    withMapInstance(message.id, function (el) {
+      addRoute(el.mapInstance, message.options);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("animateRoute", function (message) {
+    withMapInstance(message.id, function (el) {
+      animateRoute(el.mapInstance, message.options);
+    });
+  });
+
 }

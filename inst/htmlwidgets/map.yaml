@@ -27,4 +27,5 @@ dependencies:
       - layer-utils.js
       - cluster-utils.js
       - view-utils.js
+      - animation-utils.js
     style: map.css
