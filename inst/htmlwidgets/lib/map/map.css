@@ -10,23 +10,23 @@
   display: none;
 }
 
-.toro-ctrl-top-left .mapboxgl-ctrl,
-.toro-ctrl-top-left .toro-ctrl {
+.maplibregl-ctrl-top-left .mapboxgl-ctrl,
+.maplibregl-ctrl-top-left .toro-ctrl {
   float: left;
   margin: 10px 0 0 10px;
 }
-.toro-ctrl-top-right .mapboxgl-ctrl,
-.toro-ctrl-top-right .toro-ctrl {
+.maplibregl-ctrl-top-right .mapboxgl-ctrl,
+.maplibregl-ctrl-top-right .toro-ctrl {
   float: right;
   margin: 10px 10px 0 0;
 }
-.toro-ctrl-bottom-left .mapboxgl-ctrl,
-.toro-ctrl-bottom-left .toro-ctrl {
+.maplibregl-ctrl-bottom-left .mapboxgl-ctrl,
+.maplibregl-ctrl-bottom-left .toro-ctrl {
   float: left;
   margin: 0 0 10px 10px;
 }
-.toro-ctrl-bottom-right .mapboxgl-ctrl,
-.toro-ctrl-bottom-right .toro-ctrl {
+.maplibregl-ctrl-bottom-right .mapboxgl-ctrl,
+.maplibregl-ctrl-bottom-right .toro-ctrl {
   float: right;
   margin: 0 10px 10px 0;
 }
@@ -51,7 +51,7 @@
   min-width: fit-content;
 }
 
-.maplibre-loading-overlay {
+.toro-loading-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -61,18 +61,18 @@
   background: var(--loader-bg-colour);
 }
 
-.maplibre-loading-overlay.busy-loader {
+.toro-loading-overlay.busy-loader {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.maplibre-loading-overlay .loader {
+.toro-loading-overlay .loader {
   width: 100%;
   height: 100%;
 }
 
-.maplibre-loading-overlay.initial-loader .loader {
+.toro-loading-overlay.initial-loader .loader {
   background: linear-gradient(
       90deg,
       rgba(var(--loader-colour), 0.05) 33%,
@@ -90,7 +90,7 @@
   }
 }
 
-.maplibre-loading-overlay.busy-loader .loader {
+.toro-loading-overlay.busy-loader .loader {
   width: 12px;
   height: 12px;
   border-radius: 50%;
