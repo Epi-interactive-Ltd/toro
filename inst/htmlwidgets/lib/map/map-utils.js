@@ -90,7 +90,7 @@ function addFeatureServerSource(el, url, sourceId) {
  */
 function closeAttribution(mapId) {
   let map = document.getElementById(mapId);
-  const attributionControl = map.querySelector(".toro-ctrl-attrib-button");
+  const attributionControl = map.querySelector(".maplibregl-ctrl-attrib-button");
   if (attributionControl) {
     attributionControl.click();
   }
@@ -114,7 +114,7 @@ function addMapLoader(
   // Add a loading overlay div
   const loadingDiv = document.createElement("div");
   loadingDiv.className =
-    "maplibre-loading-overlay" +
+    "toro-loading-overlay" +
     (changeLoader ? " busy-loader" : " initial-loader");
   loadingDiv.style.setProperty("--loader-bg-colour", bgColour);
   loadingDiv.innerHTML =
@@ -130,7 +130,7 @@ function addMapLoader(
  */
 function removeMapLoader(el) {
   // Add a loading overlay div
-  const loadingDiv = el.querySelector(".maplibre-loading-overlay");
+  const loadingDiv = el.querySelector(".toro-loading-overlay");
   if (!loadingDiv) return;
   loadingDiv.remove();
 }

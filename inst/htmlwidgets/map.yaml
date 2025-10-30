@@ -17,7 +17,7 @@ dependencies:
     script: maplibre-gl.min.js
     style: maplibre-gl.min.css
   - name: map
-    version: 1.0.0
+    version: 0.0.2
     src:
       file: htmlwidgets/lib/map
     script:
