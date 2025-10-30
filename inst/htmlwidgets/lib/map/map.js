@@ -79,7 +79,7 @@ HTMLWidgets.widget({
 
           if (x.imageSources) {
             x.imageSources.forEach((imageSource) =>
-              addImageToMapSource(
+              _addImageToMapSource(
                 mapInstance,
                 imageSource.imageId,
                 imageSource.imageUrl
@@ -522,7 +522,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("addImageSource", function (message) {
     withMapInstance(message.id, function (el) {
-      addImageToMapSource(el.mapInstance, message.imageId, message.imageUrl);
+      _addImageToMapSource(el.mapInstance, message.imageId, message.imageUrl);
     });
   });
 
