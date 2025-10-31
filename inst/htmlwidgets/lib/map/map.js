@@ -32,7 +32,7 @@ HTMLWidgets.widget({
         });
 
         el.mapInstance = mapInstance; // Attach to the element for later access
-        window[el.id] = mapInstance; // Store the instance globally for debugging
+        window[el.id] = this; // Store the instance globally for debugging
         el.widgetInstance = this;
 
         el.ourLayers = []; // Layers added by us
@@ -166,6 +166,7 @@ HTMLWidgets.widget({
         el.maxZoom = x.options.maxZoom; // Set the max zoom level
         el.minZoom = x.options.minZoom; // Set the min zoom level
         el.draw = null;
+        el.animations = {}; // Store any ongoing animations
 
         el.openClusterId = null; // ID of the currently open cluster
 
@@ -268,6 +269,10 @@ HTMLWidgets.widget({
 
       getDraw: function () {
         return el.draw;
+      },
+
+      getAnimations: function () {
+        return el.animations;
       },
     };
   },
@@ -498,7 +503,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("addLayer", function (message) {
     withMapInstance(message.id, function (el) {
-      addLayerToMap(el, message);
+      addLayerToMap(el, message.layer);
     });
   });
 
@@ -574,14 +579,25 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("addRoute", function (message) {
     withMapInstance(message.id, function (el) {
-      addRoute(el.mapInstance, message.options);
+      addRoute(el.widgetInstance, message.options);
     });
   });
 
   Shiny.addCustomMessageHandler("animateRoute", function (message) {
     withMapInstance(message.id, function (el) {
-      animateRoute(el.mapInstance, message.options);
+      animateRoute(el.widgetInstance, message.options);
     });
   });
 
+  Shiny.addCustomMessageHandler("pauseRoute", function (message) {
+    withMapInstance(message.id, function (el) {
+      pauseAnimation(el.widgetInstance, message.options);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("removeRoute", function (message) {
+    withMapInstance(message.id, function (el) {
+      removeRoute(el.widgetInstance, message.options);
+    });
+  });
 }

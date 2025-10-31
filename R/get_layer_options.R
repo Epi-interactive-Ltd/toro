@@ -77,7 +77,8 @@ get_paint_options <- function(layer_type, options = list()) {
     outline_colour = "grey",
     outline_opacity = 1,
     line_width = 1,
-    circle_radius = 5
+    circle_radius = 5,
+    line_dash = list(0, 1) # No dash by default
   )
   merged_options <- utils::modifyList(default_options, options)
   paint_options <- structure(list(), names = character(0))
@@ -93,6 +94,7 @@ get_paint_options <- function(layer_type, options = list()) {
   }
   if (layer_type == "line") {
     paint_options[["line-width"]] <- merged_options$line_width
+    paint_options[["line-dasharray"]] <- merged_options$line_dash
   }
   if (layer_type == "fill") {
     paint_options[["fill-outline-color"]] <- merged_options$outline_colour
