@@ -194,6 +194,15 @@ function addRoute(widgetInstance, routeOptions) {
         options.visitedPoints?.["circle-stroke-color"] ?? "#0074D9",
     },
   });
+
+  // Add popups to the droped points if specified
+  if (options.visitedPoints?.popupColumn) {
+    addLayerPopup(
+      map,
+      routeVisitedPointsLayerId,
+      options.visitedPoints.popupColumn
+    );
+  }
 }
 
 /**
@@ -206,7 +215,6 @@ function addRoute(widgetInstance, routeOptions) {
 function animateRoute(widgetInstance, routeOptions) {
   const options = routeOptions.options || {};
   const routeId = routeOptions.routeId || "route";
-  console.log();
 
   const route = widgetInstance.getAnimations()[routeId];
   if (!route) {
@@ -232,13 +240,17 @@ function animateRoute(widgetInstance, routeOptions) {
             coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
         )
       ) {
+        const idx = state.coords.findIndex(
+          (coord) =>
+            coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+        );
         state.visitedPoints.features.push({
           type: "Feature",
           geometry: {
             type: "Point",
             coordinates: currentCoord,
           },
-          properties: {},
+          properties: state.points.features[idx]?.properties ?? {},
         });
         state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
       }
