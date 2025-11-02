@@ -87,20 +87,31 @@ function addRoute(widgetInstance, routeOptions) {
     linePoints.push(...linePoints1);
   }
 
-  if (!widgetInstance.getAnimations()) {
-    widgetInstance.getAnimations()[routeId] = {};
+  // Get or initialize animations object
+  let animations = widgetInstance.getAnimations();
+  if (!animations) {
+    console.warn(
+      "Animations object not initialized, this might indicate a setup issue"
+    );
+    return;
   }
+
   const showTimelineControls =
     options.showTimelineControls ||
     (false && "date" in points.features[0].properties);
 
-  widgetInstance.getAnimations()[routeId] = {
-    isAnimating: true,
+  const showSpeedControl = options.showSpeedControl || false;
+
+  animations[routeId] = {
+    isAnimating: false,
     animationFrameId: null,
     showTimelineControls: showTimelineControls,
+    showSpeedControl: showSpeedControl,
     counter: 0,
     totalLength: totalLength,
     steps: steps,
+    animationSpeed: options.animationSpeed || 1.0,
+    lastFrameTime: 0,
     dropVisited: options.dropVisited || false,
     line: line,
     linePoints: linePoints,
@@ -141,7 +152,7 @@ function addRoute(widgetInstance, routeOptions) {
     type: "circle",
     source: {
       type: "geojson",
-      data: widgetInstance.getAnimations()[routeId].visitedPoints,
+      data: animations[routeId].visitedPoints,
     },
     paint: {
       "circle-color": options.visitedPoints?.["circle-color"] ?? "#0074D9",
@@ -277,6 +288,21 @@ function addRoute(widgetInstance, routeOptions) {
       options.timelineControlOptions || {}
     );
   }
+  if (showSpeedControl) {
+    // Add speed control
+    addSpeedControl(
+      widgetInstance,
+      function (speed) {
+        // Update animation speed
+        const route = widgetInstance.getAnimations()[routeId];
+        if (route) {
+          route.animationSpeed = speed;
+          console.log("Animation speed updated to:", speed);
+        }
+      },
+      options.speedControlOptions || {}
+    );
+  }
 }
 
 /**
@@ -296,60 +322,188 @@ function animateRoute(widgetInstance, routeOptions) {
     return;
   }
 
-  function animate() {
-    const state = widgetInstance.getAnimations()[routeId];
-    if (!state?.isAnimating || state.counter >= state.linePoints.length) {
-      // Animation finished
-      if (state?.isAnimating && state.map._timelineControl) {
-        state.map._timelineControl.setPlaying(false);
-        state.isAnimating = false;
+  // Handle restart logic: if we're at the end, restart from beginning
+  const currentProgress = route.counter / (route.linePoints.length - 1);
+  if (currentProgress >= 0.95) {
+    route.counter = 0;
+
+    // Clear all visited/dropped points when restarting
+    if (route.dropVisited) {
+      route.visitedPoints.features = [];
+      route.map.getSource(route.visitedLayerId).setData(route.visitedPoints);
+    }
+
+    // Update slider and timeline control to show restart
+    if (route.map._timelineControl && route.showTimelineControls) {
+      const timelineSlider = document.getElementById("timeline-slider");
+      if (timelineSlider) {
+        timelineSlider.value = 0;
+        if (route.map._timelineControl.updateAppearance) {
+          route.map._timelineControl.updateAppearance();
+        }
       }
+    }
+  }
+
+  // Ensure the point position matches the current counter position
+  if (route.linePoints.length > 0) {
+    route.point.features[0].geometry.coordinates =
+      route.linePoints[route.counter].geometry.coordinates;
+    route.map.getSource(route.routePointLayerId).setData(route.point);
+  }
+
+  // Ensure starting visited point is added when animation begins (especially for counter = 0)
+  if (route.dropVisited && route.counter === 0 && route.coords.length > 0) {
+    const startCoord = route.coords[0];
+    const startPointExists = route.visitedPoints.features.some(
+      (feature) =>
+        feature.geometry.coordinates[0] === startCoord[0] &&
+        feature.geometry.coordinates[1] === startCoord[1]
+    );
+
+    if (!startPointExists) {
+      route.visitedPoints.features.push({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: startCoord,
+        },
+        properties: route.points.features[0]?.properties ?? {},
+      });
+      route.map.getSource(route.visitedLayerId).setData(route.visitedPoints);
+    }
+  }
+
+  const startProgress = Math.round(
+    (route.counter / (route.linePoints.length - 1)) * 100
+  );
+
+  function animate(currentTime) {
+    const state = widgetInstance.getAnimations()[routeId];
+    if (!state?.isAnimating) {
       return;
     }
 
-    // Move the animated point
-    state.point.features[0].geometry.coordinates =
-      state.linePoints[state.counter].geometry.coordinates;
-    state.map.getSource(state.routePointLayerId).setData(state.point);
+    // Check if animation has reached the end
+    if (state.counter >= state.linePoints.length - 1) {
+      // Animation finished - pause at the last point
+      state.isAnimating = false;
+      state.counter = state.linePoints.length - 1; // Ensure we're at the exact last point
 
-    if (route.dropVisited) {
-      const currentCoord = state.linePoints[state.counter].geometry.coordinates;
-      // Check if currentCoord matches any original coord
-      if (
-        state.coords.some(
-          (coord) =>
-            coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
-        )
-      ) {
-        const idx = state.coords.findIndex(
-          (coord) =>
-            coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+      // Update timeline control to show paused state
+      if (state.map._timelineControl && state.showTimelineControls) {
+        state.map._timelineControl.setPlaying(false);
+        // Set progress to 100%
+        state.map._timelineControl.setProgress(1.0);
+      }
+
+      // Ensure the point is at the final position
+      if (state.linePoints.length > 0) {
+        state.point.features[0].geometry.coordinates =
+          state.linePoints[state.linePoints.length - 1].geometry.coordinates;
+        state.map.getSource(state.routePointLayerId).setData(state.point);
+      }
+
+      // Ensure the final visited point is added when animation completes
+      if (route.dropVisited && state.coords.length > 0) {
+        const finalCoord = state.coords[state.coords.length - 1];
+        const finalPointExists = state.visitedPoints.features.some(
+          (feature) =>
+            feature.geometry.coordinates[0] === finalCoord[0] &&
+            feature.geometry.coordinates[1] === finalCoord[1]
         );
-        state.visitedPoints.features.push({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: currentCoord,
-          },
-          properties: state.points.features[idx]?.properties ?? {},
-        });
-        state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
+
+        if (!finalPointExists) {
+          state.visitedPoints.features.push({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: finalCoord,
+            },
+            properties:
+              state.points.features[state.points.features.length - 1]
+                ?.properties ?? {},
+          });
+          state.map
+            .getSource(state.visitedLayerId)
+            .setData(state.visitedPoints);
+        }
+      }
+
+      return;
+    }
+
+    // Initialize timing
+    if (state.lastFrameTime === 0) {
+      state.lastFrameTime = currentTime;
+    }
+
+    const deltaTime = currentTime - state.lastFrameTime;
+    const baseStepTime = 16.67; // ~60 FPS base timing (1000ms / 60fps)
+
+    // Calculate how much to advance based on speed and time elapsed
+    const speedMultiplier = state.animationSpeed || 1.0;
+    const stepsToAdvance = (deltaTime / baseStepTime) * speedMultiplier;
+
+    // Only advance if enough time has passed
+    if (stepsToAdvance >= 1) {
+      const integerSteps = Math.floor(stepsToAdvance);
+      state.counter = Math.min(
+        state.counter + integerSteps,
+        state.linePoints.length - 1
+      );
+      state.lastFrameTime = currentTime;
+
+      // Move the animated point
+      state.point.features[0].geometry.coordinates =
+        state.linePoints[state.counter].geometry.coordinates;
+      state.map.getSource(state.routePointLayerId).setData(state.point);
+
+      if (route.dropVisited) {
+        const currentCoord =
+          state.linePoints[state.counter].geometry.coordinates;
+        // Check if currentCoord matches any original coord
+        if (
+          state.coords.some(
+            (coord) =>
+              coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+          )
+        ) {
+          const idx = state.coords.findIndex(
+            (coord) =>
+              coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+          );
+          state.visitedPoints.features.push({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: currentCoord,
+            },
+            properties: state.points.features[idx]?.properties ?? {},
+          });
+          state.map
+            .getSource(state.visitedLayerId)
+            .setData(state.visitedPoints);
+        }
+      }
+
+      // Update timeline slider progress
+      if (state.map._timelineControl && state.showTimelineControls) {
+        const progress = state.counter / (state.linePoints.length - 1);
+        state.map._timelineControl.setProgress(progress);
       }
     }
 
-    // Update timeline slider progress
-    if (state.map._timelineControl && state.showTimelineControls) {
-      const progress = state.counter / (state.linePoints.length - 1);
-      state.map._timelineControl.setProgress(progress);
-    }
-
-    state.counter += 1;
     state.animationFrameId = requestAnimationFrame(animate);
   }
 
   widgetInstance.getAnimations()[routeId].isAnimating = true;
 
-  animate();
+  // Reset timing when starting/resuming animation to prevent time jumps
+  widgetInstance.getAnimations()[routeId].lastFrameTime = 0;
+
+  // Start the animation loop
+  requestAnimationFrame(animate);
 }
 
 /**
@@ -417,6 +571,10 @@ function removeRoute(widgetInstance, routeOptions) {
 
   if (route.showTimelineControls && map._timelineControl) {
     removeControl(widgetInstance, "toro_timeline_control");
+  }
+
+  if (route.showSpeedControl && map._speedControl) {
+    removeControl(widgetInstance, "toro_speed_control");
   }
 
   // Remove animation state

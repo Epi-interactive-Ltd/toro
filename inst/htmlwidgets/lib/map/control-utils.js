@@ -764,7 +764,9 @@ function addTimelineControl(
         currentDateDisplay.style.left = `${progress * 100}%`;
 
         // Update slider background to show progress
-        const progressColor = playing ? "var(--toro-timeline-right)" : "var(--toro-timeline-left)";
+        const progressColor = playing
+          ? "var(--toro-timeline-right)"
+          : "var(--toro-timeline-left)";
         timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
           progress * 100
         }%, #ddd ${progress * 100}%, #ddd 100%)`;
@@ -783,17 +785,6 @@ function addTimelineControl(
         return;
       }
       lastClickTime = now;
-
-      // If clicking play and slider is at the end (or very close to end), reset to beginning
-      if (!playing && parseFloat(timelineSlider.value) >= 95) {
-        timelineSlider.value = 0;
-        updateSliderAppearance();
-
-        // Trigger the slider change callback to reset animation position
-        if (typeof onSliderChange === "function") {
-          onSliderChange(0);
-        }
-      }
 
       playing = !playing;
       playPauseBtn.innerHTML = playing ? "⏸" : "▶";
@@ -845,8 +836,15 @@ function addTimelineControl(
     setProgress: function (progress) {
       // Update slider position (0-1 range to 0-100)
       if (timelineSlider) {
+        // Temporarily disable events to prevent feedback loops
+        const oldOnInput = timelineSlider.oninput;
+        timelineSlider.oninput = null;
+
         timelineSlider.value = Math.round(progress * 100);
         updateSliderAppearance();
+
+        // Re-enable events
+        timelineSlider.oninput = oldOnInput;
       }
     },
     setPlaying: function (isPlaying) {
@@ -859,6 +857,201 @@ function addTimelineControl(
         timelineSlider.style.opacity = playing ? "0.5" : "1";
         timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
         updateSliderAppearance();
+      }
+    },
+  };
+}
+
+/**
+ * Add a speed control to the map for controlling animation speed.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {function} onSpeedChange  Callback for speed change.
+ * @param {object} options          Options for the speed control.
+ *                                  Can include:
+ *                                    - position: string (default "top-right")
+ *                                    - minSpeed: number (default 0.25) - Minimum speed multiplier
+ *                                    - maxSpeed: number (default 3) - Maximum speed multiplier
+ *                                    - defaultSpeed: number (default 1) - Default speed multiplier
+ *                                    - steps: number (default 6) - Number of speed steps
+ * @return {void}
+ */
+function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
+  const map = widgetInstance.getMap();
+
+  // Set default options
+  const minSpeed = options.minSpeed || 0.25;
+  const maxSpeed = options.maxSpeed || 3;
+  const defaultSpeed = options.defaultSpeed || 1;
+  const steps = options.steps || 6;
+
+  // Calculate speed steps
+  const speedRange = maxSpeed - minSpeed;
+  const stepSize = speedRange / (steps - 1);
+  const speedOptions = [];
+
+  for (let i = 0; i < steps; i++) {
+    const speed = minSpeed + i * stepSize;
+    speedOptions.push(speed);
+  }
+
+  // Find the closest step to default speed
+  const defaultStepIndex = speedOptions.reduce((closest, current, index) => {
+    return Math.abs(current - defaultSpeed) <
+      Math.abs(speedOptions[closest] - defaultSpeed)
+      ? index
+      : closest;
+  }, 0);
+
+  // Generate speed option buttons
+  const speedButtonsHTML = speedOptions
+    .map((speed, index) => {
+      const isDefault = index === defaultStepIndex;
+      const speedLabel = speed === 1 ? "1x" : `${speed.toFixed(2)}x`;
+      return `
+      <button class="speed-btn" data-speed="${speed}" data-index="${index}" 
+              style="padding: 4px 8px; margin: 2px; border: 1px solid #ddd; 
+                     border-radius: 3px; background: ${
+                       isDefault ? "#007cba" : "white"
+                     }; 
+                     color: ${isDefault ? "white" : "#333"}; cursor: pointer; 
+                     font-size: 11px; min-width: 35px;">${speedLabel}</button>
+    `;
+    })
+    .join("");
+
+  // HTML for the speed control
+  const html = `
+    <div class="speed-control-container" style="padding: 8px; background: rgba(255, 255, 255, 0.95); 
+                                                border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.3); 
+                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <div style="font-size: 11px; color: #666; margin-bottom: 6px; font-weight: 500;">Speed</div>
+      <div class="speed-buttons" style="display: flex; flex-wrap: wrap; gap: 2px;">
+        ${speedButtonsHTML}
+      </div>
+    </div>
+  `;
+
+  // Add the control to the map
+  addCustomControl(
+    map,
+    "toro_speed_control",
+    html,
+    options.position || "top-right"
+  );
+
+  // Ensure the control is clickable by setting pointer events
+  setTimeout(() => {
+    const speedControl = document.getElementById("toro_speed_control");
+    if (speedControl) {
+      speedControl.style.pointerEvents = "auto";
+      speedControl.style.zIndex = "1000";
+
+      // Set pointer events on all child elements
+      const allElements = speedControl.querySelectorAll("*");
+      allElements.forEach((el) => {
+        el.style.pointerEvents = "auto";
+      });
+    }
+  }, 100);
+
+  // Setup event handlers with retry mechanism
+  let currentSpeed = speedOptions[defaultStepIndex];
+
+  function setupEventHandlers() {
+    const speedButtons = document.querySelectorAll(
+      "#toro_speed_control .speed-btn"
+    );
+
+    if (speedButtons.length === 0) {
+      console.warn("Speed control buttons not found, retrying...");
+      setTimeout(setupEventHandlers, 50);
+      return;
+    }
+
+    console.log("Setting up speed control event handlers");
+
+    // Function to update button appearance
+    function updateButtonAppearance(activeIndex) {
+      speedButtons.forEach((btn, index) => {
+        if (index === activeIndex) {
+          btn.style.background = "#007cba";
+          btn.style.color = "white";
+          btn.style.fontWeight = "600";
+        } else {
+          btn.style.background = "white";
+          btn.style.color = "#333";
+          btn.style.fontWeight = "normal";
+        }
+      });
+    }
+
+    // Add click handlers to speed buttons
+    speedButtons.forEach((btn, index) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const speed = parseFloat(this.dataset.speed);
+        const buttonIndex = parseInt(this.dataset.index);
+
+        console.log("Speed changed to:", speed);
+
+        currentSpeed = speed;
+        updateButtonAppearance(buttonIndex);
+
+        if (typeof onSpeedChange === "function") {
+          onSpeedChange(speed);
+        }
+      });
+
+      btn.addEventListener("mousedown", function (e) {
+        e.stopPropagation();
+      });
+    });
+
+    // Initial appearance update
+    updateButtonAppearance(defaultStepIndex);
+
+    console.log("Speed control event handlers set up successfully");
+  }
+
+  setupEventHandlers();
+
+  // Store reference for external access
+  map._speedControl = {
+    getCurrentSpeed: function () {
+      return currentSpeed;
+    },
+    setSpeed: function (speed) {
+      // Find the closest available speed option
+      const closestIndex = speedOptions.reduce((closest, current, index) => {
+        return Math.abs(current - speed) <
+          Math.abs(speedOptions[closest] - speed)
+          ? index
+          : closest;
+      }, 0);
+
+      currentSpeed = speedOptions[closestIndex];
+
+      // Update button appearance
+      const speedButtons = document.querySelectorAll(
+        "#toro_speed_control .speed-btn"
+      );
+      speedButtons.forEach((btn, index) => {
+        if (index === closestIndex) {
+          btn.style.background = "#007cba";
+          btn.style.color = "white";
+          btn.style.fontWeight = "600";
+        } else {
+          btn.style.background = "white";
+          btn.style.color = "#333";
+          btn.style.fontWeight = "normal";
+        }
+      });
+
+      if (typeof onSpeedChange === "function") {
+        onSpeedChange(currentSpeed);
       }
     },
   };
