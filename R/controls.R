@@ -7,6 +7,11 @@
 #' - `add_zoom_control`:          Add a zoom control to the map.
 #' - `add_custom_control`:        Add a custom HTML control to the map.
 #' - `delete_drawn_shape`:        Delete a drawn shape from the map.
+#' - `remove_control`:            Remove a control from the map.
+#' - `remove_draw_control`:       Remove the draw control from the map.
+#' - `remove_zoom_control`:       Remove the zoom control from the map.
+#' - `remove_cursor_coords_control`: Remove the cursor coordinates control from the map.
+#' - `remove_timeline_control`:    Remove the timeline control from the map.
 
 #' Toggle the visibility of a control on the map.
 #'
@@ -44,7 +49,12 @@ add_cursor_coords_control <- function(
   long_label = "Lng",
   lat_label = "Lat"
 ) {
-  control <- list(type = "cursor", position = position, longLabel = long_label, latLabel = lat_label)
+  control <- list(
+    type = "cursor",
+    position = position,
+    longLabel = long_label,
+    latLabel = lat_label
+  )
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, control))
   }
@@ -170,4 +180,57 @@ add_draw_control <- function(
 delete_drawn_shape <- function(proxy, shape_id) {
   proxy$session$sendCustomMessage("deleteDrawnShape", list(id = proxy$id, shapeId = shape_id))
   proxy
+}
+
+#' Remove a control from the map.
+#'
+#' @param proxy       The map proxy object created by `mapProxy()`.
+#' @param control_id  The ID of the control to remove.
+#' @return            The map proxy object for chaining.
+#' @export
+remove_control <- function(proxy, control_id) {
+  proxy$session$sendCustomMessage(
+    "removeControl",
+    list(
+      id = proxy$id,
+      controlId = control_id
+    )
+  )
+  proxy
+}
+
+#' Remove the draw control from the map.
+#'
+#' @param proxy  The map proxy object created by `mapProxy()`.
+#' @return       The map proxy object for chaining.
+#' @export
+remove_draw_control <- function(proxy) {
+  remove_control(proxy, "toro_draw_control")
+}
+
+#' Remove the zoom control from the map.
+#'
+#' @param proxy  The map proxy object created by `mapProxy()`.
+#' @return       The map proxy object for chaining.
+#' @export
+remove_zoom_control <- function(proxy) {
+  remove_control(proxy, "toro_zoom_control")
+}
+
+#' Remove the cursor coordinates control from the map.
+#'
+#' @param proxy  The map proxy object created by `mapProxy()`.
+#' @return       The map proxy object for chaining.
+#' @export
+remove_cursor_coords_control <- function(proxy) {
+  remove_control(proxy, "toro_cursor_coords_control")
+}
+
+#' Remove the timeline control from the map.
+#'
+#' @param proxy  The map proxy object created by `mapProxy()`.
+#' @return       The map proxy object for chaining.
+#' @export
+remove_timeline_control <- function(proxy) {
+  remove_control(proxy, "toro_timeline_control")
 }

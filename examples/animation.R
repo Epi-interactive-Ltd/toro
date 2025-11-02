@@ -13,6 +13,11 @@ n_points <- 25
 angles <- seq(0, 2 * pi, length.out = n_points + 1)[-1] # exclude duplicate endpoint
 
 get_route_points <- function() {
+  date_seq <- seq.Date(
+    from = Sys.Date(),
+    by = "month",
+    length.out = n_points
+  )
   # Add random jitter to angles and radius
   angle_jitter <- runif(n_points, -0.2, 0.2)
   radius_jitter <- runif(n_points, -1, 1)
@@ -23,9 +28,11 @@ get_route_points <- function() {
   )
   route_points <- sf::st_sf(
     id = paste0("pt", seq_len(nrow(coords))),
+    date = date_seq,
     geometry = sf::st_sfc(lapply(seq_len(nrow(coords)), function(i) sf::st_point(coords[i, ]))),
     crs = 4326
   )
+  route_points$hover_text <- paste("Point", route_points$id)
   return(route_points)
 }
 
@@ -64,7 +71,12 @@ g_routes <- list(
       ),
       visitedPoints = get_paint_options("circle", list(colour = "yellow", circle_radius = 5)),
       steps = 500,
-      dropVisited = TRUE
+      dropVisited = TRUE,
+      showTimelineControls = TRUE,
+      timelineControlOptions = list(
+        position = "top-right",
+        maxTicks = 5
+      )
     )
   )
 )

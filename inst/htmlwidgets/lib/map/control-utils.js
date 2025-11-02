@@ -555,3 +555,311 @@ function addZoomControl(map, position, options) {
   let nav = new maplibregl.NavigationControl(options);
   map.addControl(nav, position);
 }
+
+/**
+ * Remove a control from the map.
+ *
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} controlId      ID of the control to remove.
+ * @returns {void}
+ */
+function removeControl(widgetInstance, controlId) {
+  const map = widgetInstance.getMap();
+  if (!map) return;
+  const controlElement = document.getElementById(controlId);
+  if (controlElement) {
+    controlElement.remove();
+  }
+}
+
+/**
+ * Add a timeline control to the map for animating data over time.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {string} startDate        Start date for timeline.
+ * @param {string} endDate          End date for timeline.
+ * @param {function} onPlayPause    Callback for play/pause button.
+ * @param {function} onSliderChange Callback for slider change.
+ * @param {object} options          Options for the timeline control.
+ *                                  Can include:
+ *                                    - position: string (default "bottom-left")
+ *                                    - maxTicks: number (default 3) - Maximum number of labeled ticks
+ * @return {void}
+ */
+function addTimelineControl(
+  widgetInstance,
+  startDate,
+  endDate,
+  onPlayPause,
+  onSliderChange,
+  options = {}
+) {
+  const map = widgetInstance.getMap();
+  // Format dates as needed
+  const start = new Date(startDate).toLocaleDateString();
+  const end = new Date(endDate).toLocaleDateString();
+
+  // Calculate date range and ticks
+  const startDateObj = new Date(startDate);
+  const endDateObj = new Date(endDate);
+  const totalDays = Math.ceil(
+    (endDateObj - startDateObj) / (1000 * 60 * 60 * 24)
+  );
+
+  // Generate axis ticks with dynamic spacing to prevent overlap
+  let axisHTML = "";
+  const maxTicks = options.maxTicks || 3; // Maximum number of labeled ticks to prevent overlap
+
+  // Calculate smart tick positions using maxTicks
+  const majorTickPositions = [];
+
+  if (maxTicks <= 1) {
+    // Show only start
+    majorTickPositions.push(0);
+  } else if (maxTicks === 2) {
+    // Show start and end
+    majorTickPositions.push(0, totalDays);
+  } else {
+    // For 3+ ticks, distribute evenly across the range
+    majorTickPositions.push(0); // Always include start
+
+    // Add intermediate ticks based on maxTicks
+    const intermediateCount = maxTicks - 2; // Subtract start and end
+    for (let i = 1; i <= intermediateCount; i++) {
+      const position = Math.floor((totalDays * i) / (intermediateCount + 1));
+      majorTickPositions.push(position);
+    }
+
+    majorTickPositions.push(totalDays); // Always include end
+  }
+
+  // Remove duplicates and sort
+  const uniquePositions = [...new Set(majorTickPositions)].sort(
+    (a, b) => a - b
+  );
+
+  // Create major ticks (with labels)
+  uniquePositions.forEach((dayIndex) => {
+    const tickDate = new Date(
+      startDateObj.getTime() + dayIndex * 24 * 60 * 60 * 1000
+    );
+    const position = (dayIndex / totalDays) * 100;
+
+    const shortDate = tickDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: totalDays > 365 ? "numeric" : undefined,
+    });
+
+    axisHTML += `
+      <div class="timeline-tick major-tick" style="left: ${position}%;">
+        <div class="timeline-tick-line"></div>
+        <div class="timeline-tick-label">${shortDate}</div>
+      </div>
+    `;
+  });
+
+  // Create minor ticks between major ticks
+  const minorTickInterval = Math.max(1, Math.floor(totalDays / 12)); // More minor ticks
+  for (let i = minorTickInterval; i < totalDays; i += minorTickInterval) {
+    // Skip if this position is already a major tick
+    if (!uniquePositions.includes(i)) {
+      const position = (i / totalDays) * 100;
+      axisHTML += `
+        <div class="timeline-tick minor-tick" style="left: ${position}%;">
+          <div class="timeline-tick-line"></div>
+        </div>
+      `;
+    }
+  }
+
+  // HTML for the control
+  const html = `
+    <div class="timeline-control-container">
+      <button id="timeline-play-pause" class="timeline-play-btn">▶</button>
+      <div class="timeline-axis-container">
+        <!-- Current date display above slider - always visible -->
+        <div id="timeline-current-date">${start}</div>
+        <!-- Slider with custom styling -->
+        <div class="timeline-slider-container">
+          <input type="range" id="timeline-slider" min="0" max="100" value="0" />
+          
+          <!-- Date ticks -->
+          ${axisHTML}
+        </div>
+      </div>
+    </div>
+    <style>
+      
+    </style>
+  `;
+
+  // Add the control to the map
+  addCustomControl(
+    map,
+    "toro_timeline_control",
+    html,
+    options.position || "bottom-left"
+  );
+
+  // Ensure the control is clickable by setting pointer events
+  setTimeout(() => {
+    const timelineControl = document.getElementById("toro_timeline_control");
+    if (timelineControl) {
+      timelineControl.style.pointerEvents = "auto";
+      timelineControl.style.zIndex = "1000";
+
+      // Set pointer events on all child elements
+      const allElements = timelineControl.querySelectorAll("*");
+      allElements.forEach((el) => {
+        if (
+          el.tagName === "SPAN" &&
+          el.classList.contains("timeline-date-label")
+        ) {
+          el.style.pointerEvents = "none";
+        } else {
+          el.style.pointerEvents = "auto";
+        }
+      });
+    }
+  }, 100);
+
+  // Get control elements with retry mechanism
+  let playPauseBtn, timelineSlider;
+  let playing = false;
+  let lastClickTime = 0;
+  let updateSliderAppearance;
+
+  function setupEventHandlers() {
+    playPauseBtn = document.getElementById("timeline-play-pause");
+    timelineSlider = document.getElementById("timeline-slider");
+
+    if (!playPauseBtn || !timelineSlider) {
+      console.warn("Timeline control elements not found, retrying...");
+      setTimeout(setupEventHandlers, 50);
+      return;
+    }
+
+    // Function to update current date display and slider appearance
+    updateSliderAppearance = function () {
+      const progress = parseFloat(timelineSlider.value) / 100;
+      const currentDate = new Date(
+        startDateObj.getTime() +
+          progress * (endDateObj.getTime() - startDateObj.getTime())
+      );
+      const currentDateDisplay = document.getElementById(
+        "timeline-current-date"
+      );
+
+      if (currentDateDisplay) {
+        // Update date text
+        const formattedDate = currentDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        currentDateDisplay.textContent = formattedDate;
+
+        // Position the date display above the thumb
+        currentDateDisplay.style.left = `${progress * 100}%`;
+
+        // Update slider background to show progress
+        const progressColor = playing ? "#999" : "#007cba";
+        timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
+          progress * 100
+        }%, #ddd ${progress * 100}%, #ddd 100%)`;
+      }
+    };
+
+    // Add play/pause logic with debounce
+    const handlePlayPause = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Debounce rapid clicks (ignore clicks within 200ms)
+      const now = Date.now();
+      if (now - lastClickTime < 200) {
+        console.log("Ignoring rapid click");
+        return;
+      }
+      lastClickTime = now;
+
+      // If clicking play and slider is at the end (or very close to end), reset to beginning
+      if (!playing && parseFloat(timelineSlider.value) >= 95) {
+        timelineSlider.value = 0;
+        updateSliderAppearance();
+
+        // Trigger the slider change callback to reset animation position
+        if (typeof onSliderChange === "function") {
+          onSliderChange(0);
+        }
+      }
+
+      playing = !playing;
+      playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+
+      // Disable/enable slider based on play state
+      timelineSlider.disabled = playing;
+      timelineSlider.style.opacity = playing ? "0.5" : "1";
+      timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
+
+      if (typeof onPlayPause === "function") {
+        onPlayPause(playing);
+      }
+    };
+
+    // Use only addEventListener to avoid double event firing
+    playPauseBtn.addEventListener("click", handlePlayPause);
+    playPauseBtn.addEventListener("mousedown", function (e) {
+      e.stopPropagation();
+    });
+
+    // Add slider change logic
+    const handleSliderChange = function (e) {
+      e.stopPropagation();
+      updateSliderAppearance();
+
+      if (!playing && typeof onSliderChange === "function") {
+        const progress = parseFloat(this.value) / 100;
+        onSliderChange(progress);
+      }
+    };
+
+    // Use only addEventListener to avoid duplicate events
+    timelineSlider.addEventListener("input", handleSliderChange);
+    timelineSlider.addEventListener("mousedown", function (e) {
+      e.stopPropagation();
+    });
+
+    // Initial update
+    setTimeout(updateSliderAppearance, 150);
+  }
+
+  setupEventHandlers();
+
+  // Store references for external access
+  map._timelineControl = {
+    playPauseBtn: playPauseBtn,
+    slider: timelineSlider,
+    updateAppearance: updateSliderAppearance,
+    setProgress: function (progress) {
+      // Update slider position (0-1 range to 0-100)
+      if (timelineSlider) {
+        timelineSlider.value = Math.round(progress * 100);
+        updateSliderAppearance();
+      }
+    },
+    setPlaying: function (isPlaying) {
+      playing = isPlaying;
+      if (playPauseBtn) {
+        playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+      }
+      if (timelineSlider) {
+        timelineSlider.disabled = playing;
+        timelineSlider.style.opacity = playing ? "0.5" : "1";
+        timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
+        updateSliderAppearance();
+      }
+    },
+  };
+}

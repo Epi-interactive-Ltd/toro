@@ -90,10 +90,14 @@ function addRoute(widgetInstance, routeOptions) {
   if (!widgetInstance.getAnimations()) {
     widgetInstance.getAnimations()[routeId] = {};
   }
+  const showTimelineControls =
+    options.showTimelineControls ||
+    (false && "date" in points.features[0].properties);
 
   widgetInstance.getAnimations()[routeId] = {
     isAnimating: true,
     animationFrameId: null,
+    showTimelineControls: showTimelineControls,
     counter: 0,
     totalLength: totalLength,
     steps: steps,
@@ -129,6 +133,24 @@ function addRoute(widgetInstance, routeOptions) {
       "line-width": options.routeLine?.["line-width"] ?? 6,
       "line-dasharray": options.routeLine?.["line-dasharray"] ?? [1, 0],
       "line-opacity": options.routeLine?.["line-opacity"] ?? 1.0,
+    },
+  });
+
+  map.addLayer({
+    id: routeVisitedPointsLayerId,
+    type: "circle",
+    source: {
+      type: "geojson",
+      data: widgetInstance.getAnimations()[routeId].visitedPoints,
+    },
+    paint: {
+      "circle-color": options.visitedPoints?.["circle-color"] ?? "#0074D9",
+      "circle-radius": options.visitedPoints?.["circle-radius"] ?? 5,
+      "circle-opacity": options.visitedPoints?.["circle-opacity"] ?? 1.0,
+      "circle-stroke-width":
+        options.visitedPoints?.["circle-stroke-width"] ?? 2,
+      "circle-stroke-color":
+        options.visitedPoints?.["circle-stroke-color"] ?? "#0074D9",
     },
   });
 
@@ -177,30 +199,82 @@ function addRoute(widgetInstance, routeOptions) {
     });
   }
 
-  map.addLayer({
-    id: routeVisitedPointsLayerId,
-    type: "circle",
-    source: {
-      type: "geojson",
-      data: widgetInstance.getAnimations()[routeId].visitedPoints,
-    },
-    paint: {
-      "circle-color": options.visitedPoints?.["circle-color"] ?? "#0074D9",
-      "circle-radius": options.visitedPoints?.["circle-radius"] ?? 5,
-      "circle-opacity": options.visitedPoints?.["circle-opacity"] ?? 1.0,
-      "circle-stroke-width":
-        options.visitedPoints?.["circle-stroke-width"] ?? 2,
-      "circle-stroke-color":
-        options.visitedPoints?.["circle-stroke-color"] ?? "#0074D9",
-    },
-  });
-
   // Add popups to the droped points if specified
   if (options.visitedPoints?.popupColumn) {
     addLayerPopup(
       map,
       routeVisitedPointsLayerId,
       options.visitedPoints.popupColumn
+    );
+  }
+
+  if (showTimelineControls) {
+    // Get date range from the route points if available
+    const startDate = points.features[0]?.properties?.date || "2023-01-01";
+    const endDate =
+      points.features[points.features.length - 1]?.properties?.date ||
+      "2023-12-31";
+
+    // Add timeline controls
+    addTimelineControl(
+      widgetInstance,
+      startDate,
+      endDate,
+      function (playing) {
+        if (playing) {
+          // Start animation
+          animateRoute(widgetInstance, routeOptions);
+        } else {
+          // Pause animation
+          pauseAnimation(widgetInstance, routeOptions);
+        }
+      },
+      function (progress) {
+        // Handle slider change - jump to specific point in animation
+        const route = widgetInstance.getAnimations()[routeId];
+        if (route && !route.isAnimating) {
+          // Calculate the target step based on progress
+          const targetStep = Math.floor(
+            progress * (route.linePoints.length - 1)
+          );
+          route.counter = targetStep;
+
+          // Update the animated point position
+          route.point.features[0].geometry.coordinates =
+            route.linePoints[targetStep].geometry.coordinates;
+          route.map.getSource(route.routePointLayerId).setData(route.point);
+
+          // Update visited points if dropping them
+          if (route.dropVisited) {
+            route.visitedPoints.features = [];
+
+            // Add all visited points up to current position
+            for (let i = 0; i <= targetStep; i++) {
+              const currentCoord = route.linePoints[i].geometry.coordinates;
+              const coordIndex = route.coords.findIndex(
+                (coord) =>
+                  coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+              );
+
+              if (coordIndex !== -1) {
+                route.visitedPoints.features.push({
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: currentCoord,
+                  },
+                  properties:
+                    route.points.features[coordIndex]?.properties ?? {},
+                });
+              }
+            }
+            route.map
+              .getSource(route.visitedLayerId)
+              .setData(route.visitedPoints);
+          }
+        }
+      },
+      options.timelineControlOptions || {}
     );
   }
 }
@@ -224,7 +298,14 @@ function animateRoute(widgetInstance, routeOptions) {
 
   function animate() {
     const state = widgetInstance.getAnimations()[routeId];
-    if (!state?.isAnimating || state.counter >= state.linePoints.length) return;
+    if (!state?.isAnimating || state.counter >= state.linePoints.length) {
+      // Animation finished
+      if (state?.isAnimating && state.map._timelineControl) {
+        state.map._timelineControl.setPlaying(false);
+        state.isAnimating = false;
+      }
+      return;
+    }
 
     // Move the animated point
     state.point.features[0].geometry.coordinates =
@@ -256,6 +337,12 @@ function animateRoute(widgetInstance, routeOptions) {
       }
     }
 
+    // Update timeline slider progress
+    if (state.map._timelineControl && state.showTimelineControls) {
+      const progress = state.counter / (state.linePoints.length - 1);
+      state.map._timelineControl.setProgress(progress);
+    }
+
     state.counter += 1;
     state.animationFrameId = requestAnimationFrame(animate);
   }
@@ -276,12 +363,17 @@ function pauseAnimation(widgetInstance, routeOptions) {
   const routeId = routeOptions.routeId || "route";
 
   if (widgetInstance.getAnimations()[routeId]) {
-    widgetInstance.getAnimations()[routeId].isAnimating = false;
-    if (widgetInstance.getAnimations()[routeId].animationFrameId) {
-      cancelAnimationFrame(
-        widgetInstance.getAnimations()[routeId].animationFrameId
-      );
-      widgetInstance.getAnimations()[routeId].animationFrameId = null;
+    const route = widgetInstance.getAnimations()[routeId];
+    route.isAnimating = false;
+
+    if (route.animationFrameId) {
+      cancelAnimationFrame(route.animationFrameId);
+      route.animationFrameId = null;
+    }
+
+    // Update timeline control if it exists
+    if (route.map._timelineControl && route.showTimelineControls) {
+      route.map._timelineControl.setPlaying(false);
     }
   }
 }
@@ -322,6 +414,10 @@ function removeRoute(widgetInstance, routeOptions) {
       }
     }
   );
+
+  if (route.showTimelineControls && map._timelineControl) {
+    removeControl(widgetInstance, "toro_timeline_control");
+  }
 
   // Remove animation state
   if (widgetInstance.getAnimations()[routeId]) {

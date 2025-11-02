@@ -466,6 +466,12 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
+  Shiny.addCustomMessageHandler("removeControl", function (message) {
+    withMapInstance(message.id, function (el) {
+      removeControl(el, message.controlId);
+    });
+  });
+
   Shiny.addCustomMessageHandler("deleteDrawnShape", function (message) {
     withMapInstance(message.id, function (el) {
       deleteDrawnShape(el, message.shapeId);
