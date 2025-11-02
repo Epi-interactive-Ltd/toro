@@ -26,6 +26,11 @@ Functions:
 \item \code{add_zoom_control}:          Add a zoom control to the map.
 \item \code{add_custom_control}:        Add a custom HTML control to the map.
 \item \code{delete_drawn_shape}:        Delete a drawn shape from the map.
+\item \code{remove_control}:            Remove a control from the map.
+\item \code{remove_draw_control}:       Remove the draw control from the map.
+\item \code{remove_zoom_control}:       Remove the zoom control from the map.
+\item \code{remove_cursor_coords_control}: Remove the cursor coordinates control from the map.
+\item \code{remove_timeline_control}:    Remove the timeline control from the map.
 Toggle the visibility of a control on the map.
 }
 }
