@@ -198,10 +198,10 @@
   border-radius: 3px;
   background: linear-gradient(
     to right,
-    #007cba 0%,
-    #007cba 0%,
-    #ddd 0%,
-    #ddd 100%
+    var(--toro-timeline-left) 0%,
+    var(--toro-timeline-left) 0%,
+    var(--toro-timeline-right) 0%,
+    var(--toro-timeline-right) 100%
   );
   outline: none;
   -webkit-appearance: none;
@@ -220,11 +220,6 @@
   pointer-events: none;
 }
 
-#toro_timeline_control .timeline-play-btn:hover {
-  background: #f5f5f5 !important;
-  border-color: #ccc !important;
-}
-
 #toro_timeline_control #timeline-slider::-webkit-slider-track {
   height: 6px;
   border-radius: 3px;
@@ -236,9 +231,9 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #007cba;
+  background: var(--toro-timeline-left);
   cursor: pointer;
-  border: 3px solid white;
+  border: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   pointer-events: auto;
   position: relative;
@@ -254,9 +249,9 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #007cba;
+  background: var(--toro-timeline-left);
   cursor: pointer;
-  border: 3px solid white;
+  border: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   pointer-events: auto;
 }
