@@ -1,3 +1,8 @@
+:root {
+  --toro-timeline-left: #007cba; /* Colour for completed portion of timeline */
+  --toro-timeline-right: #ddd; /* Colour for remaining portion of timeline */
+}
+
 .cursor-coords-control {
   background: rgba(255, 255, 255, 0.8);
   font-family: monospace;

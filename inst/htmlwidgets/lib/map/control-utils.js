@@ -764,7 +764,7 @@ function addTimelineControl(
         currentDateDisplay.style.left = `${progress * 100}%`;
 
         // Update slider background to show progress
-        const progressColor = playing ? "#999" : "#007cba";
+        const progressColor = playing ? "var(--toro-timeline-right)" : "var(--toro-timeline-left)";
         timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
           progress * 100
         }%, #ddd ${progress * 100}%, #ddd 100%)`;
