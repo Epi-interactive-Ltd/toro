@@ -448,6 +448,7 @@ function animateRoute(widgetInstance, routeOptions) {
     // Only advance if enough time has passed
     if (stepsToAdvance >= 1) {
       const integerSteps = Math.floor(stepsToAdvance);
+      const oldCounter = state.counter;
       state.counter = Math.min(
         state.counter + integerSteps,
         state.linePoints.length - 1
@@ -460,30 +461,40 @@ function animateRoute(widgetInstance, routeOptions) {
       state.map.getSource(state.routePointLayerId).setData(state.point);
 
       if (route.dropVisited) {
-        const currentCoord =
-          state.linePoints[state.counter].geometry.coordinates;
-        // Check if currentCoord matches any original coord
-        if (
-          state.coords.some(
-            (coord) =>
-              coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
-          )
-        ) {
-          const idx = state.coords.findIndex(
+        // Check all positions between oldCounter and current counter for original coordinates
+        // This ensures we don't miss any original points when animating at high speeds
+        for (let i = oldCounter; i <= state.counter; i++) {
+          const currentCoord = state.linePoints[i].geometry.coordinates;
+
+          // Check if currentCoord matches any original coord
+          const coordIndex = state.coords.findIndex(
             (coord) =>
               coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
           );
-          state.visitedPoints.features.push({
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: currentCoord,
-            },
-            properties: state.points.features[idx]?.properties ?? {},
-          });
-          state.map
-            .getSource(state.visitedLayerId)
-            .setData(state.visitedPoints);
+
+          if (coordIndex !== -1) {
+            // Check if this point is already in visitedPoints to avoid duplicates
+            const pointExists = state.visitedPoints.features.some(
+              (feature) =>
+                feature.geometry.coordinates[0] === currentCoord[0] &&
+                feature.geometry.coordinates[1] === currentCoord[1]
+            );
+
+            if (!pointExists) {
+              state.visitedPoints.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: currentCoord,
+                },
+                properties: state.points.features[coordIndex]?.properties ?? {},
+              });
+              // Update the source after adding the point
+              state.map
+                .getSource(state.visitedLayerId)
+                .setData(state.visitedPoints);
+            }
+          }
         }
       }
 

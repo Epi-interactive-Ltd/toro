@@ -1,6 +1,6 @@
 :root {
-  --toro-timeline-left: #007cba; /* Colour for completed portion of timeline */
-  --toro-timeline-right: #ddd; /* Colour for remaining portion of timeline */
+  --toro-timeline-primary: #007cba; /* Colour for completed portion of timeline */
+  --toro-timeline-secondary: #ddd; /* Colour for remaining portion of timeline */
 }
 
 .cursor-coords-control {
@@ -122,19 +122,20 @@
   }
 }
 
-/** Timeline Control Styles **/
+/** Timeline Control + Speed Control Styles **/
+#toro_speed_control,
 #toro_timeline_control {
   pointer-events: auto !important;
   z-index: 1000 !important;
 }
 
+#toro_speed_control .speed-control-container,
 #toro_timeline_control .timeline-control-container {
   pointer-events: auto !important;
   display: flex;
   align-items: center;
   gap: 30px;
   background: rgba(255, 255, 255, 0.95);
-  padding: 20px 40px 35px 16px;
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -142,9 +143,19 @@
   z-index: 1000;
   position: relative;
 }
+#toro_speed_control .speed-control-container {
+  padding: 10px 30px;
+  min-width: 200px;
+}
+#toro_timeline_control .timeline-control-container {
+  padding: 15px 40px 15px 16px;
+  min-width: 300px;
+}
 
+#toro_speed_control .speed-control-container *,
 #toro_timeline_control .timeline-control-container *,
 #toro_timeline_control button,
+#toro_speed_control input,
 #toro_timeline_control input {
   pointer-events: auto !important;
 }
@@ -171,6 +182,7 @@
 #toro_timeline_control .timeline-axis-container {
   position: relative;
   min-width: 300px;
+  margin-top: 15px;
 }
 
 #toro_timeline_control #timeline-current-date {
@@ -187,88 +199,87 @@
   transition: all 0.2s ease;
 }
 
+#toro_speed_control .speed-slider-container,
 #toro_timeline_control .timeline-slider-container {
   position: relative;
+  margin-bottom: 15px;
 }
 
-#toro_timeline_control .timeline-slider-container #timeline-slider {
+#toro_speed_control #speed-slider,
+#toro_timeline_control #timeline-slider {
   width: 100%;
   cursor: pointer;
   height: 6px;
   border-radius: 3px;
-  background: linear-gradient(
-    to right,
-    var(--toro-timeline-left) 0%,
-    var(--toro-timeline-left) 0%,
-    var(--toro-timeline-right) 0%,
-    var(--toro-timeline-right) 100%
-  );
+  background: var(--toro-timeline-secondary);
   outline: none;
   -webkit-appearance: none;
   appearance: none;
   pointer-events: auto;
   margin: 10px 0;
+  transition: background 0.3s ease;
 }
-
-#toro_timeline_control .timeline-slider-container .timeline-axis {
-  position: absolute;
-  top: 13px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #666;
-  pointer-events: none;
+#toro_timeline_control #timeline-slider {
+  background: linear-gradient(
+    to right,
+    var(--toro-timeline-primary) 0%,
+    var(--toro-timeline-primary) 0%,
+    var(--toro-timeline-secondary) 0%,
+    var(--toro-timeline-secondary) 100%
+  );
 }
-
-#toro_timeline_control #timeline-slider::-webkit-slider-track {
-  height: 6px;
-  border-radius: 3px;
-  background: transparent;
-}
-#toro_timeline_control #timeline-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--toro-timeline-left);
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  pointer-events: auto;
-  position: relative;
-  z-index: 2;
-}
+#toro_speed_control #speed-slider::-webkit-slider-track,
+#toro_timeline_control #timeline-slider::-webkit-slider-track,
+#toro_speed_control #speed-slider::-moz-range-track,
 #toro_timeline_control #timeline-slider::-moz-range-track {
   height: 6px;
   border-radius: 3px;
   background: transparent;
   border: none;
 }
-#toro_timeline_control #timeline-slider::-moz-range-thumb {
+#toro_speed_control #speed-slider::-webkit-slider-thumb,
+#toro_timeline_control #timeline-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--toro-timeline-left);
+  background: var(--toro-timeline-primary);
   cursor: pointer;
   border: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   pointer-events: auto;
+  position: relative;
+  z-index: 2;
+  transition: all 0.2s ease;
 }
+
+#toro_speed_control #speed-slider::-moz-range-thumb,
+#toro_timeline_control #timeline-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--toro-timeline-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+
+#toro_timeline_control #timeline-slider:disabled::-moz-range-thumb,
+#toro_timeline_control #timeline-slider:disabled::-webkit-slider-thumb,
 #toro_timeline_control #timeline-slider:disabled {
   cursor: not-allowed !important;
 }
+#toro_timeline_control #timeline-slider:disabled::-moz-range-thumb,
 #toro_timeline_control #timeline-slider:disabled::-webkit-slider-thumb {
   background: #999 !important;
-  cursor: not-allowed !important;
-}
-#toro_timeline_control #timeline-slider:disabled::-moz-range-thumb {
-  background: #999 !important;
-  cursor: not-allowed !important;
 }
 #toro_timeline_control #timeline-current-date {
   opacity: 1 !important;
 }
+#toro_speed_control .speed-tick,
 #toro_timeline_control .timeline-tick {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: absolute;
@@ -293,6 +304,7 @@
   height: 4px;
   background: #999;
 }
+#toro_speed_control .speed-tick .speed-tick-label,
 #toro_timeline_control .timeline-tick .timeline-tick-label {
   font-size: 9px;
   color: #666;
@@ -300,55 +312,10 @@
   margin-top: 2px;
 }
 
-/** Speed Control Styles **/
-#toro_speed_control {
-  pointer-events: auto !important;
-  z-index: 1000 !important;
-}
-
-#toro_speed_control .speed-control-container {
-  pointer-events: auto !important;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 5px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-#toro_speed_control .speed-control-container *,
-#toro_speed_control button {
-  pointer-events: auto !important;
-}
-
-#toro_speed_control .speed-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-}
-
-#toro_speed_control .speed-btn {
-  padding: 4px 8px;
-  margin: 2px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  background: white;
-  color: #333;
-  cursor: pointer;
-  font-size: 11px;
-  min-width: 35px;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-#toro_speed_control .speed-btn:hover {
-  background: #f5f5f5;
-  border-color: #bbb;
-}
-
-#toro_speed_control .speed-btn.active {
-  background: #007cba !important;
-  color: white !important;
-  font-weight: 600;
+#toro_speed_control #speed-slider::-moz-range-thumb:hover,
+#toro_timeline_control #timeline-slider::-moz-range-thumb:hover {
+  background: var(--toro-timeline-primary);
+  transform: scale(1.1);
 }
 
 /** Hide the export stuff **/

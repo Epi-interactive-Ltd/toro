@@ -76,6 +76,13 @@ g_routes <- list(
       timelineControlOptions = list(
         position = "top-right",
         maxTicks = 5
+      ),
+      showSpeedControl = TRUE,
+      speedControlOptions = list(
+        position = "top-right",
+        values = c(0.5, 1, 1.5, 2, 3),
+        labels = c("Slow", "Normal", "Fast", "Faster", "Very Fast"),
+        defaultIndex = 2
       )
     )
   )

@@ -765,8 +765,8 @@ function addTimelineControl(
 
         // Update slider background to show progress
         const progressColor = playing
-          ? "var(--toro-timeline-right)"
-          : "var(--toro-timeline-left)";
+          ? "var(--toro-timeline-secondary)"
+          : "var(--toro-timeline-primary)";
         timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
           progress * 100
         }%, #ddd ${progress * 100}%, #ddd 100%)`;
@@ -870,64 +870,52 @@ function addTimelineControl(
  * @param {object} options          Options for the speed control.
  *                                  Can include:
  *                                    - position: string (default "top-right")
- *                                    - minSpeed: number (default 0.25) - Minimum speed multiplier
- *                                    - maxSpeed: number (default 3) - Maximum speed multiplier
- *                                    - defaultSpeed: number (default 1) - Default speed multiplier
- *                                    - steps: number (default 6) - Number of speed steps
+ *                                    - values: array (default [0.5, 1, 2]) - Speed values
+ *                                    - labels: array (default ["Slow", "Normal", "Fast"]) - Speed labels
+ *                                    - defaultIndex: number (default 1) - Default speed index
  * @return {void}
  */
 function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   const map = widgetInstance.getMap();
 
   // Set default options
-  const minSpeed = options.minSpeed || 0.25;
-  const maxSpeed = options.maxSpeed || 3;
-  const defaultSpeed = options.defaultSpeed || 1;
-  const steps = options.steps || 6;
+  const speedValues = options.values || [0.5, 1, 2];
+  const speedLabels = options.labels || ["Slow", "Normal", "Fast"];
+  const defaultIndex =
+    options.defaultIndex !== undefined ? options.defaultIndex : 1;
 
-  // Calculate speed steps
-  const speedRange = maxSpeed - minSpeed;
-  const stepSize = speedRange / (steps - 1);
-  const speedOptions = [];
-
-  for (let i = 0; i < steps; i++) {
-    const speed = minSpeed + i * stepSize;
-    speedOptions.push(speed);
+  // Validate inputs
+  if (speedValues.length !== speedLabels.length) {
+    console.warn("Speed values and labels arrays must have the same length");
+    return;
   }
 
-  // Find the closest step to default speed
-  const defaultStepIndex = speedOptions.reduce((closest, current, index) => {
-    return Math.abs(current - defaultSpeed) <
-      Math.abs(speedOptions[closest] - defaultSpeed)
-      ? index
-      : closest;
-  }, 0);
+  if (defaultIndex < 0 || defaultIndex >= speedValues.length) {
+    console.warn("Default index is out of range");
+    return;
+  }
 
-  // Generate speed option buttons
-  const speedButtonsHTML = speedOptions
-    .map((speed, index) => {
-      const isDefault = index === defaultStepIndex;
-      const speedLabel = speed === 1 ? "1x" : `${speed.toFixed(2)}x`;
+  // Generate tick marks for the slider
+  const ticksHTML = speedLabels
+    .map((label, index) => {
+      const position = (index / (speedLabels.length - 1)) * 100;
       return `
-      <button class="speed-btn" data-speed="${speed}" data-index="${index}" 
-              style="padding: 4px 8px; margin: 2px; border: 1px solid #ddd; 
-                     border-radius: 3px; background: ${
-                       isDefault ? "#007cba" : "white"
-                     }; 
-                     color: ${isDefault ? "white" : "#333"}; cursor: pointer; 
-                     font-size: 11px; min-width: 35px;">${speedLabel}</button>
+      <div class="speed-tick" style="left: ${position}%;">
+        <div class="speed-tick-label">${label}</div>
+      </div>
     `;
     })
     .join("");
 
   // HTML for the speed control
   const html = `
-    <div class="speed-control-container" style="padding: 8px; background: rgba(255, 255, 255, 0.95); 
-                                                border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.3); 
-                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 11px; color: #666; margin-bottom: 6px; font-weight: 500;">Speed</div>
-      <div class="speed-buttons" style="display: flex; flex-wrap: wrap; gap: 2px;">
-        ${speedButtonsHTML}
+    <div class="speed-control-container">
+      <div class="speed-slider-container">
+        <input type="range" id="speed-slider" min="0" max="${
+          speedValues.length - 1
+        }" 
+               value="${defaultIndex}" step="1"  />
+        ${ticksHTML}
       </div>
     </div>
   `;
@@ -956,64 +944,37 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   }, 100);
 
   // Setup event handlers with retry mechanism
-  let currentSpeed = speedOptions[defaultStepIndex];
+  let currentSpeed = speedValues[defaultIndex];
+  let currentIndex = defaultIndex;
 
   function setupEventHandlers() {
-    const speedButtons = document.querySelectorAll(
-      "#toro_speed_control .speed-btn"
-    );
+    const speedSlider = document.getElementById("speed-slider");
 
-    if (speedButtons.length === 0) {
-      console.warn("Speed control buttons not found, retrying...");
+    if (!speedSlider) {
+      console.warn("Speed control slider not found, retrying...");
       setTimeout(setupEventHandlers, 50);
       return;
     }
 
-    console.log("Setting up speed control event handlers");
+    // Add change handler to speed slider
+    speedSlider.addEventListener("input", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    // Function to update button appearance
-    function updateButtonAppearance(activeIndex) {
-      speedButtons.forEach((btn, index) => {
-        if (index === activeIndex) {
-          btn.style.background = "#007cba";
-          btn.style.color = "white";
-          btn.style.fontWeight = "600";
-        } else {
-          btn.style.background = "white";
-          btn.style.color = "#333";
-          btn.style.fontWeight = "normal";
-        }
-      });
-    }
+      const sliderIndex = parseInt(this.value);
+      const speed = speedValues[sliderIndex];
 
-    // Add click handlers to speed buttons
-    speedButtons.forEach((btn, index) => {
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+      currentSpeed = speed;
+      currentIndex = sliderIndex;
 
-        const speed = parseFloat(this.dataset.speed);
-        const buttonIndex = parseInt(this.dataset.index);
-
-        console.log("Speed changed to:", speed);
-
-        currentSpeed = speed;
-        updateButtonAppearance(buttonIndex);
-
-        if (typeof onSpeedChange === "function") {
-          onSpeedChange(speed);
-        }
-      });
-
-      btn.addEventListener("mousedown", function (e) {
-        e.stopPropagation();
-      });
+      if (typeof onSpeedChange === "function") {
+        onSpeedChange(speed);
+      }
     });
 
-    // Initial appearance update
-    updateButtonAppearance(defaultStepIndex);
-
-    console.log("Speed control event handlers set up successfully");
+    speedSlider.addEventListener("mousedown", function (e) {
+      e.stopPropagation();
+    });
   }
 
   setupEventHandlers();
@@ -1023,35 +984,45 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     getCurrentSpeed: function () {
       return currentSpeed;
     },
+    getCurrentIndex: function () {
+      return currentIndex;
+    },
     setSpeed: function (speed) {
       // Find the closest available speed option
-      const closestIndex = speedOptions.reduce((closest, current, index) => {
+      const closestIndex = speedValues.reduce((closest, current, index) => {
         return Math.abs(current - speed) <
-          Math.abs(speedOptions[closest] - speed)
+          Math.abs(speedValues[closest] - speed)
           ? index
           : closest;
       }, 0);
 
-      currentSpeed = speedOptions[closestIndex];
+      currentSpeed = speedValues[closestIndex];
+      currentIndex = closestIndex;
 
-      // Update button appearance
-      const speedButtons = document.querySelectorAll(
-        "#toro_speed_control .speed-btn"
-      );
-      speedButtons.forEach((btn, index) => {
-        if (index === closestIndex) {
-          btn.style.background = "#007cba";
-          btn.style.color = "white";
-          btn.style.fontWeight = "600";
-        } else {
-          btn.style.background = "white";
-          btn.style.color = "#333";
-          btn.style.fontWeight = "normal";
-        }
-      });
+      // Update slider position
+      const speedSlider = document.getElementById("speed-slider");
+      if (speedSlider) {
+        speedSlider.value = closestIndex;
+      }
 
       if (typeof onSpeedChange === "function") {
         onSpeedChange(currentSpeed);
+      }
+    },
+    setIndex: function (index) {
+      if (index >= 0 && index < speedValues.length) {
+        currentSpeed = speedValues[index];
+        currentIndex = index;
+
+        // Update slider position
+        const speedSlider = document.getElementById("speed-slider");
+        if (speedSlider) {
+          speedSlider.value = index;
+        }
+
+        if (typeof onSpeedChange === "function") {
+          onSpeedChange(currentSpeed);
+        }
       }
     },
   };
