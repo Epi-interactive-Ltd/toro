@@ -864,14 +864,14 @@ function addControlPanel(el, panelId, options = {}) {
   }
 
   map._controlPanels[panelId] = {
-    addControl: function (controlHTML, controlId = null, sectionTitle = null) {
+    addControl: function (controlHTML, controlId = null, sectionTitle = null, panelClass = null) {
       const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
         const controlDiv = document.createElement("div");
         if (controlId) {
           controlDiv.id = controlId;
         }
-        controlDiv.className = "panel-control-item";
+        controlDiv.className = "panel-control-item" + (panelClass ? ` ${panelClass}` : "");
 
         // Add section title if provided
         const sectionHTML = sectionTitle
@@ -939,7 +939,8 @@ function addControlPanel(el, panelId, options = {}) {
       map._controlPanels[panelId].addControl(
         customControl.html,
         customControl.id || null,
-        customControl.title || null
+        customControl.title || null,
+        "toro-custom-panel-control"
       );
     });
   }
@@ -1028,7 +1029,8 @@ function addControlToPanel(el, panelId, controlConfig) {
         panel.addControl(
           controlConfig.html || controlOptions.html,
           customControlId,
-          sectionTitle
+          sectionTitle,
+          "toro-custom-panel-control"
         );
       }
       break;
@@ -1124,7 +1126,8 @@ function addCursorCoordinateControlToPanel(
   panel.addControl(
     html,
     `cursor-coords-${widgetInstance.getId()}`,
-    sectionTitle
+    sectionTitle,
+    "toro-cursor-coords-panel-control"
   );
 
   // Add mouse move listener
@@ -1188,7 +1191,8 @@ function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   panel.addControl(
     html,
     `zoom-control-${widgetInstance.getId()}`,
-    sectionTitle
+    sectionTitle,
+    "toro-zoom-panel-control"
   );
 
   // Add event listeners
@@ -1284,7 +1288,8 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
   panel.addControl(
     html,
     `draw-control-${widgetInstance.getId()}`,
-    sectionTitle
+    sectionTitle,
+    "toro-draw-panel-control"
   );
 
   // Add event listeners to make the buttons functional
@@ -1553,7 +1558,8 @@ function addTimelineControl(
     map._controlPanels[panelId].addControl(
       html,
       timelineContainerId,
-      options.panelTitle
+      options.panelTitle,
+      "toro-timeline-panel-control"
     );
   } else {
     // Add as standalone control
@@ -1935,6 +1941,7 @@ function addTimelineControl(
  */
 function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   const map = widgetInstance.getMap();
+  
 
   // Set default options
   const speedValues = options.values || [0.5, 1, 2];
@@ -1996,8 +2003,9 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     // Add to existing control panel
     map._controlPanels[panelId].addControl(
       html,
-      "speed-control-section",
-      options.panelTitle
+      speedControlId,
+      options.panelTitle,
+      "toro-speed-panel-control"
     );
   } else {
     // Add as standalone control
