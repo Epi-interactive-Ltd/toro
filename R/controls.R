@@ -16,6 +16,9 @@
 #' - `remove_zoom_control`:       Remove the zoom control from the map.
 #' - `remove_cursor_coords_control`: Remove the cursor coordinates control from the map.
 #' - `remove_timeline_control`:    Remove the timeline control from the map.
+#' - `remove_speed_control`:       Remove the speed control from the map.
+#' - `remove_tile_selector_control`: Remove the tile selector control from the map.
+#' - `remove_custom_control`:      Remove a custom control from the map.
 
 #' Toggle the visibility of a control on the map.
 #'
@@ -45,27 +48,40 @@ toggle_control <- function(proxy, control_id, show = TRUE) {
 #'                    Options include "top-left", "top-right", "bottom-left", "bottom-right".
 #' @param long_label  The label for the longitude coordinate. Default is `"Lng"`.
 #' @param lat_label   The label for the latitude coordinate. Default is `"Lat"`.
+#' @param panel_id    ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
 #' @return            The map or map proxy object for chaining.
 #' @export
 add_cursor_coords_control <- function(
   map,
   position = "bottom-left",
   long_label = "Lng",
-  lat_label = "Lat"
+  lat_label = "Lat",
+  panel_id = NULL,
+  section_title = NULL
 ) {
   control <- list(
     type = "cursor",
     position = position,
     longLabel = long_label,
-    latLabel = lat_label
+    latLabel = lat_label,
+    panelId = panel_id,
+    panelTitle = section_title
   )
-  if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, control))
-  }
 
-  if (is.null(map$x$cursorControls)) {
-    map$x$cursorControls <- control
-    map$x$controls <- c(map$x$controls, list(control))
+  if (inherits(map, "mapProxy")) {
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "cursor", control, section_title)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, control = control))
+    }
+  } else {
+    if (is.null(map$x$cursorControls)) {
+      map$x$cursorControls <- control
+      map$x$controls <- c(map$x$controls, list(control))
+    }
   }
   map
 }
@@ -80,24 +96,45 @@ add_cursor_coords_control <- function(
 #'                        Default is `"top-right"`.
 #' @param control_options Additional options for the zoom control.
 #'                        Default is an empty list.
+#' @param panel_id      ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
 #' @return                The map proxy object for chaining.
 #' @export
-add_zoom_control <- function(map, position = "top-right", control_options = list()) {
-  if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage(
-      "addZoomControl",
-      list(
-        id = map$id,
-        position = position,
-        controlOptions = control_options
-      )
-    )
-  }
+add_zoom_control <- function(
+  map,
+  position = "top-right",
+  control_options = list(),
+  panel_id = NULL,
+  section_title = NULL
+) {
+  control_config <- list(
+    type = "zoom",
+    position = position,
+    controlOptions = control_options,
+    panelId = panel_id,
+    panelTitle = section_title
+  )
 
-  if (is.null(map$x$zoomControl)) {
-    control <- list(type = "zoom", position = position, controlOptions = control_options)
-    map$x$zoomControl <- control
-    map$x$controls <- c(map$x$controls, list(control))
+  if (inherits(map, "mapProxy")) {
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "zoom", control_config, section_title)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addZoomControl",
+        list(
+          id = map$id,
+          position = position,
+          controlOptions = control_options
+        )
+      )
+    }
+  } else {
+    if (is.null(map$x$zoomControl)) {
+      map$x$zoomControl <- control_config
+      map$x$controls <- c(map$x$controls, list(control_config))
+    }
   }
   map
 }
@@ -109,20 +146,42 @@ add_zoom_control <- function(map, position = "top-right", control_options = list
 #' @param html        The HTML content to add as a control.
 #' @param position    The position of the control on the map. Default is `"top-right"`.
 #'                    Options include "top-left", "top-right", "bottom-left", "bottom-right".
+#' @param panel_id    ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
 #' @return            The map or map proxy object for chaining.
 #' @export
-add_custom_control <- function(map, id, html, panel_id = NULL, position = "top-right") {
-  control <- list(type = "custom", controlId = id, html = html, position = position)
+add_custom_control <- function(
+  map,
+  id,
+  html,
+  position = "top-right",
+  panel_id = NULL,
+  section_title = NULL
+) {
+  control <- list(
+    type = "custom",
+    controlId = id,
+    html = html,
+    position = position,
+    panelId = panel_id,
+    panelTitle = section_title
+  )
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage(
-      "addCustomControl",
-      list(id = map$id, options = control)
-    )
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "custom", control, section_title)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addCustomControl",
+        list(id = map$id, options = control)
+      )
+    }
+  } else {
+    map$x$customControls <- c(map$x$customControls, list(control))
+    map$x$controls <- c(map$x$controls, list(control))
   }
-
-  map$x$customControls <- c(map$x$customControls, list(control))
-  map$x$controls <- c(map$x$controls, list(control))
   map
 }
 
@@ -130,6 +189,7 @@ add_custom_control <- function(map, id, html, panel_id = NULL, position = "top-r
 #' Add a draw control to the map
 #'
 #' @param map           The map or map proxy object.
+#' @param id            The ID for the draw control.
 #' @param position        The position of the draw control on the map. Default is `"top-right"`.
 #'                        Options are "top-left", "top-right", "bottom-left", "bottom-right".
 #' @param modes           A vector of modes to enable in the draw control.
@@ -139,6 +199,8 @@ add_custom_control <- function(map, id, html, panel_id = NULL, position = "top-r
 #' @param inactive_colour The colour for the inactive shapes. Default is `"#0FB3CE"`.
 #' @param mode_labels     A named list of labels for each mode.
 #'                        For example, `list(polygon = "Draw Polygon", trash = "Delete Shape")`.
+#' @param panel_id      ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
 #' @return                The map or map proxy object for chaining.
 #' @export
 add_draw_control <- function(
@@ -148,27 +210,38 @@ add_draw_control <- function(
   modes = c("polygon", "trash"),
   active_colour = "#0FB3CE",
   inactive_colour = "#0FB3CE",
-  mode_labels = list()
+  mode_labels = list(),
+  panel_id = NULL,
+  section_title = NULL
 ) {
   control <- list(
     type = "draw",
+    controlId = id,
     position = position,
     modes = list(modes),
     activeColour = active_colour,
     inactiveColour = inactive_colour,
-    modeLabels = mode_labels
+    modeLabels = mode_labels,
+    panelId = panel_id,
+    panelTitle = section_title
   )
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage(
-      "addDraw",
-      list(id = map$id, options = control)
-    )
-  }
-
-  if (is.null(map$x$drawControl)) {
-    map$x$drawControl <- options
-    map$x$controls <- c(map$x$controls, list(control))
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "draw", control, section_title)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addDraw",
+        list(id = map$id, options = control)
+      )
+    }
+  } else {
+    if (is.null(map$x$drawControl)) {
+      map$x$drawControl <- control
+      map$x$controls <- c(map$x$controls, list(control))
+    }
   }
   map
 }
@@ -203,40 +276,161 @@ remove_control <- function(proxy, control_id) {
   proxy
 }
 
+#' Remove a control from a control panel.
+#'
+#' @param proxy       The map proxy object created by `mapProxy()`.
+#' @param panel_id    The ID of the control panel.
+#' @param control_id  The ID of the control to remove from the panel.
+#' @return            The map proxy object for chaining.
+#' @export
+remove_control_from_panel <- function(proxy, panel_id, control_id) {
+  proxy$session$sendCustomMessage(
+    "removeControlFromPanel",
+    list(
+      id = proxy$id,
+      panelId = panel_id,
+      controlId = control_id
+    )
+  )
+  proxy
+}
+
 #' Remove the draw control from the map.
 #'
-#' @param proxy  The map proxy object created by `mapProxy()`.
-#' @return       The map proxy object for chaining.
+#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param panel_id  Optional. If provided, removes the draw control from the specified control panel.
+#'                  If NULL, removes the standalone draw control.
+#' @return          The map proxy object for chaining.
 #' @export
-remove_draw_control <- function(proxy) {
-  remove_control(proxy, "toro_draw_control")
+remove_draw_control <- function(proxy, panel_id = NULL) {
+  # Use the namespaced control ID pattern: draw-control-{mapId}
+  control_id <- paste0("draw-control-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
 }
 
 #' Remove the zoom control from the map.
 #'
-#' @param proxy  The map proxy object created by `mapProxy()`.
-#' @return       The map proxy object for chaining.
+#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param panel_id  Optional. If provided, removes the zoom control from the specified control panel.
+#'                  If NULL, removes the standalone zoom control.
+#' @return          The map proxy object for chaining.
 #' @export
-remove_zoom_control <- function(proxy) {
-  remove_control(proxy, "toro_zoom_control")
+remove_zoom_control <- function(proxy, panel_id = NULL) {
+  # Use the namespaced control ID pattern: zoom-control-{mapId}
+  control_id <- paste0("zoom-control-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
 }
 
 #' Remove the cursor coordinates control from the map.
 #'
-#' @param proxy  The map proxy object created by `mapProxy()`.
-#' @return       The map proxy object for chaining.
+#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param panel_id  Optional. If provided, removes the cursor coordinates control from the specified control panel.
+#'                  If NULL, removes the standalone cursor coordinates control.
+#' @return          The map proxy object for chaining.
 #' @export
-remove_cursor_coords_control <- function(proxy) {
-  remove_control(proxy, "toro_cursor_coords_control")
+remove_cursor_coords_control <- function(proxy, panel_id = NULL) {
+  # Use the namespaced control ID pattern: cursor-coords-{mapId}
+  control_id <- paste0("cursor-coords-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
 }
 
 #' Remove the timeline control from the map.
 #'
-#' @param proxy  The map proxy object created by `mapProxy()`.
-#' @return       The map proxy object for chaining.
+#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param panel_id  Optional. If provided, removes the timeline control from the specified control panel.
+#'                  If NULL, removes the standalone timeline control.
+#' @return          The map proxy object for chaining.
 #' @export
-remove_timeline_control <- function(proxy) {
-  remove_control(proxy, "toro_timeline_control")
+remove_timeline_control <- function(proxy, panel_id = NULL) {
+  # Use the namespaced control ID pattern: toro_timeline_control-{mapId}
+  control_id <- paste0("toro_timeline_control-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
+}
+
+#' Remove the speed control from the map.
+#'
+#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param panel_id  Optional. If provided, removes the speed control from the specified control panel.
+#'                  If NULL, removes the standalone speed control.
+#' @return          The map proxy object for chaining.
+#' @export
+remove_speed_control <- function(proxy, panel_id = NULL) {
+  # Use the namespaced control ID pattern: toro_speed_control-{mapId}
+  control_id <- paste0("toro_speed_control-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
+}
+
+#' Remove the tile selector control from the map.
+#'
+#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param panel_id  Optional. If provided, removes the tile selector control from the specified control panel.
+#'                  If NULL, removes the standalone tile selector control.
+#' @return          The map proxy object for chaining.
+#' @export
+remove_tile_selector_control <- function(proxy, panel_id = NULL) {
+  # Use the namespaced control ID pattern: toro_tile_selector_control-{mapId}
+  control_id <- paste0("toro_tile_selector_control-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
+}
+
+#' Remove a custom control from the map.
+#'
+#' @param proxy       The map proxy object created by `mapProxy()`.
+#' @param control_id  The ID of the custom control to remove.
+#' @param panel_id    Optional. If provided, removes the custom control from the specified control panel.
+#'                    If NULL, removes the standalone custom control.
+#' @return            The map proxy object for chaining.
+#' @export
+remove_custom_control <- function(proxy, control_id, panel_id = NULL) {
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
 }
 
 #' Add a control panel to the map

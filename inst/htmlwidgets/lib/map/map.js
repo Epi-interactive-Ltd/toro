@@ -34,6 +34,7 @@ HTMLWidgets.widget({
         el.mapInstance = mapInstance; // Attach to the element for later access
         window[el.id] = this; // Store the instance globally for debugging
         el.widgetInstance = this;
+        this.id = el.id; // Make ID available directly on widget instance
 
         el.ourLayers = []; // Layers added by us
         el.tileLayers = [];
@@ -119,19 +120,33 @@ HTMLWidgets.widget({
           if (x.controls) {
             x.controls.forEach((control) => {
               if (control.type === "cursor") {
+                if (control.panelId) {
+                  // Will be added to panel later during panel processing
+                  return;
+                }
                 addCursorCoordinateControl(
                   mapInstance,
                   control.position,
                   control.longLabel,
-                  control.latLabel
+                  control.latLabel,
+                  el.widgetInstance
                 );
               } else if (control.type === "zoom") {
+                if (control.panelId) {
+                  // Will be added to panel later during panel processing
+                  return;
+                }
                 addZoomControl(
                   mapInstance,
                   control.position,
-                  control.controlOptions
+                  control.controlOptions,
+                  el.widgetInstance
                 );
               } else if (control.type === "custom") {
+                if (control.panelId) {
+                  // Will be added to panel later during panel processing
+                  return;
+                }
                 addCustomControl(
                   mapInstance,
                   control.controlId,
@@ -139,13 +154,18 @@ HTMLWidgets.widget({
                   control.position
                 );
               } else if (control.type === "draw") {
+                if (control.panelId) {
+                  // Will be added to panel later during panel processing
+                  return;
+                }
                 addDrawControl(
                   el,
                   control.position,
                   control.modes,
                   control.activeColour,
                   control.inactiveColour,
-                  control.modeLabels
+                  control.modeLabels,
+                  control.controlId
                 );
               }
             });
@@ -157,7 +177,7 @@ HTMLWidgets.widget({
               const panel = x.controlPanels[panelId];
               const options = panel.options || {};
 
-              addControlPanel(el.widgetInstance, panelId, options);
+              addControlPanel(el, panelId, options);
 
               // Add any custom controls specified for this panel
               if (options.customControls && options.customControls.length > 0) {
@@ -219,6 +239,19 @@ HTMLWidgets.widget({
                       control.options.html,
                       control.title
                     );
+                  }
+                });
+              }
+
+              // Add controls from x.controls that were designated for this panel
+              if (x.controls) {
+                x.controls.forEach(function (control) {
+                  if (control.panelId === panelId) {
+                    addControlToPanel(el, panelId, {
+                      type: control.type,
+                      options: control,
+                      title: control.panelTitle,
+                    });
                   }
                 });
               }
@@ -404,6 +437,10 @@ HTMLWidgets.widget({
         return mapInstance;
       },
 
+      getId: function () {
+        return el.id;
+      },
+
       getDraw: function () {
         return el.draw;
       },
@@ -414,6 +451,10 @@ HTMLWidgets.widget({
 
       getAvailableTiles: function () {
         return el.tileLayers;
+      },
+
+      getElement: function () {
+        return document.querySelector(`#${el.id}.map`);
       },
 
       getCurrentTiles: function () {
@@ -568,12 +609,24 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("addCursorCoordsControl", function (message) {
     withMapInstance(message.id, function (el) {
-      addCursorCoordinateControl(
-        el.mapInstance,
-        message.position,
-        message.longLabel,
-        message.latLabel
-      );
+      const control = message.control || message;
+      if (control.panelId) {
+        // Add to control panel
+        addControlToPanel(el, control.panelId, {
+          type: "cursor",
+          options: control,
+          title: control.panelTitle,
+        });
+      } else {
+        // Add as standalone control
+        addCursorCoordinateControl(
+          el.mapInstance,
+          control.position,
+          control.longLabel,
+          control.latLabel,
+          el.widgetInstance
+        );
+      }
     });
   });
 
@@ -609,31 +662,69 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("addDraw", function (message) {
     withMapInstance(message.id, function (el) {
-      addDrawControl(
-        el,
-        message.options.position,
-        message.options.modes,
-        message.options.activeColour,
-        message.options.inactiveColour,
-        message.options.modeLabels
-      );
+      const options = message.options;
+      if (options.panelId) {
+        // Add to control panel
+        addControlToPanel(el, options.panelId, {
+          type: "draw",
+          options: options,
+          title: options.panelTitle,
+        });
+      } else {
+        // Add as standalone control
+        addDrawControl(
+          el,
+          options.position,
+          options.modes,
+          options.activeColour,
+          options.inactiveColour,
+          options.modeLabels,
+          options.controlId
+        );
+      }
     });
   });
 
   Shiny.addCustomMessageHandler("addZoomControl", function (message) {
     withMapInstance(message.id, function (el) {
-      addZoomControl(el.mapInstance, message.position, message.controlOptions);
+      if (message.panelId) {
+        // Add to control panel
+        addControlToPanel(el, message.panelId, {
+          type: "zoom",
+          options: message,
+          title: message.panelTitle,
+        });
+      } else {
+        // Add as standalone control
+        addZoomControl(
+          el.mapInstance,
+          message.position,
+          message.controlOptions,
+          el.widgetInstance
+        );
+      }
     });
   });
 
   Shiny.addCustomMessageHandler("addCustomControl", function (message) {
     withMapInstance(message.id, function (el) {
-      addCustomControl(
-        el.mapInstance,
-        message.options.controlId,
-        message.options.html,
-        message.options.position
-      );
+      const options = message.options || message.control;
+      if (options.panelId) {
+        // Add to control panel
+        addControlToPanel(el, options.panelId, {
+          type: "custom",
+          options: options,
+          title: options.panelTitle,
+        });
+      } else {
+        // Add as standalone control
+        addCustomControl(
+          el.mapInstance,
+          options.controlId,
+          options.html,
+          options.position
+        );
+      }
     });
   });
 
@@ -645,7 +736,17 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("removeControl", function (message) {
     withMapInstance(message.id, function (el) {
-      removeControl(el, message.controlId);
+      removeControl(el.widgetInstance, message.controlId);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("removeControlFromPanel", function (message) {
+    withMapInstance(message.id, function (el) {
+      removeControlFromPanel(
+        el.widgetInstance,
+        message.panelId,
+        message.controlId
+      );
     });
   });
 
@@ -787,17 +888,13 @@ if (HTMLWidgets.shinyMode) {
   // Control Panel message handlers
   Shiny.addCustomMessageHandler("addControlPanel", function (message) {
     withMapInstance(message.id, function (el) {
-      addControlPanel(el.widgetInstance, message.panelId, message.options);
+      addControlPanel(el, message.panelId, message.options);
     });
   });
 
   Shiny.addCustomMessageHandler("addControlToPanel", function (message) {
     withMapInstance(message.id, function (el) {
-      addControlToPanel(
-        el.widgetInstance,
-        message.panelId,
-        message.controlConfig
-      );
+      addControlToPanel(el, message.panelId, message.controlConfig);
     });
   });
 

@@ -8,7 +8,9 @@ add_cursor_coords_control(
   map,
   position = "bottom-left",
   long_label = "Lng",
-  lat_label = "Lat"
+  lat_label = "Lat",
+  panel_id = NULL,
+  section_title = NULL
 )
 }
 \arguments{
@@ -21,6 +23,10 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 \item{long_label}{The label for the longitude coordinate. Default is \code{"Lng"}.}
 
 \item{lat_label}{The label for the latitude coordinate. Default is \code{"Lat"}.}
+
+\item{panel_id}{ID of control panel to add to (optional).}
+
+\item{section_title}{Section title when added to a control panel.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.

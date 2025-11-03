@@ -35,6 +35,9 @@ Functions:
 \item \code{remove_zoom_control}:       Remove the zoom control from the map.
 \item \code{remove_cursor_coords_control}: Remove the cursor coordinates control from the map.
 \item \code{remove_timeline_control}:    Remove the timeline control from the map.
+\item \code{remove_speed_control}:       Remove the speed control from the map.
+\item \code{remove_tile_selector_control}: Remove the tile selector control from the map.
+\item \code{remove_custom_control}:      Remove a custom control from the map.
 Toggle the visibility of a control on the map.
 }
 }

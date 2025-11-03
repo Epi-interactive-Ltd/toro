@@ -4,13 +4,16 @@
 \alias{remove_cursor_coords_control}
 \title{Remove the cursor coordinates control from the map.}
 \usage{
-remove_cursor_coords_control(proxy)
+remove_cursor_coords_control(proxy, panel_id = NULL)
 }
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
+
+\item{panel_id}{Optional. If provided, removes the cursor coordinates control from the specified control panel.
+If NULL, removes the standalone cursor coordinates control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{  The map proxy object for chaining.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
 }\if{html}{\out{</div>}}
 }
 \description{

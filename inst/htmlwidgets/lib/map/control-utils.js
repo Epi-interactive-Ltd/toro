@@ -38,6 +38,7 @@ const validDrawModes = ["polygon", "trash", "line", "point"]; // Accepted draw m
  * @param {string} inactiveColour Colour for shapes that are not currently being drawn.
  * @param {object} modeLabels     A named list of labels for each mode.
  *                                For example, `{ polygon: "Draw Polygon", trash: "Delete Shape" }
+ * @param {string} controlId      Optional custom control ID. If not provided, uses default pattern.
  * @returns {void}
  */
 function addDrawControl(
@@ -46,7 +47,8 @@ function addDrawControl(
   modes,
   activeColour,
   inactiveColour,
-  modeLabels
+  modeLabels,
+  controlId = null
 ) {
   modes = modes.flat ? modes.flat() : [].concat(...modes);
   modes = modes.filter((mode) => validDrawModes.includes(mode));
@@ -82,8 +84,26 @@ function addDrawControl(
       MapboxDraw.modes
     ),
   });
-  el.draw = draw; // Store the draw instance in the element
+
+  // Generate namespaced ID for the draw control
+  const mapId = el.widgetInstance ? el.widgetInstance.getId() : el.id;
+  const drawControlId = controlId || `draw-control-${mapId}`;
+
+  // Store the draw instance with proper references
+  el.draw = draw;
+  el.drawControlId = drawControlId;
   el.mapInstance.addControl(draw, position);
+
+  // Add the ID to the draw control container after it's added to the DOM
+  setTimeout(() => {
+    const drawControls = el.querySelector(".mapboxgl-ctrl-group");
+    if (
+      drawControls &&
+      drawControls.querySelector(".mapbox-gl-draw_ctrl-draw-btn")
+    ) {
+      drawControls.id = drawControlId;
+    }
+  }, 0);
   // Set the buttons to be clickable
   modes.forEach((mode) => {
     setTimeout(function () {
@@ -424,15 +444,30 @@ function _getDrawnStyle(activeColour, inactiveColour) {
  * @param {string} position   What position to place the control in the map.
  * @param {string} longLabel  Label for the longitude coordinate.
  * @param {string} latLabel   Label for the latitude coordinate.
+ * @param {object} widgetInstance Optional widget instance for ID generation.
  * @returns {void}
  */
-function addCursorCoordinateControl(map, position, longLabel, latLabel) {
+function addCursorCoordinateControl(
+  map,
+  position,
+  longLabel,
+  latLabel,
+  widgetInstance = null
+) {
+  // Generate proper namespaced ID
+  const controlId = widgetInstance
+    ? `cursor-coords-${widgetInstance.getId()}`
+    : "cursor_coords";
+  const coordsDisplayId = widgetInstance
+    ? `map-cursor-coords-${widgetInstance.getId()}`
+    : "map-cursor-coords";
+
   class CursorCoordsControl {
     onAdd(map) {
       this._container = document.createElement("div");
       this._container.className = "toro-ctrl cursor-coords-control";
-      this._container.id = "cursor_coords";
-      this._container.innerHTML = "<p id='map-cursor-coords'></p>";
+      this._container.id = controlId;
+      this._container.innerHTML = `<p id='${coordsDisplayId}'></p>`;
       return this._container;
     }
     onRemove() {
@@ -440,7 +475,7 @@ function addCursorCoordinateControl(map, position, longLabel, latLabel) {
     }
   }
   map.addControl(new CursorCoordsControl(), position);
-  const coordDiv = document.getElementById("map-cursor-coords");
+  const coordDiv = document.getElementById(coordsDisplayId);
   if (!coordDiv) {
     console.warn("Cursor coordinate control element not found.");
     return;
@@ -502,10 +537,19 @@ function toggleControl(el, controlId, show) {
     if (buttons) {
       control = buttons.parentElement;
     }
-  } else if (controlId == "draw_control") {
-    var buttons = el.querySelector(".mapbox-gl-draw_ctrl-draw-btn");
-    if (buttons) {
-      control = buttons.parentElement;
+  } else if (
+    controlId == "draw_control" ||
+    controlId.startsWith("draw-control-")
+  ) {
+    // For backward compatibility, support both old "draw_control" and new namespaced IDs
+    if (controlId.startsWith("draw-control-")) {
+      control = el.querySelector("#" + controlId);
+    } else {
+      // Legacy support - look for any draw control
+      var buttons = el.querySelector(".mapbox-gl-draw_ctrl-draw-btn");
+      if (buttons) {
+        control = buttons.parentElement;
+      }
     }
   } else {
     control = el.querySelector("#" + controlId);
@@ -532,9 +576,10 @@ function toggleControl(el, controlId, show) {
  *                            - showCompass: boolean (default false)
  *                            - visualizePitch: boolean (default false)
  *                            - visualizeRoll: boolean (default false)
+ * @param {object} widgetInstance Optional widget instance for ID generation
  * @return {void}
  */
-function addZoomControl(map, position, options) {
+function addZoomControl(map, position, options, widgetInstance = null) {
   if (Array.isArray(options) || options.length === 0) {
     options = {};
   }
@@ -554,6 +599,27 @@ function addZoomControl(map, position, options) {
   }
   let nav = new maplibregl.NavigationControl(options);
   map.addControl(nav, position);
+
+  // Store reference for removal and set ID if widget instance provided
+  if (widgetInstance) {
+    const controlId = `zoom-control-${widgetInstance.getId()}`;
+    // Store the control reference on the map for later removal
+    if (!map._toroControls) map._toroControls = {};
+    map._toroControls[controlId] = nav;
+
+    // Try to set an ID on the control element after it's added
+    setTimeout(() => {
+      const zoomControl = map
+        .getContainer()
+        .querySelector(".maplibregl-ctrl-group");
+      if (
+        zoomControl &&
+        zoomControl.querySelector(".maplibregl-ctrl-zoom-in")
+      ) {
+        zoomControl.id = controlId;
+      }
+    }, 0);
+  }
 }
 
 /**
@@ -565,11 +631,140 @@ function addZoomControl(map, position, options) {
  */
 function removeControl(widgetInstance, controlId) {
   const map = widgetInstance.getMap();
+  const el = widgetInstance.getElement();
   if (!map) return;
+
+  // Check if this is a draw control
+  if (controlId.startsWith("draw-control-")) {
+    // Remove the MapboxDraw instance from the map
+    if (el.draw) {
+      map.removeControl(el.draw);
+      el.draw = null;
+      el.drawControlId = null;
+    }
+    return;
+  }
+
+  // Check if this is a zoom control
+  if (controlId.startsWith("zoom-control-")) {
+    // Try to remove using stored reference first
+    if (map._toroControls && map._toroControls[controlId]) {
+      map.removeControl(map._toroControls[controlId]);
+      delete map._toroControls[controlId];
+      return;
+    }
+
+    // Fallback: remove by DOM element
+    const controlElement = document.getElementById(controlId);
+    if (controlElement) {
+      controlElement.remove();
+      return;
+    }
+  }
+
+  // Handle other controls normally
   const controlElement = document.getElementById(controlId);
   if (controlElement) {
     controlElement.remove();
   }
+}
+
+/**
+ * Remove a control from a control panel.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {string} panelId          ID of the control panel.
+ * @param {string} controlId        ID of the control to remove.
+ * @return {void}
+ */
+function removeControlFromPanel(widgetInstance, panelId, controlId) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+  const el = widgetInstance.getElement();
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  // Special handling for draw controls
+  if (controlId.startsWith("draw-control-")) {
+    // Remove the MapboxDraw instance from the map first
+    if (el.draw) {
+      map.removeControl(el.draw);
+      el.draw = null;
+      el.drawControlId = null;
+    }
+
+    // Then remove the panel UI elements
+    const panelDrawControl = el.querySelector(
+      `#draw-control-panel-${widgetInstance.getId()}`
+    );
+    if (panelDrawControl) {
+      const section = panelDrawControl.closest(".panel-control-item");
+      if (section) {
+        section.remove();
+      } else {
+        panelDrawControl.remove();
+      }
+    }
+    return;
+  }
+
+  // Try multiple approaches to find and remove the control
+  let controlElement = null;
+
+  // Method 1: Try the panel's built-in removeControl method first
+  if (panel.removeControl) {
+    panel.removeControl(controlId);
+    // Check if it was actually removed
+    controlElement = el.querySelector(`#${controlId}`);
+    if (!controlElement) {
+      return;
+    }
+  }
+
+  // Method 2: Look for control wrapper with the ID (should have panel-control-item class)
+  controlElement = el.querySelector(`#${controlId}.panel-control-item`);
+  if (controlElement) {
+    controlElement.remove();
+    return;
+  }
+
+  // Method 3: Look for any element with the controlId within the panel
+  const panelContentEl = el.querySelector(`#${panelId}-content`);
+  if (panelContentEl) {
+    controlElement = panelContentEl.querySelector(`#${controlId}`);
+    if (controlElement) {
+      // Remove the entire section if it's a panel control item
+      const section = controlElement.closest(".panel-control-item");
+      if (section) {
+        section.remove();
+      } else {
+        controlElement.remove();
+      }
+      return;
+    }
+  }
+
+  // Method 4: Direct removal fallback
+  controlElement = el.querySelector(`#${controlId}`);
+  if (controlElement) {
+    controlElement.remove();
+    return;
+  }
+
+  // Method 3: Try searching within the panel content specifically
+  const panelContent = el.querySelector(`#${panelId}-content`);
+  if (panelContent) {
+    controlElement = panelContent.querySelector(`#${controlId}`);
+    if (controlElement) {
+      controlElement.remove();
+      return;
+    }
+  }
+
+  console.warn(`Could not find control ${controlId} in panel ${panelId}`);
 }
 
 /**
@@ -588,7 +783,9 @@ function removeControl(widgetInstance, controlId) {
  *                                    - customControls: array - Array of custom HTML controls
  * @return {void}
  */
-function addControlPanel(widgetInstance, panelId, options = {}) {
+function addControlPanel(el, panelId, options = {}) {
+  const widgetInstance = el.widgetInstance;
+  const element = widgetInstance.getElement();
   const map = widgetInstance.getMap();
   const title = options.title;
   const showTitle = title && options.showTitle !== false;
@@ -630,8 +827,8 @@ function addControlPanel(widgetInstance, panelId, options = {}) {
   // Setup collapse functionality
   if (collapsible) {
     setTimeout(() => {
-      const collapseBtn = document.getElementById(`${panelId}-collapse-btn`);
-      const panelContent = document.getElementById(`${panelId}-content`);
+      const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
+      const panelContent = el.querySelector(`#${panelId}-content`);
 
       if (collapseBtn && panelContent) {
         collapseBtn.addEventListener("click", function (e) {
@@ -648,7 +845,7 @@ function addControlPanel(widgetInstance, panelId, options = {}) {
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
-    const controlPanel = document.getElementById(panelId);
+    const controlPanel = el.querySelector("#" + panelId);
     if (controlPanel) {
       controlPanel.style.pointerEvents = "auto";
       controlPanel.style.zIndex = "1000";
@@ -668,7 +865,7 @@ function addControlPanel(widgetInstance, panelId, options = {}) {
 
   map._controlPanels[panelId] = {
     addControl: function (controlHTML, controlId = null, sectionTitle = null) {
-      const panelContent = document.getElementById(`${panelId}-content`);
+      const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
         const controlDiv = document.createElement("div");
         if (controlId) {
@@ -697,7 +894,7 @@ function addControlPanel(widgetInstance, panelId, options = {}) {
       return null;
     },
     removeControl: function (controlId) {
-      const controlElement = document.getElementById(controlId);
+      const controlElement = el.querySelector("#" + controlId);
       if (
         controlElement &&
         controlElement.classList.contains("panel-control-item")
@@ -706,22 +903,22 @@ function addControlPanel(widgetInstance, panelId, options = {}) {
       }
     },
     clear: function () {
-      const panelContent = document.getElementById(`${panelId}-content`);
+      const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
         panelContent.innerHTML = "";
       }
     },
     collapse: function () {
-      const panelContent = document.getElementById(`${panelId}-content`);
-      const collapseBtn = document.getElementById(`${panelId}-collapse-btn`);
+      const panelContent = el.querySelector(`#${panelId}-content`);
+      const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
       if (panelContent) {
         panelContent.style.display = "none";
         if (collapseBtn) collapseBtn.textContent = "▶";
       }
     },
     expand: function () {
-      const panelContent = document.getElementById(`${panelId}-content`);
-      const collapseBtn = document.getElementById(`${panelId}-collapse-btn`);
+      const panelContent = el.querySelector(`#${panelId}-content`);
+      const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
       if (panelContent) {
         panelContent.style.display = "flex";
         if (collapseBtn) collapseBtn.textContent = "▼";
@@ -732,7 +929,7 @@ function addControlPanel(widgetInstance, panelId, options = {}) {
   // Add initial controls if specified
   if (options.controls) {
     options.controls.forEach((controlConfig) => {
-      addControlToPanel(widgetInstance, panelId, controlConfig);
+      addControlToPanel(element, panelId, controlConfig);
     });
   }
 
@@ -789,7 +986,8 @@ function addHtmlToPanel(
  *                                    - title: string - Section title for the control
  * @return {void}
  */
-function addControlToPanel(widgetInstance, panelId, controlConfig) {
+function addControlToPanel(el, panelId, controlConfig) {
+  const widgetInstance = el.widgetInstance;
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
 
@@ -799,8 +997,8 @@ function addControlToPanel(widgetInstance, panelId, controlConfig) {
   }
 
   const controlType = controlConfig.type;
-  const controlOptions = controlConfig.options || {};
-  const sectionTitle = controlConfig.title;
+  const controlOptions = controlConfig.options || controlConfig;
+  const sectionTitle = controlConfig.title || controlConfig.panelTitle;
 
   // Mark that this control should be added to the panel
   controlOptions.useControlPanel = true;
@@ -820,18 +1018,395 @@ function addControlToPanel(widgetInstance, panelId, controlConfig) {
 
     case "custom":
       // Add custom HTML directly
-      if (controlConfig.html) {
+      if (controlConfig.html || controlOptions.html) {
+        // Look for controlId in the right places: options.controlId, controlConfig.controlId, controlConfig.id
+        const customControlId =
+          controlOptions.controlId ||
+          controlConfig.controlId ||
+          controlConfig.id ||
+          null;
         panel.addControl(
-          controlConfig.html,
-          controlConfig.id || null,
+          controlConfig.html || controlOptions.html,
+          customControlId,
           sectionTitle
         );
       }
       break;
 
+    case "cursor":
+      // Add cursor coordinates control to panel
+      addCursorCoordinateControlToPanel(
+        widgetInstance,
+        panelId,
+        controlOptions,
+        sectionTitle
+      );
+      break;
+
+    case "zoom":
+      // Add zoom control to panel
+      addZoomControlToPanel(
+        widgetInstance,
+        panelId,
+        controlOptions,
+        sectionTitle
+      );
+      break;
+
+    case "draw":
+      // Add draw control to panel
+      addDrawControlToPanel(el, panelId, controlOptions, sectionTitle);
+      break;
+
+    case "tile_selector":
+      // Add tile selector control to panel
+      addTileSelectorControlToPanel(
+        widgetInstance,
+        panelId,
+        controlOptions,
+        sectionTitle
+      );
+      break;
+
     default:
       console.warn(`Unknown control type: ${controlType}`);
   }
+}
+
+/**
+ * Add cursor coordinates control to a control panel
+ */
+function addCursorCoordinateControlToPanel(
+  widgetInstance,
+  panelId,
+  options,
+  sectionTitle
+) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) return;
+
+  const longLabel = options.longLabel || "Lng";
+  const latLabel = options.latLabel || "Lat";
+
+  const html = `
+    <div class="cursor-coords-control">
+      <div class="coord-item">
+        <span class="coord-label">${longLabel}:</span>
+        <span class="coord-value" id="cursor-lng-${widgetInstance.getId()}">--</span>
+      </div>
+      <div class="coord-item">
+        <span class="coord-label">${latLabel}:</span>
+        <span class="coord-value" id="cursor-lat-${widgetInstance.getId()}">--</span>
+      </div>
+    </div>
+    <style>
+      .cursor-coords-control {
+        display: flex;
+        gap: 10px;
+        font-size: 12px;
+        font-family: monospace;
+      }
+      .coord-item {
+        display: flex;
+        gap: 4px;
+      }
+      .coord-label {
+        font-weight: bold;
+      }
+      .coord-value {
+        min-width: 60px;
+      }
+    </style>
+  `;
+
+  panel.addControl(
+    html,
+    `cursor-coords-${widgetInstance.getId()}`,
+    sectionTitle
+  );
+
+  // Add mouse move listener
+  map.on("mousemove", function (e) {
+    const lngElement = document.getElementById(
+      `cursor-lng-${widgetInstance.getId()}`
+    );
+    const latElement = document.getElementById(
+      `cursor-lat-${widgetInstance.getId()}`
+    );
+
+    if (lngElement && latElement) {
+      lngElement.textContent = e.lngLat.lng.toFixed(6);
+      latElement.textContent = e.lngLat.lat.toFixed(6);
+    }
+  });
+}
+
+/**
+ * Add zoom control to a control panel
+ */
+function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) return;
+
+  const html = `
+    <div class="zoom-control-panel">
+      <button class="zoom-in-btn" title="Zoom In">+</button>
+      <button class="zoom-out-btn" title="Zoom Out">−</button>
+    </div>
+    <style>
+      .zoom-control-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+      .zoom-control-panel button {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .zoom-control-panel button:hover {
+        background: #f0f0f0;
+      }
+      .zoom-control-panel button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
+  `;
+
+  panel.addControl(
+    html,
+    `zoom-control-${widgetInstance.getId()}`,
+    sectionTitle
+  );
+
+  // Add event listeners
+  setTimeout(() => {
+    const container = panel.container.querySelector(
+      `#zoom-control-${widgetInstance.getId()}`
+    );
+    if (container) {
+      const zoomInBtn = container.querySelector(".zoom-in-btn");
+      const zoomOutBtn = container.querySelector(".zoom-out-btn");
+
+      if (zoomInBtn) {
+        zoomInBtn.addEventListener("click", () => {
+          map.zoomIn();
+        });
+      }
+
+      if (zoomOutBtn) {
+        zoomOutBtn.addEventListener("click", () => {
+          map.zoomOut();
+        });
+      }
+    }
+  }, 100);
+}
+
+/**
+ * Add draw control to a control panel
+ */
+function addDrawControlToPanel(el, panelId, options, sectionTitle) {
+  const widgetInstance = el.widgetInstance;
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+  const mapElement = el;
+
+  if (!panel) return;
+
+  // Create the actual draw control for panel use
+  const modes = options.modes
+    ? Array.isArray(options.modes[0])
+      ? options.modes[0]
+      : options.modes
+    : ["polygon", "trash"];
+
+  // Use the existing addDrawControl function if draw control doesn't exist yet
+  if (!mapElement.draw) {
+    // Use addDrawControl to create the draw instance with proper setup
+    addDrawControl(
+      mapElement,
+      "top-left", // Position (will be hidden anyway)
+      modes,
+      options.activeColour || "#007cbf",
+      options.inactiveColour || "#999999",
+      options.modeLabels || {},
+      options.controlId
+    );
+
+    // Hide the default MapboxDraw control UI since we're using panel buttons
+    setTimeout(() => {
+      // Find draw controls specifically within this map element
+      const drawControls = mapElement.querySelector(
+        ".mapboxgl-ctrl-group.mapboxgl-ctrl"
+      );
+      if (
+        drawControls &&
+        drawControls.querySelector(
+          ".mapbox-gl-draw_polygon, .mapbox-gl-draw_trash, .mapbox-gl-draw_line"
+        )
+      ) {
+        drawControls.style.display = "none";
+      }
+    }, 100);
+  }
+
+  // Create custom panel buttons that interact with the real draw control
+  const modeLabels = options.modeLabels || {};
+  let buttonsHtml = "";
+
+  modes.forEach((mode) => {
+    const label =
+      modeLabels[mode] || mode.charAt(0).toUpperCase() + mode.slice(1);
+    // Map mode names to MapboxDraw CSS classes and use proper CSS class styling
+    const modeClass = mode === "line" ? "line_string" : mode;
+    buttonsHtml += `<button class="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_${modeClass}" data-mode="${mode}" title="${label}"></button>`;
+  });
+
+  const html = `
+    <div class="draw-control-panel mapboxgl-ctrl-group" id="draw-control-panel-${widgetInstance.getId()}">
+      ${buttonsHtml}
+    </div>
+  `;
+
+  panel.addControl(
+    html,
+    `draw-control-${widgetInstance.getId()}`,
+    sectionTitle
+  );
+
+  // Add event listeners to make the buttons functional
+  setTimeout(() => {
+    const drawPanel = document.getElementById(
+      `draw-control-panel-${widgetInstance.getId()}`
+    );
+    if (drawPanel && mapElement.draw) {
+      const buttons = drawPanel.querySelectorAll(
+        ".mapbox-gl-draw_ctrl-draw-btn"
+      );
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", function () {
+          const mode = this.getAttribute("data-mode");
+
+          // Remove active class from all buttons
+          buttons.forEach((btn) => btn.classList.remove("active"));
+
+          // Handle different draw modes
+          if (mode === "polygon") {
+            this.classList.add("active");
+            mapElement.draw.changeMode("draw_polygon");
+          } else if (mode === "line") {
+            this.classList.add("active");
+            mapElement.draw.changeMode("draw_line_string");
+          } else if (mode === "trash") {
+            // Delete all features
+            const features = mapElement.draw.getAll();
+            if (features.features.length > 0) {
+              mapElement.draw.deleteAll();
+            }
+          } else if (mode === "simple_select") {
+            this.classList.add("active");
+            mapElement.draw.changeMode("simple_select");
+          }
+        });
+      });
+
+      // Listen for draw events to update button states
+      map.on("draw.modechange", function (e) {
+        buttons.forEach((btn) => btn.classList.remove("active"));
+
+        if (e.mode === "draw_polygon") {
+          const polygonBtn = drawPanel.querySelector('[data-mode="polygon"]');
+          if (polygonBtn) polygonBtn.classList.add("active");
+        } else if (e.mode === "draw_line_string") {
+          const lineBtn = drawPanel.querySelector('[data-mode="line"]');
+          if (lineBtn) lineBtn.classList.add("active");
+        }
+      });
+
+      // Add Shiny event handlers if in Shiny mode
+      if (HTMLWidgets.shinyMode) {
+        // Trigger Shiny input when a feature is created
+        map.on("draw.create", function (e) {
+          const feature = e.features[0];
+          const geojson = JSON.stringify(feature);
+          Shiny.setInputValue(mapElement.id + "_shape_created", geojson, {
+            priority: "event",
+          });
+        });
+
+        // Trigger Shiny input when a feature is deleted
+        map.on("draw.delete", function (e) {
+          const feature = e.features[0];
+          const geojson = JSON.stringify(feature);
+          Shiny.setInputValue(mapElement.id + "_shape_deleted", geojson, {
+            priority: "event",
+          });
+        });
+
+        // Trigger Shiny input when a feature is updated
+        map.on("draw.update", function (e) {
+          const feature = e.features[0];
+          const geojson = JSON.stringify(feature);
+          Shiny.setInputValue(mapElement.id + "_shape_updated", geojson, {
+            priority: "event",
+          });
+        });
+      }
+    }
+  }, 100);
+}
+
+/**
+ * Add tile selector control to a control panel
+ */
+function addTileSelectorControlToPanel(
+  widgetInstance,
+  panelId,
+  options,
+  sectionTitle
+) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) return;
+
+  // Use the existing tile selector control logic
+  const tileSelectorOptions = {
+    ...options,
+    useControlPanel: true,
+    panelId: panelId,
+    panelTitle: sectionTitle,
+  };
+
+  // Create the tile change callback
+  const tileChangeCallback = function (selectedTile) {
+    // Use the existing setTileLayer function if available
+    if (typeof setTileLayer === "function") {
+      const mapElement = document.getElementById(widgetInstance.id);
+      setTileLayer(mapElement, selectedTile);
+    }
+  };
+
+  // Add the tile selector control
+  addTileSelectorControl(
+    widgetInstance,
+    tileChangeCallback,
+    tileSelectorOptions
+  );
 }
 
 /**
@@ -935,16 +1510,24 @@ function addTimelineControl(
     }
   }
 
+  // Generate unique IDs by appending map ID
+  const mapId = widgetInstance.getId();
+  const timelineContainerId = `timeline-control-container-${mapId}`;
+  const playPauseId = `timeline-play-pause-${mapId}`;
+  const currentDateId = `timeline-current-date-${mapId}`;
+  const sliderId = `timeline-slider-${mapId}`;
+  const controlId = `toro_timeline_control-${mapId}`;
+
   // HTML for the control
   const html = `
     <div class="timeline-control-container">
-      <button id="timeline-play-pause" class="timeline-play-btn">▶</button>
+      <button id="${playPauseId}" class="timeline-play-btn">▶</button>
       <div class="timeline-axis-container">
         <!-- Current date display above slider - always visible -->
-        <div id="timeline-current-date">${start}</div>
+        <div id="${currentDateId}">${start}</div>
         <!-- Slider with custom styling -->
         <div class="timeline-slider-container">
-          <input type="range" id="timeline-slider" min="0" max="100" value="0" />
+          <input type="range" id="${sliderId}" min="0" max="100" value="0" />
           
           <!-- Date ticks -->
           ${axisHTML}
@@ -969,22 +1552,17 @@ function addTimelineControl(
     // Add to existing control panel
     map._controlPanels[panelId].addControl(
       html,
-      "timeline-control-section",
+      timelineContainerId,
       options.panelTitle
     );
   } else {
     // Add as standalone control
-    addCustomControl(
-      map,
-      "toro_timeline_control",
-      html,
-      options.position || "bottom-left"
-    );
+    addCustomControl(map, controlId, html, options.position || "bottom-left");
   }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
-    const timelineControl = document.getElementById("toro_timeline_control");
+    const timelineControl = document.getElementById(controlId);
     if (timelineControl) {
       timelineControl.style.pointerEvents = "auto";
       timelineControl.style.zIndex = "1000";
@@ -1065,7 +1643,7 @@ function addTimelineControl(
       currentStartDate.getTime() +
         progress * (currentEndDate.getTime() - currentStartDate.getTime())
     );
-    const currentDateDisplay = document.getElementById("timeline-current-date");
+    const currentDateDisplay = document.getElementById(currentDateId);
 
     if (currentDateDisplay) {
       // Update date text
@@ -1090,8 +1668,8 @@ function addTimelineControl(
   };
 
   function setupEventHandlers() {
-    playPauseBtn = document.getElementById("timeline-play-pause");
-    timelineSlider = document.getElementById("timeline-slider");
+    playPauseBtn = document.getElementById(playPauseId);
+    timelineSlider = document.getElementById(sliderId);
 
     if (!playPauseBtn || !timelineSlider) {
       console.warn("Timeline control elements not found, retrying...");
@@ -1144,6 +1722,11 @@ function addTimelineControl(
 
   // Store references for external access
   map._timelineControl = {
+    controlId: controlId,
+    timelineContainerId: timelineContainerId,
+    playPauseId: playPauseId,
+    sliderId: sliderId,
+    currentDateId: currentDateId,
     playPauseBtn: playPauseBtn,
     slider: timelineSlider,
     updateAppearance: updateSliderAppearance,
@@ -1243,9 +1826,7 @@ function addTimelineControl(
       );
 
       // Update the current date display
-      const currentDateDisplay = document.getElementById(
-        "timeline-current-date"
-      );
+      const currentDateDisplay = document.getElementById(currentDateId);
       if (currentDateDisplay) {
         const formattedDate = startDateObj.toLocaleDateString("en-US", {
           month: "short",
@@ -1261,7 +1842,9 @@ function addTimelineControl(
       }
 
       // Rebuild axis ticks with new date range
-      const axisContainer = document.querySelector(".timeline-axis-container");
+      const axisContainer = document.querySelector(
+        `#${timelineContainerId} .timeline-axis-container`
+      );
       if (axisContainer) {
         // Remove existing ticks
         const existingTicks = axisContainer.querySelectorAll(".timeline-tick");
@@ -1370,6 +1953,11 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     return;
   }
 
+  // Generate unique IDs by appending map ID
+  const mapId = widgetInstance.getId();
+  const speedSliderId = `speed-slider-${mapId}`;
+  const speedControlId = `toro_speed_control-${mapId}`;
+
   // Generate tick marks for the slider
   const ticksHTML = speedLabels
     .map((label, index) => {
@@ -1386,9 +1974,9 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   const html = `
     <div class="speed-control-container">
       <div class="speed-slider-container">
-        <input type="range" id="speed-slider" min="0" max="${
-          speedValues.length - 1
-        }" 
+        <input type="range" id="${speedSliderId}" min="0" max="${
+    speedValues.length - 1
+  }" 
                value="${defaultIndex}" step="1"  />
         ${ticksHTML}
       </div>
@@ -1415,7 +2003,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     // Add as standalone control
     addCustomControl(
       map,
-      "toro_speed_control",
+      speedControlId,
       html,
       options.position || "top-right"
     );
@@ -1423,7 +2011,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
-    const speedControl = document.getElementById("toro_speed_control");
+    const speedControl = document.getElementById(speedControlId);
     if (speedControl) {
       speedControl.style.pointerEvents = "auto";
       speedControl.style.zIndex = "1000";
@@ -1458,7 +2046,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   };
 
   function setupEventHandlers() {
-    const speedSlider = document.getElementById("speed-slider");
+    const speedSlider = document.getElementById(speedSliderId);
 
     if (!speedSlider) {
       console.warn("Speed control slider not found, retrying...");
@@ -1517,7 +2105,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
       currentIndex = closestIndex;
 
       // Update slider position
-      const speedSlider = document.getElementById("speed-slider");
+      const speedSlider = document.getElementById(speedSliderId);
       if (speedSlider) {
         speedSlider.value = closestIndex;
       }
@@ -1532,7 +2120,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
         currentIndex = index;
 
         // Update slider position
-        const speedSlider = document.getElementById("speed-slider");
+        const speedSlider = document.getElementById(speedSliderId);
         if (speedSlider) {
           speedSlider.value = index;
         }
@@ -1544,7 +2132,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     },
     enable: function (newOnSpeedChange) {
       // Enable the speed control and set up event handlers
-      const speedSlider = document.getElementById("speed-slider");
+      const speedSlider = document.getElementById(speedSliderId);
       if (speedSlider) {
         // Remove disabled class and enable control
         const speedContainer = speedSlider.closest(".speed-control-container");
@@ -1571,7 +2159,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     },
     disable: function () {
       // Disable the speed control
-      const speedSlider = document.getElementById("speed-slider");
+      const speedSlider = document.getElementById(speedSliderId);
       if (speedSlider) {
         // Add disabled class
         const speedContainer = speedSlider.closest(".speed-control-container");
@@ -1610,12 +2198,15 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
 
   // Set default options - get available tiles from the map's loaded tiles
   const mapElement = document.querySelector(
-    `[data-for="${widgetInstance.id}"]`
+    `[data-for="${widgetInstance.getId()}"]`
   );
   const loadedTiles =
     mapElement?.tileLayers || options.availableTiles || map.getAvailableTiles();
   const availableTiles = options.availableTiles || loadedTiles;
   const labels = options.labels || {};
+
+  // Generate unique IDs using the map ID
+  const tileSelectorId = `tile-selector-${widgetInstance.getId()}`;
 
   // Use current active tile as default, falling back to first available tile
   const activeTile = widgetInstance.getCurrentTiles
@@ -1637,12 +2228,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   // HTML for the control
   const html = `
     <div class="tile-selector-container">
-      ${
-        options.panelTitle
-          ? `<div class="tile-selector-title">${options.panelTitle}</div>`
-          : ""
-      }
-      <select id="tile-selector" class="tile-selector">
+      <select id="${tileSelectorId}" class="tile-selector">
         ${selectOptions}
       </select>
     </div>
@@ -1693,6 +2279,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   // Add the control to the map or control panel
   const useControlPanel = options.useControlPanel || false;
   const panelId = options.panelId;
+  const selectControlId = `toro_tile_selector_control-${widgetInstance.getId()}`;
 
   if (
     useControlPanel &&
@@ -1706,7 +2293,8 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     // Add as standalone control
     addCustomControl(
       widgetInstance,
-      "toro_tile_selector_control",
+      // "toro_tile_selector_control",
+      selectControlId,
       html,
       options.position || "top-right"
     );
@@ -1715,7 +2303,8 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
     const tileSelectorControl = document.getElementById(
-      "toro_tile_selector_control"
+      // "toro_tile_selector_control"
+      selectControlId
     );
     if (tileSelectorControl) {
       tileSelectorControl.style.pointerEvents = "auto";
@@ -1746,9 +2335,8 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     }
   };
 
+  const tileSelector = document.getElementById(tileSelectorId);
   function setupEventHandlers() {
-    const tileSelector = document.getElementById("tile-selector");
-
     if (!tileSelector) {
       console.warn("Tile selector control not found, retrying...");
       setTimeout(setupEventHandlers, 50);
@@ -1784,6 +2372,8 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
 
   setupEventHandlers();
 
+  // const tileSelectorId = `tile-selector-${widgetInstance.getId()}`;
+
   // Store reference for external access
   map._tileSelectorControl = {
     availableTiles: availableTiles,
@@ -1796,7 +2386,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
         currentTile = tileId;
 
         // Update selector value
-        const tileSelector = document.getElementById("tile-selector");
+        const tileSelector = document.getElementById(tileSelectorId);
         if (tileSelector) {
           tileSelector.value = tileId;
         }
@@ -1808,7 +2398,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     },
     enable: function (newOnTileChange) {
       // Enable the tile selector control and set up event handlers
-      const tileSelector = document.getElementById("tile-selector");
+      const tileSelector = document.getElementById(tileSelectorId);
       if (tileSelector) {
         // Remove disabled class and enable control
         const tileSelectorContainer = tileSelector.closest(
@@ -1837,7 +2427,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     },
     disable: function () {
       // Disable the tile selector control
-      const tileSelector = document.getElementById("tile-selector");
+      const tileSelector = document.getElementById(tileSelectorId);
       if (tileSelector) {
         // Add disabled class
         const tileSelectorContainer = tileSelector.closest(

@@ -188,8 +188,9 @@ function setTileLayer(el, layerId) {
     const currentControlTile =
       el.mapInstance._tileSelectorControl.getCurrentTile();
     if (currentControlTile !== layerId) {
+      const tileSelectorId = `tile-selector-${widgetInstance.getId()}`;
       // Use setTile method but without triggering the callback to avoid infinite loops
-      const tileSelector = document.getElementById("tile-selector");
+      const tileSelector = document.getElementById(tileSelectorId);
       if (tileSelector) {
         tileSelector.value = layerId;
       }

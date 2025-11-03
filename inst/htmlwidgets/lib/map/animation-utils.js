@@ -227,7 +227,7 @@ function addRoute(widgetInstance, routeOptions) {
 
     // Only create if it doesn't already exist
     if (!map._controlPanels || !map._controlPanels[panelId]) {
-      addControlPanel(widgetInstance, panelId, {
+      addControlPanel(el, panelId, {
         title: panelOptions.title || "Animation Controls",
         position: panelOptions.position || "bottom-left",
         collapsible: panelOptions.collapsible !== false,
@@ -238,8 +238,9 @@ function addRoute(widgetInstance, routeOptions) {
   }
 
   // Check for existing timeline controls in panels and connect them to animation
-  const existingTimelineControl = checkForExistingTimelineControl(map);
-  const existingSpeedControl = checkForExistingSpeedControl(map);
+  const existingTimelineControl =
+    checkForExistingTimelineControl(widgetInstance);
+  const existingSpeedControl = checkForExistingSpeedControl(widgetInstance);
 
   if (showTimelineControls || existingTimelineControl) {
     // If we found an existing timeline control, make sure the animation knows to update it
@@ -388,7 +389,9 @@ function animateRoute(widgetInstance, routeOptions) {
 
     // Update slider and timeline control to show restart
     if (route.map._timelineControl && route.showTimelineControls) {
-      const timelineSlider = document.getElementById("timeline-slider");
+      const timelineSlider = document.getElementById(
+        `timeline-slider-${widgetInstance.getId()}`
+      );
       if (timelineSlider) {
         timelineSlider.value = 0;
         if (route.map._timelineControl.updateAppearance) {
@@ -634,7 +637,10 @@ function removeRoute(widgetInstance, routeOptions) {
   );
 
   if (route.showTimelineControls && map._timelineControl) {
-    removeControl(widgetInstance, "toro_timeline_control");
+    removeControl(
+      widgetInstance,
+      map._timelineControl.controlId || "toro_timeline_control"
+    );
   }
 
   if (route.showSpeedControl && map._speedControl) {
@@ -650,12 +656,16 @@ function removeRoute(widgetInstance, routeOptions) {
 /**
  * Check for existing timeline control in control panels
  *
- * @param {object} map The map instance
+ * @param {object} widgetInstance The widget instance
  * @returns {object|null} Timeline control element or null if not found
  */
-function checkForExistingTimelineControl(map) {
-  const timelineSlider = document.getElementById("timeline-slider");
-  const playPauseBtn = document.getElementById("timeline-play-pause");
+function checkForExistingTimelineControl(widgetInstance) {
+  const timelineSlider = document.getElementById(
+    `timeline-slider-${widgetInstance.getId()}`
+  );
+  const playPauseBtn = document.getElementById(
+    `timeline-play-pause-${widgetInstance.getId()}`
+  );
 
   if (timelineSlider && playPauseBtn) {
     return { slider: timelineSlider, playPauseBtn: playPauseBtn };
@@ -666,11 +676,13 @@ function checkForExistingTimelineControl(map) {
 /**
  * Check for existing speed control in control panels
  *
- * @param {object} map The map instance
+ * @param {object} widgetInstance The widget instance
  * @returns {object|null} Speed control element or null if not found
  */
-function checkForExistingSpeedControl(map) {
-  const speedSlider = document.getElementById("speed-slider");
+function checkForExistingSpeedControl(widgetInstance) {
+  const speedSlider = document.getElementById(
+    `speed-slider-${widgetInstance.getId()}`
+  );
 
   if (speedSlider) {
     return { slider: speedSlider };

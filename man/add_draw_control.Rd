@@ -11,11 +11,15 @@ add_draw_control(
   modes = c("polygon", "trash"),
   active_colour = "#0FB3CE",
   inactive_colour = "#0FB3CE",
-  mode_labels = list()
+  mode_labels = list(),
+  panel_id = NULL,
+  section_title = NULL
 )
 }
 \arguments{
 \item{map}{The map or map proxy object.}
+
+\item{id}{The ID for the draw control.}
 
 \item{position}{The position of the draw control on the map. Default is \code{"top-right"}.
 Options are "top-left", "top-right", "bottom-left", "bottom-right".}
@@ -30,6 +34,10 @@ Options include "polygon", "trash", "line".}
 
 \item{mode_labels}{A named list of labels for each mode.
 For example, \code{list(polygon = "Draw Polygon", trash = "Delete Shape")}.}
+
+\item{panel_id}{ID of control panel to add to (optional).}
+
+\item{section_title}{Section title when added to a control panel.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{           The map or map proxy object for chaining.
