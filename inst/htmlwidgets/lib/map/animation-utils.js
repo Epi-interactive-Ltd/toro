@@ -219,89 +219,142 @@ function addRoute(widgetInstance, routeOptions) {
     );
   }
 
-  if (showTimelineControls) {
+  // Create control panel if needed
+  const useControlPanel = options.useAnimationControlPanel || false;
+  if (useControlPanel) {
+    const panelOptions = options.animationControlPanelOptions || {};
+    const panelId = panelOptions.panelId || "animation-controls";
+
+    // Only create if it doesn't already exist
+    if (!map._controlPanels || !map._controlPanels[panelId]) {
+      addControlPanel(widgetInstance, panelId, {
+        title: panelOptions.title || "Animation Controls",
+        position: panelOptions.position || "bottom-left",
+        collapsible: panelOptions.collapsible !== false,
+        collapsed: panelOptions.collapsed || false,
+        showTitle: panelOptions.showTitle !== false,
+      });
+    }
+  }
+
+  // Check for existing timeline controls in panels and connect them to animation
+  const existingTimelineControl = checkForExistingTimelineControl(map);
+  const existingSpeedControl = checkForExistingSpeedControl(map);
+
+  if (showTimelineControls || existingTimelineControl) {
+    // If we found an existing timeline control, make sure the animation knows to update it
+    if (existingTimelineControl) {
+      animations[routeId].showTimelineControls = true;
+    }
+
     // Get date range from the route points if available
     const startDate = points.features[0]?.properties?.date || "2023-01-01";
     const endDate =
       points.features[points.features.length - 1]?.properties?.date ||
       "2023-12-31";
 
-    // Add timeline controls
-    addTimelineControl(
-      widgetInstance,
-      startDate,
-      endDate,
-      function (playing) {
-        if (playing) {
-          // Start animation
-          animateRoute(widgetInstance, routeOptions);
-        } else {
-          // Pause animation
-          pauseAnimation(widgetInstance, routeOptions);
-        }
-      },
-      function (progress) {
-        // Handle slider change - jump to specific point in animation
-        const route = widgetInstance.getAnimations()[routeId];
-        if (route && !route.isAnimating) {
-          // Calculate the target step based on progress
-          const targetStep = Math.floor(
-            progress * (route.linePoints.length - 1)
-          );
-          route.counter = targetStep;
+    // Define animation callbacks
+    const playPauseCallback = function (playing) {
+      if (playing) {
+        // Start animation
+        animateRoute(widgetInstance, routeOptions);
+      } else {
+        // Pause animation
+        pauseAnimation(widgetInstance, routeOptions);
+      }
+    };
 
-          // Update the animated point position
-          route.point.features[0].geometry.coordinates =
-            route.linePoints[targetStep].geometry.coordinates;
-          route.map.getSource(route.routePointLayerId).setData(route.point);
+    const sliderCallback = function (progress) {
+      // Handle slider change - jump to specific point in animation
+      const route = widgetInstance.getAnimations()[routeId];
+      if (route && !route.isAnimating) {
+        // Calculate the target step based on progress
+        const targetStep = Math.floor(progress * (route.linePoints.length - 1));
+        route.counter = targetStep;
 
-          // Update visited points if dropping them
-          if (route.dropVisited) {
-            route.visitedPoints.features = [];
+        // Update the animated point position
+        route.point.features[0].geometry.coordinates =
+          route.linePoints[targetStep].geometry.coordinates;
+        route.map.getSource(route.routePointLayerId).setData(route.point);
 
-            // Add all visited points up to current position
-            for (let i = 0; i <= targetStep; i++) {
-              const currentCoord = route.linePoints[i].geometry.coordinates;
-              const coordIndex = route.coords.findIndex(
-                (coord) =>
-                  coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
-              );
+        // Update visited points if dropping them
+        if (route.dropVisited) {
+          route.visitedPoints.features = [];
 
-              if (coordIndex !== -1) {
-                route.visitedPoints.features.push({
-                  type: "Feature",
-                  geometry: {
-                    type: "Point",
-                    coordinates: currentCoord,
-                  },
-                  properties:
-                    route.points.features[coordIndex]?.properties ?? {},
-                });
-              }
+          // Add all visited points up to current position
+          for (let i = 0; i <= targetStep; i++) {
+            const currentCoord = route.linePoints[i].geometry.coordinates;
+            const coordIndex = route.coords.findIndex(
+              (coord) =>
+                coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+            );
+
+            if (coordIndex !== -1) {
+              route.visitedPoints.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: currentCoord,
+                },
+                properties: route.points.features[coordIndex]?.properties ?? {},
+              });
             }
-            route.map
-              .getSource(route.visitedLayerId)
-              .setData(route.visitedPoints);
           }
+          route.map
+            .getSource(route.visitedLayerId)
+            .setData(route.visitedPoints);
         }
-      },
-      options.timelineControlOptions || {}
-    );
+      }
+    };
+
+    if (existingTimelineControl) {
+      // Connect existing timeline control to animation
+      connectTimelineControlToAnimation(
+        map,
+        existingTimelineControl,
+        playPauseCallback,
+        sliderCallback,
+        startDate,
+        endDate
+      );
+    } else {
+      // Add new timeline controls
+      addTimelineControl(
+        widgetInstance,
+        startDate,
+        endDate,
+        playPauseCallback,
+        sliderCallback,
+        options.timelineControlOptions || {}
+      );
+    }
   }
-  if (showSpeedControl) {
-    // Add speed control
-    addSpeedControl(
-      widgetInstance,
-      function (speed) {
-        // Update animation speed
-        const route = widgetInstance.getAnimations()[routeId];
-        if (route) {
-          route.animationSpeed = speed;
-          console.log("Animation speed updated to:", speed);
-        }
-      },
-      options.speedControlOptions || {}
-    );
+
+  if (showSpeedControl || existingSpeedControl) {
+    // Define speed change callback
+    const speedChangeCallback = function (speed) {
+      // Update animation speed
+      const route = widgetInstance.getAnimations()[routeId];
+      if (route) {
+        route.animationSpeed = speed;
+      }
+    };
+
+    if (existingSpeedControl) {
+      // Connect existing speed control to animation
+      connectSpeedControlToAnimation(
+        map,
+        existingSpeedControl,
+        speedChangeCallback
+      );
+    } else {
+      // Add new speed control
+      addSpeedControl(
+        widgetInstance,
+        speedChangeCallback,
+        options.speedControlOptions || {}
+      );
+    }
   }
 }
 
@@ -591,5 +644,225 @@ function removeRoute(widgetInstance, routeOptions) {
   // Remove animation state
   if (widgetInstance.getAnimations()[routeId]) {
     delete widgetInstance.getAnimations()[routeId];
+  }
+}
+
+/**
+ * Check for existing timeline control in control panels
+ *
+ * @param {object} map The map instance
+ * @returns {object|null} Timeline control element or null if not found
+ */
+function checkForExistingTimelineControl(map) {
+  const timelineSlider = document.getElementById("timeline-slider");
+  const playPauseBtn = document.getElementById("timeline-play-pause");
+
+  if (timelineSlider && playPauseBtn) {
+    return { slider: timelineSlider, playPauseBtn: playPauseBtn };
+  }
+  return null;
+}
+
+/**
+ * Check for existing speed control in control panels
+ *
+ * @param {object} map The map instance
+ * @returns {object|null} Speed control element or null if not found
+ */
+function checkForExistingSpeedControl(map) {
+  const speedSlider = document.getElementById("speed-slider");
+
+  if (speedSlider) {
+    return { slider: speedSlider };
+  }
+  return null;
+}
+
+/**
+ * Connect an existing timeline control to animation callbacks
+ *
+ * @param {object} map The map instance
+ * @param {object} timelineControl The timeline control elements
+ * @param {function} playPauseCallback Callback for play/pause events
+ * @param {function} sliderCallback Callback for slider changes
+ * @param {string} startDate Start date for the timeline
+ * @param {string} endDate End date for the timeline
+ */
+function connectTimelineControlToAnimation(
+  map,
+  timelineControl,
+  playPauseCallback,
+  sliderCallback,
+  startDate,
+  endDate
+) {
+  const { slider, playPauseBtn } = timelineControl;
+
+  // Check if timeline was previously disabled and enable it
+  if (map._timelineControl && map._timelineControl.isDisabled) {
+    map._timelineControl.enable(playPauseCallback, sliderCallback);
+  } else {
+    // Enable the controls if they were disabled
+    if (slider.disabled) {
+      slider.disabled = false;
+      slider.style.opacity = "1";
+      slider.style.cursor = "pointer";
+    }
+
+    if (playPauseBtn.disabled) {
+      playPauseBtn.disabled = false;
+      playPauseBtn.style.opacity = "1";
+      playPauseBtn.style.cursor = "pointer";
+    }
+  }
+
+  // Update timeline control date range to match the route dates
+  if (map._timelineControl && map._timelineControl.updateDateRange) {
+    map._timelineControl.updateDateRange(startDate, endDate, 3);
+  }
+
+  // Remove existing event listeners to avoid duplicates
+  const oldOnClick = playPauseBtn.onclick;
+  const oldOnInput = slider.oninput;
+
+  playPauseBtn.onclick = null;
+  slider.oninput = null;
+
+  // Add new event listeners
+  let playing = false;
+
+  // Store the original setPlaying method and enhance it
+  const originalSetPlaying = map._timelineControl?.setPlaying;
+  if (map._timelineControl) {
+    map._timelineControl.setPlaying = function (isPlaying) {
+      playing = isPlaying; // Update our local playing variable
+      if (originalSetPlaying) {
+        originalSetPlaying.call(this, isPlaying); // Call the original method
+      } else {
+        // Fallback if no original method exists
+        if (playPauseBtn) {
+          playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+        }
+        if (slider) {
+          slider.disabled = playing;
+          slider.style.opacity = playing ? "0.5" : "1";
+          slider.style.cursor = playing ? "not-allowed" : "pointer";
+        }
+      }
+    };
+  }
+
+  // Note: Play/pause event handling is managed by the timeline control's handlePlayPause function
+  // which calls the playPauseCallback. No additional event listener needed here.
+
+  slider.addEventListener("input", function (e) {
+    e.stopPropagation();
+
+    if (!playing) {
+      const progress = parseFloat(this.value) / 100;
+      sliderCallback(progress);
+    }
+  });
+
+  // Store reference for external access
+  if (!map._timelineControl) {
+    map._timelineControl = {
+      playPauseBtn: playPauseBtn,
+      slider: slider,
+      setProgress: function (progress) {
+        if (slider) {
+          const oldOnInput = slider.oninput;
+          slider.oninput = null;
+          slider.value = Math.round(progress * 100);
+          slider.oninput = oldOnInput;
+        }
+      },
+      setPlaying: function (isPlaying) {
+        playing = isPlaying;
+        if (playPauseBtn) {
+          playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+        }
+        if (slider) {
+          slider.disabled = playing;
+          slider.style.opacity = playing ? "0.5" : "1";
+          slider.style.cursor = playing ? "not-allowed" : "pointer";
+        }
+      },
+    };
+  }
+}
+
+/**
+ * Connect an existing speed control to animation callback
+ *
+ * @param {object} map The map instance
+ * @param {object} speedControl The speed control elements
+ * @param {function} speedChangeCallback Callback for speed changes
+ */
+function connectSpeedControlToAnimation(
+  map,
+  speedControl,
+  speedChangeCallback
+) {
+  const { slider } = speedControl;
+
+  // Enable the control if it was disabled using the proper enable method
+  if (map._speedControl && typeof map._speedControl.enable === "function") {
+    map._speedControl.enable(speedChangeCallback);
+  } else {
+    // Fallback: Enable the control manually if enable method not available
+    if (slider.disabled) {
+      slider.disabled = false;
+      slider.style.opacity = "1";
+      slider.style.cursor = "pointer";
+    }
+  }
+
+  // Remove existing event listener to avoid duplicates
+  const oldOnInput = slider.oninput;
+  slider.oninput = null;
+
+  // Add new event listener
+  slider.addEventListener("input", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const sliderIndex = parseInt(this.value);
+
+    // Get speed values from the stored speed control configuration
+    const speedValues = map._speedControl?.speedValues || [0.5, 1, 2];
+    const speed = speedValues[sliderIndex] || 1;
+
+    speedChangeCallback(speed);
+  });
+
+  // Store reference for external access
+  if (!map._speedControl) {
+    map._speedControl = {
+      slider: slider,
+      getCurrentSpeed: function () {
+        const speedValues = map._speedControl?.speedValues || [0.5, 1, 2];
+        const sliderIndex = parseInt(slider.value);
+        return speedValues[sliderIndex] || 1;
+      },
+      setSpeed: function (speed) {
+        const speedValues = map._speedControl?.speedValues || [0.5, 1, 2];
+        const closestIndex = speedValues.reduce((closest, current, index) => {
+          return Math.abs(current - speed) <
+            Math.abs(speedValues[closest] - speed)
+            ? index
+            : closest;
+        }, 0);
+
+        if (slider) {
+          const oldOnInput = slider.oninput;
+          slider.oninput = null;
+          slider.value = closestIndex;
+          slider.oninput = oldOnInput;
+        }
+
+        speedChangeCallback(speedValues[closestIndex]);
+      },
+    };
   }
 }

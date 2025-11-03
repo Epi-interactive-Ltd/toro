@@ -123,14 +123,14 @@
 }
 
 /** Timeline Control + Speed Control Styles **/
-#toro_speed_control,
-#toro_timeline_control {
+#speed-control-section,
+#timeline-control-section {
   pointer-events: auto !important;
   z-index: 1000 !important;
 }
 
-#toro_speed_control .speed-control-container,
-#toro_timeline_control .timeline-control-container {
+.speed-control-container,
+.timeline-control-container {
   pointer-events: auto !important;
   display: flex;
   align-items: center;
@@ -143,28 +143,28 @@
   z-index: 1000;
   position: relative;
 }
-#toro_speed_control .speed-control-container {
+.speed-control-container {
   padding: 10px 30px;
   min-width: 200px;
 }
-#toro_timeline_control .timeline-control-container {
+.timeline-control-container {
   padding: 15px 40px 15px 16px;
   min-width: 300px;
 }
 
-#toro_speed_control .speed-control-container *,
-#toro_timeline_control .timeline-control-container *,
-#toro_timeline_control button,
-#toro_speed_control input,
-#toro_timeline_control input {
+.speed-control-container *,
+.timeline-control-container *,
+button,
+input,
+input {
   pointer-events: auto !important;
 }
 
-#toro_timeline_control .timeline-date-label {
+.timeline-date-label {
   pointer-events: none !important;
 }
 
-#toro_timeline_control .timeline-play-btn {
+.timeline-play-btn {
   padding: 6px 12px;
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -179,13 +179,13 @@
   padding: 0;
 }
 
-#toro_timeline_control .timeline-axis-container {
+.timeline-axis-container {
   position: relative;
   min-width: 300px;
   margin-top: 15px;
 }
 
-#toro_timeline_control #timeline-current-date {
+#timeline-current-date {
   position: absolute;
   top: -25px;
   left: 0%;
@@ -199,14 +199,17 @@
   transition: all 0.2s ease;
 }
 
-#toro_speed_control .speed-slider-container,
-#toro_timeline_control .timeline-slider-container {
+.speed-slider-container,
+.timeline-slider-container {
   position: relative;
+}
+
+.speed-slider-container {
   margin-bottom: 15px;
 }
 
-#toro_speed_control #speed-slider,
-#toro_timeline_control #timeline-slider {
+#speed-slider,
+#timeline-slider {
   width: 100%;
   cursor: pointer;
   height: 6px;
@@ -219,7 +222,7 @@
   margin: 10px 0;
   transition: background 0.3s ease;
 }
-#toro_timeline_control #timeline-slider {
+#timeline-slider {
   background: linear-gradient(
     to right,
     var(--toro-timeline-primary) 0%,
@@ -228,17 +231,69 @@
     var(--toro-timeline-secondary) 100%
   );
 }
-#toro_speed_control #speed-slider::-webkit-slider-track,
-#toro_timeline_control #timeline-slider::-webkit-slider-track,
-#toro_speed_control #speed-slider::-moz-range-track,
-#toro_timeline_control #timeline-slider::-moz-range-track {
+
+/* Disabled timeline styles */
+.timeline-control-container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.timeline-control-container.disabled #timeline-slider {
+  background: #cccccc !important;
+  cursor: not-allowed;
+}
+
+.timeline-control-container.disabled #timeline-slider::-webkit-slider-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.timeline-control-container.disabled #timeline-slider::-moz-range-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.timeline-control-container.disabled #timeline-play-pause {
+  background-color: #e0e0e0 !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+}
+
+/* Disabled speed control styles */
+.speed-control-container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.speed-control-container.disabled #speed-slider {
+  background: #cccccc !important;
+  cursor: not-allowed;
+}
+
+.speed-control-container.disabled #speed-slider::-webkit-slider-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.speed-control-container.disabled #speed-slider::-moz-range-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.speed-control-container.disabled .speed-tick-label {
+  color: #999999 !important;
+}
+#speed-slider::-webkit-slider-track,
+#timeline-slider::-webkit-slider-track,
+#speed-slider::-moz-range-track,
+#timeline-slider::-moz-range-track {
   height: 6px;
   border-radius: 3px;
   background: transparent;
   border: none;
 }
-#toro_speed_control #speed-slider::-webkit-slider-thumb,
-#toro_timeline_control #timeline-slider::-webkit-slider-thumb {
+#speed-slider::-webkit-slider-thumb,
+#timeline-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
@@ -254,8 +309,8 @@
   transition: all 0.2s ease;
 }
 
-#toro_speed_control #speed-slider::-moz-range-thumb,
-#toro_timeline_control #timeline-slider::-moz-range-thumb {
+#speed-slider::-moz-range-thumb,
+#timeline-slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -267,56 +322,145 @@
   transition: all 0.2s ease;
 }
 
-#toro_timeline_control #timeline-slider:disabled::-moz-range-thumb,
-#toro_timeline_control #timeline-slider:disabled::-webkit-slider-thumb,
-#toro_timeline_control #timeline-slider:disabled {
+#timeline-slider:disabled::-moz-range-thumb,
+#timeline-slider:disabled::-webkit-slider-thumb,
+#timeline-slider:disabled {
   cursor: not-allowed !important;
 }
-#toro_timeline_control #timeline-slider:disabled::-moz-range-thumb,
-#toro_timeline_control #timeline-slider:disabled::-webkit-slider-thumb {
+#timeline-slider:disabled::-moz-range-thumb,
+#timeline-slider:disabled::-webkit-slider-thumb {
   background: #999 !important;
 }
-#toro_timeline_control #timeline-current-date {
+#timeline-current-date {
   opacity: 1 !important;
 }
-#toro_speed_control .speed-tick,
-#toro_timeline_control .timeline-tick {
+.speed-tick,
+.timeline-tick {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   position: absolute;
   transform: translateX(-50%);
   pointer-events: none;
 }
-#toro_timeline_control .timeline-tick.minor-tick {
+.timeline-tick.minor-tick {
   bottom: 10px;
 }
-#toro_timeline_control .timeline-tick.major-tick {
+.timeline-tick.major-tick {
   bottom: -17px;
 }
-#toro_timeline_control .timeline-tick .timeline-tick-line {
+.timeline-tick .timeline-tick-line {
   width: 1px;
   margin: 0 auto;
 }
-#toro_timeline_control .timeline-tick.major-tick .timeline-tick-line {
+.timeline-tick.major-tick .timeline-tick-line {
   height: 8px;
   background: #666;
 }
-#toro_timeline_control .timeline-tick.minor-tick .timeline-tick-line {
+.timeline-tick.minor-tick .timeline-tick-line {
   height: 4px;
   background: #999;
 }
-#toro_speed_control .speed-tick .speed-tick-label,
-#toro_timeline_control .timeline-tick .timeline-tick-label {
+.speed-tick .speed-tick-label,
+.timeline-tick .timeline-tick-label {
   font-size: 9px;
   color: #666;
   white-space: nowrap;
   margin-top: 2px;
 }
 
-#toro_speed_control #speed-slider::-moz-range-thumb:hover,
-#toro_timeline_control #timeline-slider::-moz-range-thumb:hover {
+#speed-slider::-moz-range-thumb:hover,
+#timeline-slider::-moz-range-thumb:hover {
   background: var(--toro-timeline-primary);
   transform: scale(1.1);
 }
+
+/** Control Panel Styles **/
+
+.control-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-width: 200px;
+  max-width: 100%;
+  pointer-events: auto !important;
+}
+
+.control-panel .panel-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background: rgba(248, 249, 250, 0.95);
+  border-radius: 8px 8px 0 0;
+}
+
+.control-panel .panel-collapse-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  margin-right: 8px;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.control-panel .panel-collapse-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.control-panel .panel-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+.control-panel .panel-content {
+  padding: 12px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.control-panel .panel-control-item {
+  margin-bottom: 16px;
+}
+
+.control-panel .panel-control-item:last-child {
+  margin-bottom: 0;
+}
+
+.control-panel .control-section-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Adjust existing control styles when in panel */
+.control-panel .timeline-control-container,
+.control-panel .speed-control-container {
+  background: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.control-panel .speed-label {
+  display: none; /* Hide duplicate labels when section title is shown */
+}
+
+/* Separator between controls */
+/* .control-panel.direction-column .panel-control-item + .panel-control-item {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
+}
+.control-panel.direction-row .panel-control-item + .panel-control-item {
+  border-left: 1px solid #f0f0f0;
+  padding-left: 20px;
+} */
 
 /** Hide the export stuff **/
 

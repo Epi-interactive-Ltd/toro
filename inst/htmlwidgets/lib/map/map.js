@@ -151,6 +151,116 @@ HTMLWidgets.widget({
             });
           }
 
+          // Process control panels
+          if (x.controlPanels && Object.keys(x.controlPanels).length > 0) {
+            Object.keys(x.controlPanels).forEach(function (panelId) {
+              const panel = x.controlPanels[panelId];
+              const options = panel.options || {};
+
+              addControlPanel(el.widgetInstance, panelId, options);
+
+              // Add any custom controls specified for this panel
+              if (options.customControls && options.customControls.length > 0) {
+                options.customControls.forEach(function (control) {
+                  addHtmlToPanel(el.widgetInstance, panelId, control);
+                });
+              }
+
+              // Add any panel controls added via add_control_to_panel
+              if (options.panelControls && options.panelControls.length > 0) {
+                options.panelControls.forEach(function (control) {
+                  if (control.type === "timeline") {
+                    // Create dummy callback functions for initial rendering
+                    const dummyPlayPause = function (playing) {
+                      // console.log(
+                      //   "Timeline control:",
+                      //   playing ? "playing" : "paused"
+                      // );
+                    };
+                    const dummySliderChange = function (progress) {
+                      // console.log("Timeline progress:", progress);
+                    };
+
+                    const timelineElement = addTimelineControl(
+                      el.widgetInstance,
+                      control.options.startDate,
+                      control.options.endDate,
+                      dummyPlayPause,
+                      dummySliderChange,
+                      control.options
+                    );
+                    addHtmlToPanel(
+                      el.widgetInstance,
+                      panelId,
+                      timelineElement,
+                      control.title
+                    );
+                  } else if (control.type === "speed") {
+                    // Create dummy callback function for initial rendering
+                    const dummySpeedChange = function (speed) {
+                      // console.log("Speed changed to:", speed);
+                    };
+
+                    const speedElement = addSpeedControl(
+                      el.widgetInstance,
+                      dummySpeedChange,
+                      control.options
+                    );
+                    addHtmlToPanel(
+                      el.widgetInstance,
+                      panelId,
+                      speedElement,
+                      control.title
+                    );
+                  } else if (control.type === "custom") {
+                    addHtmlToPanel(
+                      el.widgetInstance,
+                      panelId,
+                      control.options.html,
+                      control.title
+                    );
+                  }
+                });
+              }
+            });
+          }
+
+          // Process timeline controls (both standalone and panel-based)
+          if (
+            x.timelineControls &&
+            Object.keys(x.timelineControls).length > 0
+          ) {
+            Object.keys(x.timelineControls).forEach(function (controlId) {
+              const timelineOptions = x.timelineControls[controlId];
+
+              // Pass null callbacks for initial timeline control so it starts disabled
+              // It will be enabled automatically when connected to an animation
+              addTimelineControl(
+                el.widgetInstance,
+                timelineOptions.startDate,
+                timelineOptions.endDate,
+                null, // No play/pause callback - will be disabled
+                null, // No slider callback - will be disabled
+                timelineOptions
+              );
+            });
+          }
+
+          // Process speed controls (both standalone and panel-based)
+          if (x.speedControls && Object.keys(x.speedControls).length > 0) {
+            Object.keys(x.speedControls).forEach(function (controlId) {
+              const speedOptions = x.speedControls[controlId];
+
+              // Pass null callback for initial speed control so it starts disabled
+              // It will be enabled automatically when connected to an animation
+              addSpeedControl(
+                el.widgetInstance,
+                null, // No speed change callback - will be disabled
+                speedOptions
+              );
+            });
+          }
+
           if (HTMLWidgets.shinyMode) {
             // Trigger a input event to notify Shiny that the map is loaded
             Shiny.setInputValue(el.id + "_loaded", Math.random(), {
@@ -606,4 +716,54 @@ if (HTMLWidgets.shinyMode) {
       removeRoute(el.widgetInstance, message.options);
     });
   });
+
+  // Control Panel message handlers
+  Shiny.addCustomMessageHandler("addControlPanel", function (message) {
+    withMapInstance(message.id, function (el) {
+      addControlPanel(el.widgetInstance, message.panelId, message.options);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("addControlToPanel", function (message) {
+    withMapInstance(message.id, function (el) {
+      addControlToPanel(
+        el.widgetInstance,
+        message.panelId,
+        message.controlConfig
+      );
+    });
+  });
+
+  Shiny.addCustomMessageHandler(
+    "addTimelineControlStandalone",
+    function (message) {
+      withMapInstance(message.id, function (el) {
+        // Pass null callbacks for standalone timeline control so it starts disabled
+        // It will be enabled automatically when connected to an animation
+        addTimelineControl(
+          el.widgetInstance,
+          message.options.startDate,
+          message.options.endDate,
+          null, // No play/pause callback - will be disabled
+          null, // No slider callback - will be disabled
+          message.options
+        );
+      });
+    }
+  );
+
+  Shiny.addCustomMessageHandler(
+    "addSpeedControlStandalone",
+    function (message) {
+      withMapInstance(message.id, function (el) {
+        // Pass null callback for standalone speed control so it starts disabled
+        // It will be enabled automatically when connected to an animation
+        addSpeedControl(
+          el.widgetInstance,
+          null, // No speed change callback - will be disabled
+          message.options
+        );
+      });
+    }
+  );
 }

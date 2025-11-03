@@ -573,6 +573,268 @@ function removeControl(widgetInstance, controlId) {
 }
 
 /**
+ * Add a control panel to the map that can contain multiple controls.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {string} panelId          Unique ID for the control panel.
+ * @param {object} options          Options for the control panel.
+ *                                  Can include:
+ *                                    - position: string (default "bottom-left")
+ *                                    - title: string - Panel title
+ *                                    - showTitle: boolean (default true if title provided)
+ *                                    - collapsible: boolean (default false) - Whether panel can be collapsed
+ *                                    - collapsed: boolean (default false) - Initial collapsed state
+ *                                    - controls: array - Array of control configurations to add
+ *                                    - customControls: array - Array of custom HTML controls
+ * @return {void}
+ */
+function addControlPanel(widgetInstance, panelId, options = {}) {
+  const map = widgetInstance.getMap();
+  const title = options.title;
+  const showTitle = title && options.showTitle !== false;
+  const collapsible = options.collapsible || false;
+  const collapsed = options.collapsed || false;
+  const direction = options.direction || "column";
+
+  // Generate collapse button if collapsible
+  const collapseButton = collapsible
+    ? `<button class="panel-collapse-btn" id="${panelId}-collapse-btn">${
+        collapsed ? "▶" : "▼"
+      }</button>`
+    : "";
+
+  // HTML for the control panel container
+  const html = `
+    <div class="control-panel direction-${direction}" id="${panelId}-panel">
+      ${
+        showTitle
+          ? `
+        <div class="panel-header">
+          ${collapseButton}
+          <div class="panel-title">${title}</div>
+        </div>
+      `
+          : ""
+      }
+      <div class="panel-content" id="${panelId}-content" style="display: ${
+    collapsed ? "none" : "flex"
+  }; flex-direction: ${direction};">
+        <!-- Controls will be added here -->
+      </div>
+    </div>
+  `;
+
+  // Add the control panel to the map
+  addCustomControl(map, panelId, html, options.position || "bottom-left");
+
+  // Setup collapse functionality
+  if (collapsible) {
+    setTimeout(() => {
+      const collapseBtn = document.getElementById(`${panelId}-collapse-btn`);
+      const panelContent = document.getElementById(`${panelId}-content`);
+
+      if (collapseBtn && panelContent) {
+        collapseBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const isCollapsed = panelContent.style.display === "none";
+          panelContent.style.display = isCollapsed ? "flex" : "none";
+          collapseBtn.textContent = isCollapsed ? "▼" : "▶";
+        });
+      }
+    }, 100);
+  }
+
+  // Ensure the control is clickable by setting pointer events
+  setTimeout(() => {
+    const controlPanel = document.getElementById(panelId);
+    if (controlPanel) {
+      controlPanel.style.pointerEvents = "auto";
+      controlPanel.style.zIndex = "1000";
+
+      // Set pointer events on all child elements
+      const allElements = controlPanel.querySelectorAll("*");
+      allElements.forEach((el) => {
+        el.style.pointerEvents = "auto";
+      });
+    }
+  }, 100);
+
+  // Store reference for external access
+  if (!map._controlPanels) {
+    map._controlPanels = {};
+  }
+
+  map._controlPanels[panelId] = {
+    addControl: function (controlHTML, controlId = null, sectionTitle = null) {
+      const panelContent = document.getElementById(`${panelId}-content`);
+      if (panelContent) {
+        const controlDiv = document.createElement("div");
+        if (controlId) {
+          controlDiv.id = controlId;
+        }
+        controlDiv.className = "panel-control-item";
+
+        // Add section title if provided
+        const sectionHTML = sectionTitle
+          ? `<div class="control-section-title">${sectionTitle}</div>`
+          : "";
+        controlDiv.innerHTML = sectionHTML + controlHTML;
+
+        panelContent.appendChild(controlDiv);
+
+        // Ensure new control has proper pointer events
+        setTimeout(() => {
+          const allElements = controlDiv.querySelectorAll("*");
+          allElements.forEach((el) => {
+            el.style.pointerEvents = "auto";
+          });
+        }, 50);
+
+        return controlDiv;
+      }
+      return null;
+    },
+    removeControl: function (controlId) {
+      const controlElement = document.getElementById(controlId);
+      if (
+        controlElement &&
+        controlElement.classList.contains("panel-control-item")
+      ) {
+        controlElement.remove();
+      }
+    },
+    clear: function () {
+      const panelContent = document.getElementById(`${panelId}-content`);
+      if (panelContent) {
+        panelContent.innerHTML = "";
+      }
+    },
+    collapse: function () {
+      const panelContent = document.getElementById(`${panelId}-content`);
+      const collapseBtn = document.getElementById(`${panelId}-collapse-btn`);
+      if (panelContent) {
+        panelContent.style.display = "none";
+        if (collapseBtn) collapseBtn.textContent = "▶";
+      }
+    },
+    expand: function () {
+      const panelContent = document.getElementById(`${panelId}-content`);
+      const collapseBtn = document.getElementById(`${panelId}-collapse-btn`);
+      if (panelContent) {
+        panelContent.style.display = "flex";
+        if (collapseBtn) collapseBtn.textContent = "▼";
+      }
+    },
+  };
+
+  // Add initial controls if specified
+  if (options.controls) {
+    options.controls.forEach((controlConfig) => {
+      addControlToPanel(widgetInstance, panelId, controlConfig);
+    });
+  }
+
+  // Add custom controls if specified
+  if (options.customControls) {
+    options.customControls.forEach((customControl) => {
+      map._controlPanels[panelId].addControl(
+        customControl.html,
+        customControl.id || null,
+        customControl.title || null
+      );
+    });
+  }
+}
+
+/**
+ * Add HTML content directly to an existing control panel.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {string} panelId          ID of the target control panel.
+ * @param {string} htmlContent      HTML content to add to the panel.
+ * @param {string} sectionTitle     Optional section title for the control.
+ * @param {string} controlId        Optional ID for the control element.
+ * @return {void}
+ */
+function addHtmlToPanel(
+  widgetInstance,
+  panelId,
+  htmlContent,
+  sectionTitle = null,
+  controlId = null
+) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  // Use the panel's addControl method to add the HTML
+  panel.addControl(htmlContent, controlId, sectionTitle);
+}
+
+/**
+ * Add a specific control to an existing control panel.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {string} panelId          ID of the target control panel.
+ * @param {object} controlConfig    Configuration for the control to add.
+ *                                  Should include:
+ *                                    - type: string - Control type ("timeline", "speed", "custom")
+ *                                    - options: object - Control-specific options
+ *                                    - title: string - Section title for the control
+ * @return {void}
+ */
+function addControlToPanel(widgetInstance, panelId, controlConfig) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  const controlType = controlConfig.type;
+  const controlOptions = controlConfig.options || {};
+  const sectionTitle = controlConfig.title;
+
+  // Mark that this control should be added to the panel
+  controlOptions.useControlPanel = true;
+  controlOptions.panelId = panelId;
+  controlOptions.panelTitle = sectionTitle;
+
+  switch (controlType) {
+    case "timeline":
+      // Timeline control will be added via the existing addTimelineControl function
+      // The function will detect useControlPanel = true and add to the panel
+      break;
+
+    case "speed":
+      // Speed control will be added via the existing addSpeedControl function
+      // The function will detect useControlPanel = true and add to the panel
+      break;
+
+    case "custom":
+      // Add custom HTML directly
+      if (controlConfig.html) {
+        panel.addControl(
+          controlConfig.html,
+          controlConfig.id || null,
+          sectionTitle
+        );
+      }
+      break;
+
+    default:
+      console.warn(`Unknown control type: ${controlType}`);
+  }
+}
+
+/**
  * Add a timeline control to the map for animating data over time.
  *
  * @param {object} widgetInstance   Toro widget object.
@@ -694,13 +956,31 @@ function addTimelineControl(
     </style>
   `;
 
-  // Add the control to the map
-  addCustomControl(
-    map,
-    "toro_timeline_control",
-    html,
-    options.position || "bottom-left"
-  );
+  // Add the control to the map or control panel
+  const useControlPanel = options.useControlPanel || false;
+  const panelId = options.panelId;
+
+  if (
+    useControlPanel &&
+    panelId &&
+    map._controlPanels &&
+    map._controlPanels[panelId]
+  ) {
+    // Add to existing control panel
+    map._controlPanels[panelId].addControl(
+      html,
+      "timeline-control-section",
+      options.panelTitle
+    );
+  } else {
+    // Add as standalone control
+    addCustomControl(
+      map,
+      "toro_timeline_control",
+      html,
+      options.position || "bottom-left"
+    );
+  }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
@@ -729,6 +1009,85 @@ function addTimelineControl(
   let playing = false;
   let lastClickTime = 0;
   let updateSliderAppearance;
+  let handlePlayPause, handleSliderChange;
+
+  // Define handler functions that can be accessed by both setupEventHandlers and enable method
+  handlePlayPause = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Debounce rapid clicks (ignore clicks within 200ms)
+    const now = Date.now();
+    if (now - lastClickTime < 200) {
+      console.log("Ignoring rapid click");
+      return;
+    }
+    lastClickTime = now;
+
+    playing = !playing;
+    if (playPauseBtn) {
+      playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+    }
+
+    // Disable/enable slider based on play state
+    if (timelineSlider) {
+      timelineSlider.disabled = playing;
+      timelineSlider.style.opacity = playing ? "0.5" : "1";
+      timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
+    }
+
+    if (typeof onPlayPause === "function") {
+      onPlayPause(playing);
+    }
+  };
+
+  handleSliderChange = function (e) {
+    e.stopPropagation();
+    updateSliderAppearance();
+
+    if (!playing && typeof onSliderChange === "function") {
+      const progress = parseFloat(this.value) / 100;
+      onSliderChange(progress);
+    }
+  };
+
+  // Function to update current date display and slider appearance
+  updateSliderAppearance = function () {
+    if (!timelineSlider) return; // Guard clause
+
+    const progress = parseFloat(timelineSlider.value) / 100;
+
+    // Use stored dates if available, otherwise fall back to original dates
+    const currentStartDate = map._timelineControl?.startDate || startDateObj;
+    const currentEndDate = map._timelineControl?.endDate || endDateObj;
+
+    const currentDate = new Date(
+      currentStartDate.getTime() +
+        progress * (currentEndDate.getTime() - currentStartDate.getTime())
+    );
+    const currentDateDisplay = document.getElementById("timeline-current-date");
+
+    if (currentDateDisplay) {
+      // Update date text
+      const formattedDate = currentDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      currentDateDisplay.textContent = formattedDate;
+
+      // Position the date display above the thumb
+      currentDateDisplay.style.left = `${progress * 100}%`;
+
+      // Update slider background to show progress
+      const progressColor = playing
+        ? "var(--toro-timeline-secondary)"
+        : "var(--toro-timeline-primary)";
+      timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
+        progress * 100
+      }%, #ddd ${progress * 100}%, #ddd 100%)`;
+    }
+  };
 
   function setupEventHandlers() {
     playPauseBtn = document.getElementById("timeline-play-pause");
@@ -740,81 +1099,36 @@ function addTimelineControl(
       return;
     }
 
-    // Function to update current date display and slider appearance
-    updateSliderAppearance = function () {
-      const progress = parseFloat(timelineSlider.value) / 100;
-      const currentDate = new Date(
-        startDateObj.getTime() +
-          progress * (endDateObj.getTime() - startDateObj.getTime())
+    // Check if timeline should be disabled (no animation callbacks provided)
+    const isTimelineDisabled =
+      typeof onPlayPause !== "function" && typeof onSliderChange !== "function";
+
+    if (isTimelineDisabled) {
+      // Disable timeline controls when no animation is connected
+      // Add disabled class to the timeline control container
+      const timelineContainer = timelineSlider.closest(
+        ".timeline-control-container"
       );
-      const currentDateDisplay = document.getElementById(
-        "timeline-current-date"
-      );
-
-      if (currentDateDisplay) {
-        // Update date text
-        const formattedDate = currentDate.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-        currentDateDisplay.textContent = formattedDate;
-
-        // Position the date display above the thumb
-        currentDateDisplay.style.left = `${progress * 100}%`;
-
-        // Update slider background to show progress
-        const progressColor = playing
-          ? "var(--toro-timeline-secondary)"
-          : "var(--toro-timeline-primary)";
-        timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
-          progress * 100
-        }%, #ddd ${progress * 100}%, #ddd 100%)`;
+      if (timelineContainer) {
+        timelineContainer.classList.add("disabled");
       }
-    };
 
-    // Add play/pause logic with debounce
-    const handlePlayPause = function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      playPauseBtn.disabled = true;
+      playPauseBtn.title = "Connect an animation to enable timeline controls";
 
-      // Debounce rapid clicks (ignore clicks within 200ms)
-      const now = Date.now();
-      if (now - lastClickTime < 200) {
-        console.log("Ignoring rapid click");
-        return;
-      }
-      lastClickTime = now;
+      timelineSlider.disabled = true;
+      timelineSlider.title = "Connect an animation to enable timeline controls";
 
-      playing = !playing;
-      playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+      // Still update appearance but don't add interactive event handlers
+      setTimeout(updateSliderAppearance, 150);
+      return;
+    }
 
-      // Disable/enable slider based on play state
-      timelineSlider.disabled = playing;
-      timelineSlider.style.opacity = playing ? "0.5" : "1";
-      timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
-
-      if (typeof onPlayPause === "function") {
-        onPlayPause(playing);
-      }
-    };
-
-    // Use only addEventListener to avoid double event firing
+    // Use event handlers defined outside this function
     playPauseBtn.addEventListener("click", handlePlayPause);
     playPauseBtn.addEventListener("mousedown", function (e) {
       e.stopPropagation();
     });
-
-    // Add slider change logic
-    const handleSliderChange = function (e) {
-      e.stopPropagation();
-      updateSliderAppearance();
-
-      if (!playing && typeof onSliderChange === "function") {
-        const progress = parseFloat(this.value) / 100;
-        onSliderChange(progress);
-      }
-    };
 
     // Use only addEventListener to avoid duplicate events
     timelineSlider.addEventListener("input", handleSliderChange);
@@ -833,6 +1147,67 @@ function addTimelineControl(
     playPauseBtn: playPauseBtn,
     slider: timelineSlider,
     updateAppearance: updateSliderAppearance,
+    startDate: startDateObj,
+    endDate: endDateObj,
+    isDisabled:
+      typeof onPlayPause !== "function" && typeof onSliderChange !== "function",
+    enable: function (newOnPlayPause, newOnSliderChange) {
+      // Enable the timeline control and set up event handlers
+      if (playPauseBtn && timelineSlider) {
+        // Remove disabled class and enable controls
+        const timelineContainer = timelineSlider.closest(
+          ".timeline-control-container"
+        );
+        if (timelineContainer) {
+          timelineContainer.classList.remove("disabled");
+        }
+
+        playPauseBtn.disabled = false;
+        playPauseBtn.title = "";
+
+        timelineSlider.disabled = false;
+        timelineSlider.title = "";
+
+        // Update callbacks
+        onPlayPause = newOnPlayPause;
+        onSliderChange = newOnSliderChange;
+
+        // Remove existing event listeners to avoid duplicates
+        playPauseBtn.removeEventListener("click", handlePlayPause);
+        timelineSlider.removeEventListener("input", handleSliderChange);
+
+        // Set up event handlers with new callbacks
+        if (typeof onPlayPause === "function") {
+          playPauseBtn.addEventListener("click", handlePlayPause);
+        }
+        if (typeof onSliderChange === "function") {
+          timelineSlider.addEventListener("input", handleSliderChange);
+        }
+
+        this.isDisabled = false;
+      }
+    },
+    disable: function () {
+      // Disable the timeline control
+      if (playPauseBtn && timelineSlider) {
+        // Add disabled class
+        const timelineContainer = timelineSlider.closest(
+          ".timeline-control-container"
+        );
+        if (timelineContainer) {
+          timelineContainer.classList.add("disabled");
+        }
+
+        playPauseBtn.disabled = true;
+        playPauseBtn.title = "Connect an animation to enable timeline controls";
+
+        timelineSlider.disabled = true;
+        timelineSlider.title =
+          "Connect an animation to enable timeline controls";
+
+        this.isDisabled = true;
+      }
+    },
     setProgress: function (progress) {
       // Update slider position (0-1 range to 0-100)
       if (timelineSlider) {
@@ -858,6 +1233,106 @@ function addTimelineControl(
         timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
         updateSliderAppearance();
       }
+    },
+    updateDateRange: function (newStartDate, newEndDate, maxTicks = 3) {
+      // Update the timeline control with new date range and rebuild the axis
+      const startDateObj = new Date(newStartDate);
+      const endDateObj = new Date(newEndDate);
+      const totalDays = Math.ceil(
+        (endDateObj - startDateObj) / (1000 * 60 * 60 * 24)
+      );
+
+      // Update the current date display
+      const currentDateDisplay = document.getElementById(
+        "timeline-current-date"
+      );
+      if (currentDateDisplay) {
+        const formattedDate = startDateObj.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        currentDateDisplay.textContent = formattedDate;
+      }
+
+      // Reset slider to start
+      if (timelineSlider) {
+        timelineSlider.value = 0;
+      }
+
+      // Rebuild axis ticks with new date range
+      const axisContainer = document.querySelector(".timeline-axis-container");
+      if (axisContainer) {
+        // Remove existing ticks
+        const existingTicks = axisContainer.querySelectorAll(".timeline-tick");
+        existingTicks.forEach((tick) => tick.remove());
+
+        // Generate new axis ticks
+        const majorTickPositions = [];
+
+        if (maxTicks <= 1) {
+          majorTickPositions.push(0);
+        } else if (maxTicks === 2) {
+          majorTickPositions.push(0, totalDays);
+        } else {
+          majorTickPositions.push(0);
+          const intermediateCount = maxTicks - 2;
+          for (let i = 1; i <= intermediateCount; i++) {
+            const position = Math.floor(
+              (totalDays * i) / (intermediateCount + 1)
+            );
+            majorTickPositions.push(position);
+          }
+          majorTickPositions.push(totalDays);
+        }
+
+        const uniquePositions = [...new Set(majorTickPositions)].sort(
+          (a, b) => a - b
+        );
+
+        // Create major ticks
+        uniquePositions.forEach((dayIndex) => {
+          const tickDate = new Date(
+            startDateObj.getTime() + dayIndex * 24 * 60 * 60 * 1000
+          );
+          const position = (dayIndex / totalDays) * 100;
+
+          const shortDate = tickDate.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: totalDays > 365 ? "numeric" : undefined,
+          });
+
+          const tickElement = document.createElement("div");
+          tickElement.className = "timeline-tick major-tick";
+          tickElement.style.left = `${position}%`;
+          tickElement.innerHTML = `
+            <div class="timeline-tick-line"></div>
+            <div class="timeline-tick-label">${shortDate}</div>
+          `;
+          axisContainer.appendChild(tickElement);
+        });
+
+        // Create minor ticks
+        const minorTickInterval = Math.max(1, Math.floor(totalDays / 12));
+        for (let i = minorTickInterval; i < totalDays; i += minorTickInterval) {
+          if (!uniquePositions.includes(i)) {
+            const position = (i / totalDays) * 100;
+            const tickElement = document.createElement("div");
+            tickElement.className = "timeline-tick minor-tick";
+            tickElement.style.left = `${position}%`;
+            tickElement.innerHTML = '<div class="timeline-tick-line"></div>';
+            axisContainer.appendChild(tickElement);
+          }
+        }
+      }
+
+      // Store new date range for future reference BEFORE updating appearance
+      map._timelineControl.startDate = startDateObj;
+      map._timelineControl.endDate = endDateObj;
+
+      // Update the slider appearance with new date range
+      updateSliderAppearance();
     },
   };
 }
@@ -920,13 +1395,31 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     </div>
   `;
 
-  // Add the control to the map
-  addCustomControl(
-    map,
-    "toro_speed_control",
-    html,
-    options.position || "top-right"
-  );
+  // Add the control to the map or control panel
+  const useControlPanel = options.useControlPanel || false;
+  const panelId = options.panelId;
+
+  if (
+    useControlPanel &&
+    panelId &&
+    map._controlPanels &&
+    map._controlPanels[panelId]
+  ) {
+    // Add to existing control panel
+    map._controlPanels[panelId].addControl(
+      html,
+      "speed-control-section",
+      options.panelTitle
+    );
+  } else {
+    // Add as standalone control
+    addCustomControl(
+      map,
+      "toro_speed_control",
+      html,
+      options.position || "top-right"
+    );
+  }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
@@ -946,6 +1439,23 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   // Setup event handlers with retry mechanism
   let currentSpeed = speedValues[defaultIndex];
   let currentIndex = defaultIndex;
+  let handleSpeedChange;
+
+  // Define speed change handler function
+  handleSpeedChange = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const sliderIndex = parseInt(this.value);
+    const speed = speedValues[sliderIndex];
+
+    currentSpeed = speed;
+    currentIndex = sliderIndex;
+
+    if (typeof onSpeedChange === "function") {
+      onSpeedChange(speed);
+    }
+  };
 
   function setupEventHandlers() {
     const speedSlider = document.getElementById("speed-slider");
@@ -956,21 +1466,26 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
       return;
     }
 
-    // Add change handler to speed slider
-    speedSlider.addEventListener("input", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    // Check if speed control should be disabled (no animation callback provided)
+    const isSpeedDisabled = typeof onSpeedChange !== "function";
 
-      const sliderIndex = parseInt(this.value);
-      const speed = speedValues[sliderIndex];
-
-      currentSpeed = speed;
-      currentIndex = sliderIndex;
-
-      if (typeof onSpeedChange === "function") {
-        onSpeedChange(speed);
+    if (isSpeedDisabled) {
+      // Disable speed control when no animation is connected
+      // Add disabled class to the speed control container
+      const speedContainer = speedSlider.closest(".speed-control-container");
+      if (speedContainer) {
+        speedContainer.classList.add("disabled");
       }
-    });
+
+      speedSlider.disabled = true;
+      speedSlider.title = "Connect an animation to enable speed controls";
+
+      // Don't add interactive event handlers when disabled
+      return;
+    }
+
+    // Add change handler to speed slider using the handler defined outside this function
+    speedSlider.addEventListener("input", handleSpeedChange);
 
     speedSlider.addEventListener("mousedown", function (e) {
       e.stopPropagation();
@@ -981,6 +1496,8 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
 
   // Store reference for external access
   map._speedControl = {
+    speedValues: speedValues,
+    speedLabels: speedLabels,
     getCurrentSpeed: function () {
       return currentSpeed;
     },
@@ -1025,5 +1542,49 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
         }
       }
     },
+    enable: function (newOnSpeedChange) {
+      // Enable the speed control and set up event handlers
+      const speedSlider = document.getElementById("speed-slider");
+      if (speedSlider) {
+        // Remove disabled class and enable control
+        const speedContainer = speedSlider.closest(".speed-control-container");
+        if (speedContainer) {
+          speedContainer.classList.remove("disabled");
+        }
+
+        speedSlider.disabled = false;
+        speedSlider.title = "";
+
+        // Update callback
+        onSpeedChange = newOnSpeedChange;
+
+        // Remove existing event listener to avoid duplicates
+        speedSlider.removeEventListener("input", handleSpeedChange);
+
+        // Set up event handler with new callback
+        if (typeof onSpeedChange === "function") {
+          speedSlider.addEventListener("input", handleSpeedChange);
+        }
+
+        this.isDisabled = false;
+      }
+    },
+    disable: function () {
+      // Disable the speed control
+      const speedSlider = document.getElementById("speed-slider");
+      if (speedSlider) {
+        // Add disabled class
+        const speedContainer = speedSlider.closest(".speed-control-container");
+        if (speedContainer) {
+          speedContainer.classList.add("disabled");
+        }
+
+        speedSlider.disabled = true;
+        speedSlider.title = "Connect an animation to enable speed controls";
+
+        this.isDisabled = true;
+      }
+    },
+    isDisabled: typeof onSpeedChange !== "function",
   };
 }
