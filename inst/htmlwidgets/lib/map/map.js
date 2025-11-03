@@ -261,6 +261,33 @@ HTMLWidgets.widget({
             });
           }
 
+          // Process tile selector controls (both standalone and panel-based)
+          if (
+            x.tileSelectorControls &&
+            Object.keys(x.tileSelectorControls).length > 0
+          ) {
+            Object.keys(x.tileSelectorControls).forEach(function (controlId) {
+              const tileSelectorOptions = x.tileSelectorControls[controlId];
+
+              // Create tile change callback that uses the existing setTileLayer function
+              const tileChangeCallback = function (selectedTile) {
+                setTileLayer(el, selectedTile);
+              };
+
+              // Set available tiles from the map's loaded tiles if not specified
+              if (!tileSelectorOptions.availableTiles) {
+                tileSelectorOptions.availableTiles = el.tileLayers ||
+                  x.loadedTiles || ["light-grey"];
+              }
+
+              addTileSelectorControl(
+                el.widgetInstance,
+                tileChangeCallback,
+                tileSelectorOptions
+              );
+            });
+          }
+
           if (HTMLWidgets.shinyMode) {
             // Trigger a input event to notify Shiny that the map is loaded
             Shiny.setInputValue(el.id + "_loaded", Math.random(), {
@@ -383,6 +410,46 @@ HTMLWidgets.widget({
 
       getAnimations: function () {
         return el.animations;
+      },
+
+      getAvailableTiles: function () {
+        return el.tileLayers;
+      },
+
+      getCurrentTiles: function () {
+        if (!mapInstance || !mapInstance.getStyle) {
+          return null;
+        }
+
+        try {
+          const layers = mapInstance.getStyle().layers;
+          if (!layers) return null;
+
+          // Find visible tile layers, excluding satellite which is always visible as base
+          for (const layer of layers) {
+            if (
+              layer.type === "raster" &&
+              layer.id !== "satellite" &&
+              layer.layout &&
+              layer.layout.visibility === "visible"
+            ) {
+              return layer.id;
+            }
+          }
+
+          // If no other tile is visible, check if satellite is the only one visible
+          const satelliteLayer = layers.find(
+            (layer) => layer.id === "satellite" && layer.type === "raster"
+          );
+          if (satelliteLayer) {
+            return "satellite";
+          }
+
+          return null;
+        } catch (error) {
+          console.warn("Error getting current tiles:", error);
+          return null;
+        }
       },
     };
   },
@@ -762,6 +829,31 @@ if (HTMLWidgets.shinyMode) {
           el.widgetInstance,
           null, // No speed change callback - will be disabled
           message.options
+        );
+      });
+    }
+  );
+
+  Shiny.addCustomMessageHandler(
+    "addTileSelectorControlStandalone",
+    function (message) {
+      withMapInstance(message.id, function (el) {
+        // Create tile change callback that uses the existing setTileLayer function
+        const tileChangeCallback = function (selectedTile) {
+          setTileLayer(el, selectedTile);
+        };
+
+        // Set available tiles from the map's loaded tiles if not specified
+        const tileSelectorOptions = message.options;
+        if (!tileSelectorOptions.availableTiles) {
+          tileSelectorOptions.availableTiles = el.tileLayers ||
+            el.loadedTiles || ["light-grey"];
+        }
+
+        addTileSelectorControl(
+          el.widgetInstance,
+          tileChangeCallback,
+          tileSelectorOptions
         );
       });
     }

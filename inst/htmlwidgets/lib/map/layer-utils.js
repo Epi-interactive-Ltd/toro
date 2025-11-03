@@ -38,7 +38,8 @@
  */
 function initiateTiles(el, mapParams) {
   const loadedTiles = mapParams.options.loadedTiles || ["light-grey"];
-  var initialTiles = mapParams.options.initialTileLayer || null;
+  var initialTiles =
+    mapParams.options.initialTileLayer || mapParams.style || null;
   const fallbackColour = mapParams.options.backgroundColour || "#FFFFFF";
   el.mapInstance.addLayer({
     id: "background-blue",
@@ -178,6 +179,26 @@ function setTileLayer(el, layerId) {
     }
     el.mapInstance.setLayoutProperty(id, "visibility", visibility);
   });
+
+  // Update any tile selector controls to reflect the current tile
+  if (
+    el.mapInstance._tileSelectorControl &&
+    el.mapInstance._tileSelectorControl.setTile
+  ) {
+    const currentControlTile =
+      el.mapInstance._tileSelectorControl.getCurrentTile();
+    if (currentControlTile !== layerId) {
+      // Use setTile method but without triggering the callback to avoid infinite loops
+      const tileSelector = document.getElementById("tile-selector");
+      if (tileSelector) {
+        tileSelector.value = layerId;
+      }
+      // Directly update the stored current tile without triggering callback
+      if (el.mapInstance._tileSelectorControl.getCurrentTile) {
+        el.mapInstance._tileSelectorControl.currentTile = layerId;
+      }
+    }
+  }
 }
 
 /**

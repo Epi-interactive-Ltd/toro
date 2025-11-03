@@ -4,7 +4,7 @@
 \alias{add_custom_control}
 \title{Add a custom HTML control to the map.}
 \usage{
-add_custom_control(map, id, html, position = "top-right")
+add_custom_control(map, id, html, panel_id = NULL, position = "top-right")
 }
 \arguments{
 \item{map}{The map or map proxy object.}

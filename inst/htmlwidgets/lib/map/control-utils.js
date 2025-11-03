@@ -1588,3 +1588,271 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     isDisabled: typeof onSpeedChange !== "function",
   };
 }
+
+/**
+ * Add a tile selector control to the map for switching between tile layers.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {function} onTileChange   Callback for tile change.
+ * @param {object} options          Options for the tile selector control.
+ *                                  Can include:
+ *                                    - availableTiles: array of tile IDs
+ *                                    - labels: object mapping tile IDs to display labels
+ *                                    - defaultTile: string default tile ID
+ *                                    - position: string (default "top-right")
+ *                                    - useControlPanel: boolean
+ *                                    - panelId: string panel ID if using control panel
+ *                                    - panelTitle: string section title for control panel
+ * @returns {void}
+ */
+function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
+  const map = widgetInstance.getMap();
+
+  // Set default options - get available tiles from the map's loaded tiles
+  const mapElement = document.querySelector(
+    `[data-for="${widgetInstance.id}"]`
+  );
+  const loadedTiles =
+    mapElement?.tileLayers || options.availableTiles || map.getAvailableTiles();
+  const availableTiles = options.availableTiles || loadedTiles;
+  const labels = options.labels || {};
+
+  // Use current active tile as default, falling back to first available tile
+  const activeTile = widgetInstance.getCurrentTiles
+    ? widgetInstance.getCurrentTiles()
+    : null;
+  const defaultTile =
+    options.defaultTile ||
+    (availableTiles.includes(activeTile) ? activeTile : availableTiles[0]);
+
+  // Generate select options HTML
+  const selectOptions = availableTiles
+    .map((tileId) => {
+      const label = labels[tileId] || tileId;
+      const selected = tileId === defaultTile ? "selected" : "";
+      return `<option value="${tileId}" ${selected}>${label}</option>`;
+    })
+    .join("");
+
+  // HTML for the control
+  const html = `
+    <div class="tile-selector-container">
+      ${
+        options.panelTitle
+          ? `<div class="tile-selector-title">${options.panelTitle}</div>`
+          : ""
+      }
+      <select id="tile-selector" class="tile-selector">
+        ${selectOptions}
+      </select>
+    </div>
+    <style>
+      .tile-selector-container {
+        margin-bottom: 10px;
+      }
+      
+      .tile-selector-title {
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      
+      .tile-selector {
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+        font-size: 13px;
+        cursor: pointer;
+        outline: none;
+      }
+      
+      .tile-selector:focus {
+        border-color: #007cba;
+        box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+      }
+      
+      .tile-selector:hover {
+        border-color: #999;
+      }
+      
+      .tile-selector-container.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      
+      .tile-selector-container.disabled .tile-selector {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+    </style>
+  `;
+
+  // Add the control to the map or control panel
+  const useControlPanel = options.useControlPanel || false;
+  const panelId = options.panelId;
+
+  if (
+    useControlPanel &&
+    panelId &&
+    map._controlPanels &&
+    map._controlPanels[panelId]
+  ) {
+    // Add to existing control panel
+    addHtmlToPanel(widgetInstance, panelId, html, options.panelTitle);
+  } else {
+    // Add as standalone control
+    addCustomControl(
+      widgetInstance,
+      "toro_tile_selector_control",
+      html,
+      options.position || "top-right"
+    );
+  }
+
+  // Ensure the control is clickable by setting pointer events
+  setTimeout(() => {
+    const tileSelectorControl = document.getElementById(
+      "toro_tile_selector_control"
+    );
+    if (tileSelectorControl) {
+      tileSelectorControl.style.pointerEvents = "auto";
+      tileSelectorControl.style.zIndex = "1000";
+
+      // Set pointer events on all child elements
+      const allElements = tileSelectorControl.querySelectorAll("*");
+      allElements.forEach((el) => {
+        el.style.pointerEvents = "auto";
+      });
+    }
+  }, 100);
+
+  // Setup event handlers with retry mechanism
+  let currentTile = defaultTile;
+  let handleTileChange;
+
+  // Define tile change handler function
+  handleTileChange = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const selectedTile = this.value;
+    currentTile = selectedTile;
+
+    if (typeof onTileChange === "function") {
+      onTileChange(selectedTile);
+    }
+  };
+
+  function setupEventHandlers() {
+    const tileSelector = document.getElementById("tile-selector");
+
+    if (!tileSelector) {
+      console.warn("Tile selector control not found, retrying...");
+      setTimeout(setupEventHandlers, 50);
+      return;
+    }
+
+    // Check if tile selector should be disabled (no tile change callback provided)
+    const isTileSelectorDisabled = typeof onTileChange !== "function";
+
+    if (isTileSelectorDisabled) {
+      // Disable tile selector when no callback is connected
+      const tileSelectorContainer = tileSelector.closest(
+        ".tile-selector-container"
+      );
+      if (tileSelectorContainer) {
+        tileSelectorContainer.classList.add("disabled");
+      }
+
+      tileSelector.disabled = true;
+      tileSelector.title = "Tile switching is not available";
+
+      // Don't add interactive event handlers when disabled
+      return;
+    }
+
+    // Add change handler to tile selector
+    tileSelector.addEventListener("change", handleTileChange);
+
+    tileSelector.addEventListener("mousedown", function (e) {
+      e.stopPropagation();
+    });
+  }
+
+  setupEventHandlers();
+
+  // Store reference for external access
+  map._tileSelectorControl = {
+    availableTiles: availableTiles,
+    labels: labels,
+    getCurrentTile: function () {
+      return currentTile;
+    },
+    setTile: function (tileId) {
+      if (availableTiles.includes(tileId)) {
+        currentTile = tileId;
+
+        // Update selector value
+        const tileSelector = document.getElementById("tile-selector");
+        if (tileSelector) {
+          tileSelector.value = tileId;
+        }
+
+        if (typeof onTileChange === "function") {
+          onTileChange(currentTile);
+        }
+      }
+    },
+    enable: function (newOnTileChange) {
+      // Enable the tile selector control and set up event handlers
+      const tileSelector = document.getElementById("tile-selector");
+      if (tileSelector) {
+        // Remove disabled class and enable control
+        const tileSelectorContainer = tileSelector.closest(
+          ".tile-selector-container"
+        );
+        if (tileSelectorContainer) {
+          tileSelectorContainer.classList.remove("disabled");
+        }
+
+        tileSelector.disabled = false;
+        tileSelector.title = "";
+
+        // Update callback
+        onTileChange = newOnTileChange;
+
+        // Remove existing event listener to avoid duplicates
+        tileSelector.removeEventListener("change", handleTileChange);
+
+        // Set up event handler with new callback
+        if (typeof onTileChange === "function") {
+          tileSelector.addEventListener("change", handleTileChange);
+        }
+
+        this.isDisabled = false;
+      }
+    },
+    disable: function () {
+      // Disable the tile selector control
+      const tileSelector = document.getElementById("tile-selector");
+      if (tileSelector) {
+        // Add disabled class
+        const tileSelectorContainer = tileSelector.closest(
+          ".tile-selector-container"
+        );
+        if (tileSelectorContainer) {
+          tileSelectorContainer.classList.add("disabled");
+        }
+
+        tileSelector.disabled = true;
+        tileSelector.title = "Tile switching is not available";
+
+        this.isDisabled = true;
+      }
+    },
+    isDisabled: typeof onTileChange !== "function",
+  };
+}

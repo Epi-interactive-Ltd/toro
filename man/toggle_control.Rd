@@ -25,6 +25,10 @@ Functions:
 \item \code{add_draw_control}:          Add a draw control to the map.
 \item \code{add_zoom_control}:          Add a zoom control to the map.
 \item \code{add_custom_control}:        Add a custom HTML control to the map.
+\item \code{add_control_panel}:         Add a control panel to the map.
+\item \code{add_control_to_panel}:      Add a control to an existing control panel.
+\item \code{add_timeline_control}:      Add a timeline control to the map or control panel.
+\item \code{add_speed_control}:         Add a speed control to the map or control panel.
 \item \code{delete_drawn_shape}:        Delete a drawn shape from the map.
 \item \code{remove_control}:            Remove a control from the map.
 \item \code{remove_draw_control}:       Remove the draw control from the map.

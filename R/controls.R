@@ -452,3 +452,92 @@ add_speed_control <- function(
 
   map
 }
+
+#' Add a tile selector control to the map or control panel
+#'
+#' @param map           The map or map proxy object.
+#' @param available_tiles Vector of available tile options. If NULL, uses all loaded tiles from the map.
+#' @param labels        Named vector of labels for tiles. If NULL, uses tile names directly.
+#' @param default_tile  Default tile to select. If NULL, uses current map tile.
+#' @param position      Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id      ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @return              The map or map proxy object for chaining.
+#' @export
+add_tile_selector_control <- function(
+  map,
+  available_tiles = NULL,
+  labels = NULL,
+  default_tile = NULL,
+  position = "top-right",
+  panel_id = NULL,
+  section_title = NULL
+) {
+  # If no tiles specified, get them from the map's loaded tiles
+  # if (is.null(available_tiles)) {
+  #   if (inherits(map, "mapProxy")) {
+  #     # For proxy, we'll need to get this from the map instance in JS
+  #     available_tiles <- get_tile_options() # Fallback to all options
+  #   } else {
+  #     # For initial map creation, get from map object
+  #     available_tiles <- map$x$loadedTiles %||% get_tile_options()
+  #   }
+  # }
+
+  # Create default labels if not provided
+  if (is.null(labels)) {
+    labels <- setNames(
+      c(
+        "National Geographic",
+        "Satellite",
+        "Topographic",
+        "Terrain",
+        "Streets",
+        "Shaded",
+        "Light Grey"
+      )[
+        match(
+          available_tiles,
+          c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "light-grey")
+        )
+      ],
+      available_tiles
+    )
+    labels <- labels[!is.na(labels)]
+  }
+
+  # Ensure labels is a named vector
+  if (is.null(names(labels))) {
+    names(labels) <- available_tiles[seq_along(labels)]
+  }
+
+  options <- list(
+    availableTiles = available_tiles,
+    labels = as.list(labels),
+    defaultTile = default_tile,
+    position = position,
+    useControlPanel = !is.null(panel_id),
+    panelId = panel_id,
+    panelTitle = section_title
+  )
+
+  if (inherits(map, "mapProxy")) {
+    map$session$sendCustomMessage(
+      "addTileSelectorControlStandalone",
+      list(id = map$id, options = options)
+    )
+  } else {
+    # Store for initial map creation
+    if (is.null(map$x$tileSelectorControls)) {
+      map$x$tileSelectorControls <- list()
+    }
+    control_id <- if (!is.null(panel_id)) {
+      paste0(panel_id, "_tile_selector")
+    } else {
+      "standalone_tile_selector"
+    }
+    map$x$tileSelectorControls[[control_id]] <- options
+  }
+
+  map
+}
