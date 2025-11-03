@@ -79,7 +79,7 @@ add_layer <- function(
   map$x$layers <- c(map$x$layers, list(layer))
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage("addLayer", layer)
+    map$session$sendCustomMessage("addLayer", list(id = map$id, layer = layer))
   }
   map
 }

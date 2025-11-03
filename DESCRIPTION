@@ -1,8 +1,8 @@
 Package: toro
 Title: Maplibre GL JS integration for R
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
-    person("Poppy", "Schlaadt", , "poppy@epi-interactive.com", role = c("aut", "cre")),
+    person("Poppy", "Schlaadt", , "poppy@epi.group", role = c("aut", "cre")),
     person("Epi", "", role = c("cph", "fnd")))
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.
 License: MIT + file LICENSE
@@ -10,6 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Imports:
+    htmlwidgets,
     shiny,
     jsonlite,
     geojsonsf,

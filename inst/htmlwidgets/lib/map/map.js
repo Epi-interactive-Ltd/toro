@@ -498,7 +498,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler("addLayer", function (message) {
     withMapInstance(message.id, function (el) {
-      addLayerToMap(el, message);
+      addLayerToMap(el, message.layer);
     });
   });
 
