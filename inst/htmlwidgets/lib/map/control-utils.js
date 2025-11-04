@@ -864,14 +864,20 @@ function addControlPanel(el, panelId, options = {}) {
   }
 
   map._controlPanels[panelId] = {
-    addControl: function (controlHTML, controlId = null, sectionTitle = null, panelClass = null) {
+    addControl: function (
+      controlHTML,
+      controlId = null,
+      sectionTitle = null,
+      panelClass = null
+    ) {
       const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
         const controlDiv = document.createElement("div");
         if (controlId) {
           controlDiv.id = controlId;
         }
-        controlDiv.className = "panel-control-item" + (panelClass ? ` ${panelClass}` : "");
+        controlDiv.className =
+          "panel-control-item" + (panelClass ? ` ${panelClass}` : "");
 
         // Add section title if provided
         const sectionHTML = sectionTitle
@@ -900,6 +906,7 @@ function addControlPanel(el, panelId, options = {}) {
         controlElement.classList.contains("panel-control-item")
       ) {
         controlElement.remove();
+        return;
       }
     },
     clear: function () {
@@ -1060,9 +1067,29 @@ function addControlToPanel(el, panelId, controlConfig) {
       addDrawControlToPanel(el, panelId, controlOptions, sectionTitle);
       break;
 
-    case "tile_selector":
+    case "tile-selector":
       // Add tile selector control to panel
       addTileSelectorControlToPanel(
+        widgetInstance,
+        panelId,
+        controlOptions,
+        sectionTitle
+      );
+      break;
+
+    case "cluster-toggle":
+      // Add cluster toggle control to panel
+      addClusterToggleControlToPanel(
+        widgetInstance,
+        panelId,
+        controlOptions,
+        sectionTitle
+      );
+      break;
+
+    case "visibility-toggle":
+      // Add visibility toggle control to panel
+      addVisibilityToggleControlToPanel(
         widgetInstance,
         panelId,
         controlOptions,
@@ -1521,7 +1548,7 @@ function addTimelineControl(
   const playPauseId = `timeline-play-pause-${mapId}`;
   const currentDateId = `timeline-current-date-${mapId}`;
   const sliderId = `timeline-slider-${mapId}`;
-  const controlId = `toro_timeline_control-${mapId}`;
+  const controlId = `timeline-control-${mapId}`;
 
   // HTML for the control
   const html = `
@@ -1665,8 +1692,8 @@ function addTimelineControl(
 
       // Update slider background to show progress
       const progressColor = playing
-        ? "var(--toro-timeline-secondary)"
-        : "var(--toro-timeline-primary)";
+        ? "var(--toro-secondary)"
+        : "var(--toro-primary)";
       timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
         progress * 100
       }%, #ddd ${progress * 100}%, #ddd 100%)`;
@@ -1941,7 +1968,6 @@ function addTimelineControl(
  */
 function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   const map = widgetInstance.getMap();
-  
 
   // Set default options
   const speedValues = options.values || [0.5, 1, 2];
@@ -1963,7 +1989,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   // Generate unique IDs by appending map ID
   const mapId = widgetInstance.getId();
   const speedSliderId = `speed-slider-${mapId}`;
-  const speedControlId = `toro_speed_control-${mapId}`;
+  const speedControlId = `speed-control-${mapId}`;
 
   // Generate tick marks for the slider
   const ticksHTML = speedLabels
@@ -2235,7 +2261,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
 
   // HTML for the control
   const html = `
-    <div class="tile-selector-container">
+    <div id="tile-selector-container-${widgetInstance.getId()}" class="tile-selector-container">
       <select id="${tileSelectorId}" class="tile-selector">
         ${selectOptions}
       </select>
@@ -2287,7 +2313,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   // Add the control to the map or control panel
   const useControlPanel = options.useControlPanel || false;
   const panelId = options.panelId;
-  const selectControlId = `toro_tile_selector_control-${widgetInstance.getId()}`;
+  const selectControlId = `tile-selector-control-${widgetInstance.getId()}`;
 
   if (
     useControlPanel &&
@@ -2301,7 +2327,6 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     // Add as standalone control
     addCustomControl(
       widgetInstance,
-      // "toro_tile_selector_control",
       selectControlId,
       html,
       options.position || "top-right"
@@ -2310,10 +2335,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
-    const tileSelectorControl = document.getElementById(
-      // "toro_tile_selector_control"
-      selectControlId
-    );
+    const tileSelectorControl = document.getElementById(selectControlId);
     if (tileSelectorControl) {
       tileSelectorControl.style.pointerEvents = "auto";
       tileSelectorControl.style.zIndex = "1000";
@@ -2453,4 +2475,398 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     },
     isDisabled: typeof onTileChange !== "function",
   };
+}
+
+/**
+ * Generate HTML content for a toggle control input.
+ *
+ * @param {string} type        Type of toggle ("cluster" or "visibility").
+ * @param {string} layerId     ID of the layer to toggle.
+ * @param {string} leftLabel       Label text for the left of the toggle.
+ * @param {string} rightLabel      Label text for the right of the toggle.
+ * @param {boolean} initialState Initial state of the toggle.
+ * @param {string} mapId       Map ID for unique event handling.
+ * @param {boolean} useInlineHandler Whether to use inline onclick handler (for panels) or return just HTML.
+ * @param {boolean} includeWrapper Whether to include the control wrapper div (for panels).
+ * @returns {string} HTML content for the toggle input.
+ */
+function generateToggleInputHtml(
+  type,
+  layerId,
+  leftLabel,
+  rightLabel,
+  initialState,
+  mapId,
+  useInlineHandler = false,
+  includeWrapper = false
+) {
+  const dataAttribute = type === "cluster" ? "data-clustered" : "data-visible";
+
+  const onclickHandler = useInlineHandler
+    ? `onclick="handle${
+        type === "cluster" ? "Cluster" : "Visibility"
+      }Toggle('${layerId}', '${mapId}', this)"`
+    : "";
+
+  const toggleHtml = `
+    <label class="toro-toggle" 
+           data-layer-id="${layerId}" 
+           ${dataAttribute}="${initialState}"
+           
+           ${onclickHandler}>
+           <span class="toro-toggle-label">${leftLabel || ""}</span>
+      <input class="toro-toggle-checkbox" type="checkbox" ${
+        initialState ? "checked" : ""
+      }>
+      <div class="toro-toggle-switch${initialState ? " checked" : ""}"></div>
+      <span class="toro-toggle-label">${rightLabel || ""}</span>
+    </label>
+  `;
+
+  // For panels, wrap in the same control container as standalone controls
+  if (includeWrapper) {
+    const containerClass =
+      type === "cluster"
+        ? "cluster-toggle-control"
+        : "visibility-toggle-control";
+    return `
+      <div class="toro-ctrl toro-toggle-container ${containerClass}">
+        ${toggleHtml}
+      </div>
+    `;
+  }
+
+  return toggleHtml;
+}
+
+/**
+ * Add a cluster toggle control to the map.
+ *
+ * @param {object} map        Maplibre map instance.
+ * @param {string} controlId  ID for the control.
+ * @param {string} layerId    ID of the layer to toggle clustering for.
+ * @param {string} leftLabel      Label text for the left side of the toggle. Default is "Toggle Clustering".
+ * @param {string} rightLabel     Label text for the right side of the toggle. Default is null.
+ * @param {boolean} initialState Initial clustering state. Default is false.
+ * @param {string} position   Position to place the control. Default is "top-right".
+ * @param {object} widgetInstance Optional widget instance for ID generation.
+ * @returns {void}
+ */
+function addClusterToggleControl(
+  map,
+  controlId,
+  layerId,
+  leftLabel = "Toggle Clustering",
+  rightLabel = null,
+  initialState = false,
+  position = "top-right",
+  widgetInstance = null
+) {
+  // Generate proper namespaced ID if widgetInstance is available
+  const finalControlId = widgetInstance
+    ? `${controlId}-${widgetInstance.getId()}`
+    : controlId;
+
+  class ClusterToggleControl {
+    onAdd(mapInstance) {
+      this._container = document.createElement("div");
+      this._container.id = finalControlId;
+      this._container.className =
+        "toro-ctrl toro-toggle-container cluster-toggle-control";
+
+      // Use shared HTML generator
+      const mapId = widgetInstance ? widgetInstance.getId() : "standalone";
+      const buttonHtml = generateToggleInputHtml(
+        "cluster",
+        layerId,
+        leftLabel,
+        rightLabel,
+        initialState,
+        mapId,
+        false
+      );
+      this._container.innerHTML = buttonHtml;
+
+      // Get reference to the toggle elements
+      this._toggle = this._container.querySelector(".toro-toggle");
+      this._checkbox = this._container.querySelector(".toro-toggle-checkbox");
+
+      if (!this._toggle || !this._checkbox) {
+        console.error("Cluster toggle elements not found!");
+        return this._container;
+      }
+
+      // Listen for both checkbox change and label click events
+      this._checkbox.addEventListener("change", () => {
+        const newState = this._checkbox.checked;
+
+        // Toggle clustering
+        toggleLayerClustering(mapInstance, layerId, newState);
+
+        // Update toggle state
+        this._toggle.setAttribute("data-clustered", newState.toString());
+        this._checkbox.checked = newState;
+
+        // Force visual update by managing CSS classes directly
+        const switchElement = this._toggle.querySelector(".toro-toggle-switch");
+        if (switchElement) {
+          if (newState) {
+            switchElement.classList.add("checked");
+          } else {
+            switchElement.classList.remove("checked");
+          }
+        }
+
+        this._updateToggleState(newState);
+
+        // Emit custom event for external listeners
+        const event = new CustomEvent("cluster-toggle", {
+          detail: { layerId: layerId, clustered: newState },
+        });
+        this._container.dispatchEvent(event);
+      });
+
+      // Listen for clicks anywhere on the toggle (labels, switch, etc.)
+      this._toggle.addEventListener("click", (e) => {
+        // Only prevent default if we're not clicking the checkbox directly
+        if (e.target !== this._checkbox) {
+          e.preventDefault();
+          // Manually toggle the checkbox
+          this._checkbox.checked = !this._checkbox.checked;
+          // Trigger the change event
+          this._checkbox.dispatchEvent(new Event("change"));
+        }
+        // If clicking checkbox directly, let it handle naturally
+      });
+
+      return this._container;
+    }
+
+    onRemove() {
+      this._container.parentNode.removeChild(this._container);
+    }
+
+    _updateToggleState(clustered) {
+      if (clustered) {
+        this._toggle.title = "Click to disable clustering";
+      } else {
+        this._toggle.title = "Click to enable clustering";
+      }
+    }
+  }
+
+  map.addControl(new ClusterToggleControl(), position);
+}
+
+/**
+ * Add a visibility toggle control to the map.
+ *
+ * @param {object} map        Maplibre map instance.
+ * @param {string} controlId  ID for the control.
+ * @param {string} layerId    ID of the layer to toggle visibility for.
+ * @param {string} leftLabel      Label text for the left side of the toggle. Default is "Toggle Layer".
+ * @param {string} rightLabel     Label text for the right side of the toggle. Default is null.
+ * @param {boolean} initialState Initial visibility state. Default is true.
+ * @param {string} position   Position to place the control. Default is "top-right".
+ * @param {object} widgetInstance Optional widget instance for ID generation.
+ * @returns {void}
+ */
+function addVisibilityToggleControl(
+  map,
+  controlId,
+  layerId,
+  leftLabel = "Toggle Layer",
+  rightLabel = "",
+  initialState = true,
+  position = "top-right",
+  widgetInstance = null
+) {
+  // Generate proper namespaced ID if widgetInstance is available
+  const finalControlId = widgetInstance
+    ? `${controlId}-${widgetInstance.getId()}`
+    : controlId;
+
+  class VisibilityToggleControl {
+    onAdd(mapInstance) {
+      this._container = document.createElement("div");
+      this._container.id = finalControlId;
+      this._container.className =
+        "toro-ctrl toro-toggle-container visibility-toggle-control";
+
+      // Use shared HTML generator
+      const mapId = widgetInstance ? widgetInstance.getId() : "standalone";
+      const buttonHtml = generateToggleInputHtml(
+        "visibility",
+        layerId,
+        leftLabel,
+        rightLabel,
+        initialState,
+        mapId,
+        false
+      );
+      this._container.innerHTML = buttonHtml;
+
+      // Get reference to the toggle elements
+      this._toggle = this._container.querySelector(".toro-toggle");
+      this._checkbox = this._container.querySelector(".toro-toggle-checkbox");
+
+      if (!this._toggle || !this._checkbox) {
+        console.error("Visibility toggle elements not found!");
+        return this._container;
+      }
+
+      // Listen for both checkbox change and label click events
+      this._checkbox.addEventListener("change", () => {
+        const newState = this._checkbox.checked;
+
+        // Toggle layer visibility
+        if (newState) {
+          showLayer(mapInstance, layerId);
+        } else {
+          hideLayer(mapInstance, layerId);
+        }
+
+        // Update toggle state
+        this._toggle.setAttribute("data-visible", newState.toString());
+        this._checkbox.checked = newState;
+
+        // Force visual update by managing CSS classes directly
+        const switchElement = this._toggle.querySelector(".toro-toggle-switch");
+        if (switchElement) {
+          if (newState) {
+            switchElement.classList.add("checked");
+          } else {
+            switchElement.classList.remove("checked");
+          }
+        }
+
+        this._updateToggleState(newState);
+
+        // Emit custom event for external listeners
+        const event = new CustomEvent("visibility-toggle", {
+          detail: { layerId: layerId, visible: newState },
+        });
+        this._container.dispatchEvent(event);
+      });
+
+      // Listen for clicks anywhere on the toggle (labels, switch, etc.)
+      this._toggle.addEventListener("click", (e) => {
+        // Only prevent default if we're not clicking the checkbox directly
+        if (e.target !== this._checkbox) {
+          e.preventDefault();
+          // Manually toggle the checkbox
+          this._checkbox.checked = !this._checkbox.checked;
+          // Trigger the change event
+          this._checkbox.dispatchEvent(new Event("change"));
+        }
+        // If clicking checkbox directly, let it handle naturally
+      });
+
+      return this._container;
+    }
+
+    onRemove() {
+      this._container.parentNode.removeChild(this._container);
+    }
+
+    _updateToggleState(visible) {
+      this._toggle.classList.toggle("active", visible);
+    }
+  }
+
+  map.addControl(new VisibilityToggleControl(), position);
+}
+
+/**
+ * Add a cluster toggle control to a control panel.
+ *
+ * @param {object} widgetInstance Widget instance.
+ * @param {string} panelId        ID of the control panel.
+ * @param {object} options        Control options including layerId, leftLabel, rightLabel, initialState.
+ * @param {string} sectionTitle   Section title for the control.
+ * @returns {void}
+ */
+function addClusterToggleControlToPanel(
+  widgetInstance,
+  panelId,
+  options,
+  sectionTitle
+) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  const controlId = `cluster-toggle-${
+    options.layerId
+  }-${widgetInstance.getId()}`;
+  const leftLabel = options.leftLabel || "Toggle Clustering";
+  const rightLabel = options.rightLabel || "";
+  const initialState =
+    options.initialState !== undefined ? options.initialState : false;
+
+  // Use shared HTML generator with inline handler and wrapper for panels
+  const htmlContent = generateToggleInputHtml(
+    "cluster",
+    options.layerId,
+    leftLabel,
+    rightLabel,
+    initialState,
+    widgetInstance.getId(),
+    true, // Use inline onclick handler for panels
+    true // Include wrapper div with control classes
+  );
+
+  // Add to panel
+  panel.addControl(htmlContent, controlId, sectionTitle);
+}
+
+/**
+ * Add a visibility toggle control to a control panel.
+ *
+ * @param {object} widgetInstance Widget instance.
+ * @param {string} panelId        ID of the control panel.
+ * @param {object} options        Control options including layerId, leftLabel, rightLabel, initialState.
+ * @param {string} sectionTitle   Section title for the control.
+ * @returns {void}
+ */
+function addVisibilityToggleControlToPanel(
+  widgetInstance,
+  panelId,
+  options,
+  sectionTitle
+) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  const controlId = `visibility-toggle-${
+    options.layerId
+  }-${widgetInstance.getId()}`;
+  const leftLabel = options.leftLabel || "Toggle Layer";
+  const rightLabel = options.rightLabel || "";
+  const initialState =
+    options.initialState !== undefined ? options.initialState : true;
+
+  // Use shared HTML generator with inline handler and wrapper for panels
+  const htmlContent = generateToggleInputHtml(
+    "visibility",
+    options.layerId,
+    leftLabel,
+    rightLabel,
+    initialState,
+    widgetInstance.getId(),
+    true, // Use inline onclick handler for panels
+    true // Include wrapper div with control classes
+  );
+
+  // Add to panel
+  panel.addControl(htmlContent, controlId, sectionTitle);
 }

@@ -19,6 +19,10 @@
 #' - `remove_speed_control`:       Remove the speed control from the map.
 #' - `remove_tile_selector_control`: Remove the tile selector control from the map.
 #' - `remove_custom_control`:      Remove a custom control from the map.
+#' - `add_cluster_toggle`:         Add a cluster toggle control to the map or control panel.
+#' - `add_visibility_toggle`:      Add a visibility toggle control to the map or control panel.
+#' - `remove_cluster_toggle`:      Remove a cluster toggle control from the map.
+#' - `remove_visibility_toggle`:   Remove a visibility toggle control from the map.
 
 #' Toggle the visibility of a control on the map.
 #'
@@ -363,8 +367,8 @@ remove_cursor_coords_control <- function(proxy, panel_id = NULL) {
 #' @return          The map proxy object for chaining.
 #' @export
 remove_timeline_control <- function(proxy, panel_id = NULL) {
-  # Use the namespaced control ID pattern: toro_timeline_control-{mapId}
-  control_id <- paste0("toro_timeline_control-", proxy$id)
+  # Use the namespaced control ID pattern: timeline-control-{mapId}
+  control_id <- paste0("timeline-control-container-", proxy$id)
 
   if (!is.null(panel_id)) {
     # Remove from control panel
@@ -383,8 +387,8 @@ remove_timeline_control <- function(proxy, panel_id = NULL) {
 #' @return          The map proxy object for chaining.
 #' @export
 remove_speed_control <- function(proxy, panel_id = NULL) {
-  # Use the namespaced control ID pattern: toro_speed_control-{mapId}
-  control_id <- paste0("toro_speed_control-", proxy$id)
+  # Use the namespaced control ID pattern: speed-control-{mapId}
+  control_id <- paste0("speed-control-", proxy$id)
 
   if (!is.null(panel_id)) {
     # Remove from control panel
@@ -403,8 +407,8 @@ remove_speed_control <- function(proxy, panel_id = NULL) {
 #' @return          The map proxy object for chaining.
 #' @export
 remove_tile_selector_control <- function(proxy, panel_id = NULL) {
-  # Use the namespaced control ID pattern: toro_tile_selector_control-{mapId}
-  control_id <- paste0("toro_tile_selector_control-", proxy$id)
+  # Use the namespaced control ID pattern: tile-selector-{mapId}
+  control_id <- paste0("tile-selector-", proxy$id)
 
   if (!is.null(panel_id)) {
     # Remove from control panel
@@ -726,7 +730,7 @@ add_tile_selector_control <- function(
       map$x$tileSelectorControls <- list()
     }
     control_id <- if (!is.null(panel_id)) {
-      paste0(panel_id, "_tile_selector")
+      paste0(panel_id, "-tile-selector")
     } else {
       "standalone_tile_selector"
     }
@@ -734,4 +738,170 @@ add_tile_selector_control <- function(
   }
 
   map
+}
+
+#' Add a cluster toggle control to the map or control panel
+#'
+#' Creates a toggle button that can enable/disable clustering for a specific layer.
+#'
+#' @param map           The map or map proxy object.
+#' @param layer_id      ID of the layer to toggle clustering for.
+#' @param control_id    ID for the control. If NULL, defaults to "cluster-toggle-{layer_id}".
+#' @param left_label    Label text for the toggle button. Default is "Toggle Clustering".
+#' @param right_label   Label text for the toggle button when clustering is off. Default
+#' @param initial_state Initial clustering state. Default is FALSE.
+#' @param position      Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id      ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @return              The map or map proxy object for chaining.
+#' @export
+add_cluster_toggle <- function(
+  map,
+  layer_id,
+  control_id = NULL,
+  left_label = "Toggle Clustering",
+  right_label = NULL,
+  initial_state = FALSE,
+  position = "top-right",
+  panel_id = NULL,
+  section_title = NULL
+) {
+  if (is.null(control_id)) {
+    control_id <- paste0("cluster-toggle-", layer_id)
+  }
+
+  options <- list(
+    controlId = control_id,
+    layerId = layer_id,
+    leftLabel = left_label,
+    rightLabel = right_label,
+    initialState = initial_state,
+    position = position,
+    panelId = panel_id,
+    panelTitle = section_title
+  )
+
+  if (inherits(map, "mapProxy")) {
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "cluster-toggle", options, section_title)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addClusterToggleControl",
+        list(id = map$id, options = options)
+      )
+    }
+  } else {
+    # Store for initial map creation
+    if (is.null(map$x$clusterToggleControls)) {
+      map$x$clusterToggleControls <- list()
+    }
+    map$x$clusterToggleControls[[control_id]] <- options
+  }
+
+  map
+}
+
+#' Add a visibility toggle control to the map or control panel
+#'
+#' Creates a toggle button that can show/hide a specific layer.
+#'
+#' @param map           The map or map proxy object.
+#' @param layer_id      ID of the layer to toggle visibility for.
+#' @param control_id    ID for the control. If NULL, defaults to "visibility-toggle-{layer_id}".
+#' @param left_label    Label text for the toggle button. Default is "Toggle Layer".
+#' @param right_label   Label text for the toggle button when layer is hidden. Default
+#' @param initial_state Initial visibility state. Default is TRUE.
+#' @param position      Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id      ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @return              The map or map proxy object for chaining.
+#' @export
+add_visibility_toggle <- function(
+  map,
+  layer_id,
+  control_id = NULL,
+  left_label = "Toggle Layer",
+  right_label = NULL,
+  initial_state = TRUE,
+  position = "top-right",
+  panel_id = NULL,
+  section_title = NULL
+) {
+  if (is.null(control_id)) {
+    control_id <- paste0("visibility-toggle-", layer_id)
+  }
+
+  options <- list(
+    controlId = control_id,
+    layerId = layer_id,
+    leftLabel = left_label,
+    rightLabel = right_label,
+    initialState = initial_state,
+    position = position,
+    panelId = panel_id,
+    panelTitle = section_title
+  )
+
+  if (inherits(map, "mapProxy")) {
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "visibility-toggle", options, section_title)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addVisibilityToggleControl",
+        list(id = map$id, options = options)
+      )
+    }
+  } else {
+    # Store for initial map creation
+    if (is.null(map$x$visibilityToggleControls)) {
+      map$x$visibilityToggleControls <- list()
+    }
+    map$x$visibilityToggleControls[[control_id]] <- options
+  }
+
+  map
+}
+
+#' Remove a cluster toggle control from the map
+#'
+#' @param proxy       The map proxy object created by `mapProxy()`.
+#' @param layer_id    The ID of the layer whose cluster toggle control to remove.
+#' @param panel_id    Optional. If provided, removes the control from the specified control panel.
+#' @return            The map proxy object for chaining.
+#' @export
+remove_cluster_toggle <- function(proxy, layer_id, panel_id = NULL) {
+  # Generate the control ID to match the JavaScript pattern: cluster-toggle-{layerId}-{widgetId}
+  control_id <- paste0("cluster-toggle-", layer_id, "-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
+}
+
+#' Remove a visibility toggle control from the map
+#'
+#' @param proxy       The map proxy object created by `mapProxy()`.
+#' @param layer_id    The ID of the layer whose visibility toggle control to remove.
+#' @param panel_id    Optional. If provided, removes the control from the specified control panel.
+#' @return            The map proxy object for chaining.
+#' @export
+remove_visibility_toggle <- function(proxy, layer_id, panel_id = NULL) {
+  # Generate the control ID to match the JavaScript pattern: visibility-toggle-{layerId}-{widgetId}
+  control_id <- paste0("visibility-toggle-", layer_id, "-", proxy$id)
+
+  if (!is.null(panel_id)) {
+    # Remove from control panel
+    remove_control_from_panel(proxy, panel_id, control_id)
+  } else {
+    # Remove standalone control
+    remove_control(proxy, control_id)
+  }
 }

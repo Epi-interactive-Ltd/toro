@@ -38,6 +38,10 @@ Functions:
 \item \code{remove_speed_control}:       Remove the speed control from the map.
 \item \code{remove_tile_selector_control}: Remove the tile selector control from the map.
 \item \code{remove_custom_control}:      Remove a custom control from the map.
+\item \code{add_cluster_toggle}:         Add a cluster toggle control to the map or control panel.
+\item \code{add_visibility_toggle}:      Add a visibility toggle control to the map or control panel.
+\item \code{remove_cluster_toggle}:      Remove a cluster toggle control from the map.
+\item \code{remove_visibility_toggle}:   Remove a visibility toggle control from the map.
 Toggle the visibility of a control on the map.
 }
 }

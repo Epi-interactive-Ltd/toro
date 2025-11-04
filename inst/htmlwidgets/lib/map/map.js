@@ -321,6 +321,72 @@ HTMLWidgets.widget({
             });
           }
 
+          // Process cluster toggle controls (both standalone and panel-based)
+          if (
+            x.clusterToggleControls &&
+            Object.keys(x.clusterToggleControls).length > 0
+          ) {
+            Object.keys(x.clusterToggleControls).forEach(function (controlId) {
+              const toggleOptions = x.clusterToggleControls[controlId];
+
+              if (toggleOptions.panelId) {
+                // Add to control panel
+                addClusterToggleControlToPanel(
+                  el.widgetInstance,
+                  toggleOptions.panelId,
+                  toggleOptions,
+                  toggleOptions.panelTitle
+                );
+              } else {
+                // Add as standalone control
+                addClusterToggleControl(
+                  el.mapInstance,
+                  toggleOptions.controlId,
+                  toggleOptions.layerId,
+                  toggleOptions.leftLabel,
+                  toggleOptions.rightLabel,
+                  toggleOptions.initialState,
+                  toggleOptions.position,
+                  el.widgetInstance
+                );
+              }
+            });
+          }
+
+          // Process visibility toggle controls (both standalone and panel-based)
+          if (
+            x.visibilityToggleControls &&
+            Object.keys(x.visibilityToggleControls).length > 0
+          ) {
+            Object.keys(x.visibilityToggleControls).forEach(function (
+              controlId
+            ) {
+              const toggleOptions = x.visibilityToggleControls[controlId];
+
+              if (toggleOptions.panelId) {
+                // Add to control panel
+                addVisibilityToggleControlToPanel(
+                  el.widgetInstance,
+                  toggleOptions.panelId,
+                  toggleOptions,
+                  toggleOptions.panelTitle
+                );
+              } else {
+                // Add as standalone control
+                addVisibilityToggleControl(
+                  el.mapInstance,
+                  toggleOptions.controlId,
+                  toggleOptions.layerId,
+                  toggleOptions.leftLabel,
+                  toggleOptions.rightLabel,
+                  toggleOptions.initialState,
+                  toggleOptions.position,
+                  el.widgetInstance
+                );
+              }
+            });
+          }
+
           if (HTMLWidgets.shinyMode) {
             // Trigger a input event to notify Shiny that the map is loaded
             Shiny.setInputValue(el.id + "_loaded", Math.random(), {
@@ -750,6 +816,63 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
+  Shiny.addCustomMessageHandler("addClusterToggleControl", function (message) {
+    withMapInstance(message.id, function (el) {
+      const options = message.options;
+      if (options.panelId) {
+        // Add to control panel
+        addClusterToggleControlToPanel(
+          el.widgetInstance,
+          options.panelId,
+          options,
+          options.panelTitle
+        );
+      } else {
+        // Add as standalone control
+        addClusterToggleControl(
+          el.mapInstance,
+          options.controlId,
+          options.layerId,
+          options.leftLabel,
+          options.rightLabel,
+          options.initialState,
+          options.position,
+          el.widgetInstance
+        );
+      }
+    });
+  });
+
+  Shiny.addCustomMessageHandler(
+    "addVisibilityToggleControl",
+    function (message) {
+      withMapInstance(message.id, function (el) {
+        const options = message.options;
+        if (options.panelId) {
+          // Add to control panel
+          addVisibilityToggleControlToPanel(
+            el.widgetInstance,
+            options.panelId,
+            options,
+            options.panelTitle
+          );
+        } else {
+          // Add as standalone control
+          addVisibilityToggleControl(
+            el.mapInstance,
+            options.controlId,
+            options.layerId,
+            options.leftLabel,
+            options.rightLabel,
+            options.initialState,
+            options.position,
+            el.widgetInstance
+          );
+        }
+      });
+    }
+  );
+
   Shiny.addCustomMessageHandler("deleteDrawnShape", function (message) {
     withMapInstance(message.id, function (el) {
       deleteDrawnShape(el, message.shapeId);
@@ -956,3 +1079,189 @@ if (HTMLWidgets.shinyMode) {
     }
   );
 }
+
+// Global handler functions for toggle controls in panels
+window.handleClusterToggle = function (layerId, mapId, toggleElement) {
+  const el = document.getElementById(mapId);
+  if (el && el.widgetInstance) {
+    const map = el.widgetInstance.getMap();
+
+    // Set up enhanced click handling on first call (but don't execute toggle logic)
+    if (!toggleElement._enhancedClickSetup) {
+      toggleElement._enhancedClickSetup = true;
+
+      // Store the original onclick handler
+      const originalOnclick = toggleElement.getAttribute("onclick");
+
+      // Remove the original onclick handler to prevent conflicts
+      toggleElement.removeAttribute("onclick");
+
+      // Add enhanced click handling
+      const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+
+      // Listen for checkbox changes (natural browser behavior)
+      if (checkbox) {
+        checkbox.addEventListener("change", () => {
+          const newState = checkbox.checked;
+
+          // Update map state
+          toggleLayerClustering(map, layerId, newState);
+          toggleElement.setAttribute("data-clustered", newState.toString());
+
+          // Update visual state
+          const switchElement = toggleElement.querySelector(
+            ".toro-toggle-switch"
+          );
+          if (switchElement) {
+            if (newState) {
+              switchElement.classList.add("checked");
+            } else {
+              switchElement.classList.remove("checked");
+            }
+          }
+
+          toggleElement.classList.toggle("active", newState);
+
+          const event = new CustomEvent("cluster-toggle", {
+            detail: { layerId: layerId, clustered: newState },
+          });
+          toggleElement.dispatchEvent(event);
+        });
+      }
+
+      // Listen for clicks on non-checkbox elements (labels, switch, etc.)
+      toggleElement.addEventListener("click", (e) => {
+        // Only handle clicks on non-checkbox elements
+        if (e.target !== checkbox && !checkbox.contains(e.target)) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Manually toggle the checkbox (this will trigger the change event above)
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change"));
+        }
+      });
+
+      // Don't execute toggle logic on setup - just return
+      return;
+    }
+
+    // This is a fallback call (shouldn't normally happen with enhanced handler)
+    const currentState =
+      toggleElement.getAttribute("data-clustered") === "true";
+    const newState = !currentState;
+
+    // Toggle clustering
+    toggleLayerClustering(map, layerId, newState);
+
+    // Update toggle state
+    toggleElement.setAttribute("data-clustered", newState.toString());
+    const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+
+    if (checkbox) {
+      checkbox.checked = newState;
+    }
+    toggleElement.classList.toggle("active", newState);
+
+    // Emit custom event
+    const event = new CustomEvent("cluster-toggle", {
+      detail: { layerId: layerId, clustered: newState },
+    });
+    toggleElement.dispatchEvent(event);
+  }
+};
+
+window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
+  const el = document.getElementById(mapId);
+  if (el && el.widgetInstance) {
+    const map = el.widgetInstance.getMap();
+
+    // Set up enhanced click handling on first call (but don't execute toggle logic)
+    if (!toggleElement._enhancedClickSetup) {
+      toggleElement._enhancedClickSetup = true;
+
+      // Remove the original onclick handler to prevent conflicts
+      toggleElement.removeAttribute("onclick");
+
+      // Add enhanced click handling
+      const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+
+      // Listen for checkbox changes (natural browser behavior)
+      if (checkbox) {
+        checkbox.addEventListener("change", () => {
+          const newState = checkbox.checked;
+
+          // Update map state
+          if (newState) {
+            showLayer(map, layerId);
+          } else {
+            hideLayer(map, layerId);
+          }
+
+          toggleElement.setAttribute("data-visible", newState.toString());
+
+          // Update visual state
+          const switchElement = toggleElement.querySelector(
+            ".toro-toggle-switch"
+          );
+          if (switchElement) {
+            if (newState) {
+              switchElement.classList.add("checked");
+            } else {
+              switchElement.classList.remove("checked");
+            }
+          }
+
+          toggleElement.classList.toggle("active", newState);
+
+          const event = new CustomEvent("visibility-toggle", {
+            detail: { layerId: layerId, visible: newState },
+          });
+          toggleElement.dispatchEvent(event);
+        });
+      }
+
+      // Listen for clicks on non-checkbox elements (labels, switch, etc.)
+      toggleElement.addEventListener("click", (e) => {
+        // Only handle clicks on non-checkbox elements
+        if (e.target !== checkbox && !checkbox.contains(e.target)) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Manually toggle the checkbox (this will trigger the change event above)
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change"));
+        }
+      });
+
+      // Don't execute toggle logic on setup - just return
+      return;
+    }
+
+    // This is a fallback call (shouldn't normally happen with enhanced handler)
+    const currentState = toggleElement.getAttribute("data-visible") === "true";
+    const newState = !currentState;
+
+    // Toggle layer visibility
+    if (newState) {
+      showLayer(map, layerId);
+    } else {
+      hideLayer(map, layerId);
+    }
+
+    // Update toggle state
+    toggleElement.setAttribute("data-visible", newState.toString());
+    const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+
+    if (checkbox) {
+      checkbox.checked = newState;
+    }
+    toggleElement.classList.toggle("active", newState);
+
+    // Emit custom event
+    const event = new CustomEvent("visibility-toggle", {
+      detail: { layerId: layerId, visible: newState },
+    });
+    toggleElement.dispatchEvent(event);
+  }
+};

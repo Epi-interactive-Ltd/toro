@@ -639,12 +639,12 @@ function removeRoute(widgetInstance, routeOptions) {
   if (route.showTimelineControls && map._timelineControl) {
     removeControl(
       widgetInstance,
-      map._timelineControl.controlId || "toro_timeline_control"
+      map._timelineControl.controlId || "toro-timeline-control"
     );
   }
 
   if (route.showSpeedControl && map._speedControl) {
-    removeControl(widgetInstance, "toro_speed_control");
+    removeControl(widgetInstance, "toro-speed-control");
   }
 
   // Remove animation state
