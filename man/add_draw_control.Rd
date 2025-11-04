@@ -13,7 +13,8 @@ add_draw_control(
   inactive_colour = "#0FB3CE",
   mode_labels = list(),
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

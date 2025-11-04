@@ -10,7 +10,8 @@ add_cursor_coords_control(
   long_label = "Lng",
   lat_label = "Lat",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

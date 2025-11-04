@@ -11,7 +11,8 @@ add_tile_selector_control(
   default_tile = NULL,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

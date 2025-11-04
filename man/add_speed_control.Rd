@@ -11,7 +11,8 @@ add_speed_control(
   default_index = 2,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

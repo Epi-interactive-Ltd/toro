@@ -13,7 +13,8 @@ add_visibility_toggle(
   initial_state = TRUE,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

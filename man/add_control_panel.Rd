@@ -9,7 +9,7 @@ add_control_panel(
   panel_id,
   title = NULL,
   position = "bottom-left",
-  collapsible = TRUE,
+  collapsible = FALSE,
   collapsed = FALSE,
   direction = "column",
   custom_controls = NULL
@@ -25,7 +25,7 @@ add_control_panel(
 \item{position}{Position of the control panel on the map. Default is "bottom-left".
 Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 
-\item{collapsible}{Whether the panel can be collapsed. Default is TRUE.}
+\item{collapsible}{Whether the panel can be collapsed. Default is FALSE.}
 
 \item{collapsed}{Initial collapsed state. Default is FALSE.}
 

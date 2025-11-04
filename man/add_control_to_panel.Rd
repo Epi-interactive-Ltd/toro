@@ -9,7 +9,8 @@ add_control_to_panel(
   panel_id,
   control_type,
   control_options = list(),
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ add_control_to_panel(
 \item{control_options}{Control-specific options.}
 
 \item{section_title}{Optional section title for the control.}
+
+\item{group_id}{Optional ID of the group to add the control to.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.

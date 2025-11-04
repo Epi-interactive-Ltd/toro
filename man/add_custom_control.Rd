@@ -10,7 +10,8 @@ add_custom_control(
   html,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

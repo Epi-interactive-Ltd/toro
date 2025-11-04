@@ -11,7 +11,8 @@ add_timeline_control(
   position = "bottom-left",
   max_ticks = 3,
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{

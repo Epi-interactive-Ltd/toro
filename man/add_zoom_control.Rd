@@ -9,7 +9,8 @@ add_zoom_control(
   position = "top-right",
   control_options = list(),
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{
