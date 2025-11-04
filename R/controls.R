@@ -62,7 +62,8 @@ add_cursor_coords_control <- function(
   long_label = "Lng",
   lat_label = "Lat",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   control <- list(
     type = "cursor",
@@ -70,13 +71,14 @@ add_cursor_coords_control <- function(
     longLabel = long_label,
     latLabel = lat_label,
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "cursor", control, section_title)
+      add_control_to_panel(map, panel_id, "cursor", control, section_title, group_id)
     } else {
       # Add as standalone control
       map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, control = control))
@@ -109,20 +111,22 @@ add_zoom_control <- function(
   position = "top-right",
   control_options = list(),
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   control_config <- list(
     type = "zoom",
     position = position,
     controlOptions = control_options,
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "zoom", control_config, section_title)
+      add_control_to_panel(map, panel_id, "zoom", control_config, section_title, group_id)
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -160,7 +164,8 @@ add_custom_control <- function(
   html,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   control <- list(
     type = "custom",
@@ -168,13 +173,14 @@ add_custom_control <- function(
     html = html,
     position = position,
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "custom", control, section_title)
+      add_control_to_panel(map, panel_id, "custom", control, section_title, group_id)
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -216,7 +222,8 @@ add_draw_control <- function(
   inactive_colour = "#0FB3CE",
   mode_labels = list(),
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   control <- list(
     type = "draw",
@@ -227,13 +234,14 @@ add_draw_control <- function(
     inactiveColour = inactive_colour,
     modeLabels = mode_labels,
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "draw", control, section_title)
+      add_control_to_panel(map, panel_id, "draw", control, section_title, group_id)
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -446,7 +454,7 @@ remove_custom_control <- function(proxy, control_id, panel_id = NULL) {
 #' @param title         Title for the control panel. If NULL, no title is shown.
 #' @param position      Position of the control panel on the map. Default is "bottom-left".
 #'                      Options include "top-left", "top-right", "bottom-left", "bottom-right".
-#' @param collapsible   Whether the panel can be collapsed. Default is TRUE.
+#' @param collapsible   Whether the panel can be collapsed. Default is FALSE.
 #' @param collapsed     Initial collapsed state. Default is FALSE.
 #' @param custom_controls List of custom controls to add initially. Each should be a list with
 #'                      elements: html, id (optional), title (optional).
@@ -457,7 +465,7 @@ add_control_panel <- function(
   panel_id,
   title = NULL,
   position = "bottom-left",
-  collapsible = TRUE,
+  collapsible = FALSE,
   collapsed = FALSE,
   direction = "column",
   custom_controls = NULL
@@ -490,6 +498,71 @@ add_control_panel <- function(
   map
 }
 
+#' Add a control group to a control panel
+#'
+#' Creates a collapsible group within a control panel that can contain multiple controls.
+#'
+#' @param map           The map or map proxy object.
+#' @param panel_id      ID of the target control panel.
+#' @param group_id      Unique identifier for the control group.
+#' @param group_title   Title for the control group (optional).
+#' @param collapsible   Whether the group can be collapsed. Default is FALSE.
+#' @param collapsed     Initial collapsed state. Default is FALSE.
+#' @return              The map or map proxy object for chaining.
+#' @export
+add_control_group <- function(
+  map,
+  panel_id,
+  group_id,
+  group_title = NULL,
+  collapsible = FALSE,
+  collapsed = FALSE
+) {
+  group_config <- list(
+    type = "group",
+    groupId = group_id,
+    groupTitle = group_title,
+    collapsible = collapsible,
+    collapsed = collapsed
+  )
+
+  if (inherits(map, "mapProxy")) {
+    map$session$sendCustomMessage(
+      "addControlGroup",
+      list(id = map$id, panelId = panel_id, groupConfig = group_config)
+    )
+  } else {
+    # Store group for initial map creation
+    if (is.null(map$x$controlPanels)) {
+      map$x$controlPanels <- list()
+    }
+
+    # Initialize the panel if it doesn't exist
+    if (is.null(map$x$controlPanels[[panel_id]])) {
+      map$x$controlPanels[[panel_id]] <- list(
+        panelId = panel_id,
+        options = list(
+          title = NULL,
+          position = "bottom-left",
+          collapsible = TRUE,
+          collapsed = FALSE,
+          customControls = list()
+        )
+      )
+    }
+
+    # Add the group to the panel's controls
+    if (is.null(map$x$controlPanels[[panel_id]]$options$panelControls)) {
+      map$x$controlPanels[[panel_id]]$options$panelControls <- list()
+    }
+
+    map$x$controlPanels[[panel_id]]$options$panelControls <-
+      c(map$x$controlPanels[[panel_id]]$options$panelControls, list(group_config))
+  }
+
+  map
+}
+
 #' Add a control to an existing control panel
 #'
 #' @param map           The map or map proxy object.
@@ -497,6 +570,7 @@ add_control_panel <- function(
 #' @param control_type  Type of control ("timeline", "speed", "custom").
 #' @param control_options Control-specific options.
 #' @param section_title Optional section title for the control.
+#' @param group_id      Optional ID of the group to add the control to.
 #' @return              The map or map proxy object for chaining.
 #' @export
 add_control_to_panel <- function(
@@ -504,12 +578,14 @@ add_control_to_panel <- function(
   panel_id,
   control_type,
   control_options = list(),
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   control_config <- list(
     type = control_type,
     options = control_options,
-    title = section_title
+    title = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
@@ -567,7 +643,8 @@ add_timeline_control <- function(
   position = "bottom-left",
   max_ticks = 3,
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   # Use default dates if not provided
   # if (is.null(start_date)) {
@@ -584,14 +661,21 @@ add_timeline_control <- function(
     maxTicks = max_ticks,
     useControlPanel = !is.null(panel_id),
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage(
-      "addTimelineControlStandalone",
-      list(id = map$id, options = options)
-    )
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "timeline", options, section_title, group_id)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addTimelineControlStandalone",
+        list(id = map$id, options = options)
+      )
+    }
   } else {
     # Store for initial map creation
     if (is.null(map$x$timelineControls)) {
@@ -622,7 +706,8 @@ add_speed_control <- function(
   default_index = 2,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   options <- list(
     values = values,
@@ -631,14 +716,21 @@ add_speed_control <- function(
     position = position,
     useControlPanel = !is.null(panel_id),
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage(
-      "addSpeedControlStandalone",
-      list(id = map$id, options = options)
-    )
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "speed", options, section_title, group_id)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addSpeedControlStandalone",
+        list(id = map$id, options = options)
+      )
+    }
   } else {
     # Store for initial map creation
     if (is.null(map$x$speedControls)) {
@@ -669,7 +761,8 @@ add_tile_selector_control <- function(
   default_tile = NULL,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   # If no tiles specified, get them from the map's loaded tiles
   # if (is.null(available_tiles)) {
@@ -716,14 +809,21 @@ add_tile_selector_control <- function(
     position = position,
     useControlPanel = !is.null(panel_id),
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
-    map$session$sendCustomMessage(
-      "addTileSelectorControlStandalone",
-      list(id = map$id, options = options)
-    )
+    if (!is.null(panel_id)) {
+      # Add to control panel
+      add_control_to_panel(map, panel_id, "tile-selector", options, section_title, group_id)
+    } else {
+      # Add as standalone control
+      map$session$sendCustomMessage(
+        "addTileSelectorControlStandalone",
+        list(id = map$id, options = options)
+      )
+    }
   } else {
     # Store for initial map creation
     if (is.null(map$x$tileSelectorControls)) {
@@ -764,7 +864,8 @@ add_cluster_toggle <- function(
   initial_state = FALSE,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   if (is.null(control_id)) {
     control_id <- paste0("cluster-toggle-", layer_id)
@@ -778,13 +879,14 @@ add_cluster_toggle <- function(
     initialState = initial_state,
     position = position,
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "cluster-toggle", options, section_title)
+      add_control_to_panel(map, panel_id, "cluster-toggle", options, section_title, group_id)
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -827,7 +929,8 @@ add_visibility_toggle <- function(
   initial_state = TRUE,
   position = "top-right",
   panel_id = NULL,
-  section_title = NULL
+  section_title = NULL,
+  group_id = NULL
 ) {
   if (is.null(control_id)) {
     control_id <- paste0("visibility-toggle-", layer_id)
@@ -841,13 +944,14 @@ add_visibility_toggle <- function(
     initialState = initial_state,
     position = position,
     panelId = panel_id,
-    panelTitle = section_title
+    panelTitle = section_title,
+    groupId = group_id
   )
 
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "visibility-toggle", options, section_title)
+      add_control_to_panel(map, panel_id, "visibility-toggle", options, section_title, group_id)
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -904,4 +1008,23 @@ remove_visibility_toggle <- function(proxy, layer_id, panel_id = NULL) {
     # Remove standalone control
     remove_control(proxy, control_id)
   }
+}
+
+#' Remove a control group from a control panel
+#'
+#' @param proxy       The map proxy object created by `mapProxy()`.
+#' @param panel_id    The ID of the control panel.
+#' @param group_id    The ID of the control group to remove.
+#' @return            The map proxy object for chaining.
+#' @export
+remove_control_group <- function(proxy, panel_id, group_id) {
+  proxy$session$sendCustomMessage(
+    "removeControlGroup",
+    list(
+      id = proxy$id,
+      panelId = panel_id,
+      groupId = group_id
+    )
+  )
+  proxy
 }

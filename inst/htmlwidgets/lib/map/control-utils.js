@@ -868,8 +868,20 @@ function addControlPanel(el, panelId, options = {}) {
       controlHTML,
       controlId = null,
       sectionTitle = null,
-      panelClass = null
+      panelClass = null,
+      groupId = null
     ) {
+      // If groupId is specified, add control to the group instead
+      if (groupId) {
+        return this.addControlToGroup(
+          controlHTML,
+          controlId,
+          sectionTitle,
+          panelClass,
+          groupId
+        );
+      }
+
       const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
         const controlDiv = document.createElement("div");
@@ -886,6 +898,49 @@ function addControlPanel(el, panelId, options = {}) {
         controlDiv.innerHTML = sectionHTML + controlHTML;
 
         panelContent.appendChild(controlDiv);
+
+        // Ensure new control has proper pointer events
+        setTimeout(() => {
+          const allElements = controlDiv.querySelectorAll("*");
+          allElements.forEach((el) => {
+            el.style.pointerEvents = "auto";
+          });
+        }, 50);
+
+        return controlDiv;
+      }
+      return null;
+    },
+    addControlToGroup: function (
+      controlHTML,
+      controlId = null,
+      sectionTitle = null,
+      panelClass = null,
+      groupId
+    ) {
+      const groupElement = el.querySelector(`#${groupId}`);
+      if (!groupElement) {
+        console.warn(`Control group with ID ${groupId} not found`);
+        return null;
+      }
+
+      const groupContent = groupElement.querySelector(".control-group-content");
+      if (groupContent) {
+        const controlDiv = document.createElement("div");
+        if (controlId) {
+          controlDiv.id = controlId;
+        }
+        controlDiv.className =
+          "panel-control-item group-control-item" +
+          (panelClass ? ` ${panelClass}` : "");
+
+        // Add section title if provided (for individual controls within groups)
+        const sectionHTML = sectionTitle
+          ? `<div class="control-section-title">${sectionTitle}</div>`
+          : "";
+        controlDiv.innerHTML = sectionHTML + controlHTML;
+
+        groupContent.appendChild(controlDiv);
 
         // Ensure new control has proper pointer events
         setTimeout(() => {
@@ -961,6 +1016,7 @@ function addControlPanel(el, panelId, options = {}) {
  * @param {string} htmlContent      HTML content to add to the panel.
  * @param {string} sectionTitle     Optional section title for the control.
  * @param {string} controlId        Optional ID for the control element.
+ * @param {string} groupId          Optional group ID to add the control to a specific group.
  * @return {void}
  */
 function addHtmlToPanel(
@@ -968,7 +1024,8 @@ function addHtmlToPanel(
   panelId,
   htmlContent,
   sectionTitle = null,
-  controlId = null
+  controlId = null,
+  groupId = null
 ) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
@@ -979,7 +1036,7 @@ function addHtmlToPanel(
   }
 
   // Use the panel's addControl method to add the HTML
-  panel.addControl(htmlContent, controlId, sectionTitle);
+  panel.addControl(htmlContent, controlId, sectionTitle, null, groupId);
 }
 
 /**
@@ -1007,11 +1064,13 @@ function addControlToPanel(el, panelId, controlConfig) {
   const controlType = controlConfig.type;
   const controlOptions = controlConfig.options || controlConfig;
   const sectionTitle = controlConfig.title || controlConfig.panelTitle;
+  const groupId = controlConfig.groupId;
 
   // Mark that this control should be added to the panel
   controlOptions.useControlPanel = true;
   controlOptions.panelId = panelId;
   controlOptions.panelTitle = sectionTitle;
+  controlOptions.groupId = groupId;
 
   switch (controlType) {
     case "timeline":
@@ -1037,7 +1096,8 @@ function addControlToPanel(el, panelId, controlConfig) {
           controlConfig.html || controlOptions.html,
           customControlId,
           sectionTitle,
-          "toro-custom-panel-control"
+          "toro-custom-panel-control",
+          groupId
         );
       }
       break;
@@ -1422,6 +1482,7 @@ function addTileSelectorControlToPanel(
     useControlPanel: true,
     panelId: panelId,
     panelTitle: sectionTitle,
+    groupId: options.groupId,
   };
 
   // Create the tile change callback
@@ -1582,11 +1643,13 @@ function addTimelineControl(
     map._controlPanels[panelId]
   ) {
     // Add to existing control panel
+    const groupId = options.groupId || null;
     map._controlPanels[panelId].addControl(
       html,
       timelineContainerId,
       options.panelTitle,
-      "toro-timeline-panel-control"
+      "toro-timeline-panel-control",
+      groupId
     );
   } else {
     // Add as standalone control
@@ -2027,11 +2090,13 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     map._controlPanels[panelId]
   ) {
     // Add to existing control panel
+    const groupId = options.groupId || null;
     map._controlPanels[panelId].addControl(
       html,
       speedControlId,
       options.panelTitle,
-      "toro-speed-panel-control"
+      "toro-speed-panel-control",
+      groupId
     );
   } else {
     // Add as standalone control
@@ -2322,7 +2387,15 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     map._controlPanels[panelId]
   ) {
     // Add to existing control panel
-    addHtmlToPanel(widgetInstance, panelId, html, options.panelTitle);
+    const groupId = options.groupId || null;
+    addHtmlToPanel(
+      widgetInstance,
+      panelId,
+      html,
+      options.panelTitle,
+      null,
+      groupId
+    );
   } else {
     // Add as standalone control
     addCustomControl(
@@ -2803,7 +2876,7 @@ function addClusterToggleControlToPanel(
   const controlId = `cluster-toggle-${
     options.layerId
   }-${widgetInstance.getId()}`;
-  const leftLabel = options.leftLabel || "Toggle Clustering";
+  const leftLabel = options.leftLabel || "";
   const rightLabel = options.rightLabel || "";
   const initialState =
     options.initialState !== undefined ? options.initialState : false;
@@ -2820,8 +2893,15 @@ function addClusterToggleControlToPanel(
     true // Include wrapper div with control classes
   );
 
-  // Add to panel
-  panel.addControl(htmlContent, controlId, sectionTitle);
+  // Add to panel (include groupId from options)
+  const groupId = options.groupId || null;
+  panel.addControl(
+    htmlContent,
+    controlId,
+    sectionTitle,
+    "toro-cluster-toggle-panel-control",
+    groupId
+  );
 }
 
 /**
@@ -2850,7 +2930,7 @@ function addVisibilityToggleControlToPanel(
   const controlId = `visibility-toggle-${
     options.layerId
   }-${widgetInstance.getId()}`;
-  const leftLabel = options.leftLabel || "Toggle Layer";
+  const leftLabel = options.leftLabel || "";
   const rightLabel = options.rightLabel || "";
   const initialState =
     options.initialState !== undefined ? options.initialState : true;
@@ -2868,5 +2948,105 @@ function addVisibilityToggleControlToPanel(
   );
 
   // Add to panel
-  panel.addControl(htmlContent, controlId, sectionTitle);
+  const groupId = options.groupId || null;
+  panel.addControl(htmlContent, controlId, sectionTitle, null, groupId);
+}
+
+/**
+ * Add a control group to a control panel.
+ * Creates a collapsible section that can contain multiple controls.
+ *
+ * @param {HTMLElement} el - The widget element.
+ * @param {string} panelId - ID of the control panel.
+ * @param {object} groupConfig - Group configuration options.
+ * @returns {void}
+ */
+function addControlGroup(el, panelId, groupConfig) {
+  const widgetInstance = el.widgetInstance;
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  const groupId = groupConfig.groupId;
+  const groupTitle = groupConfig.groupTitle || "Control Group";
+  const collapsible = groupConfig.collapsible !== false;
+  const collapsed = groupConfig.collapsed === true;
+
+  // Create the group HTML structure
+  const groupHTML = `
+    <div class="control-group ${collapsed ? "collapsed" : ""}" id="${groupId}">
+      <div class="control-group-header ${collapsible ? "collapsible" : ""}" ${
+    collapsible ? "onclick=\"toggleControlGroup('" + groupId + "')\"" : ""
+  }>
+        <span class="control-group-title">${groupTitle}</span>
+        ${
+          collapsible
+            ? '<span class="control-group-toggle">' +
+              (collapsed ? "▶" : "▼") +
+              "</span>"
+            : ""
+        }
+      </div>
+      <div class="control-group-content ${collapsed ? "hidden" : ""}">
+        <!-- Controls will be added here -->
+      </div>
+    </div>
+  `;
+
+  // Use the panel's addControl method
+  panel.addControl(groupHTML, groupId, null, "control-group-container");
+}
+
+/**
+ * Remove a control group from a control panel.
+ *
+ * @param {HTMLElement} el - The widget element.
+ * @param {string} panelId - ID of the control panel.
+ * @param {string} groupId - ID of the control group to remove.
+ * @returns {void}
+ */
+function removeControlGroup(el, panelId, groupId) {
+  const widgetInstance = el.widgetInstance;
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) {
+    console.warn(`Control panel with ID ${panelId} not found`);
+    return;
+  }
+
+  // Use the panel's removeControl method
+  panel.removeControl(groupId);
+}
+
+/**
+ * Toggle the collapsed state of a control group.
+ * This function is called when the group header is clicked (if collapsible).
+ *
+ * @param {string} groupId - ID of the control group to toggle.
+ * @returns {void}
+ */
+function toggleControlGroup(groupId) {
+  const groupElement = document.getElementById(groupId);
+  if (!groupElement) return;
+
+  const isCollapsed = groupElement.classList.contains("collapsed");
+  const contentElement = groupElement.querySelector(".control-group-content");
+  const toggleElement = groupElement.querySelector(".control-group-toggle");
+
+  if (isCollapsed) {
+    // Expand the group
+    groupElement.classList.remove("collapsed");
+    contentElement.classList.remove("hidden");
+    if (toggleElement) toggleElement.textContent = "▼";
+  } else {
+    // Collapse the group
+    groupElement.classList.add("collapsed");
+    contentElement.classList.add("hidden");
+    if (toggleElement) toggleElement.textContent = "▶";
+  }
 }

@@ -456,6 +456,10 @@ input {
   align-items: center;
 }
 
+.control-panel.direction-row .panel-content {
+  align-items: start;
+}
+
 .control-panel .panel-control-item {
   margin-bottom: 16px;
 }
@@ -465,12 +469,9 @@ input {
 }
 
 .control-panel .control-section-title {
-  font-size: 11px;
-  font-weight: 500;
-  color: #666;
+  font-size: 13px;
+  font-weight: bold;
   margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 /* Adjust existing control styles when in panel */
@@ -576,6 +577,16 @@ input {
   top: 2px;
   cursor: pointer;
   pointer-events: auto;
+}
+
+/** Control Group Styles **/
+.control-group-header {
+  margin-bottom: 10px;
+}
+
+.control-group-title {
+  font-weight: bold;
+  font-size: 15px;
 }
 
 /** Hide the export stuff **/

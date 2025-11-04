@@ -239,6 +239,9 @@ HTMLWidgets.widget({
                       control.options.html,
                       control.title
                     );
+                  } else if (control.type === "group") {
+                    // Add control group to the panel
+                    addControlGroup(el, panelId, control);
                   }
                 });
               }
@@ -393,6 +396,9 @@ HTMLWidgets.widget({
               priority: "event",
             });
           }
+
+          // Add event handlers to close popups on various map interactions
+          setupPopupCloseHandlers(mapInstance);
 
           closeAttribution(el.id); // By default, close the attribution panel
         });
@@ -1021,6 +1027,18 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
+  Shiny.addCustomMessageHandler("addControlGroup", function (message) {
+    withMapInstance(message.id, function (el) {
+      addControlGroup(el, message.panelId, message.groupConfig);
+    });
+  });
+
+  Shiny.addCustomMessageHandler("removeControlGroup", function (message) {
+    withMapInstance(message.id, function (el) {
+      removeControlGroup(el, message.panelId, message.groupId);
+    });
+  });
+
   Shiny.addCustomMessageHandler(
     "addTimelineControlStandalone",
     function (message) {
@@ -1265,3 +1283,59 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
     toggleElement.dispatchEvent(event);
   }
 };
+
+/**
+ * Set up event handlers to close popups on various map interactions.
+ * This ensures that popups are closed when the user interacts with the map in other ways.
+ *
+ * @param {object} map - MapLibre map instance
+ */
+function setupPopupCloseHandlers(map) {
+  // Close popups when the map is moved (dragged or panned)
+  map.on("movestart", function () {
+    closeAllPopups(map);
+  });
+
+  // Close popups when the map is zoomed
+  map.on("zoomstart", function () {
+    closeAllPopups(map);
+  });
+
+  // Close popups when the map is rotated
+  map.on("rotatestart", function () {
+    closeAllPopups(map);
+  });
+
+  // Close popups when the map is pitched (3D tilt)
+  map.on("pitchstart", function () {
+    closeAllPopups(map);
+  });
+
+  // Close popups when clicking on empty areas of the map (not on features)
+  map.on("click", function (e) {
+    // Only close if the click wasn't on a feature with a popup
+    // We'll let the layer-specific click handlers manage their own popups
+    const features = map.queryRenderedFeatures(e.point);
+
+    // Check if any of the clicked features have popup columns
+    const hasPopupFeature = features.some((feature) => {
+      // This is a simple check - in a more sophisticated setup, you might
+      // want to track which layers have popups enabled
+      return feature.properties && Object.keys(feature.properties).length > 0;
+    });
+
+    // If no features with properties were clicked, close all popups
+    if (!hasPopupFeature) {
+      closeAllPopups(map);
+    }
+  });
+
+  // Close popups when any layer is toggled (visibility or clustering)
+  map.getContainer().addEventListener("visibility-toggle", function () {
+    closeAllPopups(map);
+  });
+
+  map.getContainer().addEventListener("cluster-toggle", function () {
+    closeAllPopups(map);
+  });
+}

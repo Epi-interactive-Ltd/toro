@@ -554,8 +554,21 @@ function addFilterToLayer(map, layerId, filter) {
  */
 function addLayerPopup(map, layerId, popupColumn) {
   map.on("click", layerId, (e) => {
-    const coordinates = e.features[0].geometry.coordinates.slice();
+    // Close any existing popups before opening a new one
+    closeAllPopups(map);
+
+    let coordinates = e.features[0].geometry.coordinates.slice();
     const description = e.features[0].properties[popupColumn];
+
+    const featureType = e.features[0].geometry.type;
+
+    if (!coordinates || featureType !== "Point") {
+      // For non-Point geometries (LineString, Polygon), extract first coordinate pair
+      if (!coordinates || featureType !== "Point") {
+        // Fallback to clicked location if no coordinates available
+        coordinates = [e.lngLat.lng, e.lngLat.lat];
+      }
+    }
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
@@ -642,6 +655,34 @@ function addLayerCursor(map, layerIds, cursorStyle = "pointer") {
  * @param {string} toLayerId ID of the layer to copy style to.
  * @returns {void}
  */
+
+/**
+ * Close all open popups on the map.
+ * This function closes both click-based popups (stored in map._popup) and any other popups that may exist.
+ *
+ * @param {object} map - Maplibre map instance.
+ */
+function closeAllPopups(map) {
+  // Close the main popup stored in map._popup (from addLayerPopup clicks)
+  if (map._popup && map._popup.isOpen()) {
+    map._popup.remove();
+    map._popup = null;
+  }
+
+  // Close any other popups that might exist on the map
+  // Note: This covers any popups created by other parts of the code
+  const popups = document.querySelectorAll(".maplibregl-popup");
+  popups.forEach((popupElement) => {
+    const popup = popupElement._popup;
+    if (popup && popup.isOpen && popup.isOpen()) {
+      popup.remove();
+    } else {
+      // Fallback: remove the DOM element directly if popup object is not accessible
+      popupElement.remove();
+    }
+  });
+}
+
 function copyLayerStyle(map, fromLayerId, toLayerId) {
   const fromLayer = map.getLayer(fromLayerId);
   if (!fromLayer) return;
