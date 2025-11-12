@@ -29,6 +29,7 @@ Functions:
 \item \code{add_control_to_panel}:      Add a control to an existing control panel.
 \item \code{add_timeline_control}:      Add a timeline control to the map or control panel.
 \item \code{add_speed_control}:         Add a speed control to the map or control panel.
+\item \code{add_layer_selector_control}: Add a layer selector control to the map or control panel.
 \item \code{delete_drawn_shape}:        Delete a drawn shape from the map.
 \item \code{remove_control}:            Remove a control from the map.
 \item \code{remove_draw_control}:       Remove the draw control from the map.
@@ -37,6 +38,7 @@ Functions:
 \item \code{remove_timeline_control}:    Remove the timeline control from the map.
 \item \code{remove_speed_control}:       Remove the speed control from the map.
 \item \code{remove_tile_selector_control}: Remove the tile selector control from the map.
+\item \code{remove_layer_selector_control}: Remove the layer selector control from the map.
 \item \code{remove_custom_control}:      Remove a custom control from the map.
 \item \code{add_cluster_toggle}:         Add a cluster toggle control to the map or control panel.
 \item \code{add_visibility_toggle}:      Add a visibility toggle control to the map or control panel.

@@ -38,6 +38,7 @@ HTMLWidgets.widget({
 
         el.ourLayers = []; // Layers added by us
         el.tileLayers = [];
+        el.imageTileLayers = [];
 
         // mapInstance.controls = [];
         // mapInstance.sources = [];
@@ -89,6 +90,26 @@ HTMLWidgets.widget({
           }
 
           initiateTiles(el, x);
+          if (x.mapServerTiles) {
+            x.mapServerTiles.forEach((layer) =>
+              addTilesFromMapServer(
+                el.widgetInstance,
+                layer.tileId,
+                layer.mapServiceUrl
+              )
+            );
+          }
+
+          if (x.imageLayerTiles) {
+            x.imageLayerTiles.forEach((layer) =>
+              addTilesFromMapServer(
+                el.widgetInstance,
+                layer.tileId,
+                layer.mapServiceUrl
+              )
+            );
+          }
+
           addSpiderfyingLayers(el.mapInstance);
 
           if (x.layers) {
@@ -324,6 +345,35 @@ HTMLWidgets.widget({
             });
           }
 
+          // Process layer selector controls (both standalone and panel-based)
+          if (
+            x.layerSelectorControls &&
+            Object.keys(x.layerSelectorControls).length > 0
+          ) {
+            Object.keys(x.layerSelectorControls).forEach(function (controlId) {
+              const layerSelectorOptions = x.layerSelectorControls[controlId];
+
+              // Create layer change callback that manages layer visibility
+              const layerChangeCallback = function (
+                selectedLayer,
+                previousLayer
+              ) {
+                // Layer visibility is already managed by the control itself
+                // console.log(
+                //   `Layer changed from "${previousLayer || "none"}" to "${
+                //     selectedLayer || "none"
+                //   }"`
+                // );
+              };
+
+              addLayerSelectorControl(
+                el.widgetInstance,
+                layerChangeCallback,
+                layerSelectorOptions
+              );
+            });
+          }
+
           // Process cluster toggle controls (both standalone and panel-based)
           if (
             x.clusterToggleControls &&
@@ -513,12 +563,28 @@ HTMLWidgets.widget({
         return el.id;
       },
 
+      getInitialTiles: function () {
+        return el.initialTiles;
+      },
+
       getDraw: function () {
         return el.draw;
       },
 
       getAnimations: function () {
         return el.animations;
+      },
+
+      setAvailableTiles: function (tiles) {
+        el.tileLayers = tiles;
+      },
+
+      getAvailableImageLayerTiles: function () {
+        return el.imageLayerTiles;
+      },
+
+      setAvailableImageLayerTiles: function (imageLayerTiles) {
+        el.imageLayerTiles = imageLayerTiles;
       },
 
       getAvailableTiles: function () {
@@ -1092,6 +1158,29 @@ if (HTMLWidgets.shinyMode) {
           el.widgetInstance,
           tileChangeCallback,
           tileSelectorOptions
+        );
+      });
+    }
+  );
+
+  Shiny.addCustomMessageHandler(
+    "addLayerSelectorControlStandalone",
+    function (message) {
+      withMapInstance(message.id, function (el) {
+        // Create layer change callback that manages layer visibility
+        const layerChangeCallback = function (selectedLayer, previousLayer) {
+          // Layer visibility is already managed by the control itself
+          // console.log(
+          //   `Layer changed from "${previousLayer || "none"}" to "${
+          //     selectedLayer || "none"
+          //   }"`
+          // );
+        };
+
+        addLayerSelectorControl(
+          el.widgetInstance,
+          layerChangeCallback,
+          message.options
         );
       });
     }

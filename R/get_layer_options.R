@@ -11,6 +11,8 @@
 #' @examples
 #' get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 #' get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
+#' # For horizontal flipping, provide left/right versions of your icon or use rotation fallback
+#' get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
 #'
 #' @export
 get_layout_options <- function(layer_type, options = list()) {
@@ -22,6 +24,8 @@ get_layout_options <- function(layer_type, options = list()) {
     icon_anchor = "bottom",
     icon_offset = list(0, 0),
     icon_allow_overlap = TRUE,
+    icon_rotate = 0,
+    icon_flip_horizontal = FALSE,
     text_font = "Open Sans Regular",
     text_field = NULL,
     text_size = 12
@@ -38,6 +42,8 @@ get_layout_options <- function(layer_type, options = list()) {
     layout_options[["icon-size"]] <- merged_options$icon_size
     layout_options[["icon-anchor"]] <- merged_options$icon_anchor
     layout_options[["icon-offset"]] <- merged_options$icon_offset
+    layout_options[["icon-rotate"]] <- merged_options$icon_rotate
+    layout_options[["icon-flip-horizontal"]] <- merged_options$icon_flip_horizontal
     layout_options[["text-font"]] <- list(merged_options$text_font)
     layout_options[["text-size"]] <- merged_options$text_size
     if (!is.null(merged_options$text_field)) {

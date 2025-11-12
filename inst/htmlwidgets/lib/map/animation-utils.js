@@ -126,6 +126,7 @@ function addRoute(widgetInstance, routeOptions) {
       type: "FeatureCollection",
       features: [],
     },
+    options: options,
   };
 
   map.addLayer({
@@ -510,6 +511,80 @@ function animateRoute(widgetInstance, routeOptions) {
         state.linePoints.length - 1
       );
       state.lastFrameTime = currentTime;
+      routeOptions = route.options;
+
+      // Calculate horizontal direction for icon flipping
+      if (
+        state.counter > oldCounter &&
+        routeOptions.animatingIcon &&
+        routeOptions.animatingIcon["icon-flip-horizontal"]
+      ) {
+        const currentCoord =
+          state.linePoints[state.counter].geometry.coordinates;
+        const previousCoord = state.linePoints[oldCounter].geometry.coordinates;
+
+        // Check if moving left (westward) or right (eastward)
+        const movingLeft = currentCoord[0] < previousCoord[0];
+
+        // Store the original image name if not already stored
+        if (!state.originalIconImage) {
+          state.originalIconImage = routeOptions.animatingIcon["icon-image"];
+        }
+
+        // Try to use different images for left/right if available
+        // Convention: if original image is "arrow", look for "arrow-left" and "arrow-right"
+        const baseImageName = state.originalIconImage;
+        let targetImage;
+
+        if (movingLeft) {
+          // Try to find a left-facing version of the icon
+          targetImage = baseImageName + "-left";
+          // Check if this image exists in the map style
+          if (!state.map.hasImage(targetImage)) {
+            // Fallback: use the original image but rotated 180 degrees
+            targetImage = baseImageName;
+            state.map.setLayoutProperty(
+              state.routePointLayerId,
+              "icon-rotate",
+              180
+            );
+          } else {
+            // Reset rotation if using a dedicated left image
+            state.map.setLayoutProperty(
+              state.routePointLayerId,
+              "icon-rotate",
+              0
+            );
+          }
+        } else {
+          // Try to find a right-facing version of the icon
+          targetImage = baseImageName + "-right";
+          // Check if this image exists in the map style
+          if (!state.map.hasImage(targetImage)) {
+            // Fallback: use the original image with no rotation
+            targetImage = baseImageName;
+            state.map.setLayoutProperty(
+              state.routePointLayerId,
+              "icon-rotate",
+              0
+            );
+          } else {
+            // Use the dedicated right image
+            state.map.setLayoutProperty(
+              state.routePointLayerId,
+              "icon-rotate",
+              0
+            );
+          }
+        }
+
+        // Update the icon image
+        state.map.setLayoutProperty(
+          state.routePointLayerId,
+          "icon-image",
+          targetImage
+        );
+      }
 
       // Move the animated point
       state.point.features[0].geometry.coordinates =

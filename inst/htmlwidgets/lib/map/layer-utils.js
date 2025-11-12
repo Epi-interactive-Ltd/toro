@@ -84,6 +84,11 @@ function initiateTiles(el, mapParams) {
     el.tileLayers.push("streets");
     hideLayer(el.mapInstance, "streets");
   }
+  // if (loadedTiles.includes("bathymetric")) {
+  //   addBathymetricTiles(el.mapInstance);
+  //   el.tileLayers.push("bathymetric");
+  //   hideLayer(el.mapInstance, "bathymetric");
+  // }
 
   if (initialTiles == null) {
     initialTiles = el.tileLayers[0]; // Default to the first tile layer if none specified
@@ -172,9 +177,16 @@ function addLayerOnFeatureClick(el, layerId) {
  * @returns {void}
  */
 function setTileLayer(el, layerId) {
+  // Check if it's an image Tile layer - want to keep the old selected tiles under it
+
+  const currentTileSet = el.widgetInstance.getCurrentTiles();
+  const isImageTile = el.widgetInstance
+    .getAvailableImageLayerTiles()
+    .includes(layerId);
+
   el.tileLayers.forEach(function (id) {
     var visibility = id === layerId ? "visible" : "none";
-    if (id === "satellite") {
+    if (id === "satellite" || (isImageTile && id === currentTileSet)) {
       visibility = "visible"; // Always show satellite layer underneath
     }
     el.mapInstance.setLayoutProperty(id, "visibility", visibility);
@@ -289,6 +301,39 @@ function addLightGreyTiles(map) {
     source: "light-grey",
     paint: {},
   });
+}
+
+function addTilesFromMapServer(
+  widgetInstance,
+  tileId,
+  mapServiceUrl,
+  ...options
+) {
+  const map = widgetInstance.getMap();
+  map.addSource(tileId, {
+    type: "raster",
+    tiles: [mapServiceUrl + "/tile/{z}/{y}/{x}"],
+    tileSize: 256,
+    // attribution:
+    //   "National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.",
+    maxzoom: options.maxZoom || 11,
+  });
+  map.addLayer({
+    id: tileId,
+    type: "raster",
+    source: tileId,
+    paint: {},
+  });
+  var availableTiles = widgetInstance.getAvailableTiles();
+
+  if (!availableTiles.includes(tileId)) {
+    availableTiles.push(tileId);
+  }
+  widgetInstance.setAvailableTiles(availableTiles);
+
+  if (widgetInstance.getInitialTiles() !== tileId) {
+    hideLayer(map, tileId);
+  }
 }
 
 /**

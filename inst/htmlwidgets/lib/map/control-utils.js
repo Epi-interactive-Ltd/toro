@@ -1137,6 +1137,16 @@ function addControlToPanel(el, panelId, controlConfig) {
       );
       break;
 
+    case "layer-selector":
+      // Add layer selector control to panel
+      addLayerSelectorControlToPanel(
+        widgetInstance,
+        panelId,
+        controlOptions,
+        sectionTitle
+      );
+      break;
+
     case "cluster-toggle":
       // Add cluster toggle control to panel
       addClusterToggleControlToPanel(
@@ -3049,4 +3059,390 @@ function toggleControlGroup(groupId) {
     contentElement.classList.add("hidden");
     if (toggleElement) toggleElement.textContent = "▶";
   }
+}
+
+/**
+ * Add a layer selector control to manage layer visibility.
+ * Only the selected layer is visible, all others are hidden.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {function} onLayerChange  Callback function called when layer selection changes.
+ *                                  Receives the selected layer ID as parameter.
+ * @param {object} options          Options for the layer selector control.
+ *                                  Can include:
+ *                                    - layerIds: array - Array of layer IDs to manage
+ *                                    - labels: object - Custom labels for layers
+ *                                    - defaultLayer: string - Default selected layer
+ *                                    - noneOption: boolean - Whether to include "None" option
+ *                                    - noneLabel: string - Label for "None" option
+ *                                    - position: string (default "top-right")
+ *                                    - useControlPanel: boolean
+ *                                    - panelId: string - Panel ID if using control panel
+ *                                    - panelTitle: string - Section title for control panel
+ *                                    - groupId: string - Group ID if using control group
+ * @returns {void}
+ */
+function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
+  const map = widgetInstance.getMap();
+  const el = widgetInstance.getElement();
+
+  // Set default options
+  const layerIds = options.layerIds || [];
+  const labels = options.labels || {};
+  const defaultLayer = options.defaultLayer || null;
+  const noneOption = options.noneOption || false;
+  const noneLabel = options.noneLabel || "None";
+
+  // Generate unique IDs using the map ID
+  const layerSelectorId = `layer-selector-${widgetInstance.getId()}`;
+
+  // Generate select options HTML
+  let selectOptions = "";
+
+  // Add "None" option if enabled
+  if (noneOption) {
+    const noneSelected = !defaultLayer ? "selected" : "";
+    selectOptions += `<option value="" ${noneSelected}>${noneLabel}</option>`;
+  }
+
+  // Add layer options
+  layerIds.forEach((layerId) => {
+    const label = labels[layerId] || layerId;
+    const selected = layerId === defaultLayer ? "selected" : "";
+    selectOptions += `<option value="${layerId}" ${selected}>${label}</option>`;
+  });
+
+  // HTML for the control
+  const html = `
+    <div id="layer-selector-container-${widgetInstance.getId()}" class="layer-selector-container">
+      <select id="${layerSelectorId}" class="layer-selector">
+        ${selectOptions}
+      </select>
+    </div>
+    <style>
+      .layer-selector-container {
+        margin-bottom: 10px;
+      }
+      
+      .layer-selector-title {
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      
+      .layer-selector {
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+        font-size: 13px;
+        cursor: pointer;
+        outline: none;
+      }
+      
+      .layer-selector:focus {
+        border-color: #007cba;
+        box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+      }
+      
+      .layer-selector:hover {
+        border-color: #999;
+      }
+      
+      .layer-selector-container.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      
+      .layer-selector-container.disabled .layer-selector {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+    </style>
+  `;
+
+  // Add the control to the map or control panel
+  const useControlPanel = options.useControlPanel || false;
+  const panelId = options.panelId;
+  const selectControlId = `layer-selector-control-${widgetInstance.getId()}`;
+
+  if (
+    useControlPanel &&
+    panelId &&
+    map._controlPanels &&
+    map._controlPanels[panelId]
+  ) {
+    // Add to existing control panel
+    const groupId = options.groupId || null;
+    addHtmlToPanel(
+      widgetInstance,
+      panelId,
+      html,
+      options.panelTitle,
+      null,
+      groupId
+    );
+  } else {
+    // Add as standalone control
+    addCustomControl(
+      map,
+      selectControlId,
+      html,
+      options.position || "top-right"
+    );
+  }
+
+  // Ensure the control is clickable by setting pointer events
+  setTimeout(() => {
+    const layerSelectorControl = document.getElementById(selectControlId);
+    if (layerSelectorControl) {
+      layerSelectorControl.style.pointerEvents = "auto";
+      layerSelectorControl.style.zIndex = "1000";
+
+      // Set pointer events on all child elements
+      const allElements = layerSelectorControl.querySelectorAll("*");
+      allElements.forEach((el) => {
+        el.style.pointerEvents = "auto";
+      });
+    }
+  }, 100);
+
+  // Setup event handlers with retry mechanism
+  let currentLayer = defaultLayer || (noneOption ? "" : layerIds[0]);
+  let handleLayerChange;
+
+  // Define layer change handler function
+  handleLayerChange = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const selectedLayer = this.value;
+    const previousLayer = currentLayer;
+    currentLayer = selectedLayer;
+
+    // Hide all layers first
+    layerIds.forEach((layerId) => {
+      if (map.getLayer(layerId)) {
+        map.setLayoutProperty(layerId, "visibility", "none");
+      }
+    });
+
+    // Show the selected layer (if any)
+    if (selectedLayer && map.getLayer(selectedLayer)) {
+      map.setLayoutProperty(selectedLayer, "visibility", "visible");
+    }
+
+    // Call the callback with the selected layer
+    if (typeof onLayerChange === "function") {
+      onLayerChange(selectedLayer, previousLayer);
+    }
+
+    // Trigger Shiny event if in Shiny mode
+    if (HTMLWidgets.shinyMode) {
+      Shiny.setInputValue(
+        el.id + "_layer_selected",
+        {
+          selected: selectedLayer,
+          previous: previousLayer,
+          timestamp: new Date().getTime(),
+        },
+        {
+          priority: "event",
+        }
+      );
+    }
+  };
+
+  function setupEventHandlers() {
+    const layerSelector = document.getElementById(layerSelectorId);
+    if (!layerSelector) {
+      console.warn("Layer selector control not found, retrying...");
+      setTimeout(setupEventHandlers, 50);
+      return;
+    }
+
+    // Check if layer selector should be disabled (no layer change callback provided)
+    const isLayerSelectorDisabled = typeof onLayerChange !== "function";
+
+    if (isLayerSelectorDisabled) {
+      // Disable layer selector when no callback is connected
+      const layerSelectorContainer = layerSelector.closest(
+        ".layer-selector-container"
+      );
+      if (layerSelectorContainer) {
+        layerSelectorContainer.classList.add("disabled");
+      }
+
+      layerSelector.disabled = true;
+      layerSelector.title = "Layer switching is not available";
+
+      // Don't add interactive event handlers when disabled
+      return;
+    }
+
+    // Add change handler to layer selector
+    layerSelector.addEventListener("change", handleLayerChange);
+
+    layerSelector.addEventListener("mousedown", function (e) {
+      e.stopPropagation();
+    });
+
+    // Set initial layer visibility based on default selection
+    if (currentLayer) {
+      // Hide all layers first
+      layerIds.forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, "visibility", "none");
+        }
+      });
+
+      // Show the default selected layer
+      if (map.getLayer(currentLayer)) {
+        map.setLayoutProperty(currentLayer, "visibility", "visible");
+      }
+    } else if (noneOption) {
+      // Hide all layers if "None" is selected by default
+      layerIds.forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, "visibility", "none");
+        }
+      });
+    }
+  }
+
+  setupEventHandlers();
+
+  // Store reference for external access
+  map._layerSelectorControl = {
+    layerIds: layerIds,
+    labels: labels,
+    noneOption: noneOption,
+    getCurrentLayer: function () {
+      return currentLayer;
+    },
+    setLayer: function (layerId) {
+      if (layerIds.includes(layerId) || (noneOption && layerId === "")) {
+        const previousLayer = currentLayer;
+        currentLayer = layerId;
+
+        // Update selector value
+        const layerSelector = document.getElementById(layerSelectorId);
+        if (layerSelector) {
+          layerSelector.value = layerId;
+        }
+
+        // Update layer visibility
+        layerIds.forEach((id) => {
+          if (map.getLayer(id)) {
+            map.setLayoutProperty(id, "visibility", "none");
+          }
+        });
+
+        if (layerId && map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, "visibility", "visible");
+        }
+
+        if (typeof onLayerChange === "function") {
+          onLayerChange(currentLayer, previousLayer);
+        }
+      }
+    },
+    enable: function (newOnLayerChange) {
+      // Enable the layer selector control and set up event handlers
+      const layerSelector = document.getElementById(layerSelectorId);
+      if (layerSelector) {
+        // Remove disabled class and enable control
+        const layerSelectorContainer = layerSelector.closest(
+          ".layer-selector-container"
+        );
+        if (layerSelectorContainer) {
+          layerSelectorContainer.classList.remove("disabled");
+        }
+
+        layerSelector.disabled = false;
+        layerSelector.title = "";
+
+        // Update callback
+        onLayerChange = newOnLayerChange;
+
+        // Remove existing event listener to avoid duplicates
+        layerSelector.removeEventListener("change", handleLayerChange);
+
+        // Set up event handler with new callback
+        if (typeof onLayerChange === "function") {
+          layerSelector.addEventListener("change", handleLayerChange);
+        }
+
+        this.isDisabled = false;
+      }
+    },
+    disable: function () {
+      // Disable the layer selector control
+      const layerSelector = document.getElementById(layerSelectorId);
+      if (layerSelector) {
+        // Add disabled class
+        const layerSelectorContainer = layerSelector.closest(
+          ".layer-selector-container"
+        );
+        if (layerSelectorContainer) {
+          layerSelectorContainer.classList.add("disabled");
+        }
+
+        layerSelector.disabled = true;
+        layerSelector.title = "Layer switching is not available";
+
+        this.isDisabled = true;
+      }
+    },
+    isDisabled: typeof onLayerChange !== "function",
+  };
+}
+
+/**
+ * Add layer selector control to a control panel
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {string} panelId          ID of the target control panel.
+ * @param {object} options          Configuration for the layer selector control.
+ * @param {string} sectionTitle     Optional section title for the control.
+ * @returns {void}
+ */
+function addLayerSelectorControlToPanel(
+  widgetInstance,
+  panelId,
+  options,
+  sectionTitle
+) {
+  const map = widgetInstance.getMap();
+  const panel = map._controlPanels && map._controlPanels[panelId];
+
+  if (!panel) return;
+
+  // Use the existing layer selector control logic
+  const layerSelectorOptions = {
+    ...options,
+    useControlPanel: true,
+    panelId: panelId,
+    panelTitle: sectionTitle,
+    groupId: options.groupId,
+  };
+
+  // Create the layer change callback
+  const layerChangeCallback = function (selectedLayer, previousLayer) {
+    // Layer visibility is already managed by the control itself
+    // console.log(
+    //   `Layer changed from "${previousLayer || "none"}" to "${
+    //     selectedLayer || "none"
+    //   }"`
+    // );
+  };
+
+  // Add the layer selector control
+  addLayerSelectorControl(
+    widgetInstance,
+    layerChangeCallback,
+    layerSelectorOptions
+  );
 }

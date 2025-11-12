@@ -22,6 +22,8 @@ options provided.
 \examples{
 get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
+# For horizontal flipping, provide left/right versions of your icon or use rotation fallback
+get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
 
 }
 \seealso{
