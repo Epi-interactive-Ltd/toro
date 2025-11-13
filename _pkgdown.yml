@@ -32,15 +32,14 @@ reference:
     desc: "Function to create maps"
     contents:
       - map
-  - title: "Map Controls"
-    desc: "Functions to add/edit controls for map interaction"
+  - title: "Data Sources"
+    desc: "Functions to interact with map data sources"
     contents:
-      - add_zoom_control
-      - add_draw_control
-      - add_cursor_coords_control
-      - add_custom_control
-      - toggle_control
-      - delete_drawn_shape
+      - add_source
+      - set_source_data
+      - add_feature_server_source
+      - add_tiles_from_map_server
+      - add_image
   - title: "Adding Layers"
     desc: "Functions to add map layers"
     contents:
@@ -72,13 +71,6 @@ reference:
       - get_column_boolean
       - get_column_group
       - get_column_step_colours
-  - title: "Data Sources"
-    desc: "Functions to interact with map data sources"
-    contents:
-      - add_source
-      - set_source_data
-      - add_feature_server_source
-      - add_image
   - title: "Map Tiles"
     desc: "Functions to update map tiles"
     contents:
@@ -94,6 +86,60 @@ reference:
     contents:
       - get_clicked_feature
       - get_drawn_shape
+  - title: "Controls - Basic"
+    desc: "Simple map controls"
+    contents:
+      - toggle_control
+      - remove_control
+  - title: "Controls - Drawing Tools"
+    desc: "Controls for draw/edit workflows"
+    contents:
+      - add_draw_control
+      - remove_draw_control
+      - delete_drawn_shape
+  - title: "Controls - View Tools"
+    desc: "Controls for map view manipulation"
+    contents:
+      - add_zoom_control
+      - remove_zoom_control
+  - title: "Controls - Layer Tools"
+    desc: "Controls for updating map layers"
+    contents:
+      - add_tile_selector_control
+      - remove_tile_selector_control
+      - add_layer_selector_control
+      - remove_layer_selector_control
+      - add_cluster_toggle
+      - remove_cluster_toggle
+      - add_visibility_toggle
+      - remove_visibility_toggle
+  - title: "Controls - Animation Tools"
+    desc: "Controls for performing map animations"
+    contents:
+      - add_route
+      - play_route
+      - pause_route
+      - remove_route
+      - add_timeline_control
+      - remove_timeline_control
+      - add_speed_control
+      - remove_speed_control
+  - title: "Controls — Misc"
+    desc: "Additional interactive controls"
+    contents:
+      - add_cursor_coords_control
+      - remove_cursor_coords_control
+      - add_custom_control
+      - remove_custom_control
+      - add_cluster_toggle
+  - title: "Control Panels"
+    desc: "Functions to add/edit control panels for map interaction"
+    contents:
+      - add_control_panel
+      - add_control_group
+      - remove_control_group
+      - add_control_to_panel
+      - remove_control_from_panel
   - title: "Shiny Integration"
     desc: "Functions to get information from map interaction"
     contents:

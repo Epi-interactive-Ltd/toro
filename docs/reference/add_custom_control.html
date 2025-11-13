@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_custom_control</span><span class="op">(</span><span class="va">map</span>, <span class="va">id</span>, <span class="va">html</span>, position <span class="op">=</span> <span class="st">"top-right"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_custom_control</span><span class="op">(</span></span>
+<span>  <span class="va">map</span>,</span>
+<span>  <span class="va">id</span>,</span>
+<span>  <span class="va">html</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"top-right"</span>,</span>
+<span>  panel_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  section_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group_id <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,12 +75,57 @@
 <dd><p>The position of the control on the map. Default is <code>"top-right"</code>.
 Options include "top-left", "top-right", "bottom-left", "bottom-right".</p></dd>
 
+
+<dt id="arg-panel-id">panel_id<a class="anchor" aria-label="anchor" href="#arg-panel-id"></a></dt>
+<dd><p>ID of control panel to add to (optional).</p></dd>
+
+
+<dt id="arg-section-title">section_title<a class="anchor" aria-label="anchor" href="#arg-section-title"></a></dt>
+<dd><p>Section title when added to a control panel.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>       The map or map proxy object <span class="cf">for</span> chaining.</span></code></pre><p></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Add to a map</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu">add_custom_control</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   id <span class="op">=</span> <span class="st">"custom_control"</span>,</span></span>
+<span class="r-in"><span>   html <span class="op">=</span> <span class="st">"&lt;p&gt;I am a custom control&lt;/p&gt;"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Add to a control panel</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="add_control_panel.html">add_control_panel</a></span><span class="op">(</span>panel_id <span class="op">=</span> <span class="st">"my_panel"</span>, title <span class="op">=</span> <span class="st">"Map Settings"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu">add_custom_control</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   id <span class="op">=</span> <span class="st">"custom_control_panel"</span>,</span></span>
+<span class="r-in"><span>   html <span class="op">=</span> <span class="st">"&lt;p&gt;I am a custom control in a panel&lt;/p&gt;"</span>,</span></span>
+<span class="r-in"><span>   panel_id <span class="op">=</span> <span class="st">"my_panel"</span>,</span></span>
+<span class="r-in"><span>   section_title <span class="op">=</span> <span class="st">"Custom Control Section"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Add to a control panel inside a control group</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="add_control_panel.html">add_control_panel</a></span><span class="op">(</span>panel_id <span class="op">=</span> <span class="st">"my_panel"</span>, title <span class="op">=</span> <span class="st">"Map Settings"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="add_control_group.html">add_control_group</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   panel_id <span class="op">=</span> <span class="st">"my_panel"</span>,</span></span>
+<span class="r-in"><span>   group_id <span class="op">=</span> <span class="st">"custom_controls"</span>,</span></span>
+<span class="r-in"><span>   group_title <span class="op">=</span> <span class="st">"Custom Controls"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu">add_custom_control</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   id <span class="op">=</span> <span class="st">"custom_control_panel"</span>,</span></span>
+<span class="r-in"><span>   html <span class="op">=</span> <span class="st">"&lt;p&gt;I am a custom control in a panel&lt;/p&gt;"</span>,</span></span>
+<span class="r-in"><span>   panel_id <span class="op">=</span> <span class="st">"my_panel"</span>,</span></span>
+<span class="r-in"><span>   group_id <span class="op">=</span> <span class="st">"custom_controls"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

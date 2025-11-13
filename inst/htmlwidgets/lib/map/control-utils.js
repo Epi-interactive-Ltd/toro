@@ -1294,9 +1294,9 @@ function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
 
   // Add event listeners
   setTimeout(() => {
-    const container = panel.container.querySelector(
-      `#zoom-control-${widgetInstance.getId()}`
-    );
+    const container = widgetInstance
+      .getElement()
+      .querySelector(`#zoom-control-${widgetInstance.getId()}`);
     if (container) {
       const zoomInBtn = container.querySelector(".zoom-in-btn");
       const zoomOutBtn = container.querySelector(".zoom-out-btn");

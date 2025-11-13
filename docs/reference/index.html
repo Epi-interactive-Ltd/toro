@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,9 +54,9 @@
         </dt>
         <dd>Create a Maplibre map widget.</dd>
       </dl></div><div class="section level2">
-      <h2 id="map-controls">Map Controls<a class="anchor" aria-label="anchor" href="#map-controls"></a></h2>
+      <h2 id="data-sources">Data Sources<a class="anchor" aria-label="anchor" href="#data-sources"></a></h2>
 
-      <div class="section-desc"><p>Functions to add/edit controls for map interaction</p></div>
+      <div class="section-desc"><p>Functions to interact with map data sources</p></div>
 
 
     </div><div class="section level2">
@@ -66,40 +66,34 @@
 
       <dl><dt>
 
-          <code><a href="add_zoom_control.html">add_zoom_control()</a></code>
+          <code><a href="add_source.html">add_source()</a></code>
 
         </dt>
-        <dd>Add a zoom control to the map.</dd>
+        <dd>Utilities for the map related to map sources.</dd>
       </dl><dl><dt>
 
-          <code><a href="add_draw_control.html">add_draw_control()</a></code>
+          <code><a href="set_source_data.html">set_source_data()</a></code>
 
         </dt>
-        <dd>Add a draw control to the map</dd>
+        <dd>Set data for a source on the map.</dd>
       </dl><dl><dt>
 
-          <code><a href="add_cursor_coords_control.html">add_cursor_coords_control()</a></code>
+          <code><a href="add_feature_server_source.html">add_feature_server_source()</a></code>
 
         </dt>
-        <dd>Add a cursor coordinates control to the map.</dd>
+        <dd>Add a FeatureServer source to the map.</dd>
       </dl><dl><dt>
 
-          <code><a href="add_custom_control.html">add_custom_control()</a></code>
+          <code><a href="add_tiles_from_map_server.html">add_tiles_from_map_server()</a></code>
 
         </dt>
-        <dd>Add a custom HTML control to the map.</dd>
+        <dd>Add an Image Server source to a toro map</dd>
       </dl><dl><dt>
 
-          <code><a href="toggle_control.html">toggle_control()</a></code>
+          <code><a href="add_image.html">add_image()</a></code>
 
         </dt>
-        <dd>Utilities for the map related to controls.</dd>
-      </dl><dl><dt>
-
-          <code><a href="delete_drawn_shape.html">delete_drawn_shape()</a></code>
-
-        </dt>
-        <dd>Delete a drawn shape from the map.</dd>
+        <dd>Add an image source to the map.</dd>
       </dl></div><div class="section level2">
       <h2 id="adding-layers">Adding Layers<a class="anchor" aria-label="anchor" href="#adding-layers"></a></h2>
 
@@ -259,41 +253,6 @@
         </dt>
         <dd>Get the colours for a column in a map layer based on step breaks.</dd>
       </dl></div><div class="section level2">
-      <h2 id="data-sources">Data Sources<a class="anchor" aria-label="anchor" href="#data-sources"></a></h2>
-
-      <div class="section-desc"><p>Functions to interact with map data sources</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="add_source.html">add_source()</a></code>
-
-        </dt>
-        <dd>Utilities for the map related to map sources.</dd>
-      </dl><dl><dt>
-
-          <code><a href="set_source_data.html">set_source_data()</a></code>
-
-        </dt>
-        <dd>Set data for a source on the map.</dd>
-      </dl><dl><dt>
-
-          <code><a href="add_feature_server_source.html">add_feature_server_source()</a></code>
-
-        </dt>
-        <dd>Add a FeatureServer source to the map.</dd>
-      </dl><dl><dt>
-
-          <code><a href="add_image.html">add_image()</a></code>
-
-        </dt>
-        <dd>Add an image source to the map.</dd>
-      </dl></div><div class="section level2">
       <h2 id="map-tiles">Map Tiles<a class="anchor" aria-label="anchor" href="#map-tiles"></a></h2>
 
       <div class="section-desc"><p>Functions to update map tiles</p></div>
@@ -362,6 +321,281 @@
 
         </dt>
         <dd>Get the drawn shape from the map widget.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="controls-basic">Controls - Basic<a class="anchor" aria-label="anchor" href="#controls-basic"></a></h2>
+
+      <div class="section-desc"><p>Simple map controls</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="toggle_control.html">toggle_control()</a></code>
+
+        </dt>
+        <dd>Utilities for the map related to controls.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_control.html">remove_control()</a></code>
+
+        </dt>
+        <dd>Remove a control from the map.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="controls-drawing-tools">Controls - Drawing Tools<a class="anchor" aria-label="anchor" href="#controls-drawing-tools"></a></h2>
+
+      <div class="section-desc"><p>Controls for draw/edit workflows</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_draw_control.html">add_draw_control()</a></code>
+
+        </dt>
+        <dd>Functions related to the draw control.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_draw_control.html">remove_draw_control()</a></code>
+
+        </dt>
+        <dd>Remove the draw control from the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="delete_drawn_shape.html">delete_drawn_shape()</a></code>
+
+        </dt>
+        <dd>Delete a drawn shape from the map.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="controls-view-tools">Controls - View Tools<a class="anchor" aria-label="anchor" href="#controls-view-tools"></a></h2>
+
+      <div class="section-desc"><p>Controls for map view manipulation</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_zoom_control.html">add_zoom_control()</a></code>
+
+        </dt>
+        <dd>Functions related to zoom controls.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_zoom_control.html">remove_zoom_control()</a></code>
+
+        </dt>
+        <dd>Remove the zoom control from the map.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="controls-layer-tools">Controls - Layer Tools<a class="anchor" aria-label="anchor" href="#controls-layer-tools"></a></h2>
+
+      <div class="section-desc"><p>Controls for updating map layers</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_tile_selector_control.html">add_tile_selector_control()</a></code>
+
+        </dt>
+        <dd>Functions relating to layer controls on the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_tile_selector_control.html">remove_tile_selector_control()</a></code>
+
+        </dt>
+        <dd>Remove the tile selector control from the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_layer_selector_control.html">add_layer_selector_control()</a></code>
+
+        </dt>
+        <dd>Add a layer selector control to the map or control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_layer_selector_control.html">remove_layer_selector_control()</a></code>
+
+        </dt>
+        <dd>Remove the layer selector control from the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_cluster_toggle.html">add_cluster_toggle()</a></code>
+
+        </dt>
+        <dd>Add a cluster toggle control to the map or control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_cluster_toggle.html">remove_cluster_toggle()</a></code>
+
+        </dt>
+        <dd>Remove a cluster toggle control from the map</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_visibility_toggle.html">add_visibility_toggle()</a></code>
+
+        </dt>
+        <dd>Add a visibility toggle control to the map or control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_visibility_toggle.html">remove_visibility_toggle()</a></code>
+
+        </dt>
+        <dd>Remove a visibility toggle control from the map</dd>
+      </dl></div><div class="section level2">
+      <h2 id="controls-animation-tools">Controls - Animation Tools<a class="anchor" aria-label="anchor" href="#controls-animation-tools"></a></h2>
+
+      <div class="section-desc"><p>Controls for performing map animations</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_route.html">add_route()</a></code>
+
+        </dt>
+        <dd>Add a route to a toro map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="play_route.html">play_route()</a></code>
+
+        </dt>
+        <dd>Play a route animation on a toro map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="pause_route.html">pause_route()</a></code>
+
+        </dt>
+        <dd>Pause a route animation on a toro map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_route.html">remove_route()</a></code>
+
+        </dt>
+        <dd>Remove an animation route from a toro map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_timeline_control.html">add_timeline_control()</a></code>
+
+        </dt>
+        <dd>Functions related to animation controls.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_timeline_control.html">remove_timeline_control()</a></code>
+
+        </dt>
+        <dd>Remove the timeline control from the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_speed_control.html">add_speed_control()</a></code>
+
+        </dt>
+        <dd>Add a speed control to the map or control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_speed_control.html">remove_speed_control()</a></code>
+
+        </dt>
+        <dd>Remove the speed control from the map.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="controls-misc">Controls — Misc<a class="anchor" aria-label="anchor" href="#controls-misc"></a></h2>
+
+      <div class="section-desc"><p>Additional interactive controls</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_cursor_coords_control.html">add_cursor_coords_control()</a></code>
+
+        </dt>
+        <dd>Add a cursor coordinates control to the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_cursor_coords_control.html">remove_cursor_coords_control()</a></code>
+
+        </dt>
+        <dd>Remove the cursor coordinates control from the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_custom_control.html">add_custom_control()</a></code>
+
+        </dt>
+        <dd>Add a custom HTML control to the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_custom_control.html">remove_custom_control()</a></code>
+
+        </dt>
+        <dd>Remove a custom control from the map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_cluster_toggle.html">add_cluster_toggle()</a></code>
+
+        </dt>
+        <dd>Add a cluster toggle control to the map or control panel</dd>
+      </dl></div><div class="section level2">
+      <h2 id="control-panels">Control Panels<a class="anchor" aria-label="anchor" href="#control-panels"></a></h2>
+
+      <div class="section-desc"><p>Functions to add/edit control panels for map interaction</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_control_panel.html">add_control_panel()</a></code>
+
+        </dt>
+        <dd>Functions to manage control panel elements in a map.</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_control_group.html">add_control_group()</a></code>
+
+        </dt>
+        <dd>Add a control group to a control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_control_group.html">remove_control_group()</a></code>
+
+        </dt>
+        <dd>Remove a control group from a control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_control_to_panel.html">add_control_to_panel()</a></code>
+
+        </dt>
+        <dd>Add a control to an existing control panel</dd>
+      </dl><dl><dt>
+
+          <code><a href="remove_control_from_panel.html">remove_control_from_panel()</a></code>
+
+        </dt>
+        <dd>Remove a control from a control panel.</dd>
       </dl></div><div class="section level2">
       <h2 id="shiny-integration">Shiny Integration<a class="anchor" aria-label="anchor" href="#shiny-integration"></a></h2>
 

@@ -18,3 +18,21 @@ remove_control(proxy, control_id)
 \description{
 Remove a control from the map.
 }
+\examples{
+if (interactive()) {
+# In a Shiny app:
+output$map <- renderMap({
+ map() |>
+   add_zoom_control() |>
+   add_custom_control(
+     id = "custom_control",
+     html = "<p>I am a custom control</p>"
+   )
+})
+
+# In an observer:
+mapProxy("map") |>
+ remove_control("zoom_control") |>
+ remove_control("custom_control")
+}
+}
