@@ -38,7 +38,8 @@
  */
 function initiateTiles(el, mapParams) {
   const loadedTiles = mapParams.options.loadedTiles || ["light-grey"];
-  var initialTiles = mapParams.options.initialTileLayer || null;
+  var initialTiles =
+    mapParams.options.initialTileLayer || mapParams.style || null;
   const fallbackColour = mapParams.options.backgroundColour || "#FFFFFF";
   el.mapInstance.addLayer({
     id: "background-blue",
@@ -83,6 +84,11 @@ function initiateTiles(el, mapParams) {
     el.tileLayers.push("streets");
     hideLayer(el.mapInstance, "streets");
   }
+  // if (loadedTiles.includes("bathymetric")) {
+  //   addBathymetricTiles(el.mapInstance);
+  //   el.tileLayers.push("bathymetric");
+  //   hideLayer(el.mapInstance, "bathymetric");
+  // }
 
   if (initialTiles == null) {
     initialTiles = el.tileLayers[0]; // Default to the first tile layer if none specified
@@ -171,13 +177,41 @@ function addLayerOnFeatureClick(el, layerId) {
  * @returns {void}
  */
 function setTileLayer(el, layerId) {
+  // Check if it's an image Tile layer - want to keep the old selected tiles under it
+
+  const currentTileSet = el.widgetInstance.getCurrentTiles();
+  const isImageTile = el.widgetInstance
+    .getAvailableImageLayerTiles()
+    .includes(layerId);
+
   el.tileLayers.forEach(function (id) {
     var visibility = id === layerId ? "visible" : "none";
-    if (id === "satellite") {
+    if (id === "satellite" || (isImageTile && id === currentTileSet)) {
       visibility = "visible"; // Always show satellite layer underneath
     }
     el.mapInstance.setLayoutProperty(id, "visibility", visibility);
   });
+
+  // Update any tile selector controls to reflect the current tile
+  if (
+    el.mapInstance._tileSelectorControl &&
+    el.mapInstance._tileSelectorControl.setTile
+  ) {
+    const currentControlTile =
+      el.mapInstance._tileSelectorControl.getCurrentTile();
+    if (currentControlTile !== layerId) {
+      const tileSelectorId = `tile-selector-${widgetInstance.getId()}`;
+      // Use setTile method but without triggering the callback to avoid infinite loops
+      const tileSelector = document.getElementById(tileSelectorId);
+      if (tileSelector) {
+        tileSelector.value = layerId;
+      }
+      // Directly update the stored current tile without triggering callback
+      if (el.mapInstance._tileSelectorControl.getCurrentTile) {
+        el.mapInstance._tileSelectorControl.currentTile = layerId;
+      }
+    }
+  }
 }
 
 /**
@@ -267,6 +301,39 @@ function addLightGreyTiles(map) {
     source: "light-grey",
     paint: {},
   });
+}
+
+function addTilesFromMapServer(
+  widgetInstance,
+  tileId,
+  mapServiceUrl,
+  ...options
+) {
+  const map = widgetInstance.getMap();
+  map.addSource(tileId, {
+    type: "raster",
+    tiles: [mapServiceUrl + "/tile/{z}/{y}/{x}"],
+    tileSize: 256,
+    // attribution:
+    //   "National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.",
+    maxzoom: options.maxZoom || 11,
+  });
+  map.addLayer({
+    id: tileId,
+    type: "raster",
+    source: tileId,
+    paint: {},
+  });
+  var availableTiles = widgetInstance.getAvailableTiles();
+
+  if (!availableTiles.includes(tileId)) {
+    availableTiles.push(tileId);
+  }
+  widgetInstance.setAvailableTiles(availableTiles);
+
+  if (widgetInstance.getInitialTiles() !== tileId) {
+    hideLayer(map, tileId);
+  }
 }
 
 /**
@@ -532,8 +599,21 @@ function addFilterToLayer(map, layerId, filter) {
  */
 function addLayerPopup(map, layerId, popupColumn) {
   map.on("click", layerId, (e) => {
-    const coordinates = e.features[0].geometry.coordinates.slice();
+    // Close any existing popups before opening a new one
+    closeAllPopups(map);
+
+    let coordinates = e.features[0].geometry.coordinates.slice();
     const description = e.features[0].properties[popupColumn];
+
+    const featureType = e.features[0].geometry.type;
+
+    if (!coordinates || featureType !== "Point") {
+      // For non-Point geometries (LineString, Polygon), extract first coordinate pair
+      if (!coordinates || featureType !== "Point") {
+        // Fallback to clicked location if no coordinates available
+        coordinates = [e.lngLat.lng, e.lngLat.lat];
+      }
+    }
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
@@ -620,6 +700,34 @@ function addLayerCursor(map, layerIds, cursorStyle = "pointer") {
  * @param {string} toLayerId ID of the layer to copy style to.
  * @returns {void}
  */
+
+/**
+ * Close all open popups on the map.
+ * This function closes both click-based popups (stored in map._popup) and any other popups that may exist.
+ *
+ * @param {object} map - Maplibre map instance.
+ */
+function closeAllPopups(map) {
+  // Close the main popup stored in map._popup (from addLayerPopup clicks)
+  if (map._popup && map._popup.isOpen()) {
+    map._popup.remove();
+    map._popup = null;
+  }
+
+  // Close any other popups that might exist on the map
+  // Note: This covers any popups created by other parts of the code
+  const popups = document.querySelectorAll(".maplibregl-popup");
+  popups.forEach((popupElement) => {
+    const popup = popupElement._popup;
+    if (popup && popup.isOpen && popup.isOpen()) {
+      popup.remove();
+    } else {
+      // Fallback: remove the DOM element directly if popup object is not accessible
+      popupElement.remove();
+    }
+  });
+}
+
 function copyLayerStyle(map, fromLayerId, toLayerId) {
   const fromLayer = map.getLayer(fromLayerId);
   if (!fromLayer) return;

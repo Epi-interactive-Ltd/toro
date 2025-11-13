@@ -4,7 +4,15 @@
 \alias{add_custom_control}
 \title{Add a custom HTML control to the map.}
 \usage{
-add_custom_control(map, id, html, position = "top-right")
+add_custom_control(
+  map,
+  id,
+  html,
+  position = "top-right",
+  panel_id = NULL,
+  section_title = NULL,
+  group_id = NULL
+)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
@@ -15,6 +23,10 @@ add_custom_control(map, id, html, position = "top-right")
 
 \item{position}{The position of the control on the map. Default is \code{"top-right"}.
 Options include "top-left", "top-right", "bottom-left", "bottom-right".}
+
+\item{panel_id}{ID of control panel to add to (optional).}
+
+\item{section_title}{Section title when added to a control panel.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.

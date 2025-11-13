@@ -1,3 +1,10 @@
+:root {
+  --toro-primary: #007cba; /* Colour for completed portion of timeline */
+  --toro-secondary: #ddd; /* Colour for remaining portion of timeline */
+  --toro-toggle-height: 25px;
+  --toro-toggle-border-width: 3px;
+}
+
 .cursor-coords-control {
   background: rgba(255, 255, 255, 0.8);
   font-family: monospace;
@@ -10,23 +17,23 @@
   display: none;
 }
 
-.maplibregl-ctrl-top-left .mapboxgl-ctrl,
-.maplibregl-ctrl-top-left .toro-ctrl {
+.maplibregl-ctrl-top-left > .mapboxgl-ctrl,
+.maplibregl-ctrl-top-left > .toro-ctrl {
   float: left;
   margin: 10px 0 0 10px;
 }
-.maplibregl-ctrl-top-right .mapboxgl-ctrl,
-.maplibregl-ctrl-top-right .toro-ctrl {
+.maplibregl-ctrl-top-right > .mapboxgl-ctrl,
+.maplibregl-ctrl-top-right > .toro-ctrl {
   float: right;
   margin: 10px 10px 0 0;
 }
-.maplibregl-ctrl-bottom-left .mapboxgl-ctrl,
-.maplibregl-ctrl-bottom-left .toro-ctrl {
+.maplibregl-ctrl-bottom-left > .mapboxgl-ctrl,
+.maplibregl-ctrl-bottom-left > .toro-ctrl {
   float: left;
   margin: 0 0 10px 10px;
 }
-.maplibregl-ctrl-bottom-right .mapboxgl-ctrl,
-.maplibregl-ctrl-bottom-right .toro-ctrl {
+.maplibregl-ctrl-bottom-right > .mapboxgl-ctrl,
+.maplibregl-ctrl-bottom-right > .toro-ctrl {
   float: right;
   margin: 0 10px 10px 0;
 }
@@ -42,13 +49,31 @@
   padding: 3px 10px;
   min-width: 200px;
 }
+/** Draw controls */
 
+.draw-control-panel .mapbox-gl-draw_ctrl-draw-btn,
 .mapboxgl-ctrl .mapbox-gl-draw_ctrl-draw-btn {
   background-color: #fff;
   border-radius: 5px;
   border: none;
   color: black;
   min-width: fit-content;
+}
+
+.draw-control-panel.mapboxgl-ctrl-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+.draw-control-panel .mapbox-gl-draw_ctrl-draw-btn {
+  border: 1px solid black;
+}
+
+.draw-control-panel .mapbox-gl-draw_ctrl-draw-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.draw-control-panel .mapbox-gl-draw_ctrl-draw-btn.active {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .toro-loading-overlay {
@@ -115,6 +140,453 @@
   100% {
     box-shadow: -38px 0, -14px 0, 14px 0, 38px -12px;
   }
+}
+
+/** Timeline Control + Speed Control Styles **/
+#speed-control-section,
+#timeline-control-section {
+  pointer-events: auto !important;
+  z-index: 1000 !important;
+}
+
+.speed-control-container,
+.timeline-control-container {
+  pointer-events: auto !important;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: auto;
+  z-index: 1000;
+  position: relative;
+}
+.speed-control-container {
+  padding: 10px 30px;
+  min-width: 200px;
+}
+.timeline-control-container {
+  padding: 15px 40px 15px 16px;
+  min-width: 300px;
+}
+
+.speed-control-container *,
+.timeline-control-container *,
+button,
+input,
+input {
+  pointer-events: auto !important;
+}
+
+.timeline-date-label {
+  pointer-events: none !important;
+}
+
+.timeline-play-btn {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  transition: all 0.2s ease;
+  border-radius: 100%;
+  height: 50px;
+  width: 50px;
+  padding: 0;
+}
+
+.timeline-axis-container {
+  position: relative;
+  min-width: 300px;
+  margin-bottom: 20px;
+}
+
+#timeline-current-date {
+  position: absolute;
+  top: -25px;
+  left: 0%;
+  transform: translateX(-50%);
+  background: transparent;
+  color: black;
+  font-size: 10px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+.speed-slider-container,
+.timeline-slider-container {
+  position: relative;
+}
+
+.speed-slider-container {
+  margin-bottom: 15px;
+}
+
+.speed-slider-container > input[type="range"],
+.timeline-slider-container > input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--toro-secondary);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  margin: 10px 0;
+  transition: background 0.3s ease;
+}
+.timeline-slider-container > input[type="range"] {
+  background: linear-gradient(
+    to right,
+    var(--toro-primary) 0%,
+    var(--toro-primary) 0%,
+    var(--toro-secondary) 0%,
+    var(--toro-secondary) 100%
+  );
+}
+
+/* Disabled timeline styles */
+.timeline-control-container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.timeline-control-container.disabled
+  .timeline-slider-container
+  > input[type="range"] {
+  background: #cccccc !important;
+  cursor: not-allowed;
+}
+
+.timeline-control-container.disabled
+  .timeline-slider-container
+  > input[type="range"]::-webkit-slider-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.timeline-control-container.disabled
+  .timeline-slider-container
+  > input[type="range"]::-moz-range-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.timeline-control-container.disabled #timeline-play-pause {
+  background-color: #e0e0e0 !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+}
+
+/* Disabled speed control styles */
+.speed-control-container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.speed-control-container.disabled
+  .speed-slider-container
+  > input[type="range"] {
+  background: #cccccc !important;
+  cursor: not-allowed;
+}
+
+.speed-control-container.disabled
+  .speed-slider-container
+  > input[type="range"]::-webkit-slider-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.speed-control-container.disabled
+  .speed-slider-container
+  > input[type="range"]::-moz-range-thumb {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.speed-control-container.disabled .speed-tick-label {
+  color: #999999 !important;
+}
+.speed-slider-container > input[type="range"]::-webkit-slider-track,
+.timeline-slider-container > input[type="range"]::-webkit-slider-track,
+.speed-slider-container > input[type="range"]::-moz-range-track,
+.timeline-slider-container > input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: transparent;
+  border: none;
+}
+.speed-slider-container > input[type="range"]::-webkit-slider-thumb,
+.timeline-slider-container > input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--toro-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.speed-slider-container > input[type="range"]::-moz-range-thumb,
+.timeline-slider-container > input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--toro-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+
+.timeline-slider-container > input[type="range"]:disabled::-moz-range-thumb,
+.timeline-slider-container > input[type="range"]:disabled::-webkit-slider-thumb,
+.timeline-slider-container > input[type="range"]:disabled {
+  cursor: not-allowed !important;
+}
+.timeline-slider-container > input[type="range"]:disabled::-moz-range-thumb,
+.timeline-slider-container
+  > input[type="range"]:disabled::-webkit-slider-thumb {
+  background: #999 !important;
+}
+#timeline-current-date {
+  opacity: 1 !important;
+}
+.speed-tick,
+.timeline-tick {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  position: absolute;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.timeline-tick.minor-tick {
+  bottom: 10px;
+}
+.timeline-tick.major-tick {
+  bottom: -17px;
+}
+.timeline-tick .timeline-tick-line {
+  width: 1px;
+  margin: 0 auto;
+}
+.timeline-tick.major-tick .timeline-tick-line {
+  height: 8px;
+  background: #666;
+}
+.timeline-tick.minor-tick .timeline-tick-line {
+  height: 4px;
+  background: #999;
+}
+.speed-tick .speed-tick-label,
+.timeline-tick .timeline-tick-label {
+  font-size: 9px;
+  color: #666;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.speed-slider-container > input[type="range"]::-moz-range-thumb:hover,
+.timeline-slider-container > input[type="range"]::-moz-range-thumb:hover {
+  background: var(--toro-primary);
+  transform: scale(1.1);
+}
+
+/** Control Panel Styles **/
+
+.control-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-width: 200px;
+  max-width: 100%;
+  pointer-events: auto !important;
+}
+
+.control-panel .panel-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background: rgba(248, 249, 250, 0.95);
+  border-radius: 8px 8px 0 0;
+}
+
+.control-panel .panel-collapse-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  margin-right: 8px;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.control-panel .panel-collapse-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.control-panel .panel-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+.control-panel .panel-content {
+  padding: 12px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.control-panel.direction-row .panel-content {
+  align-items: start;
+}
+
+.control-panel .panel-control-item {
+  margin-bottom: 16px;
+}
+
+.control-panel .panel-control-item:last-child {
+  margin-bottom: 0;
+}
+
+.control-panel .control-section-title {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Adjust existing control styles when in panel */
+.control-panel .timeline-control-container,
+.control-panel .speed-control-container {
+  background: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.control-panel .speed-label {
+  display: none; /* Hide duplicate labels when section title is shown */
+}
+
+/* Separator between controls */
+/* .control-panel.direction-column .panel-control-item + .panel-control-item {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
+}
+.control-panel.direction-row .panel-control-item + .panel-control-item {
+  border-left: 1px solid #f0f0f0;
+  padding-left: 20px;
+} */
+
+/** Toggle Control Styles **/
+.toro-toggle-container > .toro-toggle {
+  cursor: pointer;
+  display: inline-block;
+  background: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.control-panel .toro-toggle-container > .toro-toggle {
+  background: transparent;
+  border-radius: 0px;
+  padding: 2px;
+}
+
+.toro-toggle-container > .toro-toggle > .toro-toggle-switch {
+  display: inline-block;
+  background: var(--toro-secondary);
+  border-radius: 16px;
+  width: calc(var(--toro-toggle-height) * 1.55);
+  height: var(--toro-toggle-height);
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s ease;
+  cursor: pointer;
+  pointer-events: auto;
+  &:before,
+  &:after {
+    content: "";
+  }
+  &:before {
+    display: block;
+    background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+    border-radius: 50%;
+    height: calc(
+      var(--toro-toggle-height) - 2 * var(--toro-toggle-border-width)
+    );
+    width: calc(
+      var(--toro-toggle-height) - 2 * var(--toro-toggle-border-width)
+    );
+    position: absolute;
+    top: var(--toro-toggle-border-width);
+    left: var(--toro-toggle-border-width);
+    transition: left 0.2s ease, background 0.2s ease;
+  }
+}
+
+.toro-toggle-container > .toro-toggle:hover > .toro-toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+}
+
+.toro-toggle-container
+  > .toro-toggle
+  > .toro-toggle-checkbox:checked
+  ~ .toro-toggle-switch,
+.toro-toggle-container > .toro-toggle > .toro-toggle-switch.checked {
+  background: var(--toro-primary);
+}
+
+.toro-toggle-container
+  > .toro-toggle
+  > .toro-toggle-checkbox:checked
+  ~ .toro-toggle-switch:before,
+.toro-toggle-container > .toro-toggle > .toro-toggle-switch.checked:before {
+  left: calc(
+    var(--toro-toggle-height) * 1.55 - var(--toro-toggle-height) +
+      var(--toro-toggle-border-width)
+  );
+}
+
+.toro-toggle-container > .toro-toggle > .toro-toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.toro-toggle-container > .toro-toggle > .toro-toggle-label {
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/** Control Group Styles **/
+.control-group-header {
+  margin-bottom: 10px;
+}
+
+.control-group-title {
+  font-weight: bold;
+  font-size: 15px;
 }
 
 /** Hide the export stuff **/
