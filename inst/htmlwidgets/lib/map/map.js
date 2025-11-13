@@ -105,7 +105,8 @@ HTMLWidgets.widget({
               addTilesFromMapServer(
                 el.widgetInstance,
                 layer.tileId,
-                layer.mapServiceUrl
+                layer.mapServiceUrl,
+                true
               )
             );
           }
@@ -580,11 +581,11 @@ HTMLWidgets.widget({
       },
 
       getAvailableImageLayerTiles: function () {
-        return el.imageLayerTiles;
+        return el.imageTileLayers;
       },
 
-      setAvailableImageLayerTiles: function (imageLayerTiles) {
-        el.imageLayerTiles = imageLayerTiles;
+      setAvailableImageLayerTiles: function (imageTileLayers) {
+        el.imageTileLayers = imageTileLayers;
       },
 
       getAvailableTiles: function () {

@@ -115,7 +115,7 @@ add_tiles_from_map_server <- function(map, url, tile_id, as_image_layer = FALSE,
 #' @param source_id A unique identifier for the source.
 #' @param ... Additional parameters for the Image Server source.
 #' @return The updated map object.
-#' @export
+#' @keywords internal
 add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   source_options <- list(
     tileId = tile_id,

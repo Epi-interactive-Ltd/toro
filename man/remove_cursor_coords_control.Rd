@@ -19,3 +19,21 @@ If NULL, removes the standalone cursor coordinates control.}
 \description{
 Remove the cursor coordinates control from the map.
 }
+\examples{
+if (interactive()) {
+# Add to a map
+map() |>
+ add_cursor_coords_control()
+# In an observer
+mapProxy("map") |>
+ remove_cursor_coords_control()
+
+# Add to a control panel
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+ add_cursor_coords_control(panel_id = "my_panel")
+# In an observer
+mapProxy("map") |>
+ remove_cursor_coords_control(panel_id = "my_panel")
+}
+}

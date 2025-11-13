@@ -307,6 +307,7 @@ function addTilesFromMapServer(
   widgetInstance,
   tileId,
   mapServiceUrl,
+  isImageTileset = false,
   ...options
 ) {
   const map = widgetInstance.getMap();
@@ -325,11 +326,19 @@ function addTilesFromMapServer(
     paint: {},
   });
   var availableTiles = widgetInstance.getAvailableTiles();
+  var imageLayerTiles = widgetInstance.getAvailableImageLayerTiles();
 
-  if (!availableTiles.includes(tileId)) {
-    availableTiles.push(tileId);
+  if (isImageTileset === true) {
+    if (!imageLayerTiles.includes(tileId)) {
+      imageLayerTiles.push(tileId);
+      widgetInstance.setAvailableImageLayerTiles(imageLayerTiles);
+    }
   }
-  widgetInstance.setAvailableTiles(availableTiles);
+
+  if (!availableTiles.includes(tileId) && !isImageTileset) {
+    availableTiles.push(tileId);
+    widgetInstance.setAvailableTiles(availableTiles);
+  }
 
   if (widgetInstance.getInitialTiles() !== tileId) {
     hideLayer(map, tileId);

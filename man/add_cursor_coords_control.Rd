@@ -36,3 +36,33 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 \description{
 Add a cursor coordinates control to the map.
 }
+\examples{
+if (interactive()) {
+# Add to a map
+map() |>
+ add_cursor_coords_control()
+
+# Change default options
+map() |>
+ add_cursor_coords_control(
+   position = "top-right",
+   long_label = "Longitude",
+   lat_label = "Latitude"
+ )
+
+# Add to a control panel
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+ add_cursor_coords_control(panel_id = "my_panel", section_title = "Cursor Coordinates")
+
+# Add to a control panel inside a control group
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+ add_control_group(
+   panel_id = "my_panel",
+   group_id = "map_state",
+   group_title = "Map State"
+   ) |>
+ add_cursor_coords_control(panel_id = "my_panel", group_id = "map_state")
+}
+}

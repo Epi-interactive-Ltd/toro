@@ -21,3 +21,4 @@ The updated map object.
 \description{
 Add an Image Server source to a toro map
 }
+\keyword{internal}
