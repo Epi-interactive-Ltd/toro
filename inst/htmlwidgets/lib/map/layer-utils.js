@@ -115,6 +115,7 @@ function addLayerToMap(el, layer) {
     layout: layer.layout || {},
     paint: layer.paint || {},
   };
+  const map = el.widgetInstance.getMap();
 
   if (layer.filter) {
     layerObj.filter = layer.filter; // Add filter if specified
@@ -126,14 +127,14 @@ function addLayerToMap(el, layer) {
     // Handle string source if needed
     layerObj.source = layer.source;
   }
-  el.mapInstance.addLayer(layerObj, "spiderfy-lines");
+  map.addLayer(layerObj, "spiderfy-lines");
   el.ourLayers.push(layerObj.id); // Store the layer ID for later reference
 
   if (layer.popupColumn) {
-    addLayerPopup(el.mapInstance, layerObj.id, layer.popupColumn);
+    addLayerPopup(map, layerObj.id, layer.popupColumn);
   }
   if (layer.hoverColumn) {
-    addLayerHover(el.mapInstance, layerObj.id, layer.hoverColumn);
+    addLayerHover(map, layerObj.id, layer.hoverColumn);
   }
 
   if (layer.canCluster) {

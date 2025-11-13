@@ -43,9 +43,13 @@ get_layout_options <- function(layer_type, options = list()) {
     layout_options[["icon-anchor"]] <- merged_options$icon_anchor
     layout_options[["icon-offset"]] <- merged_options$icon_offset
     layout_options[["icon-rotate"]] <- merged_options$icon_rotate
-    layout_options[["icon-flip-horizontal"]] <- merged_options$icon_flip_horizontal
     layout_options[["text-font"]] <- list(merged_options$text_font)
     layout_options[["text-size"]] <- merged_options$text_size
+
+    if (merged_options$icon_flip_horizontal) {
+      # Use a rotation of 180 degrees as a simple way to flip horizontally
+      layout_options[["icon-flip-horizontal"]] <- merged_options$icon_flip_horizontal
+    }
     if (!is.null(merged_options$text_field)) {
       layout_options[["text-field"]] <- merged_options$text_field
     }
