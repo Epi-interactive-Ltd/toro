@@ -54,19 +54,93 @@ add_source <- function(
 #' @return            The map or map proxy object for chaining.
 #' @export
 add_feature_server_source <- function(map, source_url, source_id) {
+  source_options <- list(
+    type = "geojson",
+    data = paste0(source_url, "/0/query?where=1=1&outFields=*&f=geojson")
+  )
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
-      "addFeatureServerSource",
+      "addMapSource",
       list(
         id = map$id,
-        sourceUrl = source_url,
+        sourceOptions = source_options,
         sourceId = source_id
       )
     )
   }
-  map$x$featureSources <- c(
-    map$x$featureSources,
-    list(list(sourceId = source_id, sourceUrl = source_url))
+  map$x$sources <- c(
+    map$x$sources,
+    list(list(sourceId = source_id, sourceOptions = source_options))
+  )
+  map
+}
+
+#' Add an Image Server source to a toro map
+#'
+#' @param map A toro map object or a map proxy object.
+#' @param url The URL of the ArcGIS Image Server.
+#' @param source_id A unique identifier for the source.
+#' @param ... Additional parameters for the Image Server source.
+#' @return The updated map object.
+#' @export
+add_tiles_from_map_server <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
+  source_options <- list(
+    tileId = tile_id,
+    tiles = paste0(url, "/tile/{z}/{y}/{x}"),
+    ...
+  )
+
+  # if (inherits(map, "mapProxy")) {
+  #   map$session$sendCustomMessage(
+  #     "addTilesFromMapServer",
+  #     list(
+  #       id = map$id,
+  #       sourceOptions = source_options,
+  #       sourceId = tile_id
+  #     )
+  #   )
+  # }
+  key <- ifelse(as_image_layer, "imageLayerTiles", "mapServerTiles")
+  map$x[[key]] <- c(
+    map$x[[key]],
+    list(list(tileId = tile_id, mapServiceUrl = url, options = ...))
+  )
+  map
+}
+
+#' Add an Image Server source to a toro map
+#'
+#' @param map A toro map object or a map proxy object.
+#' @param url The URL of the ArcGIS Image Server.
+#' @param source_id A unique identifier for the source.
+#' @param ... Additional parameters for the Image Server source.
+#' @return The updated map object.
+#' @export
+add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
+  source_options <- list(
+    tileId = tile_id,
+    tiles = url,
+    # tiles = paste0(
+    #   url,
+    #   "?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256"
+    # ),
+    ...
+  )
+
+  # if (inherits(map, "mapProxy")) {
+  #   map$session$sendCustomMessage(
+  #     "addTilesFromMapServer",
+  #     list(
+  #       id = map$id,
+  #       sourceOptions = source_options,
+  #       sourceId = tile_id
+  #     )
+  #   )
+  # }
+  key <- ifelse(as_image_layer, "imageLayerTiles", "mapServerTiles")
+  map$x[[key]] <- c(
+    map$x[[key]],
+    list(list(tileId = tile_id, mapServiceUrl = url, options = ...))
   )
   map
 }

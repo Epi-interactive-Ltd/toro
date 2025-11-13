@@ -4,7 +4,14 @@
 \alias{add_zoom_control}
 \title{Add a zoom control to the map.}
 \usage{
-add_zoom_control(map, position = "top-right", control_options = list())
+add_zoom_control(
+  map,
+  position = "top-right",
+  control_options = list(),
+  panel_id = NULL,
+  section_title = NULL,
+  group_id = NULL
+)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
@@ -14,6 +21,10 @@ Default is \code{"top-right"}.}
 
 \item{control_options}{Additional options for the zoom control.
 Default is an empty list.}
+
+\item{panel_id}{ID of control panel to add to (optional).}
+
+\item{section_title}{Section title when added to a control panel.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{           The map proxy object for chaining.

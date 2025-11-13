@@ -16,6 +16,11 @@ dependencies:
       file: htmlwidgets/lib/maplibre-gl
     script: maplibre-gl.min.js
     style: maplibre-gl.min.css
+  - name: turf
+    version: 7.2.0
+    src:
+      file: htmlwidgets/lib/turf
+    script: turf.min.js
   - name: map
     version: 0.0.4
     src:
@@ -27,4 +32,5 @@ dependencies:
       - layer-utils.js
       - cluster-utils.js
       - view-utils.js
+      - animation-utils.js
     style: map.css
