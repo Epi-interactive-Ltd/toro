@@ -25,6 +25,7 @@ map <- function(
   width = "100%",
   height = NULL,
   session = shiny::getDefaultReactiveDomain(),
+  satelliteMaxZoom = 12, # add maxzoom
   ...
 ) {
   in_shiny <- !is.null(session)
@@ -43,7 +44,8 @@ map <- function(
     busyLoaderBgColour = "rgba(0, 0, 0, 0.2)",
     busyLoaderColour = "white",
     initialLoaderBgColour = "white",
-    initialLoaderColour = "black"
+    initialLoaderColour = "black",
+    satelliteMaxZoom = satelliteMaxZoom # pass maxzoom to options
   )
   user_options <- list(...)
   map_options <- modifyList(default_options, user_options)

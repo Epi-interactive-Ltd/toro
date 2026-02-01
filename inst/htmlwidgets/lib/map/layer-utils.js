@@ -50,7 +50,8 @@ function initiateTiles(el, mapParams) {
   });
   // First add all the tiles that are needed
   if (loadedTiles.includes("satellite")) {
-    addSatelliteTiles(el.mapInstance);
+    const satelliteMaxZoom = mapParams.options.satelliteMaxZoom || 12;
+    addSatelliteTiles(el.mapInstance, satelliteMaxZoom);
     el.tileLayers.push("satellite");
     // Do not hide this layer by default
   }
@@ -569,7 +570,7 @@ function addShadedTiles(map) {
  * @param {object} map A MapLibre map instance.
  * @returns {void}
  */
-function addSatelliteTiles(map) {
+function addSatelliteTiles(map, maxZoom = 12) {
   map.addSource("satellite", {
     type: "raster",
     tiles: [
@@ -578,7 +579,7 @@ function addSatelliteTiles(map) {
     tileSize: 256,
     attribution:
       "Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
-    maxzoom: 12,
+    maxzoom: maxZoom,
   });
   map.addLayer({
     id: "satellite",
