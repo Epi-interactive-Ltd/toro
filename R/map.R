@@ -28,6 +28,7 @@ map <- function(
   satelliteMaxZoom = 12, # add maxzoom
   ...
 ) {
+  cat("R:satelliteMaxZoom parameter =", satelliteMaxZoom, "\n")
   in_shiny <- !is.null(session)
 
   default_options <- list(
@@ -49,6 +50,11 @@ map <- function(
   )
   user_options <- list(...)
   map_options <- modifyList(default_options, user_options)
+  cat(
+    "R: Final satelliteMaxZoom in options =",
+    map_options$satelliteMaxZoom,
+    "\n"
+  )
 
   htmlwidgets::createWidget(
     name = "map",

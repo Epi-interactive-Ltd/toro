@@ -37,6 +37,9 @@
  * @see {@link addStreetsTiles}
  */
 function initiateTiles(el, mapParams) {
+  console.log("JS initiateTiles: mapParams.options =", mapParams.options);
+  console.log("JS initiateTiles: satelliteMaxZoom from R =", mapParams.options.satelliteMaxZoom);
+  
   const loadedTiles = mapParams.options.loadedTiles || ["light-grey"];
   var initialTiles =
     mapParams.options.initialTileLayer || mapParams.style || null;
