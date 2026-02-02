@@ -1,6 +1,7 @@
 # toro
 
 **toro** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
+This version is built on R 4.5.2 and includes a function that lets you configure a custom maximum zoom level for satellite tile.
 
 To learn how to use the package:
 
@@ -22,8 +23,8 @@ If you are using the package in an app and copy the updated `.zip` file.
 You will need to uninstall the old version of the package before installing the new one:
 
 ```r
-detach("package:toro", unload = TRUE)
-install.packages("toro_<version>.tar.gz", repos = NULL, type = "source")
+remove.packages("toro")
+remotes::install_github("Epi-interactive-Ltd/toro@feature/version-change", force = TRUE)
 library(toro)
 ```
 
