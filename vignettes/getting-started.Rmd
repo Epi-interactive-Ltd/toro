@@ -14,12 +14,57 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(toro)
 ```
 
-```{r setup}
-library(toro)
+## Installation
 
+To install the development version from Github:
+
+```r
+remotes::install_github("Epi-interactive-Ltd/toro")
+```
+
+Once installed, this package can be used in the R console and within [Shiny](https://shiny.posit.co/) applications.
+
+## Basic Usage
+
+### Default Map
+
+To create the default map widget just call the `map` function.
+
+```{r basic-usage}
 map()
 ```
 
+### Customise With Map Options
 
+By passing parameters to the `map` function you can customise several features of the map.
+
+```{r customise-default}
+map(
+  style = "natgeo",
+  center = c(174, -41),
+  zoom = 2
+)
+```
+
+### Adding Layers
+
+You can add layers to the map using layer functions like `add_symbol_layer`, `add_fill_layer`, etc.
+For more information about using layers see the [layers vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html).
+
+Data layers like fill, marker, and line layers need source data for the layers to show anything.
+There is two ways to provide this source data to a layer.
+
+#### 1. Passing the data inside the layer function
+
+```{r source-in-function}
+map()
+```
+
+#### 2. Adding the source data before adding the layer
+
+```{r source-before-function}
+map()
+```

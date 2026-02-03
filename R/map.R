@@ -48,6 +48,11 @@ map <- function(
   user_options <- list(...)
   map_options <- modifyList(default_options, user_options)
 
+  if (!style %in% map_options$loadedTiles) {
+    # If the style is not in loadedTiles, add it
+    map_options$loadedTiles <- c(map_options$loadedTiles, style)
+  }
+
   htmlwidgets::createWidget(
     name = "map",
     x = list(
