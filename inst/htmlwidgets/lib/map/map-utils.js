@@ -55,7 +55,7 @@ function getPointFeaturesBounds(features) {
   // Initialize bounds with the first point
   let bounds = new maplibregl.LngLatBounds(
     features[0].geometry.coordinates,
-    features[0].geometry.coordinates
+    features[0].geometry.coordinates,
   );
   for (let i = 1; i < features.length; i++) {
     bounds.extend(features[i].geometry.coordinates);
@@ -109,7 +109,7 @@ function addMapLoader(
   el,
   changeLoader = false,
   bgColour = "white",
-  loaderColour = "black"
+  loaderColour = "black",
 ) {
   // Add a loading overlay div
   const loadingDiv = document.createElement("div");
@@ -194,7 +194,7 @@ function toRgbValues(colour) {
     // Optionally replace the alpha value
     return colour.replace(
       /rgba\(([^,]+),([^,]+),([^,]+),([^)]+)\)/,
-      `$1,$2,$3`
+      `$1,$2,$3`,
     );
   } else {
     return nameToRgbValues(colour);

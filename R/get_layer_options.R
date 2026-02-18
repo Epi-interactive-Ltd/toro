@@ -19,7 +19,7 @@ get_layout_options <- function(layer_type, options = list()) {
   default_options <- list(
     line_cap = "round",
     line_join = "round",
-    icon_image = "",
+    icon_image = "toro-pin",
     icon_size = 1,
     icon_anchor = "bottom",
     icon_offset = list(0, 0),

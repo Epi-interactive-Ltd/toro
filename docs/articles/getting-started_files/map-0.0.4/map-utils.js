@@ -55,7 +55,7 @@ function getPointFeaturesBounds(features) {
   // Initialize bounds with the first point
   let bounds = new maplibregl.LngLatBounds(
     features[0].geometry.coordinates,
-    features[0].geometry.coordinates
+    features[0].geometry.coordinates,
   );
   for (let i = 1; i < features.length; i++) {
     bounds.extend(features[i].geometry.coordinates);
@@ -89,11 +89,29 @@ function addFeatureServerSource(el, url, sourceId) {
  * @returns {void}
  */
 function closeAttribution(mapId) {
-  let map = document.getElementById(mapId);
-  const attributionControl = map.querySelector(".maplibregl-ctrl-attrib-button");
-  if (attributionControl) {
-    attributionControl.click();
+  function tryClosingAttribution() {
+    // Search the whole document for the attribution button
+    const btn = document.querySelector(".maplibregl-ctrl-attrib-button");
+    if (btn && btn.getAttribute("aria-expanded") !== "false") {
+      btn.click();
+      return true;
+    }
+    return false;
   }
+
+  if (tryClosingAttribution()) return;
+
+  // If not found, observe the document for changes
+  const observer = new MutationObserver(() => {
+    if (tryClosingAttribution()) {
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
 }
 
 /**
@@ -109,7 +127,7 @@ function addMapLoader(
   el,
   changeLoader = false,
   bgColour = "white",
-  loaderColour = "black"
+  loaderColour = "black",
 ) {
   // Add a loading overlay div
   const loadingDiv = document.createElement("div");
@@ -194,7 +212,7 @@ function toRgbValues(colour) {
     // Optionally replace the alpha value
     return colour.replace(
       /rgba\(([^,]+),([^,]+),([^,]+),([^)]+)\)/,
-      `$1,$2,$3`
+      `$1,$2,$3`,
     );
   } else {
     return nameToRgbValues(colour);

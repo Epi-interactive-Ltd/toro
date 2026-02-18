@@ -2,7 +2,17 @@ pandoc: 3.6.4
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
+  animations: animations.html
+  contributing: contributing.html
   controls: controls.html
+  draw-controls: draw-controls.html
   getting-started: getting-started.html
+  layers: layers.html
+  map-tiles: map-tiles.html
+  popups: popups.html
   shiny-integration: shiny-integration.html
-last_built: 2025-11-13T21:45Z
+  view-controls: view-controls.html
+last_built: 2026-02-05T03:03Z
+urls:
+  reference: https://epi-interactive-ltd.github.io/toro/reference
+  article: https://epi-interactive-ltd.github.io/toro/articles

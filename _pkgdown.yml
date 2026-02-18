@@ -1,4 +1,4 @@
-url: ~
+url: https://epi-interactive-ltd.github.io/toro/
 template:
   bootstrap: 5
 
@@ -22,10 +22,31 @@ navbar:
       menu:
         - text: Getting started with toro
           href: articles/getting-started.html
+        - text: Integration with Shiny
+          href: articles/shiny-integration.html
+        - text: "---"
+        - text: Layers
+        - text: Modifying map tiles
+          href: articles/map-tiles.html
+        - text: Customising layers
+          href: articles/layers.html
+        - text: Popups/Hovers
+          href: articles/popups.html
+        - text: "---"
+        - text: Controls
         - text: Adding controls to your map
           href: articles/controls.html
-        - text: Integrating with Shiny
-          href: articles/shiny-integration.html
+        - text: Draw controls
+          href: articles/draw-controls.html
+        - text: View controls
+          href: articles/view-controls.html
+        - text: "---"
+        - text: Advanced features
+        - text: Animations
+          href: articles/animations.html
+        - text: "---"
+        - text: "Contributing to toro"
+          href: articles/contributing.html
 
 reference:
   - title: "Map Creation"
