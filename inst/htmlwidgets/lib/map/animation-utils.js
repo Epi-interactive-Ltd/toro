@@ -5,8 +5,8 @@ function interpolateLine(start, end, steps) {
     const lon = start[0] + t * (end[0] - start[0]);
     const lat = start[1] + t * (end[1] - start[1]);
     points.push({
-      type: "Feature",
-      geometry: { type: "Point", coordinates: [lon, lat] },
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [lon, lat] },
       properties: {},
     });
   }
@@ -26,43 +26,40 @@ function addRoute(widgetInstance, routeOptions) {
 
   const points = routeOptions.points;
   const options = routeOptions.options || {};
-  const routeId = routeOptions.routeId || "route";
+  const routeId = routeOptions.routeId || 'route';
   const routeLineLayerId = `${routeId}_route_line`;
   const routePointLayerId = `${routeId}_route_point`;
   const routeVisitedPointsLayerId = `${routeId}_route_visited_point`;
 
-  if (
-    widgetInstance.getAnimations() &&
-    widgetInstance.getAnimations()[routeId]
-  ) {
+  if (widgetInstance.getAnimations() && widgetInstance.getAnimations()[routeId]) {
     // Route with this ID already exists
-    console.error("Route with this ID already exists:", routeId);
+    console.error('Route with this ID already exists:', routeId);
     return;
   }
 
   const coords = points.features.map((f) => f.geometry.coordinates);
 
   const line = {
-    type: "Feature",
+    type: 'Feature',
     geometry: {
-      type: "LineString",
+      type: 'LineString',
       coordinates: coords,
     },
     properties: {},
   };
 
   const route = {
-    type: "FeatureCollection",
+    type: 'FeatureCollection',
     features: [line],
   };
   // A single point that animates along the route.
   // Coordinates are initially set to origin.
   const point = {
-    type: "FeatureCollection",
+    type: 'FeatureCollection',
     features: [points.features[0]],
   };
 
-  const totalLength = turf.length(line, { units: "kilometers" });
+  const totalLength = turf.length(line, { units: 'kilometers' });
 
   // Number of steps to use in the arc and animation, more steps means
   // a smoother arc and animation, but too many steps will result in a
@@ -73,15 +70,15 @@ function addRoute(widgetInstance, routeOptions) {
 
   for (let i = 0; i < coords.length - 1; i++) {
     const lineSeg = {
-      type: "Feature",
+      type: 'Feature',
       geometry: {
-        type: "LineString",
+        type: 'LineString',
         coordinates: [coords[i], coords[i + 1]],
       },
       properties: {},
     };
 
-    const lineLength = turf.length(lineSeg, { units: "kilometers" });
+    const lineLength = turf.length(lineSeg, { units: 'kilometers' });
     const segmentSteps = steps * (lineLength / totalLength);
     const linePoints1 = interpolateLine(coords[i], coords[i + 1], segmentSteps);
     linePoints.push(...linePoints1);
@@ -90,15 +87,12 @@ function addRoute(widgetInstance, routeOptions) {
   // Get or initialize animations object
   let animations = widgetInstance.getAnimations();
   if (!animations) {
-    console.warn(
-      "Animations object not initialized, this might indicate a setup issue"
-    );
+    console.warn('Animations object not initialized, this might indicate a setup issue');
     return;
   }
 
   const showTimelineControls =
-    options.showTimelineControls ||
-    (false && "date" in points.features[0].properties);
+    options.showTimelineControls || (false && 'date' in points.features[0].properties);
 
   const showSpeedControl = options.showSpeedControl || false;
 
@@ -123,7 +117,7 @@ function addRoute(widgetInstance, routeOptions) {
     routePointLayerId: routePointLayerId,
     visitedLayerId: routeVisitedPointsLayerId,
     visitedPoints: {
-      type: "FeatureCollection",
+      type: 'FeatureCollection',
       features: [],
     },
     options: options,
@@ -131,106 +125,97 @@ function addRoute(widgetInstance, routeOptions) {
 
   map.addLayer({
     id: routeLineLayerId,
-    type: "line",
+    type: 'line',
     source: {
-      type: "geojson",
+      type: 'geojson',
       data: route,
     },
     layout: {
-      "line-join": "round",
-      "line-cap": "round",
+      'line-join': 'round',
+      'line-cap': 'round',
     },
     paint: {
-      "line-color": options.routeLine?.["line-color"] ?? "#888",
-      "line-width": options.routeLine?.["line-width"] ?? 6,
-      "line-dasharray": options.routeLine?.["line-dasharray"] ?? [1, 0],
-      "line-opacity": options.routeLine?.["line-opacity"] ?? 1.0,
+      'line-color': options.routeLine?.['line-color'] ?? '#888',
+      'line-width': options.routeLine?.['line-width'] ?? 6,
+      'line-dasharray': options.routeLine?.['line-dasharray'] ?? [1, 0],
+      'line-opacity': options.routeLine?.['line-opacity'] ?? 1.0,
     },
   });
 
   map.addLayer({
     id: routeVisitedPointsLayerId,
-    type: "circle",
+    type: 'circle',
     source: {
-      type: "geojson",
+      type: 'geojson',
       data: animations[routeId].visitedPoints,
     },
     paint: {
-      "circle-color": options.visitedPoints?.["circle-color"] ?? "#0074D9",
-      "circle-radius": options.visitedPoints?.["circle-radius"] ?? 5,
-      "circle-opacity": options.visitedPoints?.["circle-opacity"] ?? 1.0,
-      "circle-stroke-width":
-        options.visitedPoints?.["circle-stroke-width"] ?? 2,
-      "circle-stroke-color":
-        options.visitedPoints?.["circle-stroke-color"] ?? "#0074D9",
+      'circle-color': options.visitedPoints?.['circle-color'] ?? '#0074D9',
+      'circle-radius': options.visitedPoints?.['circle-radius'] ?? 5,
+      'circle-opacity': options.visitedPoints?.['circle-opacity'] ?? 1.0,
+      'circle-stroke-width': options.visitedPoints?.['circle-stroke-width'] ?? 2,
+      'circle-stroke-color': options.visitedPoints?.['circle-stroke-color'] ?? '#0074D9',
     },
   });
 
   if (options.animatingIcon) {
     map.addLayer({
       id: routePointLayerId,
-      type: "symbol",
+      type: 'symbol',
       source: {
-        type: "geojson",
+        type: 'geojson',
         data: point,
       },
       paint: {
-        "icon-opacity": options.animatingIcon?.["icon-opacity"] ?? 1.0,
-        "text-color": options.animatingIcon?.["text-color"] ?? "#000000",
+        'icon-opacity': options.animatingIcon?.['icon-opacity'] ?? 1.0,
+        'text-color': options.animatingIcon?.['text-color'] ?? '#000000',
       },
       layout: {
-        "icon-allow-overlap":
-          options.animatingIcon?.["icon-allow-overlap"] ?? true,
-        "icon-image": options.animatingIcon?.["icon-image"] ?? "marker-15",
-        "icon-size": options.animatingIcon?.["icon-size"] ?? 1.0,
-        "icon-anchor": options.animatingIcon?.["icon-anchor"] ?? "center",
-        "icon-offset": options.animatingIcon?.["icon-offset"] ?? [0, 0],
-        "icon-rotate": options.animatingIcon?.["icon-rotate"] ?? 0,
-        "text-font": options.animatingIcon?.["text-font"] ?? ["Open Sans Bold"],
-        "text-size": options.animatingIcon?.["text-size"] ?? 12,
-        "text-field": options.animatingIcon?.["text-field"] ?? "",
+        'icon-allow-overlap': options.animatingIcon?.['icon-allow-overlap'] ?? true,
+        'icon-image': options.animatingIcon?.['icon-image'] ?? 'marker-15',
+        'icon-size': options.animatingIcon?.['icon-size'] ?? 1.0,
+        'icon-anchor': options.animatingIcon?.['icon-anchor'] ?? 'center',
+        'icon-offset': options.animatingIcon?.['icon-offset'] ?? [0, 0],
+        'icon-rotate': options.animatingIcon?.['icon-rotate'] ?? 0,
+        'text-font': options.animatingIcon?.['text-font'] ?? ['Open Sans Bold'],
+        'text-size': options.animatingIcon?.['text-size'] ?? 12,
+        'text-field': options.animatingIcon?.['text-field'] ?? '',
       },
     });
   } else {
     map.addLayer({
       id: routePointLayerId,
-      type: "circle",
+      type: 'circle',
       source: {
-        type: "geojson",
+        type: 'geojson',
         data: point,
       },
       paint: {
-        "circle-color": options.animatingPoint?.["circle-color"] ?? "#B42222",
-        "circle-radius": options.animatingPoint?.["circle-radius"] ?? 7,
-        "circle-opacity": options.animatingPoint?.["circle-opacity"] ?? 1.0,
-        "circle-stroke-width":
-          options.animatingPoint?.["circle-stroke-width"] ?? 2,
-        "circle-stroke-color":
-          options.animatingPoint?.["circle-stroke-color"] ?? "#B42222",
+        'circle-color': options.animatingPoint?.['circle-color'] ?? '#B42222',
+        'circle-radius': options.animatingPoint?.['circle-radius'] ?? 7,
+        'circle-opacity': options.animatingPoint?.['circle-opacity'] ?? 1.0,
+        'circle-stroke-width': options.animatingPoint?.['circle-stroke-width'] ?? 2,
+        'circle-stroke-color': options.animatingPoint?.['circle-stroke-color'] ?? '#B42222',
       },
     });
   }
 
   // Add popups to the droped points if specified
   if (options.visitedPoints?.popupColumn) {
-    addLayerPopup(
-      map,
-      routeVisitedPointsLayerId,
-      options.visitedPoints.popupColumn
-    );
+    addLayerPopup(map, routeVisitedPointsLayerId, options.visitedPoints.popupColumn);
   }
 
   // Create control panel if needed
   const useControlPanel = options.useAnimationControlPanel || false;
   if (useControlPanel) {
     const panelOptions = options.animationControlPanelOptions || {};
-    const panelId = panelOptions.panelId || "animation-controls";
+    const panelId = panelOptions.panelId || 'animation-controls';
 
     // Only create if it doesn't already exist
     if (!map._controlPanels || !map._controlPanels[panelId]) {
       addControlPanel(el, panelId, {
-        title: panelOptions.title || "Animation Controls",
-        position: panelOptions.position || "bottom-left",
+        title: panelOptions.title || 'Animation Controls',
+        position: panelOptions.position || 'bottom-left',
         collapsible: panelOptions.collapsible !== false,
         collapsed: panelOptions.collapsed || false,
         showTitle: panelOptions.showTitle !== false,
@@ -239,8 +224,7 @@ function addRoute(widgetInstance, routeOptions) {
   }
 
   // Check for existing timeline controls in panels and connect them to animation
-  const existingTimelineControl =
-    checkForExistingTimelineControl(widgetInstance);
+  const existingTimelineControl = checkForExistingTimelineControl(widgetInstance);
   const existingSpeedControl = checkForExistingSpeedControl(widgetInstance);
 
   if (showTimelineControls || existingTimelineControl) {
@@ -250,10 +234,8 @@ function addRoute(widgetInstance, routeOptions) {
     }
 
     // Get date range from the route points if available
-    const startDate = points.features[0]?.properties?.date || "2023-01-01";
-    const endDate =
-      points.features[points.features.length - 1]?.properties?.date ||
-      "2023-12-31";
+    const startDate = points.features[0]?.properties?.date || '2023-01-01';
+    const endDate = points.features[points.features.length - 1]?.properties?.date || '2023-12-31';
 
     // Define animation callbacks
     const playPauseCallback = function (playing) {
@@ -287,24 +269,21 @@ function addRoute(widgetInstance, routeOptions) {
           for (let i = 0; i <= targetStep; i++) {
             const currentCoord = route.linePoints[i].geometry.coordinates;
             const coordIndex = route.coords.findIndex(
-              (coord) =>
-                coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+              (coord) => coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
             );
 
             if (coordIndex !== -1) {
               route.visitedPoints.features.push({
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "Point",
+                  type: 'Point',
                   coordinates: currentCoord,
                 },
                 properties: route.points.features[coordIndex]?.properties ?? {},
               });
             }
           }
-          route.map
-            .getSource(route.visitedLayerId)
-            .setData(route.visitedPoints);
+          route.map.getSource(route.visitedLayerId).setData(route.visitedPoints);
         }
       }
     };
@@ -344,18 +323,10 @@ function addRoute(widgetInstance, routeOptions) {
 
     if (existingSpeedControl) {
       // Connect existing speed control to animation
-      connectSpeedControlToAnimation(
-        map,
-        existingSpeedControl,
-        speedChangeCallback
-      );
+      connectSpeedControlToAnimation(map, existingSpeedControl, speedChangeCallback);
     } else {
       // Add new speed control
-      addSpeedControl(
-        widgetInstance,
-        speedChangeCallback,
-        options.speedControlOptions || {}
-      );
+      addSpeedControl(widgetInstance, speedChangeCallback, options.speedControlOptions || {});
     }
   }
 }
@@ -369,11 +340,11 @@ function addRoute(widgetInstance, routeOptions) {
  */
 function animateRoute(widgetInstance, routeOptions) {
   const options = routeOptions.options || {};
-  const routeId = routeOptions.routeId || "route";
+  const routeId = routeOptions.routeId || 'route';
 
   const route = widgetInstance.getAnimations()[routeId];
   if (!route) {
-    console.error("No route found to animate for routeId:", routeId);
+    console.error('No route found to animate for routeId:', routeId);
     return;
   }
 
@@ -390,9 +361,7 @@ function animateRoute(widgetInstance, routeOptions) {
 
     // Update slider and timeline control to show restart
     if (route.map._timelineControl && route.showTimelineControls) {
-      const timelineSlider = document.getElementById(
-        `timeline-slider-${widgetInstance.getId()}`
-      );
+      const timelineSlider = document.getElementById(`timeline-slider-${widgetInstance.getId()}`);
       if (timelineSlider) {
         timelineSlider.value = 0;
         if (route.map._timelineControl.updateAppearance) {
@@ -420,9 +389,9 @@ function animateRoute(widgetInstance, routeOptions) {
 
     if (!startPointExists) {
       route.visitedPoints.features.push({
-        type: "Feature",
+        type: 'Feature',
         geometry: {
-          type: "Point",
+          type: 'Point',
           coordinates: startCoord,
         },
         properties: route.points.features[0]?.properties ?? {},
@@ -431,9 +400,7 @@ function animateRoute(widgetInstance, routeOptions) {
     }
   }
 
-  const startProgress = Math.round(
-    (route.counter / (route.linePoints.length - 1)) * 100
-  );
+  const startProgress = Math.round((route.counter / (route.linePoints.length - 1)) * 100);
 
   function animate(currentTime) {
     const state = widgetInstance.getAnimations()[routeId];
@@ -472,18 +439,14 @@ function animateRoute(widgetInstance, routeOptions) {
 
         if (!finalPointExists) {
           state.visitedPoints.features.push({
-            type: "Feature",
+            type: 'Feature',
             geometry: {
-              type: "Point",
+              type: 'Point',
               coordinates: finalCoord,
             },
-            properties:
-              state.points.features[state.points.features.length - 1]
-                ?.properties ?? {},
+            properties: state.points.features[state.points.features.length - 1]?.properties ?? {},
           });
-          state.map
-            .getSource(state.visitedLayerId)
-            .setData(state.visitedPoints);
+          state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
         }
       }
 
@@ -506,10 +469,7 @@ function animateRoute(widgetInstance, routeOptions) {
     if (stepsToAdvance >= 1) {
       const integerSteps = Math.floor(stepsToAdvance);
       const oldCounter = state.counter;
-      state.counter = Math.min(
-        state.counter + integerSteps,
-        state.linePoints.length - 1
-      );
+      state.counter = Math.min(state.counter + integerSteps, state.linePoints.length - 1);
       state.lastFrameTime = currentTime;
       routeOptions = route.options;
 
@@ -517,10 +477,9 @@ function animateRoute(widgetInstance, routeOptions) {
       if (
         state.counter > oldCounter &&
         routeOptions.animatingIcon &&
-        routeOptions.animatingIcon["icon-flip-horizontal"]
+        routeOptions.animatingIcon['icon-flip-horizontal']
       ) {
-        const currentCoord =
-          state.linePoints[state.counter].geometry.coordinates;
+        const currentCoord = state.linePoints[state.counter].geometry.coordinates;
         const previousCoord = state.linePoints[oldCounter].geometry.coordinates;
 
         // Check if moving left (westward) or right (eastward)
@@ -528,7 +487,7 @@ function animateRoute(widgetInstance, routeOptions) {
 
         // Store the original image name if not already stored
         if (!state.originalIconImage) {
-          state.originalIconImage = routeOptions.animatingIcon["icon-image"];
+          state.originalIconImage = routeOptions.animatingIcon['icon-image'];
         }
 
         // Try to use different images for left/right if available
@@ -538,52 +497,32 @@ function animateRoute(widgetInstance, routeOptions) {
 
         if (movingLeft) {
           // Try to find a left-facing version of the icon
-          targetImage = baseImageName + "-left";
+          targetImage = baseImageName + '-left';
           // Check if this image exists in the map style
           if (!state.map.hasImage(targetImage)) {
             // Fallback: use the original image but rotated 180 degrees
             targetImage = baseImageName;
-            state.map.setLayoutProperty(
-              state.routePointLayerId,
-              "icon-rotate",
-              180
-            );
+            state.map.setLayoutProperty(state.routePointLayerId, 'icon-rotate', 180);
           } else {
             // Reset rotation if using a dedicated left image
-            state.map.setLayoutProperty(
-              state.routePointLayerId,
-              "icon-rotate",
-              0
-            );
+            state.map.setLayoutProperty(state.routePointLayerId, 'icon-rotate', 0);
           }
         } else {
           // Try to find a right-facing version of the icon
-          targetImage = baseImageName + "-right";
+          targetImage = baseImageName + '-right';
           // Check if this image exists in the map style
           if (!state.map.hasImage(targetImage)) {
             // Fallback: use the original image with no rotation
             targetImage = baseImageName;
-            state.map.setLayoutProperty(
-              state.routePointLayerId,
-              "icon-rotate",
-              0
-            );
+            state.map.setLayoutProperty(state.routePointLayerId, 'icon-rotate', 0);
           } else {
             // Use the dedicated right image
-            state.map.setLayoutProperty(
-              state.routePointLayerId,
-              "icon-rotate",
-              0
-            );
+            state.map.setLayoutProperty(state.routePointLayerId, 'icon-rotate', 0);
           }
         }
 
         // Update the icon image
-        state.map.setLayoutProperty(
-          state.routePointLayerId,
-          "icon-image",
-          targetImage
-        );
+        state.map.setLayoutProperty(state.routePointLayerId, 'icon-image', targetImage);
       }
 
       // Move the animated point
@@ -599,8 +538,7 @@ function animateRoute(widgetInstance, routeOptions) {
 
           // Check if currentCoord matches any original coord
           const coordIndex = state.coords.findIndex(
-            (coord) =>
-              coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
+            (coord) => coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
           );
 
           if (coordIndex !== -1) {
@@ -613,17 +551,15 @@ function animateRoute(widgetInstance, routeOptions) {
 
             if (!pointExists) {
               state.visitedPoints.features.push({
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "Point",
+                  type: 'Point',
                   coordinates: currentCoord,
                 },
                 properties: state.points.features[coordIndex]?.properties ?? {},
               });
               // Update the source after adding the point
-              state.map
-                .getSource(state.visitedLayerId)
-                .setData(state.visitedPoints);
+              state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
             }
           }
         }
@@ -656,7 +592,7 @@ function animateRoute(widgetInstance, routeOptions) {
  * @return {void}
  */
 function pauseAnimation(widgetInstance, routeOptions) {
-  const routeId = routeOptions.routeId || "route";
+  const routeId = routeOptions.routeId || 'route';
 
   if (widgetInstance.getAnimations()[routeId]) {
     const route = widgetInstance.getAnimations()[routeId];
@@ -682,11 +618,11 @@ function pauseAnimation(widgetInstance, routeOptions) {
  * @return {void}
  */
 function removeRoute(widgetInstance, routeOptions) {
-  const routeId = routeOptions.routeId || "route";
+  const routeId = routeOptions.routeId || 'route';
 
   const route = widgetInstance.getAnimations()[routeId];
   if (!route) {
-    console.error("No route found to animate for routeId:", routeId);
+    console.error('No route found to animate for routeId:', routeId);
     return;
   }
   const map = widgetInstance.getMap();
@@ -694,32 +630,25 @@ function removeRoute(widgetInstance, routeOptions) {
   const routePointLayerId = route.routePointLayerId;
   const routeVisitedPointsLayerId = route.visitedLayerId;
   // Remove layers if they exist
-  [routeLineLayerId, routePointLayerId, routeVisitedPointsLayerId].forEach(
-    (layerId) => {
-      if (map.getLayer(layerId)) {
-        map.removeLayer(layerId);
-      }
+  [routeLineLayerId, routePointLayerId, routeVisitedPointsLayerId].forEach((layerId) => {
+    if (map.getLayer(layerId)) {
+      map.removeLayer(layerId);
     }
-  );
+  });
 
   // Remove sources if they exist
-  [routeLineLayerId, routePointLayerId, routeVisitedPointsLayerId].forEach(
-    (sourceId) => {
-      if (map.getSource(sourceId)) {
-        map.removeSource(sourceId);
-      }
+  [routeLineLayerId, routePointLayerId, routeVisitedPointsLayerId].forEach((sourceId) => {
+    if (map.getSource(sourceId)) {
+      map.removeSource(sourceId);
     }
-  );
+  });
 
   if (route.showTimelineControls && map._timelineControl) {
-    removeControl(
-      widgetInstance,
-      map._timelineControl.controlId || "toro-timeline-control"
-    );
+    removeControl(widgetInstance, map._timelineControl.controlId || 'toro-timeline-control');
   }
 
   if (route.showSpeedControl && map._speedControl) {
-    removeControl(widgetInstance, "toro-speed-control");
+    removeControl(widgetInstance, 'toro-speed-control');
   }
 
   // Remove animation state
@@ -735,12 +664,8 @@ function removeRoute(widgetInstance, routeOptions) {
  * @returns {object|null} Timeline control element or null if not found
  */
 function checkForExistingTimelineControl(widgetInstance) {
-  const timelineSlider = document.getElementById(
-    `timeline-slider-${widgetInstance.getId()}`
-  );
-  const playPauseBtn = document.getElementById(
-    `timeline-play-pause-${widgetInstance.getId()}`
-  );
+  const timelineSlider = document.getElementById(`timeline-slider-${widgetInstance.getId()}`);
+  const playPauseBtn = document.getElementById(`timeline-play-pause-${widgetInstance.getId()}`);
 
   if (timelineSlider && playPauseBtn) {
     return { slider: timelineSlider, playPauseBtn: playPauseBtn };
@@ -755,9 +680,7 @@ function checkForExistingTimelineControl(widgetInstance) {
  * @returns {object|null} Speed control element or null if not found
  */
 function checkForExistingSpeedControl(widgetInstance) {
-  const speedSlider = document.getElementById(
-    `speed-slider-${widgetInstance.getId()}`
-  );
+  const speedSlider = document.getElementById(`speed-slider-${widgetInstance.getId()}`);
 
   if (speedSlider) {
     return { slider: speedSlider };
@@ -792,14 +715,14 @@ function connectTimelineControlToAnimation(
     // Enable the controls if they were disabled
     if (slider.disabled) {
       slider.disabled = false;
-      slider.style.opacity = "1";
-      slider.style.cursor = "pointer";
+      slider.style.opacity = '1';
+      slider.style.cursor = 'pointer';
     }
 
     if (playPauseBtn.disabled) {
       playPauseBtn.disabled = false;
-      playPauseBtn.style.opacity = "1";
-      playPauseBtn.style.cursor = "pointer";
+      playPauseBtn.style.opacity = '1';
+      playPauseBtn.style.cursor = 'pointer';
     }
   }
 
@@ -828,12 +751,12 @@ function connectTimelineControlToAnimation(
       } else {
         // Fallback if no original method exists
         if (playPauseBtn) {
-          playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+          playPauseBtn.innerHTML = playing ? '⏸' : '▶';
         }
         if (slider) {
           slider.disabled = playing;
-          slider.style.opacity = playing ? "0.5" : "1";
-          slider.style.cursor = playing ? "not-allowed" : "pointer";
+          slider.style.opacity = playing ? '0.5' : '1';
+          slider.style.cursor = playing ? 'not-allowed' : 'pointer';
         }
       }
     };
@@ -842,7 +765,7 @@ function connectTimelineControlToAnimation(
   // Note: Play/pause event handling is managed by the timeline control's handlePlayPause function
   // which calls the playPauseCallback. No additional event listener needed here.
 
-  slider.addEventListener("input", function (e) {
+  slider.addEventListener('input', function (e) {
     e.stopPropagation();
 
     if (!playing) {
@@ -867,12 +790,12 @@ function connectTimelineControlToAnimation(
       setPlaying: function (isPlaying) {
         playing = isPlaying;
         if (playPauseBtn) {
-          playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+          playPauseBtn.innerHTML = playing ? '⏸' : '▶';
         }
         if (slider) {
           slider.disabled = playing;
-          slider.style.opacity = playing ? "0.5" : "1";
-          slider.style.cursor = playing ? "not-allowed" : "pointer";
+          slider.style.opacity = playing ? '0.5' : '1';
+          slider.style.cursor = playing ? 'not-allowed' : 'pointer';
         }
       },
     };
@@ -886,22 +809,18 @@ function connectTimelineControlToAnimation(
  * @param {object} speedControl The speed control elements
  * @param {function} speedChangeCallback Callback for speed changes
  */
-function connectSpeedControlToAnimation(
-  map,
-  speedControl,
-  speedChangeCallback
-) {
+function connectSpeedControlToAnimation(map, speedControl, speedChangeCallback) {
   const { slider } = speedControl;
 
   // Enable the control if it was disabled using the proper enable method
-  if (map._speedControl && typeof map._speedControl.enable === "function") {
+  if (map._speedControl && typeof map._speedControl.enable === 'function') {
     map._speedControl.enable(speedChangeCallback);
   } else {
     // Fallback: Enable the control manually if enable method not available
     if (slider.disabled) {
       slider.disabled = false;
-      slider.style.opacity = "1";
-      slider.style.cursor = "pointer";
+      slider.style.opacity = '1';
+      slider.style.cursor = 'pointer';
     }
   }
 
@@ -910,7 +829,7 @@ function connectSpeedControlToAnimation(
   slider.oninput = null;
 
   // Add new event listener
-  slider.addEventListener("input", function (e) {
+  slider.addEventListener('input', function (e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -935,8 +854,7 @@ function connectSpeedControlToAnimation(
       setSpeed: function (speed) {
         const speedValues = map._speedControl?.speedValues || [0.5, 1, 2];
         const closestIndex = speedValues.reduce((closest, current, index) => {
-          return Math.abs(current - speed) <
-            Math.abs(speedValues[closest] - speed)
+          return Math.abs(current - speed) < Math.abs(speedValues[closest] - speed)
             ? index
             : closest;
         }, 0);

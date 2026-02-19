@@ -55,7 +55,7 @@ function getPointFeaturesBounds(features) {
   // Initialize bounds with the first point
   let bounds = new maplibregl.LngLatBounds(
     features[0].geometry.coordinates,
-    features[0].geometry.coordinates,
+    features[0].geometry.coordinates
   );
   for (let i = 1; i < features.length; i++) {
     bounds.extend(features[i].geometry.coordinates);
@@ -75,9 +75,9 @@ function getPointFeaturesBounds(features) {
  * @returns {void}
  */
 function addFeatureServerSource(el, url, sourceId) {
-  url = url + "/0/query?where=1=1&outFields=*&f=geojson";
+  url = url + '/0/query?where=1=1&outFields=*&f=geojson';
   el.mapInstance.addSource(sourceId, {
-    type: "geojson",
+    type: 'geojson',
     data: url,
   });
 }
@@ -92,9 +92,7 @@ function addFeatureServerSource(el, url, sourceId) {
 function closeAttribution(mapId, widgetInstance) {
   waitForFullLoad(widgetInstance, () => {
     let map = document.getElementById(mapId);
-    const attributionControl = map.querySelector(
-      ".maplibregl-ctrl-attrib-button",
-    );
+    const attributionControl = map.querySelector('.maplibregl-ctrl-attrib-button');
     if (attributionControl) {
       attributionControl.click();
     }
@@ -113,7 +111,7 @@ function waitForFullLoad(widgetInstance, callback) {
   if (map.loaded()) {
     callback();
   } else {
-    map.once("idle", callback);
+    map.once('idle', callback);
   }
 }
 
@@ -126,20 +124,13 @@ function waitForFullLoad(widgetInstance, callback) {
  * @param {string} [loaderColour="black"] Colour of the loader.
  * @returns {void}
  */
-function addMapLoader(
-  el,
-  changeLoader = false,
-  bgColour = "white",
-  loaderColour = "black",
-) {
+function addMapLoader(el, changeLoader = false, bgColour = 'white', loaderColour = 'black') {
   // Add a loading overlay div
-  const loadingDiv = document.createElement("div");
+  const loadingDiv = document.createElement('div');
   loadingDiv.className =
-    "toro-loading-overlay" +
-    (changeLoader ? " busy-loader" : " initial-loader");
-  loadingDiv.style.setProperty("--loader-bg-colour", bgColour);
-  loadingDiv.innerHTML =
-    '<div class="loader" style="--loader-colour:' + loaderColour + ';"></div>';
+    'toro-loading-overlay' + (changeLoader ? ' busy-loader' : ' initial-loader');
+  loadingDiv.style.setProperty('--loader-bg-colour', bgColour);
+  loadingDiv.innerHTML = '<div class="loader" style="--loader-colour:' + loaderColour + ';"></div>';
   el.appendChild(loadingDiv);
 }
 
@@ -151,7 +142,7 @@ function addMapLoader(
  */
 function removeMapLoader(el) {
   // Add a loading overlay div
-  const loadingDiv = el.querySelector(".toro-loading-overlay");
+  const loadingDiv = el.querySelector('.toro-loading-overlay');
   if (!loadingDiv) return;
   loadingDiv.remove();
 }
@@ -163,12 +154,12 @@ function removeMapLoader(el) {
  * @returns {string}    RGB values as a string (e.g., "0,0,0").
  */
 function hexToRgbValues(hex) {
-  let c = hex.replace("#", "");
+  let c = hex.replace('#', '');
   if (c.length === 3)
     c = c
-      .split("")
+      .split('')
       .map((x) => x + x)
-      .join("");
+      .join('');
   const num = parseInt(c, 16);
   const r = (num >> 16) & 255;
   const g = (num >> 8) & 255;
@@ -183,7 +174,7 @@ function hexToRgbValues(hex) {
  * @returns {string}    RGB values as a string (e.g., "0,0,0").
  */
 function rgbToRgbValues(rgb) {
-  return rgb.replace(/^rgb\((.*)\)$/i, "$1");
+  return rgb.replace(/^rgb\((.*)\)$/i, '$1');
 }
 
 /**
@@ -193,7 +184,7 @@ function rgbToRgbValues(rgb) {
  * @returns {string}      RGB values as a string (e.g., "0,0,0").
  */
 function nameToRgbValues(name) {
-  const ctx = document.createElement("canvas").getContext("2d");
+  const ctx = document.createElement('canvas').getContext('2d');
   ctx.fillStyle = name;
   const hex = ctx.fillStyle;
   return hexToRgbValues(hex);
@@ -207,16 +198,13 @@ function nameToRgbValues(name) {
  * @returns {string}       RGB values as a string (e.g., "0,0,0").
  */
 function toRgbValues(colour) {
-  if (colour.startsWith("#")) {
+  if (colour.startsWith('#')) {
     return hexToRgbValues(colour);
-  } else if (colour.startsWith("rgb(")) {
+  } else if (colour.startsWith('rgb(')) {
     return rgbToRgbValues(colour);
-  } else if (colour.startsWith("rgba(")) {
+  } else if (colour.startsWith('rgba(')) {
     // Optionally replace the alpha value
-    return colour.replace(
-      /rgba\(([^,]+),([^,]+),([^,]+),([^)]+)\)/,
-      `$1,$2,$3`,
-    );
+    return colour.replace(/rgba\(([^,]+),([^,]+),([^,]+),([^)]+)\)/, `$1,$2,$3`);
   } else {
     return nameToRgbValues(colour);
   }
@@ -231,8 +219,8 @@ function toRgbValues(colour) {
 function getTileIds(tilesItem) {
   if (!tilesItem) return [];
   if (Array.isArray(tilesItem)) return tilesItem;
-  if (typeof tilesItem === "string") return [tilesItem];
-  if (typeof tilesItem === "object" && tilesItem !== null) {
+  if (typeof tilesItem === 'string') return [tilesItem];
+  if (typeof tilesItem === 'object' && tilesItem !== null) {
     return Object.keys(tilesItem);
   }
   return [];

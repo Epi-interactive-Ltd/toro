@@ -37,60 +37,59 @@
  * @see {@link addStreetsTiles}
  */
 function initiateTiles(el, mapParams) {
-  const loadedTiles = mapParams.options.loadedTiles || ["lightgrey"];
-  var initialTiles =
-    mapParams.options.initialTileLayer || mapParams.style || null;
-  const fallbackColour = mapParams.options.backgroundColour || "#FFFFFF";
+  const loadedTiles = mapParams.options.loadedTiles || ['lightgrey'];
+  var initialTiles = mapParams.options.initialTileLayer || mapParams.style || null;
+  const fallbackColour = mapParams.options.backgroundColour || '#FFFFFF';
   el.mapInstance.addLayer({
-    id: "background-blue",
-    type: "background",
+    id: 'background-blue',
+    type: 'background',
     paint: {
-      "background-color": fallbackColour,
+      'background-color': fallbackColour,
     },
   });
   const loadedTileIds = getTileIds(loadedTiles);
   // First add all the tiles that are needed
-  if (loadedTileIds.includes("satellite")) {
+  if (loadedTileIds.includes('satellite')) {
     const satelliteOptions = mapParams.options.loadedTiles?.satellite || {};
     addSatelliteTiles(el.mapInstance, satelliteOptions);
-    el.tileLayers.push("satellite");
+    el.tileLayers.push('satellite');
     // Do not hide this layer by default
   }
-  if (loadedTileIds.includes("lightgrey")) {
+  if (loadedTileIds.includes('lightgrey')) {
     const lightGreyOptions = mapParams.options.loadedTiles?.lightgrey || {};
     addLightGreyTiles(el.mapInstance, lightGreyOptions);
-    el.tileLayers.push("lightgrey");
-    hideLayer(el.mapInstance, "lightgrey");
+    el.tileLayers.push('lightgrey');
+    hideLayer(el.mapInstance, 'lightgrey');
   }
-  if (loadedTileIds.includes("topo")) {
+  if (loadedTileIds.includes('topo')) {
     const topoOptions = mapParams.options.loadedTiles?.topo || {};
     addTopoTiles(el.mapInstance, topoOptions);
-    el.tileLayers.push("topo");
-    hideLayer(el.mapInstance, "topo");
+    el.tileLayers.push('topo');
+    hideLayer(el.mapInstance, 'topo');
   }
-  if (loadedTileIds.includes("natgeo")) {
+  if (loadedTileIds.includes('natgeo')) {
     const natgeoOptions = mapParams.options.loadedTiles?.natgeo || {};
     addNatGeoTiles(el.mapInstance, natgeoOptions);
-    el.tileLayers.push("natgeo");
-    hideLayer(el.mapInstance, "natgeo");
+    el.tileLayers.push('natgeo');
+    hideLayer(el.mapInstance, 'natgeo');
   }
-  if (loadedTileIds.includes("terrain")) {
+  if (loadedTileIds.includes('terrain')) {
     const terrainOptions = mapParams.options.loadedTiles?.terrain || {};
     addTerrainTiles(el.mapInstance, terrainOptions);
-    el.tileLayers.push("terrain");
-    hideLayer(el.mapInstance, "terrain");
+    el.tileLayers.push('terrain');
+    hideLayer(el.mapInstance, 'terrain');
   }
-  if (loadedTileIds.includes("shaded")) {
+  if (loadedTileIds.includes('shaded')) {
     const shadedOptions = mapParams.options.loadedTiles?.shaded || {};
     addShadedTiles(el.mapInstance, shadedOptions);
-    el.tileLayers.push("shaded");
-    hideLayer(el.mapInstance, "shaded");
+    el.tileLayers.push('shaded');
+    hideLayer(el.mapInstance, 'shaded');
   }
-  if (loadedTileIds.includes("streets")) {
+  if (loadedTileIds.includes('streets')) {
     const streetsOptions = mapParams.options.loadedTiles?.streets || {};
     addStreetsTiles(el.mapInstance, streetsOptions);
-    el.tileLayers.push("streets");
-    hideLayer(el.mapInstance, "streets");
+    el.tileLayers.push('streets');
+    hideLayer(el.mapInstance, 'streets');
   }
   // if (loadedTiles.includes("bathymetric")) {
   //   addBathymetricTiles(el.mapInstance);
@@ -129,13 +128,13 @@ function addLayerToMap(el, layer) {
     layerObj.filter = layer.filter; // Add filter if specified
   }
 
-  if (typeof layer.source === "object" && layer.source.type === "geojson") {
+  if (typeof layer.source === 'object' && layer.source.type === 'geojson') {
     layerObj.source.generateId = true;
-  } else if (typeof layer.source === "string") {
+  } else if (typeof layer.source === 'string') {
     // Handle string source if needed
     layerObj.source = layer.source;
   }
-  map.addLayer(layerObj, "spiderfy-lines");
+  map.addLayer(layerObj, 'spiderfy-lines');
   el.ourLayers.push(layerObj.id); // Store the layer ID for later reference
 
   if (layer.popupColumn) {
@@ -163,7 +162,7 @@ function addLayerToMap(el, layer) {
  */
 function addLayerOnFeatureClick(el, layerId) {
   if (HTMLWidgets.shinyMode) {
-    el.mapInstance.on("click", layerId, (e) => {
+    el.mapInstance.on('click', layerId, (e) => {
       const feature = e.features[0];
       if (feature) {
         // Trigger a Shiny input event with the clicked feature's properties
@@ -189,25 +188,19 @@ function setTileLayer(el, layerId) {
   // Check if it's an image Tile layer - want to keep the old selected tiles under it
 
   const currentTileSet = el.widgetInstance.getCurrentTiles();
-  const isImageTile = el.widgetInstance
-    .getAvailableImageLayerTiles()
-    .includes(layerId);
+  const isImageTile = el.widgetInstance.getAvailableImageLayerTiles().includes(layerId);
 
   el.tileLayers.forEach(function (id) {
-    var visibility = id === layerId ? "visible" : "none";
-    if (id === "satellite" || (isImageTile && id === currentTileSet)) {
-      visibility = "visible"; // Always show satellite layer underneath
+    var visibility = id === layerId ? 'visible' : 'none';
+    if (id === 'satellite' || (isImageTile && id === currentTileSet)) {
+      visibility = 'visible'; // Always show satellite layer underneath
     }
-    el.mapInstance.setLayoutProperty(id, "visibility", visibility);
+    el.mapInstance.setLayoutProperty(id, 'visibility', visibility);
   });
 
   // Update any tile selector controls to reflect the current tile
-  if (
-    el.mapInstance._tileSelectorControl &&
-    el.mapInstance._tileSelectorControl.setTile
-  ) {
-    const currentControlTile =
-      el.mapInstance._tileSelectorControl.getCurrentTile();
+  if (el.mapInstance._tileSelectorControl && el.mapInstance._tileSelectorControl.setTile) {
+    const currentControlTile = el.mapInstance._tileSelectorControl.getCurrentTile();
     if (currentControlTile !== layerId) {
       const tileSelectorId = `tile-selector-${widgetInstance.getId()}`;
       // Use setTile method but without triggering the callback to avoid infinite loops
@@ -231,9 +224,9 @@ function setTileLayer(el, layerId) {
  * @returns {void}
  */
 function hideLayer(map, layerId) {
-  const visibility = map.getLayoutProperty(layerId, "visibility");
-  if (visibility !== "none" && layerId !== "satellite") {
-    map.setLayoutProperty(layerId, "visibility", "none");
+  const visibility = map.getLayoutProperty(layerId, 'visibility');
+  if (visibility !== 'none' && layerId !== 'satellite') {
+    map.setLayoutProperty(layerId, 'visibility', 'none');
   }
 }
 
@@ -245,9 +238,9 @@ function hideLayer(map, layerId) {
  * @returns {void}
  */
 function showLayer(map, layerId) {
-  const visibility = map.getLayoutProperty(layerId, "visibility");
-  if (visibility !== "visible") {
-    map.setLayoutProperty(layerId, "visibility", "visible");
+  const visibility = map.getLayoutProperty(layerId, 'visibility');
+  if (visibility !== 'visible') {
+    map.setLayoutProperty(layerId, 'visibility', 'visible');
   }
 }
 
@@ -268,20 +261,20 @@ function showLayer(map, layerId) {
  */
 function addNatGeoTiles(map, options) {
   const maxZoom = options.maxZoom || 11;
-  map.addSource("natgeo", {
-    type: "raster",
+  map.addSource('natgeo', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
     attribution:
-      "National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.",
+      'National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "natgeo",
-    type: "raster",
-    source: "natgeo",
+    id: 'natgeo',
+    type: 'raster',
+    source: 'natgeo',
     paint: {},
   });
 }
@@ -298,20 +291,19 @@ function addNatGeoTiles(map, options) {
  */
 function addLightGreyTiles(map, options) {
   const maxZoom = options.maxZoom || 11;
-  map.addSource("lightgrey", {
-    type: "raster",
+  map.addSource('lightgrey', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
-    attribution:
-      "Esri, HERE, Garmin, (c) OpenStreetMap contributors, and the GIS user community",
+    attribution: 'Esri, HERE, Garmin, (c) OpenStreetMap contributors, and the GIS user community',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "lightgrey",
-    type: "raster",
-    source: "lightgrey",
+    id: 'lightgrey',
+    type: 'raster',
+    source: 'lightgrey',
     paint: {},
   });
 }
@@ -325,8 +317,8 @@ function addTilesFromMapServer(
 ) {
   const map = widgetInstance.getMap();
   map.addSource(tileId, {
-    type: "raster",
-    tiles: [mapServiceUrl + "/tile/{z}/{y}/{x}"],
+    type: 'raster',
+    tiles: [mapServiceUrl + '/tile/{z}/{y}/{x}'],
     tileSize: 256,
     // attribution:
     //   "National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.",
@@ -334,7 +326,7 @@ function addTilesFromMapServer(
   });
   map.addLayer({
     id: tileId,
-    type: "raster",
+    type: 'raster',
     source: tileId,
     paint: {},
   });
@@ -366,13 +358,13 @@ function addTilesFromMapServer(
  * @param {string} gridColour Line color for the grid.
  * @returns {void}
  */
-function addLatLngGrid(el, gridColour = "#000000") {
+function addLatLngGrid(el, gridColour = '#000000') {
   // There are 4 layers
   const minZoomLevels = [0, 2.5, 3.5, 4.5];
   const maxZoomLevels = [2.5, 3.5, 4.5, 20];
   const baseUrl =
-    "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Latitude_and_Longitude_Grids/FeatureServer";
-  fetch(baseUrl + "?f=json")
+    'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Latitude_and_Longitude_Grids/FeatureServer';
+  fetch(baseUrl + '?f=json')
     .then((response) => response.json())
     .then((serviceInfo) => {
       if (!serviceInfo.layers) return;
@@ -388,32 +380,32 @@ function addLatLngGrid(el, gridColour = "#000000") {
               // Add zoom_id property to each feature
               if (data && data.features) {
                 const combined = {
-                  type: "FeatureCollection",
+                  type: 'FeatureCollection',
                   features: data.features,
                 };
                 el.mapInstance.addSource(`lat-lng-grid${layerId}`, {
-                  type: "geojson",
+                  type: 'geojson',
                   data: combined,
                 });
                 el.mapInstance.addLayer(
                   {
                     id: `lat-lng-grid-zoom${layerId}`,
-                    type: "line",
+                    type: 'line',
                     source: `lat-lng-grid${layerId}`,
                     paint: {
-                      "line-color": gridColour,
-                      "line-width": 1,
-                      "line-opacity": 0.6,
+                      'line-color': gridColour,
+                      'line-width': 1,
+                      'line-opacity': 0.6,
                     },
                     maxzoom: maxZoomLevels[layerId],
                     minzoom: minZoomLevels[layerId],
                   },
-                  el.ourLayers[0], // Add before any other layer added by user
+                  el.ourLayers[0] // Add before any other layer added by user
                 );
                 el.ourLayers.push(`lat-lng-grid-zoom${layerId}`);
               }
             });
-        }),
+        })
       );
     });
 }
@@ -428,9 +420,9 @@ function addLatLngGrid(el, gridColour = "#000000") {
  */
 function toggleLatLngGrid(el, show) {
   el.ourLayers.forEach((layerId) => {
-    if (layerId.startsWith("lat-lng-grid-zoom")) {
-      const visibility = show === true ? "visible" : "none";
-      el.mapInstance.setLayoutProperty(layerId, "visibility", visibility);
+    if (layerId.startsWith('lat-lng-grid-zoom')) {
+      const visibility = show === true ? 'visible' : 'none';
+      el.mapInstance.setLayoutProperty(layerId, 'visibility', visibility);
     }
   });
 }
@@ -452,20 +444,20 @@ function toggleLatLngGrid(el, show) {
  */
 function addTopoTiles(map, options) {
   const maxZoom = options.maxZoom || 14;
-  map.addSource("topo", {
-    type: "raster",
+  map.addSource('topo', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
     attribution:
-      "Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community",
+      'Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "topo",
-    type: "raster",
-    source: "topo",
+    id: 'topo',
+    type: 'raster',
+    source: 'topo',
     paint: {},
   });
 }
@@ -487,19 +479,19 @@ function addTopoTiles(map, options) {
  */
 function addTerrainTiles(map, options) {
   const maxZoom = options.maxZoom || 8;
-  map.addSource("terrain", {
-    type: "raster",
+  map.addSource('terrain', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
-    attribution: "Sources: Esri, USGS, NOAA",
+    attribution: 'Sources: Esri, USGS, NOAA',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "terrain",
-    type: "raster",
-    source: "terrain",
+    id: 'terrain',
+    type: 'raster',
+    source: 'terrain',
     paint: {},
   });
 }
@@ -522,20 +514,20 @@ function addTerrainTiles(map, options) {
  */
 function addStreetsTiles(map, options) {
   const maxZoom = options.maxZoom || 14;
-  map.addSource("streets", {
-    type: "raster",
+  map.addSource('streets', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
     attribution:
-      "Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community",
+      'Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "streets",
-    type: "raster",
-    source: "streets",
+    id: 'streets',
+    type: 'raster',
+    source: 'streets',
     paint: {},
   });
 }
@@ -557,19 +549,19 @@ function addStreetsTiles(map, options) {
  */
 function addShadedTiles(map, options) {
   const maxZoom = options.maxZoom || 12;
-  map.addSource("shaded", {
-    type: "raster",
+  map.addSource('shaded', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/arcgis/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/arcgis/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
-    attribution: "Copyright:(c) 2014 Esri",
+    attribution: 'Copyright:(c) 2014 Esri',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "shaded",
-    type: "raster",
-    source: "shaded",
+    id: 'shaded',
+    type: 'raster',
+    source: 'shaded',
     paint: {},
   });
 }
@@ -591,20 +583,19 @@ function addShadedTiles(map, options) {
  */
 function addSatelliteTiles(map, options) {
   const maxZoom = options.maxZoom || 12;
-  map.addSource("satellite", {
-    type: "raster",
+  map.addSource('satellite', {
+    type: 'raster',
     tiles: [
-      "https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      'https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     ],
     tileSize: 256,
-    attribution:
-      "Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+    attribution: 'Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
     maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "satellite",
-    type: "raster",
-    source: "satellite",
+    id: 'satellite',
+    type: 'raster',
+    source: 'satellite',
     paint: {},
   });
 }
@@ -629,7 +620,7 @@ function addFilterToLayer(map, layerId, filter) {
  * @param {string} popupColumn  Column name in the layer's properties to use for the popup content.
  */
 function addLayerPopup(map, layerId, popupColumn) {
-  map.on("click", layerId, (e) => {
+  map.on('click', layerId, (e) => {
     // Close any existing popups before opening a new one
     closeAllPopups(map);
 
@@ -638,9 +629,9 @@ function addLayerPopup(map, layerId, popupColumn) {
 
     const featureType = e.features[0].geometry.type;
 
-    if (!coordinates || featureType !== "Point") {
+    if (!coordinates || featureType !== 'Point') {
       // For non-Point geometries (LineString, Polygon), extract first coordinate pair
-      if (!coordinates || featureType !== "Point") {
+      if (!coordinates || featureType !== 'Point') {
         // Fallback to clicked location if no coordinates available
         coordinates = [e.lngLat.lng, e.lngLat.lat];
       }
@@ -653,10 +644,7 @@ function addLayerPopup(map, layerId, popupColumn) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    const popup = new maplibregl.Popup()
-      .setLngLat(coordinates)
-      .setHTML(description)
-      .addTo(map);
+    const popup = new maplibregl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
     map._popup = popup;
   });
 
@@ -672,8 +660,8 @@ function addLayerPopup(map, layerId, popupColumn) {
  */
 function addLayerHover(map, layerId, hoverColumn) {
   let popup;
-  map.on("mouseenter", layerId, (e) => {
-    map.getCanvas().style.cursor = "pointer";
+  map.on('mouseenter', layerId, (e) => {
+    map.getCanvas().style.cursor = 'pointer';
     const coordinates = e.lngLat;
     const description = e.features[0].properties[hoverColumn];
 
@@ -686,7 +674,7 @@ function addLayerHover(map, layerId, hoverColumn) {
       .addTo(map);
   });
 
-  map.on("mousemove", layerId, (e) => {
+  map.on('mousemove', layerId, (e) => {
     if (popup) {
       const coordinates = e.lngLat;
       const description = e.features[0].properties[hoverColumn];
@@ -694,8 +682,8 @@ function addLayerHover(map, layerId, hoverColumn) {
     }
   });
 
-  map.on("mouseleave", layerId, () => {
-    map.getCanvas().style.cursor = "";
+  map.on('mouseleave', layerId, () => {
+    map.getCanvas().style.cursor = '';
     if (popup) {
       popup.remove();
       popup = null;
@@ -711,15 +699,15 @@ function addLayerHover(map, layerId, hoverColumn) {
  * @param {string} [cursorStyle="pointer"]  The cursor style to apply when hovering over the layer(s).
  * @returns {void}
  */
-function addLayerCursor(map, layerIds, cursorStyle = "pointer") {
+function addLayerCursor(map, layerIds, cursorStyle = 'pointer') {
   // Change the cursor to a pointer when the mouse is over the places layer.
-  map.on("mouseenter", layerIds, () => {
+  map.on('mouseenter', layerIds, () => {
     map.getCanvas().style.cursor = cursorStyle;
   });
 
   // Change it back to a pointer when it leaves.
-  map.on("mouseleave", layerIds, () => {
-    map.getCanvas().style.cursor = "";
+  map.on('mouseleave', layerIds, () => {
+    map.getCanvas().style.cursor = '';
   });
 }
 
@@ -747,7 +735,7 @@ function closeAllPopups(map) {
 
   // Close any other popups that might exist on the map
   // Note: This covers any popups created by other parts of the code
-  const popups = document.querySelectorAll(".maplibregl-popup");
+  const popups = document.querySelectorAll('.maplibregl-popup');
   popups.forEach((popupElement) => {
     const popup = popupElement._popup;
     if (popup && popup.isOpen && popup.isOpen()) {
@@ -764,16 +752,14 @@ function copyLayerStyle(map, fromLayerId, toLayerId) {
   if (!fromLayer) return;
 
   // Copy paint properties
-  const paintProps =
-    map.getStyle().layers.find((l) => l.id === fromLayerId).paint || {};
+  const paintProps = map.getStyle().layers.find((l) => l.id === fromLayerId).paint || {};
   Object.keys(paintProps).forEach((prop) => {
     const value = map.getPaintProperty(fromLayerId, prop);
     map.setPaintProperty(toLayerId, prop, value);
   });
 
   // Copy layout properties
-  const layoutProps =
-    map.getStyle().layers.find((l) => l.id === fromLayerId).layout || {};
+  const layoutProps = map.getStyle().layers.find((l) => l.id === fromLayerId).layout || {};
   Object.keys(layoutProps).forEach((prop) => {
     const value = map.getLayoutProperty(fromLayerId, prop);
     map.setLayoutProperty(toLayerId, prop, value);
