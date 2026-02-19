@@ -90,7 +90,9 @@ function addFeatureServerSource(el, url, sourceId) {
  */
 function closeAttribution(mapId) {
   let map = document.getElementById(mapId);
-  const attributionControl = map.querySelector(".maplibregl-ctrl-attrib-button");
+  const attributionControl = map.querySelector(
+    ".maplibregl-ctrl-attrib-button",
+  );
   if (attributionControl) {
     attributionControl.click();
   }
@@ -199,4 +201,20 @@ function toRgbValues(colour) {
   } else {
     return nameToRgbValues(colour);
   }
+}
+
+/**
+ * Get tile IDs from a tiles item, which can be an array, string, or object.
+ *
+ * @param {array|string|object} tilesItem  The tiles item to extract tile IDs from.
+ * @returns {array} Array of tile IDs.
+ */
+function getTileIds(tilesItem) {
+  if (!tilesItem) return [];
+  if (Array.isArray(tilesItem)) return tilesItem;
+  if (typeof tilesItem === "string") return [tilesItem];
+  if (typeof tilesItem === "object" && tilesItem !== null) {
+    return Object.keys(tilesItem);
+  }
+  return [];
 }

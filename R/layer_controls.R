@@ -56,7 +56,7 @@ add_tile_selector_control <- function(
       )[
         match(
           available_tiles,
-          c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "light-grey")
+          c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey")
         )
       ],
       available_tiles

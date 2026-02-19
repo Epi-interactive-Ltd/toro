@@ -342,7 +342,7 @@ HTMLWidgets.widget({
               // Set available tiles from the map's loaded tiles if not specified
               if (!tileSelectorOptions.availableTiles) {
                 tileSelectorOptions.availableTiles = el.tileLayers ||
-                  x.loadedTiles || ["light-grey"];
+                  x.loadedTiles || ["lightgrey"];
               }
 
               addTileSelectorControl(
@@ -1167,7 +1167,7 @@ if (HTMLWidgets.shinyMode) {
         const tileSelectorOptions = message.options;
         if (!tileSelectorOptions.availableTiles) {
           tileSelectorOptions.availableTiles = el.tileLayers ||
-            el.loadedTiles || ["light-grey"];
+            el.loadedTiles || ["lightgrey"];
         }
 
         addTileSelectorControl(
