@@ -40,7 +40,7 @@ function addClusterLayer(el, layerId, sourceId) {
     layerId
   );
 
-  // 3. Add a symbol layer for cluster counts
+  // Add a symbol layer for cluster counts
   el.mapInstance.addLayer(
     {
       id: `${layerId}-cluster-count`,
@@ -84,7 +84,9 @@ function addClusterSpiderfying(el, layerId, sourceId) {
     layerId,
   ];
   el.mapInstance.on('click', async (e) => {
-    const features = el.mapInstance.queryRenderedFeatures(e.point, { layers: spiderfyLayers });
+    const features = el.mapInstance.queryRenderedFeatures(e.point, {
+      layers: spiderfyLayers,
+    });
     if (features.length === 0) {
       // Click was NOT on any of the spiderfyLayers - close any open spiderfy
       closeSpiderfy(el.mapInstance);
@@ -299,7 +301,12 @@ function toggleLayerClustering(map, layerId, enable) {
   const layer = map.getLayer(layerId);
   if (layer) {
     const sourceId = layer.source; // Assuming layerId is the source ID
-    map.getSource(sourceId).setClusterOptions({ cluster: enable });
+    map.getSource(sourceId).setClusterOptions({
+      cluster: enable,
+      clusterRadius: enable ? 30 : 50, // Smaller radius for less aggressive clustering
+      clusterMaxZoom: 24, // Always allow clustering at all zoom levels to handle overlapping points
+      clusterMinPoints: enable ? 2 : null, // Minimum points required to form a cluster
+    });
 
     if (enable) {
       addFilterToLayer(map, layerId, ['!', ['has', 'point_count']]);

@@ -43,9 +43,7 @@ function initiateTiles(el, mapParams) {
   el.mapInstance.addLayer({
     id: 'background-blue',
     type: 'background',
-    paint: {
-      'background-color': fallbackColour,
-    },
+    paint: { 'background-color': fallbackColour },
   });
   const loadedTileIds = getTileIds(loadedTiles);
   // First add all the tiles that are needed
@@ -128,10 +126,30 @@ function addLayerToMap(el, layer) {
     layerObj.filter = layer.filter; // Add filter if specified
   }
 
+  let sourceId;
   if (typeof layer.source === 'object' && layer.source.type === 'geojson') {
-    layerObj.source.generateId = true;
+    // Create unique source ID for inline GeoJSON sources
+    sourceId = `source-${layer.id}`;
+
+    // Always enable clustering for GeoJSON sources to handle overlapping coordinates
+    const sourceOptions = {
+      ...layer.source,
+      generateId: true,
+      cluster: true,
+      // If can_cluster=false, use very restrictive settings to only cluster identical coordinates
+      clusterRadius: layer.canCluster ? 50 : 0, // 0 radius = only exact same coords cluster
+      clusterMaxZoom: 24, // Always allow clustering at all zoom levels to handle overlaps
+      clusterMinPoints: 2, // Always require at least 2 points to form a cluster
+    };
+
+    // Add the source to the map
+    map.addSource(sourceId, sourceOptions);
+
+    // Update layerObj to reference the source ID
+    layerObj.source = sourceId;
   } else if (typeof layer.source === 'string') {
-    // Handle string source if needed
+    // Handle string source ID reference
+    sourceId = layer.source;
     layerObj.source = layer.source;
   }
   map.addLayer(layerObj, 'spiderfy-lines');
@@ -144,8 +162,12 @@ function addLayerToMap(el, layer) {
     addLayerHover(map, layerObj.id, layer.hoverColumn);
   }
 
-  if (layer.canCluster) {
-    addClusterLayer(el, layerObj.id, layer.source);
+  // Always add cluster layers for GeoJSON sources to handle overlapping coordinates
+  if (typeof layer.source === 'object' && layer.source.type === 'geojson') {
+    addClusterLayer(el, layerObj.id, sourceId);
+  } else if (layer.canCluster) {
+    // For string source references, only add clustering if explicitly requested
+    addClusterLayer(el, layerObj.id, sourceId);
   }
 
   // if (layer.onFeatureClick) {
