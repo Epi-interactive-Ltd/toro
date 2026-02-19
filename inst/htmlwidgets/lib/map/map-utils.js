@@ -55,7 +55,7 @@ function getPointFeaturesBounds(features) {
   // Initialize bounds with the first point
   let bounds = new maplibregl.LngLatBounds(
     features[0].geometry.coordinates,
-    features[0].geometry.coordinates
+    features[0].geometry.coordinates,
   );
   for (let i = 1; i < features.length; i++) {
     bounds.extend(features[i].geometry.coordinates);
@@ -90,7 +90,9 @@ function addFeatureServerSource(el, url, sourceId) {
  */
 function closeAttribution(mapId) {
   let map = document.getElementById(mapId);
-  const attributionControl = map.querySelector(".maplibregl-ctrl-attrib-button");
+  const attributionControl = map.querySelector(
+    ".maplibregl-ctrl-attrib-button",
+  );
   if (attributionControl) {
     attributionControl.click();
   }
@@ -109,7 +111,7 @@ function addMapLoader(
   el,
   changeLoader = false,
   bgColour = "white",
-  loaderColour = "black"
+  loaderColour = "black",
 ) {
   // Add a loading overlay div
   const loadingDiv = document.createElement("div");
@@ -194,9 +196,25 @@ function toRgbValues(colour) {
     // Optionally replace the alpha value
     return colour.replace(
       /rgba\(([^,]+),([^,]+),([^,]+),([^)]+)\)/,
-      `$1,$2,$3`
+      `$1,$2,$3`,
     );
   } else {
     return nameToRgbValues(colour);
   }
+}
+
+/**
+ * Get tile IDs from a tiles item, which can be an array, string, or object.
+ *
+ * @param {array|string|object} tilesItem  The tiles item to extract tile IDs from.
+ * @returns {array} Array of tile IDs.
+ */
+function getTileIds(tilesItem) {
+  if (!tilesItem) return [];
+  if (Array.isArray(tilesItem)) return tilesItem;
+  if (typeof tilesItem === "string") return [tilesItem];
+  if (typeof tilesItem === "object" && tilesItem !== null) {
+    return Object.keys(tilesItem);
+  }
+  return [];
 }

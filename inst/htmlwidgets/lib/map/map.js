@@ -65,7 +65,7 @@ HTMLWidgets.widget({
 
           if (x.sources) {
             x.sources.forEach((source) =>
-              mapInstance.addSource(source.sourceId, source.sourceOptions)
+              mapInstance.addSource(source.sourceId, source.sourceOptions),
             );
           }
 
@@ -74,7 +74,7 @@ HTMLWidgets.widget({
               addFeatureServerSource(
                 el,
                 featureSource.sourceUrl,
-                featureSource.sourceId
+                featureSource.sourceId,
               );
             });
           }
@@ -84,8 +84,8 @@ HTMLWidgets.widget({
               _addImageToMapSource(
                 mapInstance,
                 imageSource.imageId,
-                imageSource.imageUrl
-              )
+                imageSource.imageUrl,
+              ),
             );
           }
 
@@ -95,8 +95,8 @@ HTMLWidgets.widget({
               addTilesFromMapServer(
                 el.widgetInstance,
                 layer.tileId,
-                layer.mapServiceUrl
-              )
+                layer.mapServiceUrl,
+              ),
             );
           }
 
@@ -106,8 +106,8 @@ HTMLWidgets.widget({
                 el.widgetInstance,
                 layer.tileId,
                 layer.mapServiceUrl,
-                true
-              )
+                true,
+              ),
             );
           }
 
@@ -126,7 +126,7 @@ HTMLWidgets.widget({
               mapInstance,
               x.setBounds.bounds,
               x.setBounds.maxZoom,
-              x.setBounds.padding
+              x.setBounds.padding,
             );
           }
 
@@ -151,7 +151,7 @@ HTMLWidgets.widget({
                   control.position,
                   control.longLabel,
                   control.latLabel,
-                  el.widgetInstance
+                  el.widgetInstance,
                 );
               } else if (control.type === "zoom") {
                 if (control.panelId) {
@@ -162,7 +162,7 @@ HTMLWidgets.widget({
                   mapInstance,
                   control.position,
                   control.controlOptions,
-                  el.widgetInstance
+                  el.widgetInstance,
                 );
               } else if (control.type === "custom") {
                 if (control.panelId) {
@@ -173,7 +173,7 @@ HTMLWidgets.widget({
                   mapInstance,
                   control.controlId,
                   control.html,
-                  control.position
+                  control.position,
                 );
               } else if (control.type === "draw") {
                 if (control.panelId) {
@@ -187,7 +187,7 @@ HTMLWidgets.widget({
                   control.activeColour,
                   control.inactiveColour,
                   control.modeLabels,
-                  control.controlId
+                  control.controlId,
                 );
               }
             });
@@ -229,13 +229,13 @@ HTMLWidgets.widget({
                       control.options.endDate,
                       dummyPlayPause,
                       dummySliderChange,
-                      control.options
+                      control.options,
                     );
                     addHtmlToPanel(
                       el.widgetInstance,
                       panelId,
                       timelineElement,
-                      control.title
+                      control.title,
                     );
                   } else if (control.type === "speed") {
                     // Create dummy callback function for initial rendering
@@ -246,20 +246,20 @@ HTMLWidgets.widget({
                     const speedElement = addSpeedControl(
                       el.widgetInstance,
                       dummySpeedChange,
-                      control.options
+                      control.options,
                     );
                     addHtmlToPanel(
                       el.widgetInstance,
                       panelId,
                       speedElement,
-                      control.title
+                      control.title,
                     );
                   } else if (control.type === "custom") {
                     addHtmlToPanel(
                       el.widgetInstance,
                       panelId,
                       control.options.html,
-                      control.title
+                      control.title,
                     );
                   } else if (control.type === "group") {
                     // Add control group to the panel
@@ -299,7 +299,7 @@ HTMLWidgets.widget({
                 timelineOptions.endDate,
                 null, // No play/pause callback - will be disabled
                 null, // No slider callback - will be disabled
-                timelineOptions
+                timelineOptions,
               );
             });
           }
@@ -314,7 +314,7 @@ HTMLWidgets.widget({
               addSpeedControl(
                 el.widgetInstance,
                 null, // No speed change callback - will be disabled
-                speedOptions
+                speedOptions,
               );
             });
           }
@@ -335,13 +335,13 @@ HTMLWidgets.widget({
               // Set available tiles from the map's loaded tiles if not specified
               if (!tileSelectorOptions.availableTiles) {
                 tileSelectorOptions.availableTiles = el.tileLayers ||
-                  x.loadedTiles || ["light-grey"];
+                  x.loadedTiles || ["lightgrey"];
               }
 
               addTileSelectorControl(
                 el.widgetInstance,
                 tileChangeCallback,
-                tileSelectorOptions
+                tileSelectorOptions,
               );
             });
           }
@@ -357,7 +357,7 @@ HTMLWidgets.widget({
               // Create layer change callback that manages layer visibility
               const layerChangeCallback = function (
                 selectedLayer,
-                previousLayer
+                previousLayer,
               ) {
                 // Layer visibility is already managed by the control itself
                 // console.log(
@@ -370,7 +370,7 @@ HTMLWidgets.widget({
               addLayerSelectorControl(
                 el.widgetInstance,
                 layerChangeCallback,
-                layerSelectorOptions
+                layerSelectorOptions,
               );
             });
           }
@@ -389,7 +389,7 @@ HTMLWidgets.widget({
                   el.widgetInstance,
                   toggleOptions.panelId,
                   toggleOptions,
-                  toggleOptions.panelTitle
+                  toggleOptions.panelTitle,
                 );
               } else {
                 // Add as standalone control
@@ -401,7 +401,7 @@ HTMLWidgets.widget({
                   toggleOptions.rightLabel,
                   toggleOptions.initialState,
                   toggleOptions.position,
-                  el.widgetInstance
+                  el.widgetInstance,
                 );
               }
             });
@@ -412,33 +412,33 @@ HTMLWidgets.widget({
             x.visibilityToggleControls &&
             Object.keys(x.visibilityToggleControls).length > 0
           ) {
-            Object.keys(x.visibilityToggleControls).forEach(function (
-              controlId
-            ) {
-              const toggleOptions = x.visibilityToggleControls[controlId];
+            Object.keys(x.visibilityToggleControls).forEach(
+              function (controlId) {
+                const toggleOptions = x.visibilityToggleControls[controlId];
 
-              if (toggleOptions.panelId) {
-                // Add to control panel
-                addVisibilityToggleControlToPanel(
-                  el.widgetInstance,
-                  toggleOptions.panelId,
-                  toggleOptions,
-                  toggleOptions.panelTitle
-                );
-              } else {
-                // Add as standalone control
-                addVisibilityToggleControl(
-                  el.mapInstance,
-                  toggleOptions.controlId,
-                  toggleOptions.layerId,
-                  toggleOptions.leftLabel,
-                  toggleOptions.rightLabel,
-                  toggleOptions.initialState,
-                  toggleOptions.position,
-                  el.widgetInstance
-                );
-              }
-            });
+                if (toggleOptions.panelId) {
+                  // Add to control panel
+                  addVisibilityToggleControlToPanel(
+                    el.widgetInstance,
+                    toggleOptions.panelId,
+                    toggleOptions,
+                    toggleOptions.panelTitle,
+                  );
+                } else {
+                  // Add as standalone control
+                  addVisibilityToggleControl(
+                    el.mapInstance,
+                    toggleOptions.controlId,
+                    toggleOptions.layerId,
+                    toggleOptions.leftLabel,
+                    toggleOptions.rightLabel,
+                    toggleOptions.initialState,
+                    toggleOptions.position,
+                    el.widgetInstance,
+                  );
+                }
+              },
+            );
           }
 
           if (HTMLWidgets.shinyMode) {
@@ -477,7 +477,7 @@ HTMLWidgets.widget({
             el,
             false,
             x.options.initialLoaderBgColour,
-            toRgbValues(x.options.initialLoaderColour)
+            toRgbValues(x.options.initialLoaderColour),
           );
         }
 
@@ -512,7 +512,7 @@ HTMLWidgets.widget({
               el,
               (changeLoader = true),
               x.options.busyLoaderBgColour,
-              x.options.busyLoaderColour
+              x.options.busyLoaderColour,
             );
           }
           function hideSpinner() {
@@ -619,7 +619,7 @@ HTMLWidgets.widget({
 
           // If no other tile is visible, check if satellite is the only one visible
           const satelliteLayer = layers.find(
-            (layer) => layer.id === "satellite" && layer.type === "raster"
+            (layer) => layer.id === "satellite" && layer.type === "raster",
           );
           if (satelliteLayer) {
             return "satellite";
@@ -667,10 +667,10 @@ async function exportElementBundled(elementId, filename = "bundle.html") {
 
   // Collect all CSS and JS URLs
   const cssLinks = Array.from(
-    document.head.querySelectorAll('link[rel="stylesheet"]')
+    document.head.querySelectorAll('link[rel="stylesheet"]'),
   ).map((l) => l.href);
   const jsLinks = Array.from(document.head.querySelectorAll("script[src]")).map(
-    (s) => s.src
+    (s) => s.src,
   );
 
   // Fetch and inline CSS
@@ -763,7 +763,7 @@ if (HTMLWidgets.shinyMode) {
           control.position,
           control.longLabel,
           control.latLabel,
-          el.widgetInstance
+          el.widgetInstance,
         );
       }
     });
@@ -818,7 +818,7 @@ if (HTMLWidgets.shinyMode) {
           options.activeColour,
           options.inactiveColour,
           options.modeLabels,
-          options.controlId
+          options.controlId,
         );
       }
     });
@@ -839,7 +839,7 @@ if (HTMLWidgets.shinyMode) {
           el.mapInstance,
           message.position,
           message.controlOptions,
-          el.widgetInstance
+          el.widgetInstance,
         );
       }
     });
@@ -861,7 +861,7 @@ if (HTMLWidgets.shinyMode) {
           el.mapInstance,
           options.controlId,
           options.html,
-          options.position
+          options.position,
         );
       }
     });
@@ -884,7 +884,7 @@ if (HTMLWidgets.shinyMode) {
       removeControlFromPanel(
         el.widgetInstance,
         message.panelId,
-        message.controlId
+        message.controlId,
       );
     });
   });
@@ -898,7 +898,7 @@ if (HTMLWidgets.shinyMode) {
           el.widgetInstance,
           options.panelId,
           options,
-          options.panelTitle
+          options.panelTitle,
         );
       } else {
         // Add as standalone control
@@ -910,7 +910,7 @@ if (HTMLWidgets.shinyMode) {
           options.rightLabel,
           options.initialState,
           options.position,
-          el.widgetInstance
+          el.widgetInstance,
         );
       }
     });
@@ -927,7 +927,7 @@ if (HTMLWidgets.shinyMode) {
             el.widgetInstance,
             options.panelId,
             options,
-            options.panelTitle
+            options.panelTitle,
           );
         } else {
           // Add as standalone control
@@ -939,11 +939,11 @@ if (HTMLWidgets.shinyMode) {
             options.rightLabel,
             options.initialState,
             options.position,
-            el.widgetInstance
+            el.widgetInstance,
           );
         }
       });
-    }
+    },
   );
 
   Shiny.addCustomMessageHandler("deleteDrawnShape", function (message) {
@@ -958,7 +958,7 @@ if (HTMLWidgets.shinyMode) {
         el.mapInstance,
         message.options.bounds,
         message.options.maxZoom,
-        message.options.padding
+        message.options.padding,
       );
     });
   });
@@ -1031,7 +1031,7 @@ if (HTMLWidgets.shinyMode) {
       } else {
         console.warn(
           "Source not found or not a GeoJSON source:",
-          message.sourceId
+          message.sourceId,
         );
       }
     });
@@ -1042,7 +1042,7 @@ if (HTMLWidgets.shinyMode) {
       el.mapInstance.setPaintProperty(
         message.layerId,
         message.property,
-        message.value
+        message.value,
       );
     });
   });
@@ -1052,7 +1052,7 @@ if (HTMLWidgets.shinyMode) {
       el.mapInstance.setLayoutProperty(
         message.layerId,
         message.property,
-        message.value
+        message.value,
       );
     });
   });
@@ -1118,10 +1118,10 @@ if (HTMLWidgets.shinyMode) {
           message.options.endDate,
           null, // No play/pause callback - will be disabled
           null, // No slider callback - will be disabled
-          message.options
+          message.options,
         );
       });
-    }
+    },
   );
 
   Shiny.addCustomMessageHandler(
@@ -1133,10 +1133,10 @@ if (HTMLWidgets.shinyMode) {
         addSpeedControl(
           el.widgetInstance,
           null, // No speed change callback - will be disabled
-          message.options
+          message.options,
         );
       });
-    }
+    },
   );
 
   Shiny.addCustomMessageHandler(
@@ -1152,16 +1152,16 @@ if (HTMLWidgets.shinyMode) {
         const tileSelectorOptions = message.options;
         if (!tileSelectorOptions.availableTiles) {
           tileSelectorOptions.availableTiles = el.tileLayers ||
-            el.loadedTiles || ["light-grey"];
+            el.loadedTiles || ["lightgrey"];
         }
 
         addTileSelectorControl(
           el.widgetInstance,
           tileChangeCallback,
-          tileSelectorOptions
+          tileSelectorOptions,
         );
       });
-    }
+    },
   );
 
   Shiny.addCustomMessageHandler(
@@ -1181,10 +1181,10 @@ if (HTMLWidgets.shinyMode) {
         addLayerSelectorControl(
           el.widgetInstance,
           layerChangeCallback,
-          message.options
+          message.options,
         );
       });
-    }
+    },
   );
 }
 
@@ -1218,7 +1218,7 @@ window.handleClusterToggle = function (layerId, mapId, toggleElement) {
 
           // Update visual state
           const switchElement = toggleElement.querySelector(
-            ".toro-toggle-switch"
+            ".toro-toggle-switch",
           );
           if (switchElement) {
             if (newState) {
@@ -1310,7 +1310,7 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
 
           // Update visual state
           const switchElement = toggleElement.querySelector(
-            ".toro-toggle-switch"
+            ".toro-toggle-switch",
           );
           if (switchElement) {
             if (newState) {
