@@ -5,6 +5,7 @@ Authors@R: c(
     person("Poppy", "Schlaadt", , "poppy@epi.group", role = c("aut", "cre")),
     person("Epi", "", role = c("cph", "fnd")))
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.
+URL: https://epi-interactive-ltd.github.io/toro/
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

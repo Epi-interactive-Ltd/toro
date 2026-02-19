@@ -76,13 +76,14 @@ add_feature_server_source <- function(map, source_url, source_id) {
 }
 
 #' Add an Image Server source to a toro map
+#' TODO: WIP
 #'
 #' @param map A toro map object or a map proxy object.
 #' @param url The URL of the ArcGIS Image Server.
 #' @param source_id A unique identifier for the source.
 #' @param ... Additional parameters for the Image Server source.
 #' @return The updated map object.
-#' @export
+#' @keywords internal
 add_tiles_from_map_server <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   source_options <- list(
     tileId = tile_id,
@@ -109,6 +110,7 @@ add_tiles_from_map_server <- function(map, url, tile_id, as_image_layer = FALSE,
 }
 
 #' Add an Image Server source to a toro map
+#' TODO: WIP
 #'
 #' @param map A toro map object or a map proxy object.
 #' @param url The URL of the ArcGIS Image Server.

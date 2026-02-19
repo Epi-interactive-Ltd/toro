@@ -7,6 +7,8 @@
 #' - remove_layer_selector_control: Remove the layer selector control from the map.
 #' - add_cluster_toggle:            Add a cluster toggle control to the map or control panel.
 #' - remove_cluster_toggle:         Remove a cluster toggle control from the map.
+#' - add_visibility_toggle:         Add a visibility toggle control to the map or control panel.
+#' - remove_visibility_toggle:      Remove a visibility toggle control from the map.
 
 #' Add a tile selector control to the map or control panel
 #'

@@ -5,7 +5,7 @@
 
 #' Download the map as an image.
 #'
-#' @note THIS IS A WIP !!!
+#' TODO: WIP
 #'
 #' @param proxy    The map proxy object created by `mapProxy()`.
 #' @param filename The name of the file to save the image as.

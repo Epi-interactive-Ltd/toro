@@ -2,34 +2,15 @@
 
 **toro** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
 
-To learn how to use the package:
 
--
+See these vignettes for learning how to use the package:
+
+- [Getting started with **toro**](https://epi-interactive-ltd.github.io/toro/articles/getting-started.html)
+
+- [Integrating with Shiny](https://epi-interactive-ltd.github.io/toro/articles/shiny-integration.html)
+
+- [Adding controls to your map](https://epi-interactive-ltd.github.io/toro/articles/controls.html)
 
 Examples can be found in the `examples` directory.
 
-## Updates to the package
-
-If any updates are made to the package it needs to be rebuilt:
-
-```r
-devtools::document()
-devtools::install()
-devtools::build()
-```
-
-If you are using the package in an app and copy the updated `.zip` file.
-You will need to uninstall the old version of the package before installing the new one:
-
-```r
-detach("package:toro", unload = TRUE)
-install.packages("toro_<version>.tar.gz", repos = NULL, type = "source")
-library(toro)
-```
-
-To add it as a local package to the `renv.lock` file: `renv::install("toro_<version>.tar.gz")`.
-
-## TODOs
-
-- [ ] Add more examples to the `examples` directory.
-- [x] Split the `add_layer` function into smaller functions for each layer type (e.g., `add_polygon_layer`, `add_line_layer`, etc.).
+If you would like to contribute to {toro} see: [Contributing to {toro}](https://epi-interactive-ltd.github.io/toro/articles/contributing.html)

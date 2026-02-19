@@ -79,6 +79,13 @@ HTMLWidgets.widget({
             });
           }
 
+          // Add the default pin image source
+          _addImageToMapSource(
+            mapInstance,
+            "toro-pin",
+            "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/feature/documentation-update/inst/assets/toro-pin.png",
+          );
+
           if (x.imageSources) {
             x.imageSources.forEach((imageSource) =>
               _addImageToMapSource(
@@ -450,6 +457,14 @@ HTMLWidgets.widget({
 
           // Add event handlers to close popups on various map interactions
           setupPopupCloseHandlers(mapInstance);
+
+          mapInstance.addControl(
+            new maplibregl.AttributionControl({
+              compact: true,
+              collapsible: true,
+            }),
+            x.options.attributionPosition || "bottom-right",
+          );
 
           closeAttribution(el.id); // By default, close the attribution panel
         });
