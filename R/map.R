@@ -2,7 +2,7 @@
 #'
 #' This function creates a map htmlwidget for use in R and Shiny applications.
 #'
-#' @param style     The style of the map. Default is "light-grey".
+#' @param style     The style of the map. Default is "lightgrey".
 #' @param center    The initial center of the map as a longitude/latitude pair. Default is c(174, -41).
 #' @param zoom      The initial zoom level of the map. Default is 2.
 #' @param width     The width of the widget. Optional.
@@ -19,24 +19,22 @@
 #' }
 #' @export
 map <- function(
-  style = "light-grey",
+  style = "lightgrey",
   center = c(174, -41),
   zoom = 2,
   width = "100%",
   height = NULL,
   session = shiny::getDefaultReactiveDomain(),
-  satelliteMaxZoom = 12, # add maxzoom
   ...
 ) {
-  cat("R:satelliteMaxZoom parameter =", satelliteMaxZoom, "\n")
   in_shiny <- !is.null(session)
 
   default_options <- list(
     minZoom = 2,
     maxZoom = 18,
     clusterColour = "#808080",
-    # Full options: c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "light-grey")
-    loadedTiles = c("light-grey", "satellite"),
+    # Full options: c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey")
+    loadedTiles = c("lightgrey", "satellite"),
     initialTileLayer = NULL,
     backgroundColour = "#D0CFD4",
     enable3D = FALSE,
@@ -45,16 +43,10 @@ map <- function(
     busyLoaderBgColour = "rgba(0, 0, 0, 0.2)",
     busyLoaderColour = "white",
     initialLoaderBgColour = "white",
-    initialLoaderColour = "black",
-    satelliteMaxZoom = satelliteMaxZoom # pass maxzoom to options
+    initialLoaderColour = "black"
   )
   user_options <- list(...)
   map_options <- modifyList(default_options, user_options)
-  cat(
-    "R: Final satelliteMaxZoom in options =",
-    map_options$satelliteMaxZoom,
-    "\n"
-  )
 
   htmlwidgets::createWidget(
     name = "map",

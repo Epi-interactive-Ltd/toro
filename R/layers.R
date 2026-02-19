@@ -193,7 +193,7 @@ hide_layer <- function(proxy, layer_id) {
 #' @param map   The map or map proxy object.
 #' @param tiles A character vector of tile layer names.
 #'              Options include "natgeo", "satellite", "topo", "terrain",
-#'              "streets", "shaded", "light-grey".
+#'              "streets", "shaded", "lightgrey".
 #' @return      The map or map proxy object for chaining.
 #' @export
 set_tile_layer <- function(map, tiles) {
@@ -275,5 +275,5 @@ set_layout_property <- function(proxy, layer_id, property_name, value) {
 #' @return A character vector of available tile layer options.
 #' @export
 get_tile_options <- function() {
-  c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "light-grey")
+  c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey")
 }

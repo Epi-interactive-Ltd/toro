@@ -37,10 +37,7 @@
  * @see {@link addStreetsTiles}
  */
 function initiateTiles(el, mapParams) {
-  console.log("JS initiateTiles: mapParams.options =", mapParams.options);
-  console.log("JS initiateTiles: satelliteMaxZoom from R =", mapParams.options.satelliteMaxZoom);
-  
-  const loadedTiles = mapParams.options.loadedTiles || ["light-grey"];
+  const loadedTiles = mapParams.options.loadedTiles || ["lightgrey"];
   var initialTiles =
     mapParams.options.initialTileLayer || mapParams.style || null;
   const fallbackColour = mapParams.options.backgroundColour || "#FFFFFF";
@@ -51,40 +48,47 @@ function initiateTiles(el, mapParams) {
       "background-color": fallbackColour,
     },
   });
+  const loadedTileIds = getTileIds(loadedTiles);
   // First add all the tiles that are needed
-  if (loadedTiles.includes("satellite")) {
-    const satelliteMaxZoom = mapParams.options.satelliteMaxZoom || 12;
-    addSatelliteTiles(el.mapInstance, satelliteMaxZoom);
+  if (loadedTileIds.includes("satellite")) {
+    const satelliteOptions = mapParams.options.loadedTiles?.satellite || {};
+    addSatelliteTiles(el.mapInstance, satelliteOptions);
     el.tileLayers.push("satellite");
     // Do not hide this layer by default
   }
-  if (loadedTiles.includes("light-grey")) {
-    addLightGreyTiles(el.mapInstance);
-    el.tileLayers.push("light-grey");
-    hideLayer(el.mapInstance, "light-grey");
+  if (loadedTileIds.includes("lightgrey")) {
+    const lightGreyOptions = mapParams.options.loadedTiles?.lightgrey || {};
+    addLightGreyTiles(el.mapInstance, lightGreyOptions);
+    el.tileLayers.push("lightgrey");
+    hideLayer(el.mapInstance, "lightgrey");
   }
-  if (loadedTiles.includes("topo")) {
-    addTopoTiles(el.mapInstance);
+  if (loadedTileIds.includes("topo")) {
+    const topoOptions = mapParams.options.loadedTiles?.topo || {};
+    addTopoTiles(el.mapInstance, topoOptions);
     el.tileLayers.push("topo");
     hideLayer(el.mapInstance, "topo");
   }
-  if (loadedTiles.includes("natgeo")) {
-    addNatGeoTiles(el.mapInstance);
+  if (loadedTileIds.includes("natgeo")) {
+    const natgeoOptions = mapParams.options.loadedTiles?.natgeo || {};
+    addNatGeoTiles(el.mapInstance, natgeoOptions);
     el.tileLayers.push("natgeo");
     hideLayer(el.mapInstance, "natgeo");
   }
-  if (loadedTiles.includes("terrain")) {
-    addTerrainTiles(el.mapInstance);
+  if (loadedTileIds.includes("terrain")) {
+    const terrainOptions = mapParams.options.loadedTiles?.terrain || {};
+    addTerrainTiles(el.mapInstance, terrainOptions);
     el.tileLayers.push("terrain");
     hideLayer(el.mapInstance, "terrain");
   }
-  if (loadedTiles.includes("shaded")) {
-    addShadedTiles(el.mapInstance);
+  if (loadedTileIds.includes("shaded")) {
+    const shadedOptions = mapParams.options.loadedTiles?.shaded || {};
+    addShadedTiles(el.mapInstance, shadedOptions);
     el.tileLayers.push("shaded");
     hideLayer(el.mapInstance, "shaded");
   }
-  if (loadedTiles.includes("streets")) {
-    addStreetsTiles(el.mapInstance);
+  if (loadedTileIds.includes("streets")) {
+    const streetsOptions = mapParams.options.loadedTiles?.streets || {};
+    addStreetsTiles(el.mapInstance, streetsOptions);
     el.tileLayers.push("streets");
     hideLayer(el.mapInstance, "streets");
   }
@@ -259,9 +263,11 @@ function showLayer(map, layerId) {
  *        so that there are no blank tiles overall.
  *
  * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addNatGeoTiles(map) {
+function addNatGeoTiles(map, options) {
+  const maxZoom = options.maxZoom || 11;
   map.addSource("natgeo", {
     type: "raster",
     tiles: [
@@ -270,7 +276,7 @@ function addNatGeoTiles(map) {
     tileSize: 256,
     attribution:
       "National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.",
-    maxzoom: 11,
+    maxzoom: maxZoom,
   });
   map.addLayer({
     id: "natgeo",
@@ -287,10 +293,12 @@ function addNatGeoTiles(map) {
  * regardless of what tiles show initially.
  *
  * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addLightGreyTiles(map) {
-  map.addSource("light-grey", {
+function addLightGreyTiles(map, options) {
+  const maxZoom = options.maxZoom || 11;
+  map.addSource("lightgrey", {
     type: "raster",
     tiles: [
       "https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
@@ -298,12 +306,12 @@ function addLightGreyTiles(map) {
     tileSize: 256,
     attribution:
       "Esri, HERE, Garmin, (c) OpenStreetMap contributors, and the GIS user community",
-    maxzoom: 11,
+    maxzoom: maxZoom,
   });
   map.addLayer({
-    id: "light-grey",
+    id: "lightgrey",
     type: "raster",
-    source: "light-grey",
+    source: "lightgrey",
     paint: {},
   });
 }
@@ -400,12 +408,12 @@ function addLatLngGrid(el, gridColour = "#000000") {
                     maxzoom: maxZoomLevels[layerId],
                     minzoom: minZoomLevels[layerId],
                   },
-                  el.ourLayers[0] // Add before any other layer added by user
+                  el.ourLayers[0], // Add before any other layer added by user
                 );
                 el.ourLayers.push(`lat-lng-grid-zoom${layerId}`);
               }
             });
-        })
+        }),
       );
     });
 }
@@ -439,9 +447,11 @@ function toggleLatLngGrid(el, show) {
  *        so that there are no blank tiles overall.
  *
  * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addTopoTiles(map) {
+function addTopoTiles(map, options) {
+  const maxZoom = options.maxZoom || 14;
   map.addSource("topo", {
     type: "raster",
     tiles: [
@@ -450,7 +460,7 @@ function addTopoTiles(map) {
     tileSize: 256,
     attribution:
       "Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community",
-    maxzoom: 14,
+    maxzoom: maxZoom,
   });
   map.addLayer({
     id: "topo",
@@ -472,9 +482,11 @@ function addTopoTiles(map) {
  *        so that there are no blank tiles overall.
  *
  * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addTerrainTiles(map) {
+function addTerrainTiles(map, options) {
+  const maxZoom = options.maxZoom || 8;
   map.addSource("terrain", {
     type: "raster",
     tiles: [
@@ -482,7 +494,7 @@ function addTerrainTiles(map) {
     ],
     tileSize: 256,
     attribution: "Sources: Esri, USGS, NOAA",
-    maxzoom: 8,
+    maxzoom: maxZoom,
   });
   map.addLayer({
     id: "terrain",
@@ -502,13 +514,14 @@ function addTerrainTiles(map) {
  *        zoom level 14. After that, the tiles in the middle of the ocean are blank.
  *        They can still zoom a bit further on land, but set this as max
  *        so that there are no blank tiles overall.
+ 
  *
  * @param {object} map A MapLibre map instance.
- *
- * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addStreetsTiles(map) {
+function addStreetsTiles(map, options) {
+  const maxZoom = options.maxZoom || 14;
   map.addSource("streets", {
     type: "raster",
     tiles: [
@@ -517,7 +530,7 @@ function addStreetsTiles(map) {
     tileSize: 256,
     attribution:
       "Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community",
-    maxzoom: 14,
+    maxzoom: maxZoom,
   });
   map.addLayer({
     id: "streets",
@@ -539,9 +552,11 @@ function addStreetsTiles(map) {
  *        so that there are no blank tiles overall.
  *
  * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addShadedTiles(map) {
+function addShadedTiles(map, options) {
+  const maxZoom = options.maxZoom || 12;
   map.addSource("shaded", {
     type: "raster",
     tiles: [
@@ -549,7 +564,7 @@ function addShadedTiles(map) {
     ],
     tileSize: 256,
     attribution: "Copyright:(c) 2014 Esri",
-    maxzoom: 12,
+    maxzoom: maxZoom,
   });
   map.addLayer({
     id: "shaded",
@@ -571,9 +586,11 @@ function addShadedTiles(map) {
  *        so that there are no blank tiles overall.
  *
  * @param {object} map A MapLibre map instance.
+ * @param {object} options Options for the tile layer, such as maxZoom.
  * @returns {void}
  */
-function addSatelliteTiles(map, maxZoom = 12) {
+function addSatelliteTiles(map, options) {
+  const maxZoom = options.maxZoom || 12;
   map.addSource("satellite", {
     type: "raster",
     tiles: [
