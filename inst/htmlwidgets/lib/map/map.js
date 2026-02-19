@@ -83,7 +83,7 @@ HTMLWidgets.widget({
           _addImageToMapSource(
             mapInstance,
             "toro-pin",
-            "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/feature/documentation-update/inst/assets/toro-pin.png",
+            "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png",
           );
 
           if (x.imageSources) {
