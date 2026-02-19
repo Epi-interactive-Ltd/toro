@@ -22,14 +22,14 @@
 #'                      elements: html, id (optional), title (optional).
 #' @return              The map or map proxy object for chaining.
 #' @export
-#' 
+#'
 #' @examples
 #' if (interactive()) {
 #' map() |>
 #'  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
 #'  add_cursor_coords_control(panel_id = "my_panel") |>
 #'  add_zoom_control(panel_id = "my_panel")
-#' 
+#'
 #' map() |>
 #'  add_control_panel(
 #'    panel_id = "my_panel",
@@ -92,7 +92,7 @@ add_control_panel <- function(
 #' @param collapsed     Initial collapsed state. Default is FALSE.
 #' @return              The map or map proxy object for chaining.
 #' @export
-#' 
+#'
 #' @examples
 #' if (interactive()) {
 #' map() |>
@@ -109,7 +109,7 @@ add_control_panel <- function(
 #'  ) |>
 #'  add_cursor_coords_control(panel_id = "my_panel", group_id = "group_1") |>
 #'  add_zoom_control(panel_id = "my_panel", group_id = "group_2")
-#' 
+#'
 #' map() |>
 #'  add_control_panel(
 #'    panel_id = "my_panel",

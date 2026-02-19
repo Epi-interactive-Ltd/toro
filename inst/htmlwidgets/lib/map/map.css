@@ -129,16 +129,32 @@
 
 @keyframes busyloader {
   0% {
-    box-shadow: -38px -12px, -14px 0, 14px 0, 38px 0;
+    box-shadow:
+      -38px -12px,
+      -14px 0,
+      14px 0,
+      38px 0;
   }
   33% {
-    box-shadow: -38px 0px, -14px -12px, 14px 0, 38px 0;
+    box-shadow:
+      -38px 0px,
+      -14px -12px,
+      14px 0,
+      38px 0;
   }
   66% {
-    box-shadow: -38px 0px, -14px 0, 14px -12px, 38px 0;
+    box-shadow:
+      -38px 0px,
+      -14px 0,
+      14px -12px,
+      38px 0;
   }
   100% {
-    box-shadow: -38px 0, -14px 0, 14px 0, 38px -12px;
+    box-shadow:
+      -38px 0,
+      -14px 0,
+      14px 0,
+      38px -12px;
   }
 }
 
@@ -158,7 +174,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   pointer-events: auto;
   z-index: 1000;
   position: relative;
@@ -228,8 +244,8 @@ input {
   margin-bottom: 15px;
 }
 
-.speed-slider-container > input[type="range"],
-.timeline-slider-container > input[type="range"] {
+.speed-slider-container > input[type='range'],
+.timeline-slider-container > input[type='range'] {
   width: 100%;
   cursor: pointer;
   height: 6px;
@@ -242,7 +258,7 @@ input {
   margin: 10px 0;
   transition: background 0.3s ease;
 }
-.timeline-slider-container > input[type="range"] {
+.timeline-slider-container > input[type='range'] {
   background: linear-gradient(
     to right,
     var(--toro-primary) 0%,
@@ -258,23 +274,21 @@ input {
   pointer-events: none;
 }
 
-.timeline-control-container.disabled
-  .timeline-slider-container
-  > input[type="range"] {
+.timeline-control-container.disabled .timeline-slider-container > input[type='range'] {
   background: #cccccc !important;
   cursor: not-allowed;
 }
 
 .timeline-control-container.disabled
   .timeline-slider-container
-  > input[type="range"]::-webkit-slider-thumb {
+  > input[type='range']::-webkit-slider-thumb {
   background: #999999;
   cursor: not-allowed;
 }
 
 .timeline-control-container.disabled
   .timeline-slider-container
-  > input[type="range"]::-moz-range-thumb {
+  > input[type='range']::-moz-range-thumb {
   background: #999999;
   cursor: not-allowed;
 }
@@ -291,23 +305,19 @@ input {
   pointer-events: none;
 }
 
-.speed-control-container.disabled
-  .speed-slider-container
-  > input[type="range"] {
+.speed-control-container.disabled .speed-slider-container > input[type='range'] {
   background: #cccccc !important;
   cursor: not-allowed;
 }
 
 .speed-control-container.disabled
   .speed-slider-container
-  > input[type="range"]::-webkit-slider-thumb {
+  > input[type='range']::-webkit-slider-thumb {
   background: #999999;
   cursor: not-allowed;
 }
 
-.speed-control-container.disabled
-  .speed-slider-container
-  > input[type="range"]::-moz-range-thumb {
+.speed-control-container.disabled .speed-slider-container > input[type='range']::-moz-range-thumb {
   background: #999999;
   cursor: not-allowed;
 }
@@ -315,17 +325,17 @@ input {
 .speed-control-container.disabled .speed-tick-label {
   color: #999999 !important;
 }
-.speed-slider-container > input[type="range"]::-webkit-slider-track,
-.timeline-slider-container > input[type="range"]::-webkit-slider-track,
-.speed-slider-container > input[type="range"]::-moz-range-track,
-.timeline-slider-container > input[type="range"]::-moz-range-track {
+.speed-slider-container > input[type='range']::-webkit-slider-track,
+.timeline-slider-container > input[type='range']::-webkit-slider-track,
+.speed-slider-container > input[type='range']::-moz-range-track,
+.timeline-slider-container > input[type='range']::-moz-range-track {
   height: 6px;
   border-radius: 3px;
   background: transparent;
   border: none;
 }
-.speed-slider-container > input[type="range"]::-webkit-slider-thumb,
-.timeline-slider-container > input[type="range"]::-webkit-slider-thumb {
+.speed-slider-container > input[type='range']::-webkit-slider-thumb,
+.timeline-slider-container > input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
@@ -341,8 +351,8 @@ input {
   transition: all 0.2s ease;
 }
 
-.speed-slider-container > input[type="range"]::-moz-range-thumb,
-.timeline-slider-container > input[type="range"]::-moz-range-thumb {
+.speed-slider-container > input[type='range']::-moz-range-thumb,
+.timeline-slider-container > input[type='range']::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -354,14 +364,13 @@ input {
   transition: all 0.2s ease;
 }
 
-.timeline-slider-container > input[type="range"]:disabled::-moz-range-thumb,
-.timeline-slider-container > input[type="range"]:disabled::-webkit-slider-thumb,
-.timeline-slider-container > input[type="range"]:disabled {
+.timeline-slider-container > input[type='range']:disabled::-moz-range-thumb,
+.timeline-slider-container > input[type='range']:disabled::-webkit-slider-thumb,
+.timeline-slider-container > input[type='range']:disabled {
   cursor: not-allowed !important;
 }
-.timeline-slider-container > input[type="range"]:disabled::-moz-range-thumb,
-.timeline-slider-container
-  > input[type="range"]:disabled::-webkit-slider-thumb {
+.timeline-slider-container > input[type='range']:disabled::-moz-range-thumb,
+.timeline-slider-container > input[type='range']:disabled::-webkit-slider-thumb {
   background: #999 !important;
 }
 #timeline-current-date {
@@ -369,7 +378,7 @@ input {
 }
 .speed-tick,
 .timeline-tick {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   position: absolute;
   transform: translateX(-50%);
   pointer-events: none;
@@ -400,8 +409,8 @@ input {
   margin-top: 2px;
 }
 
-.speed-slider-container > input[type="range"]::-moz-range-thumb:hover,
-.timeline-slider-container > input[type="range"]::-moz-range-thumb:hover {
+.speed-slider-container > input[type='range']::-moz-range-thumb:hover,
+.timeline-slider-container > input[type='range']::-moz-range-thumb:hover {
   background: var(--toro-primary);
   transform: scale(1.1);
 }
@@ -412,7 +421,7 @@ input {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-width: 200px;
   max-width: 100%;
   pointer-events: auto !important;
@@ -524,22 +533,20 @@ input {
   pointer-events: auto;
   &:before,
   &:after {
-    content: "";
+    content: '';
   }
   &:before {
     display: block;
     background: linear-gradient(to bottom, #fff 0%, #eee 100%);
     border-radius: 50%;
-    height: calc(
-      var(--toro-toggle-height) - 2 * var(--toro-toggle-border-width)
-    );
-    width: calc(
-      var(--toro-toggle-height) - 2 * var(--toro-toggle-border-width)
-    );
+    height: calc(var(--toro-toggle-height) - 2 * var(--toro-toggle-border-width));
+    width: calc(var(--toro-toggle-height) - 2 * var(--toro-toggle-border-width));
     position: absolute;
     top: var(--toro-toggle-border-width);
     left: var(--toro-toggle-border-width);
-    transition: left 0.2s ease, background 0.2s ease;
+    transition:
+      left 0.2s ease,
+      background 0.2s ease;
   }
 }
 
@@ -547,22 +554,15 @@ input {
   background: linear-gradient(to bottom, #fff 0%, #fff 100%);
 }
 
-.toro-toggle-container
-  > .toro-toggle
-  > .toro-toggle-checkbox:checked
-  ~ .toro-toggle-switch,
+.toro-toggle-container > .toro-toggle > .toro-toggle-checkbox:checked ~ .toro-toggle-switch,
 .toro-toggle-container > .toro-toggle > .toro-toggle-switch.checked {
   background: var(--toro-primary);
 }
 
-.toro-toggle-container
-  > .toro-toggle
-  > .toro-toggle-checkbox:checked
-  ~ .toro-toggle-switch:before,
+.toro-toggle-container > .toro-toggle > .toro-toggle-checkbox:checked ~ .toro-toggle-switch:before,
 .toro-toggle-container > .toro-toggle > .toro-toggle-switch.checked:before {
   left: calc(
-    var(--toro-toggle-height) * 1.55 - var(--toro-toggle-height) +
-      var(--toro-toggle-border-width)
+    var(--toro-toggle-height) * 1.55 - var(--toro-toggle-height) + var(--toro-toggle-border-width)
   );
 }
 

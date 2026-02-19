@@ -1,9 +1,8 @@
 #' Functions related to zoom controls.
-#' 
+#'
 #' Functions:
 #' - add_zoom_control:    Add a zoom control to the map or control panel.
 #' - remove_zoom_control: Remove the zoom control from the map.
-
 
 #' Add a zoom control to the map.
 #'

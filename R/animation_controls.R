@@ -17,7 +17,7 @@
 #' @param section_title Section title when added to a control panel.
 #' @return              The map or map proxy object for chaining.
 #' @export
-#' 
+#'
 #' @examples
 #' if (interactive()) {
 #' # Add to a map (no dates specified)
@@ -114,7 +114,7 @@ add_timeline_control <- function(
 #'                  If NULL, removes the standalone timeline control.
 #' @return          The map proxy object for chaining.
 #' @export
-#' 
+#'
 #' @examples
 #' if (interactive()) {
 #' # Add to a map
@@ -157,7 +157,7 @@ remove_timeline_control <- function(proxy, panel_id = NULL) {
 #' @param section_title Section title when added to a control panel.
 #' @return              The map or map proxy object for chaining.
 #' @export
-#' 
+#'
 #' @examples
 #' if (interactive()) {
 #' # Add to a map (no dates specified)
@@ -241,7 +241,7 @@ add_speed_control <- function(
 #'                  If NULL, removes the standalone speed control.
 #' @return          The map proxy object for chaining.
 #' @export
-#' 
+#'
 #' @examples
 #' if (interactive()) {
 #' # Add to a map

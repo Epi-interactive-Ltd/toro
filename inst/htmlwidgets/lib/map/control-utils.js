@@ -20,7 +20,7 @@
  *       For more information: `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
  */
 
-const validDrawModes = ["polygon", "trash", "line", "point"]; // Accepted draw modes
+const validDrawModes = ['polygon', 'trash', 'line', 'point']; // Accepted draw modes
 
 /**
  * Add a draw control to the map instance.
@@ -71,10 +71,10 @@ function addDrawControl(
   const draw = new MapboxDraw({
     displayControlsDefault: false,
     controls: {
-      polygon: modes.includes("polygon"),
-      trash: modes.includes("trash"),
-      line_string: modes.includes("line"),
-      point: modes.includes("point"),
+      polygon: modes.includes('polygon'),
+      trash: modes.includes('trash'),
+      line_string: modes.includes('line'),
+      point: modes.includes('point'),
     },
     styles: _getDrawnStyle(activeColour, inactiveColour),
     modes: Object.assign(
@@ -96,27 +96,24 @@ function addDrawControl(
 
   // Add the ID to the draw control container after it's added to the DOM
   setTimeout(() => {
-    const drawControls = el.querySelector(".mapboxgl-ctrl-group");
-    if (
-      drawControls &&
-      drawControls.querySelector(".mapbox-gl-draw_ctrl-draw-btn")
-    ) {
+    const drawControls = el.querySelector('.mapboxgl-ctrl-group');
+    if (drawControls && drawControls.querySelector('.mapbox-gl-draw_ctrl-draw-btn')) {
       drawControls.id = drawControlId;
     }
   }, 0);
   // Set the buttons to be clickable
   modes.forEach((mode) => {
     setTimeout(function () {
-      var controlBtn = el.querySelector(".mapbox-gl-draw_" + mode);
+      var controlBtn = el.querySelector('.mapbox-gl-draw_' + mode);
 
       if (controlBtn) {
-        controlBtn.style.pointerEvents = "auto";
+        controlBtn.style.pointerEvents = 'auto';
 
         var label = modeLabels[mode];
         if (label) {
-          controlBtn.classList.add("draw-control-custom-label");
+          controlBtn.classList.add('draw-control-custom-label');
           controlBtn.innerHTML = label; // Set the button label if provided
-          controlBtn.style.backgroundImage = "none"; // Remove default background image
+          controlBtn.style.backgroundImage = 'none'; // Remove default background image
         }
       }
     }, 0);
@@ -124,27 +121,27 @@ function addDrawControl(
 
   if (HTMLWidgets.shinyMode) {
     // Trigger Shiny input when a feature is created
-    el.mapInstance.on("draw.create", function (e) {
+    el.mapInstance.on('draw.create', function (e) {
       const feature = e.features[0]; // The drawn feature
       const geojson = JSON.stringify(feature);
-      Shiny.setInputValue(el.id + "_shape_created", geojson, {
-        priority: "event",
+      Shiny.setInputValue(el.id + '_shape_created', geojson, {
+        priority: 'event',
       });
       /**
        * Change mode to static after a short delay to avoid recursion.
        * Stops shapes from being editable after creation.
        */
       setTimeout(function () {
-        if (el.draw.getMode && el.draw.getMode() !== "static") {
-          el.draw.changeMode("static");
+        if (el.draw.getMode && el.draw.getMode() !== 'static') {
+          el.draw.changeMode('static');
         }
       }, 50);
     });
 
     // Trigger Shiny input when a feature is deleted
-    el.mapInstance.on("draw.delete", function (e) {
-      Shiny.setInputValue(el.id + "_shape_deleted", e.features.id, {
-        priority: "event",
+    el.mapInstance.on('draw.delete', function (e) {
+      Shiny.setInputValue(el.id + '_shape_deleted', e.features.id, {
+        priority: 'event',
       });
     });
   }
@@ -169,11 +166,11 @@ function deleteDrawnShape(el, shapeId) {
  */
 function hideDrawControls(el) {
   validDrawModes.forEach((mode) => {
-    var controlBtn = el.querySelector(".mapbox-gl-draw_" + mode);
+    var controlBtn = el.querySelector('.mapbox-gl-draw_' + mode);
 
     if (controlBtn) {
-      controlBtn.style.display = "none";
-      controlBtn.style.pointerEvents = "none";
+      controlBtn.style.display = 'none';
+      controlBtn.style.pointerEvents = 'none';
     }
   });
 }
@@ -186,11 +183,11 @@ function hideDrawControls(el) {
  */
 function showDrawControls(el) {
   validDrawModes.forEach((mode) => {
-    var controlBtn = el.querySelector(".mapbox-gl-draw_" + mode);
+    var controlBtn = el.querySelector('.mapbox-gl-draw_' + mode);
 
     if (controlBtn) {
-      controlBtn.style.display = "inline-block";
-      controlBtn.style.pointerEvents = "auto";
+      controlBtn.style.display = 'inline-block';
+      controlBtn.style.pointerEvents = 'auto';
     }
   });
 }
@@ -205,233 +202,223 @@ function showDrawControls(el) {
 function _getDrawnStyle(activeColour, inactiveColour) {
   return [
     {
-      id: "gl-draw-polygon-fill-inactive",
-      type: "fill",
+      id: 'gl-draw-polygon-fill-inactive',
+      type: 'fill',
       filter: [
-        "all",
-        ["==", "active", "false"],
-        ["==", "$type", "Polygon"],
-        ["!=", "mode", "static"],
+        'all',
+        ['==', 'active', 'false'],
+        ['==', '$type', 'Polygon'],
+        ['!=', 'mode', 'static'],
       ],
       paint: {
-        "fill-color": inactiveColour,
-        "fill-outline-color": inactiveColour,
-        "fill-opacity": 0.1,
+        'fill-color': inactiveColour,
+        'fill-outline-color': inactiveColour,
+        'fill-opacity': 0.1,
       },
     },
     {
-      id: "gl-draw-polygon-fill-active",
-      type: "fill",
-      filter: ["all", ["==", "active", "true"], ["==", "$type", "Polygon"]],
+      id: 'gl-draw-polygon-fill-active',
+      type: 'fill',
+      filter: ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
       paint: {
-        "fill-color": activeColour,
-        "fill-outline-color": activeColour,
-        "fill-opacity": 0.1,
+        'fill-color': activeColour,
+        'fill-outline-color': activeColour,
+        'fill-opacity': 0.1,
       },
     },
     {
-      id: "gl-draw-polygon-midpoint",
-      type: "circle",
-      filter: ["all", ["==", "$type", "Point"], ["==", "meta", "midpoint"]],
+      id: 'gl-draw-polygon-midpoint',
+      type: 'circle',
+      filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
       paint: {
-        "circle-radius": 3,
-        "circle-color": activeColour,
+        'circle-radius': 3,
+        'circle-color': activeColour,
       },
     },
     {
-      id: "gl-draw-polygon-stroke-inactive",
-      type: "line",
+      id: 'gl-draw-polygon-stroke-inactive',
+      type: 'line',
       filter: [
-        "all",
-        ["==", "active", "false"],
-        ["==", "$type", "Polygon"],
-        ["!=", "mode", "static"],
-      ],
-      layout: {
-        "line-cap": "round",
-        "line-join": "round",
-      },
-      paint: {
-        "line-color": inactiveColour,
-        "line-width": 2,
-      },
-    },
-    {
-      id: "gl-draw-polygon-stroke-active",
-      type: "line",
-      filter: ["all", ["==", "active", "true"], ["==", "$type", "Polygon"]],
-      layout: {
-        "line-cap": "round",
-        "line-join": "round",
-      },
-      paint: {
-        "line-color": activeColour,
-        "line-dasharray": [0.2, 2],
-        "line-width": 2,
-      },
-    },
-    {
-      id: "gl-draw-line-inactive",
-      type: "line",
-      filter: [
-        "all",
-        ["==", "active", "false"],
-        ["==", "$type", "LineString"],
-        ["!=", "mode", "static"],
+        'all',
+        ['==', 'active', 'false'],
+        ['==', '$type', 'Polygon'],
+        ['!=', 'mode', 'static'],
       ],
       layout: {
-        "line-cap": "round",
-        "line-join": "round",
+        'line-cap': 'round',
+        'line-join': 'round',
       },
       paint: {
-        "line-color": inactiveColour,
-        "line-width": 2,
+        'line-color': inactiveColour,
+        'line-width': 2,
       },
     },
     {
-      id: "gl-draw-line-active",
-      type: "line",
-      filter: ["all", ["==", "$type", "LineString"], ["==", "active", "true"]],
+      id: 'gl-draw-polygon-stroke-active',
+      type: 'line',
+      filter: ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
       layout: {
-        "line-cap": "round",
-        "line-join": "round",
+        'line-cap': 'round',
+        'line-join': 'round',
       },
       paint: {
-        "line-color": activeColour,
-        "line-dasharray": [0.2, 2],
-        "line-width": 2,
+        'line-color': activeColour,
+        'line-dasharray': [0.2, 2],
+        'line-width': 2,
       },
     },
     {
-      id: "gl-draw-polygon-and-line-vertex-stroke-inactive",
-      type: "circle",
+      id: 'gl-draw-line-inactive',
+      type: 'line',
       filter: [
-        "all",
-        ["==", "meta", "vertex"],
-        ["==", "$type", "Point"],
-        ["!=", "mode", "static"],
+        'all',
+        ['==', 'active', 'false'],
+        ['==', '$type', 'LineString'],
+        ['!=', 'mode', 'static'],
       ],
-      paint: {
-        "circle-radius": 5,
-        "circle-color": "#fff",
-      },
-    },
-    {
-      id: "gl-draw-polygon-and-line-vertex-inactive",
-      type: "circle",
-      filter: [
-        "all",
-        ["==", "meta", "vertex"],
-        ["==", "$type", "Point"],
-        ["!=", "mode", "static"],
-      ],
-      paint: {
-        "circle-radius": 3,
-        "circle-color": activeColour,
-      },
-    },
-    {
-      id: "gl-draw-point-point-stroke-inactive",
-      type: "circle",
-      filter: [
-        "all",
-        ["==", "active", "false"],
-        ["==", "$type", "Point"],
-        ["==", "meta", "feature"],
-        ["!=", "mode", "static"],
-      ],
-      paint: {
-        "circle-radius": 5,
-        "circle-opacity": 1,
-        "circle-color": "#fff",
-      },
-    },
-    {
-      id: "gl-draw-point-inactive",
-      type: "circle",
-      filter: [
-        "all",
-        ["==", "active", "false"],
-        ["==", "$type", "Point"],
-        ["==", "meta", "feature"],
-        ["!=", "mode", "static"],
-      ],
-      paint: {
-        "circle-radius": 3,
-        "circle-color": inactiveColour,
-      },
-    },
-    {
-      id: "gl-draw-point-stroke-active",
-      type: "circle",
-      filter: [
-        "all",
-        ["==", "$type", "Point"],
-        ["==", "active", "true"],
-        ["!=", "meta", "midpoint"],
-      ],
-      paint: {
-        "circle-radius": 7,
-        "circle-color": "#fff",
-      },
-    },
-    {
-      id: "gl-draw-point-active",
-      type: "circle",
-      filter: [
-        "all",
-        ["==", "$type", "Point"],
-        ["!=", "meta", "midpoint"],
-        ["==", "active", "true"],
-      ],
-      paint: {
-        "circle-radius": 5,
-        "circle-color": activeColour,
-      },
-    },
-    {
-      id: "gl-draw-polygon-fill-static",
-      type: "fill",
-      filter: ["all", ["==", "mode", "static"], ["==", "$type", "Polygon"]],
-      paint: {
-        "fill-color": inactiveColour,
-        "fill-outline-color": inactiveColour,
-        "fill-opacity": 0.1,
-      },
-    },
-    {
-      id: "gl-draw-polygon-stroke-static",
-      type: "line",
-      filter: ["all", ["==", "mode", "static"], ["==", "$type", "Polygon"]],
       layout: {
-        "line-cap": "round",
-        "line-join": "round",
+        'line-cap': 'round',
+        'line-join': 'round',
       },
       paint: {
-        "line-color": inactiveColour,
-        "line-width": 2,
+        'line-color': inactiveColour,
+        'line-width': 2,
       },
     },
     {
-      id: "gl-draw-line-static",
-      type: "line",
-      filter: ["all", ["==", "mode", "static"], ["==", "$type", "LineString"]],
+      id: 'gl-draw-line-active',
+      type: 'line',
+      filter: ['all', ['==', '$type', 'LineString'], ['==', 'active', 'true']],
       layout: {
-        "line-cap": "round",
-        "line-join": "round",
+        'line-cap': 'round',
+        'line-join': 'round',
       },
       paint: {
-        "line-color": inactiveColour,
-        "line-width": 2,
+        'line-color': activeColour,
+        'line-dasharray': [0.2, 2],
+        'line-width': 2,
       },
     },
     {
-      id: "gl-draw-point-static",
-      type: "circle",
-      filter: ["all", ["==", "mode", "static"], ["==", "$type", "Point"]],
+      id: 'gl-draw-polygon-and-line-vertex-stroke-inactive',
+      type: 'circle',
+      filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
       paint: {
-        "circle-radius": 5,
-        "circle-color": inactiveColour,
+        'circle-radius': 5,
+        'circle-color': '#fff',
+      },
+    },
+    {
+      id: 'gl-draw-polygon-and-line-vertex-inactive',
+      type: 'circle',
+      filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+      paint: {
+        'circle-radius': 3,
+        'circle-color': activeColour,
+      },
+    },
+    {
+      id: 'gl-draw-point-point-stroke-inactive',
+      type: 'circle',
+      filter: [
+        'all',
+        ['==', 'active', 'false'],
+        ['==', '$type', 'Point'],
+        ['==', 'meta', 'feature'],
+        ['!=', 'mode', 'static'],
+      ],
+      paint: {
+        'circle-radius': 5,
+        'circle-opacity': 1,
+        'circle-color': '#fff',
+      },
+    },
+    {
+      id: 'gl-draw-point-inactive',
+      type: 'circle',
+      filter: [
+        'all',
+        ['==', 'active', 'false'],
+        ['==', '$type', 'Point'],
+        ['==', 'meta', 'feature'],
+        ['!=', 'mode', 'static'],
+      ],
+      paint: {
+        'circle-radius': 3,
+        'circle-color': inactiveColour,
+      },
+    },
+    {
+      id: 'gl-draw-point-stroke-active',
+      type: 'circle',
+      filter: [
+        'all',
+        ['==', '$type', 'Point'],
+        ['==', 'active', 'true'],
+        ['!=', 'meta', 'midpoint'],
+      ],
+      paint: {
+        'circle-radius': 7,
+        'circle-color': '#fff',
+      },
+    },
+    {
+      id: 'gl-draw-point-active',
+      type: 'circle',
+      filter: [
+        'all',
+        ['==', '$type', 'Point'],
+        ['!=', 'meta', 'midpoint'],
+        ['==', 'active', 'true'],
+      ],
+      paint: {
+        'circle-radius': 5,
+        'circle-color': activeColour,
+      },
+    },
+    {
+      id: 'gl-draw-polygon-fill-static',
+      type: 'fill',
+      filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'Polygon']],
+      paint: {
+        'fill-color': inactiveColour,
+        'fill-outline-color': inactiveColour,
+        'fill-opacity': 0.1,
+      },
+    },
+    {
+      id: 'gl-draw-polygon-stroke-static',
+      type: 'line',
+      filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'Polygon']],
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round',
+      },
+      paint: {
+        'line-color': inactiveColour,
+        'line-width': 2,
+      },
+    },
+    {
+      id: 'gl-draw-line-static',
+      type: 'line',
+      filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'LineString']],
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round',
+      },
+      paint: {
+        'line-color': inactiveColour,
+        'line-width': 2,
+      },
+    },
+    {
+      id: 'gl-draw-point-static',
+      type: 'circle',
+      filter: ['all', ['==', 'mode', 'static'], ['==', '$type', 'Point']],
+      paint: {
+        'circle-radius': 5,
+        'circle-color': inactiveColour,
       },
     },
   ];
@@ -447,25 +434,17 @@ function _getDrawnStyle(activeColour, inactiveColour) {
  * @param {object} widgetInstance Optional widget instance for ID generation.
  * @returns {void}
  */
-function addCursorCoordinateControl(
-  map,
-  position,
-  longLabel,
-  latLabel,
-  widgetInstance = null
-) {
+function addCursorCoordinateControl(map, position, longLabel, latLabel, widgetInstance = null) {
   // Generate proper namespaced ID
-  const controlId = widgetInstance
-    ? `cursor-coords-${widgetInstance.getId()}`
-    : "cursor_coords";
+  const controlId = widgetInstance ? `cursor-coords-${widgetInstance.getId()}` : 'cursor_coords';
   const coordsDisplayId = widgetInstance
     ? `map-cursor-coords-${widgetInstance.getId()}`
-    : "map-cursor-coords";
+    : 'map-cursor-coords';
 
   class CursorCoordsControl {
     onAdd(map) {
-      this._container = document.createElement("div");
-      this._container.className = "toro-ctrl cursor-coords-control";
+      this._container = document.createElement('div');
+      this._container.className = 'toro-ctrl cursor-coords-control';
       this._container.id = controlId;
       this._container.innerHTML = `<p id='${coordsDisplayId}'></p>`;
       return this._container;
@@ -477,10 +456,10 @@ function addCursorCoordinateControl(
   map.addControl(new CursorCoordsControl(), position);
   const coordDiv = document.getElementById(coordsDisplayId);
   if (!coordDiv) {
-    console.warn("Cursor coordinate control element not found.");
+    console.warn('Cursor coordinate control element not found.');
     return;
   }
-  map.on("mousemove", (e) => {
+  map.on('mousemove', (e) => {
     const lng = e.lngLat.lng.toFixed(3);
     const lat = e.lngLat.lat.toFixed(3);
     coordDiv.textContent = `${longLabel}: ${lng}, ${latLabel}: ${lat}`;
@@ -497,12 +476,12 @@ function addCursorCoordinateControl(
  *                            Default is "top-right".
  * @returns {void}
  */
-function addCustomControl(map, controlId, html, position = "top-right") {
+function addCustomControl(map, controlId, html, position = 'top-right') {
   class CustomControl {
     onAdd(mapInstance) {
-      this._container = document.createElement("div");
+      this._container = document.createElement('div');
       this._container.id = controlId;
-      this._container.className = "toro-ctrl custom-control";
+      this._container.className = 'toro-ctrl custom-control';
       this._container.innerHTML = html;
       return this._container;
     }
@@ -530,36 +509,33 @@ function addCustomControl(map, controlId, html, position = "top-right") {
 function toggleControl(el, controlId, show) {
   var control;
 
-  if (controlId == "zoom_control") {
+  if (controlId == 'zoom_control') {
     var buttons = el.querySelector(
-      ".toro-ctrl-group .toro-ctrl-zoom-in, .toro-ctrl-group .toro-ctrl-zoom-out, .toro-ctrl-group .toro-ctrl-compass"
+      '.toro-ctrl-group .toro-ctrl-zoom-in, .toro-ctrl-group .toro-ctrl-zoom-out, .toro-ctrl-group .toro-ctrl-compass'
     );
     if (buttons) {
       control = buttons.parentElement;
     }
-  } else if (
-    controlId == "draw_control" ||
-    controlId.startsWith("draw-control-")
-  ) {
+  } else if (controlId == 'draw_control' || controlId.startsWith('draw-control-')) {
     // For backward compatibility, support both old "draw_control" and new namespaced IDs
-    if (controlId.startsWith("draw-control-")) {
-      control = el.querySelector("#" + controlId);
+    if (controlId.startsWith('draw-control-')) {
+      control = el.querySelector('#' + controlId);
     } else {
       // Legacy support - look for any draw control
-      var buttons = el.querySelector(".mapbox-gl-draw_ctrl-draw-btn");
+      var buttons = el.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
       if (buttons) {
         control = buttons.parentElement;
       }
     }
   } else {
-    control = el.querySelector("#" + controlId);
+    control = el.querySelector('#' + controlId);
   }
   if (!control) {
     console.warn(`Control with ID ${controlId} not found.`);
     return;
   }
-  control.style.display = show ? "block" : "none";
-  control.style.pointerEvents = show ? "auto" : "none";
+  control.style.display = show ? 'block' : 'none';
+  control.style.pointerEvents = show ? 'auto' : 'none';
 }
 
 /**
@@ -609,13 +585,8 @@ function addZoomControl(map, position, options, widgetInstance = null) {
 
     // Try to set an ID on the control element after it's added
     setTimeout(() => {
-      const zoomControl = map
-        .getContainer()
-        .querySelector(".maplibregl-ctrl-group");
-      if (
-        zoomControl &&
-        zoomControl.querySelector(".maplibregl-ctrl-zoom-in")
-      ) {
+      const zoomControl = map.getContainer().querySelector('.maplibregl-ctrl-group');
+      if (zoomControl && zoomControl.querySelector('.maplibregl-ctrl-zoom-in')) {
         zoomControl.id = controlId;
       }
     }, 0);
@@ -635,7 +606,7 @@ function removeControl(widgetInstance, controlId) {
   if (!map) return;
 
   // Check if this is a draw control
-  if (controlId.startsWith("draw-control-")) {
+  if (controlId.startsWith('draw-control-')) {
     // Remove the MapboxDraw instance from the map
     if (el.draw) {
       map.removeControl(el.draw);
@@ -646,7 +617,7 @@ function removeControl(widgetInstance, controlId) {
   }
 
   // Check if this is a zoom control
-  if (controlId.startsWith("zoom-control-")) {
+  if (controlId.startsWith('zoom-control-')) {
     // Try to remove using stored reference first
     if (map._toroControls && map._toroControls[controlId]) {
       map.removeControl(map._toroControls[controlId]);
@@ -688,7 +659,7 @@ function removeControlFromPanel(widgetInstance, panelId, controlId) {
   }
 
   // Special handling for draw controls
-  if (controlId.startsWith("draw-control-")) {
+  if (controlId.startsWith('draw-control-')) {
     // Remove the MapboxDraw instance from the map first
     if (el.draw) {
       map.removeControl(el.draw);
@@ -697,11 +668,9 @@ function removeControlFromPanel(widgetInstance, panelId, controlId) {
     }
 
     // Then remove the panel UI elements
-    const panelDrawControl = el.querySelector(
-      `#draw-control-panel-${widgetInstance.getId()}`
-    );
+    const panelDrawControl = el.querySelector(`#draw-control-panel-${widgetInstance.getId()}`);
     if (panelDrawControl) {
-      const section = panelDrawControl.closest(".panel-control-item");
+      const section = panelDrawControl.closest('.panel-control-item');
       if (section) {
         section.remove();
       } else {
@@ -737,7 +706,7 @@ function removeControlFromPanel(widgetInstance, panelId, controlId) {
     controlElement = panelContentEl.querySelector(`#${controlId}`);
     if (controlElement) {
       // Remove the entire section if it's a panel control item
-      const section = controlElement.closest(".panel-control-item");
+      const section = controlElement.closest('.panel-control-item');
       if (section) {
         section.remove();
       } else {
@@ -791,14 +760,14 @@ function addControlPanel(el, panelId, options = {}) {
   const showTitle = title && options.showTitle !== false;
   const collapsible = options.collapsible || false;
   const collapsed = options.collapsed || false;
-  const direction = options.direction || "column";
+  const direction = options.direction || 'column';
 
   // Generate collapse button if collapsible
   const collapseButton = collapsible
     ? `<button class="panel-collapse-btn" id="${panelId}-collapse-btn">${
-        collapsed ? "▶" : "▼"
+        collapsed ? '▶' : '▼'
       }</button>`
-    : "";
+    : '';
 
   // HTML for the control panel container
   const html = `
@@ -811,18 +780,18 @@ function addControlPanel(el, panelId, options = {}) {
           <div class="panel-title">${title}</div>
         </div>
       `
-          : ""
+          : ''
       }
       <div class="panel-content" id="${panelId}-content" style="display: ${
-    collapsed ? "none" : "flex"
-  }; flex-direction: ${direction};">
+        collapsed ? 'none' : 'flex'
+      }; flex-direction: ${direction};">
         <!-- Controls will be added here -->
       </div>
     </div>
   `;
 
   // Add the control panel to the map
-  addCustomControl(map, panelId, html, options.position || "bottom-left");
+  addCustomControl(map, panelId, html, options.position || 'bottom-left');
 
   // Setup collapse functionality
   if (collapsible) {
@@ -831,13 +800,13 @@ function addControlPanel(el, panelId, options = {}) {
       const panelContent = el.querySelector(`#${panelId}-content`);
 
       if (collapseBtn && panelContent) {
-        collapseBtn.addEventListener("click", function (e) {
+        collapseBtn.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
 
-          const isCollapsed = panelContent.style.display === "none";
-          panelContent.style.display = isCollapsed ? "flex" : "none";
-          collapseBtn.textContent = isCollapsed ? "▼" : "▶";
+          const isCollapsed = panelContent.style.display === 'none';
+          panelContent.style.display = isCollapsed ? 'flex' : 'none';
+          collapseBtn.textContent = isCollapsed ? '▼' : '▶';
         });
       }
     }, 100);
@@ -845,15 +814,15 @@ function addControlPanel(el, panelId, options = {}) {
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
-    const controlPanel = el.querySelector("#" + panelId);
+    const controlPanel = el.querySelector('#' + panelId);
     if (controlPanel) {
-      controlPanel.style.pointerEvents = "auto";
-      controlPanel.style.zIndex = "1000";
+      controlPanel.style.pointerEvents = 'auto';
+      controlPanel.style.zIndex = '1000';
 
       // Set pointer events on all child elements
-      const allElements = controlPanel.querySelectorAll("*");
+      const allElements = controlPanel.querySelectorAll('*');
       allElements.forEach((el) => {
-        el.style.pointerEvents = "auto";
+        el.style.pointerEvents = 'auto';
       });
     }
   }, 100);
@@ -873,37 +842,30 @@ function addControlPanel(el, panelId, options = {}) {
     ) {
       // If groupId is specified, add control to the group instead
       if (groupId) {
-        return this.addControlToGroup(
-          controlHTML,
-          controlId,
-          sectionTitle,
-          panelClass,
-          groupId
-        );
+        return this.addControlToGroup(controlHTML, controlId, sectionTitle, panelClass, groupId);
       }
 
       const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
-        const controlDiv = document.createElement("div");
+        const controlDiv = document.createElement('div');
         if (controlId) {
           controlDiv.id = controlId;
         }
-        controlDiv.className =
-          "panel-control-item" + (panelClass ? ` ${panelClass}` : "");
+        controlDiv.className = 'panel-control-item' + (panelClass ? ` ${panelClass}` : '');
 
         // Add section title if provided
         const sectionHTML = sectionTitle
           ? `<div class="control-section-title">${sectionTitle}</div>`
-          : "";
+          : '';
         controlDiv.innerHTML = sectionHTML + controlHTML;
 
         panelContent.appendChild(controlDiv);
 
         // Ensure new control has proper pointer events
         setTimeout(() => {
-          const allElements = controlDiv.querySelectorAll("*");
+          const allElements = controlDiv.querySelectorAll('*');
           allElements.forEach((el) => {
-            el.style.pointerEvents = "auto";
+            el.style.pointerEvents = 'auto';
           });
         }, 50);
 
@@ -924,29 +886,28 @@ function addControlPanel(el, panelId, options = {}) {
         return null;
       }
 
-      const groupContent = groupElement.querySelector(".control-group-content");
+      const groupContent = groupElement.querySelector('.control-group-content');
       if (groupContent) {
-        const controlDiv = document.createElement("div");
+        const controlDiv = document.createElement('div');
         if (controlId) {
           controlDiv.id = controlId;
         }
         controlDiv.className =
-          "panel-control-item group-control-item" +
-          (panelClass ? ` ${panelClass}` : "");
+          'panel-control-item group-control-item' + (panelClass ? ` ${panelClass}` : '');
 
         // Add section title if provided (for individual controls within groups)
         const sectionHTML = sectionTitle
           ? `<div class="control-section-title">${sectionTitle}</div>`
-          : "";
+          : '';
         controlDiv.innerHTML = sectionHTML + controlHTML;
 
         groupContent.appendChild(controlDiv);
 
         // Ensure new control has proper pointer events
         setTimeout(() => {
-          const allElements = controlDiv.querySelectorAll("*");
+          const allElements = controlDiv.querySelectorAll('*');
           allElements.forEach((el) => {
-            el.style.pointerEvents = "auto";
+            el.style.pointerEvents = 'auto';
           });
         }, 50);
 
@@ -955,11 +916,8 @@ function addControlPanel(el, panelId, options = {}) {
       return null;
     },
     removeControl: function (controlId) {
-      const controlElement = el.querySelector("#" + controlId);
-      if (
-        controlElement &&
-        controlElement.classList.contains("panel-control-item")
-      ) {
+      const controlElement = el.querySelector('#' + controlId);
+      if (controlElement && controlElement.classList.contains('panel-control-item')) {
         controlElement.remove();
         return;
       }
@@ -967,23 +925,23 @@ function addControlPanel(el, panelId, options = {}) {
     clear: function () {
       const panelContent = el.querySelector(`#${panelId}-content`);
       if (panelContent) {
-        panelContent.innerHTML = "";
+        panelContent.innerHTML = '';
       }
     },
     collapse: function () {
       const panelContent = el.querySelector(`#${panelId}-content`);
       const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
       if (panelContent) {
-        panelContent.style.display = "none";
-        if (collapseBtn) collapseBtn.textContent = "▶";
+        panelContent.style.display = 'none';
+        if (collapseBtn) collapseBtn.textContent = '▶';
       }
     },
     expand: function () {
       const panelContent = el.querySelector(`#${panelId}-content`);
       const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
       if (panelContent) {
-        panelContent.style.display = "flex";
-        if (collapseBtn) collapseBtn.textContent = "▼";
+        panelContent.style.display = 'flex';
+        if (collapseBtn) collapseBtn.textContent = '▼';
       }
     },
   };
@@ -1002,7 +960,7 @@ function addControlPanel(el, panelId, options = {}) {
         customControl.html,
         customControl.id || null,
         customControl.title || null,
-        "toro-custom-panel-control"
+        'toro-custom-panel-control'
       );
     });
   }
@@ -1073,98 +1031,65 @@ function addControlToPanel(el, panelId, controlConfig) {
   controlOptions.groupId = groupId;
 
   switch (controlType) {
-    case "timeline":
+    case 'timeline':
       // Timeline control will be added via the existing addTimelineControl function
       // The function will detect useControlPanel = true and add to the panel
       break;
 
-    case "speed":
+    case 'speed':
       // Speed control will be added via the existing addSpeedControl function
       // The function will detect useControlPanel = true and add to the panel
       break;
 
-    case "custom":
+    case 'custom':
       // Add custom HTML directly
       if (controlConfig.html || controlOptions.html) {
         // Look for controlId in the right places: options.controlId, controlConfig.controlId, controlConfig.id
         const customControlId =
-          controlOptions.controlId ||
-          controlConfig.controlId ||
-          controlConfig.id ||
-          null;
+          controlOptions.controlId || controlConfig.controlId || controlConfig.id || null;
         panel.addControl(
           controlConfig.html || controlOptions.html,
           customControlId,
           sectionTitle,
-          "toro-custom-panel-control",
+          'toro-custom-panel-control',
           groupId
         );
       }
       break;
 
-    case "cursor":
+    case 'cursor':
       // Add cursor coordinates control to panel
-      addCursorCoordinateControlToPanel(
-        widgetInstance,
-        panelId,
-        controlOptions,
-        sectionTitle
-      );
+      addCursorCoordinateControlToPanel(widgetInstance, panelId, controlOptions, sectionTitle);
       break;
 
-    case "zoom":
+    case 'zoom':
       // Add zoom control to panel
-      addZoomControlToPanel(
-        widgetInstance,
-        panelId,
-        controlOptions,
-        sectionTitle
-      );
+      addZoomControlToPanel(widgetInstance, panelId, controlOptions, sectionTitle);
       break;
 
-    case "draw":
+    case 'draw':
       // Add draw control to panel
       addDrawControlToPanel(el, panelId, controlOptions, sectionTitle);
       break;
 
-    case "tile-selector":
+    case 'tile-selector':
       // Add tile selector control to panel
-      addTileSelectorControlToPanel(
-        widgetInstance,
-        panelId,
-        controlOptions,
-        sectionTitle
-      );
+      addTileSelectorControlToPanel(widgetInstance, panelId, controlOptions, sectionTitle);
       break;
 
-    case "layer-selector":
+    case 'layer-selector':
       // Add layer selector control to panel
-      addLayerSelectorControlToPanel(
-        widgetInstance,
-        panelId,
-        controlOptions,
-        sectionTitle
-      );
+      addLayerSelectorControlToPanel(widgetInstance, panelId, controlOptions, sectionTitle);
       break;
 
-    case "cluster-toggle":
+    case 'cluster-toggle':
       // Add cluster toggle control to panel
-      addClusterToggleControlToPanel(
-        widgetInstance,
-        panelId,
-        controlOptions,
-        sectionTitle
-      );
+      addClusterToggleControlToPanel(widgetInstance, panelId, controlOptions, sectionTitle);
       break;
 
-    case "visibility-toggle":
+    case 'visibility-toggle':
       // Add visibility toggle control to panel
-      addVisibilityToggleControlToPanel(
-        widgetInstance,
-        panelId,
-        controlOptions,
-        sectionTitle
-      );
+      addVisibilityToggleControlToPanel(widgetInstance, panelId, controlOptions, sectionTitle);
       break;
 
     default:
@@ -1175,19 +1100,14 @@ function addControlToPanel(el, panelId, controlConfig) {
 /**
  * Add cursor coordinates control to a control panel
  */
-function addCursorCoordinateControlToPanel(
-  widgetInstance,
-  panelId,
-  options,
-  sectionTitle
-) {
+function addCursorCoordinateControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
 
   if (!panel) return;
 
-  const longLabel = options.longLabel || "Lng";
-  const latLabel = options.latLabel || "Lat";
+  const longLabel = options.longLabel || 'Lng';
+  const latLabel = options.latLabel || 'Lat';
 
   const html = `
     <div class="cursor-coords-control">
@@ -1224,17 +1144,13 @@ function addCursorCoordinateControlToPanel(
     html,
     `cursor-coords-${widgetInstance.getId()}`,
     sectionTitle,
-    "toro-cursor-coords-panel-control"
+    'toro-cursor-coords-panel-control'
   );
 
   // Add mouse move listener
-  map.on("mousemove", function (e) {
-    const lngElement = document.getElementById(
-      `cursor-lng-${widgetInstance.getId()}`
-    );
-    const latElement = document.getElementById(
-      `cursor-lat-${widgetInstance.getId()}`
-    );
+  map.on('mousemove', function (e) {
+    const lngElement = document.getElementById(`cursor-lng-${widgetInstance.getId()}`);
+    const latElement = document.getElementById(`cursor-lat-${widgetInstance.getId()}`);
 
     if (lngElement && latElement) {
       lngElement.textContent = e.lngLat.lng.toFixed(6);
@@ -1289,7 +1205,7 @@ function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
     html,
     `zoom-control-${widgetInstance.getId()}`,
     sectionTitle,
-    "toro-zoom-panel-control"
+    'toro-zoom-panel-control'
   );
 
   // Add event listeners
@@ -1298,17 +1214,17 @@ function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
       .getElement()
       .querySelector(`#zoom-control-${widgetInstance.getId()}`);
     if (container) {
-      const zoomInBtn = container.querySelector(".zoom-in-btn");
-      const zoomOutBtn = container.querySelector(".zoom-out-btn");
+      const zoomInBtn = container.querySelector('.zoom-in-btn');
+      const zoomOutBtn = container.querySelector('.zoom-out-btn');
 
       if (zoomInBtn) {
-        zoomInBtn.addEventListener("click", () => {
+        zoomInBtn.addEventListener('click', () => {
           map.zoomIn();
         });
       }
 
       if (zoomOutBtn) {
-        zoomOutBtn.addEventListener("click", () => {
+        zoomOutBtn.addEventListener('click', () => {
           map.zoomOut();
         });
       }
@@ -1332,17 +1248,17 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
     ? Array.isArray(options.modes[0])
       ? options.modes[0]
       : options.modes
-    : ["polygon", "trash"];
+    : ['polygon', 'trash'];
 
   // Use the existing addDrawControl function if draw control doesn't exist yet
   if (!mapElement.draw) {
     // Use addDrawControl to create the draw instance with proper setup
     addDrawControl(
       mapElement,
-      "top-left", // Position (will be hidden anyway)
+      'top-left', // Position (will be hidden anyway)
       modes,
-      options.activeColour || "#007cbf",
-      options.inactiveColour || "#999999",
+      options.activeColour || '#007cbf',
+      options.inactiveColour || '#999999',
       options.modeLabels || {},
       options.controlId
     );
@@ -1350,29 +1266,26 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
     // Hide the default MapboxDraw control UI since we're using panel buttons
     setTimeout(() => {
       // Find draw controls specifically within this map element
-      const drawControls = mapElement.querySelector(
-        ".mapboxgl-ctrl-group.mapboxgl-ctrl"
-      );
+      const drawControls = mapElement.querySelector('.mapboxgl-ctrl-group.mapboxgl-ctrl');
       if (
         drawControls &&
         drawControls.querySelector(
-          ".mapbox-gl-draw_polygon, .mapbox-gl-draw_trash, .mapbox-gl-draw_line"
+          '.mapbox-gl-draw_polygon, .mapbox-gl-draw_trash, .mapbox-gl-draw_line'
         )
       ) {
-        drawControls.style.display = "none";
+        drawControls.style.display = 'none';
       }
     }, 100);
   }
 
   // Create custom panel buttons that interact with the real draw control
   const modeLabels = options.modeLabels || {};
-  let buttonsHtml = "";
+  let buttonsHtml = '';
 
   modes.forEach((mode) => {
-    const label =
-      modeLabels[mode] || mode.charAt(0).toUpperCase() + mode.slice(1);
+    const label = modeLabels[mode] || mode.charAt(0).toUpperCase() + mode.slice(1);
     // Map mode names to MapboxDraw CSS classes and use proper CSS class styling
-    const modeClass = mode === "line" ? "line_string" : mode;
+    const modeClass = mode === 'line' ? 'line_string' : mode;
     buttonsHtml += `<button class="mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_${modeClass}" data-mode="${mode}" title="${label}"></button>`;
   });
 
@@ -1386,85 +1299,81 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
     html,
     `draw-control-${widgetInstance.getId()}`,
     sectionTitle,
-    "toro-draw-panel-control"
+    'toro-draw-panel-control'
   );
 
   // Add event listeners to make the buttons functional
   setTimeout(() => {
-    const drawPanel = document.getElementById(
-      `draw-control-panel-${widgetInstance.getId()}`
-    );
+    const drawPanel = document.getElementById(`draw-control-panel-${widgetInstance.getId()}`);
     if (drawPanel && mapElement.draw) {
-      const buttons = drawPanel.querySelectorAll(
-        ".mapbox-gl-draw_ctrl-draw-btn"
-      );
+      const buttons = drawPanel.querySelectorAll('.mapbox-gl-draw_ctrl-draw-btn');
 
       buttons.forEach((button) => {
-        button.addEventListener("click", function () {
-          const mode = this.getAttribute("data-mode");
+        button.addEventListener('click', function () {
+          const mode = this.getAttribute('data-mode');
 
           // Remove active class from all buttons
-          buttons.forEach((btn) => btn.classList.remove("active"));
+          buttons.forEach((btn) => btn.classList.remove('active'));
 
           // Handle different draw modes
-          if (mode === "polygon") {
-            this.classList.add("active");
-            mapElement.draw.changeMode("draw_polygon");
-          } else if (mode === "line") {
-            this.classList.add("active");
-            mapElement.draw.changeMode("draw_line_string");
-          } else if (mode === "trash") {
+          if (mode === 'polygon') {
+            this.classList.add('active');
+            mapElement.draw.changeMode('draw_polygon');
+          } else if (mode === 'line') {
+            this.classList.add('active');
+            mapElement.draw.changeMode('draw_line_string');
+          } else if (mode === 'trash') {
             // Delete all features
             const features = mapElement.draw.getAll();
             if (features.features.length > 0) {
               mapElement.draw.deleteAll();
             }
-          } else if (mode === "simple_select") {
-            this.classList.add("active");
-            mapElement.draw.changeMode("simple_select");
+          } else if (mode === 'simple_select') {
+            this.classList.add('active');
+            mapElement.draw.changeMode('simple_select');
           }
         });
       });
 
       // Listen for draw events to update button states
-      map.on("draw.modechange", function (e) {
-        buttons.forEach((btn) => btn.classList.remove("active"));
+      map.on('draw.modechange', function (e) {
+        buttons.forEach((btn) => btn.classList.remove('active'));
 
-        if (e.mode === "draw_polygon") {
+        if (e.mode === 'draw_polygon') {
           const polygonBtn = drawPanel.querySelector('[data-mode="polygon"]');
-          if (polygonBtn) polygonBtn.classList.add("active");
-        } else if (e.mode === "draw_line_string") {
+          if (polygonBtn) polygonBtn.classList.add('active');
+        } else if (e.mode === 'draw_line_string') {
           const lineBtn = drawPanel.querySelector('[data-mode="line"]');
-          if (lineBtn) lineBtn.classList.add("active");
+          if (lineBtn) lineBtn.classList.add('active');
         }
       });
 
       // Add Shiny event handlers if in Shiny mode
       if (HTMLWidgets.shinyMode) {
         // Trigger Shiny input when a feature is created
-        map.on("draw.create", function (e) {
+        map.on('draw.create', function (e) {
           const feature = e.features[0];
           const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + "_shape_created", geojson, {
-            priority: "event",
+          Shiny.setInputValue(mapElement.id + '_shape_created', geojson, {
+            priority: 'event',
           });
         });
 
         // Trigger Shiny input when a feature is deleted
-        map.on("draw.delete", function (e) {
+        map.on('draw.delete', function (e) {
           const feature = e.features[0];
           const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + "_shape_deleted", geojson, {
-            priority: "event",
+          Shiny.setInputValue(mapElement.id + '_shape_deleted', geojson, {
+            priority: 'event',
           });
         });
 
         // Trigger Shiny input when a feature is updated
-        map.on("draw.update", function (e) {
+        map.on('draw.update', function (e) {
           const feature = e.features[0];
           const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + "_shape_updated", geojson, {
-            priority: "event",
+          Shiny.setInputValue(mapElement.id + '_shape_updated', geojson, {
+            priority: 'event',
           });
         });
       }
@@ -1475,12 +1384,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
 /**
  * Add tile selector control to a control panel
  */
-function addTileSelectorControlToPanel(
-  widgetInstance,
-  panelId,
-  options,
-  sectionTitle
-) {
+function addTileSelectorControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
 
@@ -1498,18 +1402,14 @@ function addTileSelectorControlToPanel(
   // Create the tile change callback
   const tileChangeCallback = function (selectedTile) {
     // Use the existing setTileLayer function if available
-    if (typeof setTileLayer === "function") {
+    if (typeof setTileLayer === 'function') {
       const mapElement = document.getElementById(widgetInstance.id);
       setTileLayer(mapElement, selectedTile);
     }
   };
 
   // Add the tile selector control
-  addTileSelectorControl(
-    widgetInstance,
-    tileChangeCallback,
-    tileSelectorOptions
-  );
+  addTileSelectorControl(widgetInstance, tileChangeCallback, tileSelectorOptions);
 }
 
 /**
@@ -1542,12 +1442,10 @@ function addTimelineControl(
   // Calculate date range and ticks
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
-  const totalDays = Math.ceil(
-    (endDateObj - startDateObj) / (1000 * 60 * 60 * 24)
-  );
+  const totalDays = Math.ceil((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
 
   // Generate axis ticks with dynamic spacing to prevent overlap
-  let axisHTML = "";
+  let axisHTML = '';
   const maxTicks = options.maxTicks || 3; // Maximum number of labeled ticks to prevent overlap
 
   // Calculate smart tick positions using maxTicks
@@ -1574,21 +1472,17 @@ function addTimelineControl(
   }
 
   // Remove duplicates and sort
-  const uniquePositions = [...new Set(majorTickPositions)].sort(
-    (a, b) => a - b
-  );
+  const uniquePositions = [...new Set(majorTickPositions)].sort((a, b) => a - b);
 
   // Create major ticks (with labels)
   uniquePositions.forEach((dayIndex) => {
-    const tickDate = new Date(
-      startDateObj.getTime() + dayIndex * 24 * 60 * 60 * 1000
-    );
+    const tickDate = new Date(startDateObj.getTime() + dayIndex * 24 * 60 * 60 * 1000);
     const position = (dayIndex / totalDays) * 100;
 
-    const shortDate = tickDate.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: totalDays > 365 ? "numeric" : undefined,
+    const shortDate = tickDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: totalDays > 365 ? 'numeric' : undefined,
     });
 
     axisHTML += `
@@ -1646,43 +1540,35 @@ function addTimelineControl(
   const useControlPanel = options.useControlPanel || false;
   const panelId = options.panelId;
 
-  if (
-    useControlPanel &&
-    panelId &&
-    map._controlPanels &&
-    map._controlPanels[panelId]
-  ) {
+  if (useControlPanel && panelId && map._controlPanels && map._controlPanels[panelId]) {
     // Add to existing control panel
     const groupId = options.groupId || null;
     map._controlPanels[panelId].addControl(
       html,
       timelineContainerId,
       options.panelTitle,
-      "toro-timeline-panel-control",
+      'toro-timeline-panel-control',
       groupId
     );
   } else {
     // Add as standalone control
-    addCustomControl(map, controlId, html, options.position || "bottom-left");
+    addCustomControl(map, controlId, html, options.position || 'bottom-left');
   }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
     const timelineControl = document.getElementById(controlId);
     if (timelineControl) {
-      timelineControl.style.pointerEvents = "auto";
-      timelineControl.style.zIndex = "1000";
+      timelineControl.style.pointerEvents = 'auto';
+      timelineControl.style.zIndex = '1000';
 
       // Set pointer events on all child elements
-      const allElements = timelineControl.querySelectorAll("*");
+      const allElements = timelineControl.querySelectorAll('*');
       allElements.forEach((el) => {
-        if (
-          el.tagName === "SPAN" &&
-          el.classList.contains("timeline-date-label")
-        ) {
-          el.style.pointerEvents = "none";
+        if (el.tagName === 'SPAN' && el.classList.contains('timeline-date-label')) {
+          el.style.pointerEvents = 'none';
         } else {
-          el.style.pointerEvents = "auto";
+          el.style.pointerEvents = 'auto';
         }
       });
     }
@@ -1703,24 +1589,24 @@ function addTimelineControl(
     // Debounce rapid clicks (ignore clicks within 200ms)
     const now = Date.now();
     if (now - lastClickTime < 200) {
-      console.log("Ignoring rapid click");
+      console.log('Ignoring rapid click');
       return;
     }
     lastClickTime = now;
 
     playing = !playing;
     if (playPauseBtn) {
-      playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+      playPauseBtn.innerHTML = playing ? '⏸' : '▶';
     }
 
     // Disable/enable slider based on play state
     if (timelineSlider) {
       timelineSlider.disabled = playing;
-      timelineSlider.style.opacity = playing ? "0.5" : "1";
-      timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
+      timelineSlider.style.opacity = playing ? '0.5' : '1';
+      timelineSlider.style.cursor = playing ? 'not-allowed' : 'pointer';
     }
 
-    if (typeof onPlayPause === "function") {
+    if (typeof onPlayPause === 'function') {
       onPlayPause(playing);
     }
   };
@@ -1729,7 +1615,7 @@ function addTimelineControl(
     e.stopPropagation();
     updateSliderAppearance();
 
-    if (!playing && typeof onSliderChange === "function") {
+    if (!playing && typeof onSliderChange === 'function') {
       const progress = parseFloat(this.value) / 100;
       onSliderChange(progress);
     }
@@ -1753,10 +1639,10 @@ function addTimelineControl(
 
     if (currentDateDisplay) {
       // Update date text
-      const formattedDate = currentDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+      const formattedDate = currentDate.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       });
       currentDateDisplay.textContent = formattedDate;
 
@@ -1764,9 +1650,7 @@ function addTimelineControl(
       currentDateDisplay.style.left = `${progress * 100}%`;
 
       // Update slider background to show progress
-      const progressColor = playing
-        ? "var(--toro-secondary)"
-        : "var(--toro-primary)";
+      const progressColor = playing ? 'var(--toro-secondary)' : 'var(--toro-primary)';
       timelineSlider.style.background = `linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${
         progress * 100
       }%, #ddd ${progress * 100}%, #ddd 100%)`;
@@ -1778,30 +1662,28 @@ function addTimelineControl(
     timelineSlider = document.getElementById(sliderId);
 
     if (!playPauseBtn || !timelineSlider) {
-      console.warn("Timeline control elements not found, retrying...");
+      console.warn('Timeline control elements not found, retrying...');
       setTimeout(setupEventHandlers, 50);
       return;
     }
 
     // Check if timeline should be disabled (no animation callbacks provided)
     const isTimelineDisabled =
-      typeof onPlayPause !== "function" && typeof onSliderChange !== "function";
+      typeof onPlayPause !== 'function' && typeof onSliderChange !== 'function';
 
     if (isTimelineDisabled) {
       // Disable timeline controls when no animation is connected
       // Add disabled class to the timeline control container
-      const timelineContainer = timelineSlider.closest(
-        ".timeline-control-container"
-      );
+      const timelineContainer = timelineSlider.closest('.timeline-control-container');
       if (timelineContainer) {
-        timelineContainer.classList.add("disabled");
+        timelineContainer.classList.add('disabled');
       }
 
       playPauseBtn.disabled = true;
-      playPauseBtn.title = "Connect an animation to enable timeline controls";
+      playPauseBtn.title = 'Connect an animation to enable timeline controls';
 
       timelineSlider.disabled = true;
-      timelineSlider.title = "Connect an animation to enable timeline controls";
+      timelineSlider.title = 'Connect an animation to enable timeline controls';
 
       // Still update appearance but don't add interactive event handlers
       setTimeout(updateSliderAppearance, 150);
@@ -1809,14 +1691,14 @@ function addTimelineControl(
     }
 
     // Use event handlers defined outside this function
-    playPauseBtn.addEventListener("click", handlePlayPause);
-    playPauseBtn.addEventListener("mousedown", function (e) {
+    playPauseBtn.addEventListener('click', handlePlayPause);
+    playPauseBtn.addEventListener('mousedown', function (e) {
       e.stopPropagation();
     });
 
     // Use only addEventListener to avoid duplicate events
-    timelineSlider.addEventListener("input", handleSliderChange);
-    timelineSlider.addEventListener("mousedown", function (e) {
+    timelineSlider.addEventListener('input', handleSliderChange);
+    timelineSlider.addEventListener('mousedown', function (e) {
       e.stopPropagation();
     });
 
@@ -1838,39 +1720,36 @@ function addTimelineControl(
     updateAppearance: updateSliderAppearance,
     startDate: startDateObj,
     endDate: endDateObj,
-    isDisabled:
-      typeof onPlayPause !== "function" && typeof onSliderChange !== "function",
+    isDisabled: typeof onPlayPause !== 'function' && typeof onSliderChange !== 'function',
     enable: function (newOnPlayPause, newOnSliderChange) {
       // Enable the timeline control and set up event handlers
       if (playPauseBtn && timelineSlider) {
         // Remove disabled class and enable controls
-        const timelineContainer = timelineSlider.closest(
-          ".timeline-control-container"
-        );
+        const timelineContainer = timelineSlider.closest('.timeline-control-container');
         if (timelineContainer) {
-          timelineContainer.classList.remove("disabled");
+          timelineContainer.classList.remove('disabled');
         }
 
         playPauseBtn.disabled = false;
-        playPauseBtn.title = "";
+        playPauseBtn.title = '';
 
         timelineSlider.disabled = false;
-        timelineSlider.title = "";
+        timelineSlider.title = '';
 
         // Update callbacks
         onPlayPause = newOnPlayPause;
         onSliderChange = newOnSliderChange;
 
         // Remove existing event listeners to avoid duplicates
-        playPauseBtn.removeEventListener("click", handlePlayPause);
-        timelineSlider.removeEventListener("input", handleSliderChange);
+        playPauseBtn.removeEventListener('click', handlePlayPause);
+        timelineSlider.removeEventListener('input', handleSliderChange);
 
         // Set up event handlers with new callbacks
-        if (typeof onPlayPause === "function") {
-          playPauseBtn.addEventListener("click", handlePlayPause);
+        if (typeof onPlayPause === 'function') {
+          playPauseBtn.addEventListener('click', handlePlayPause);
         }
-        if (typeof onSliderChange === "function") {
-          timelineSlider.addEventListener("input", handleSliderChange);
+        if (typeof onSliderChange === 'function') {
+          timelineSlider.addEventListener('input', handleSliderChange);
         }
 
         this.isDisabled = false;
@@ -1880,19 +1759,16 @@ function addTimelineControl(
       // Disable the timeline control
       if (playPauseBtn && timelineSlider) {
         // Add disabled class
-        const timelineContainer = timelineSlider.closest(
-          ".timeline-control-container"
-        );
+        const timelineContainer = timelineSlider.closest('.timeline-control-container');
         if (timelineContainer) {
-          timelineContainer.classList.add("disabled");
+          timelineContainer.classList.add('disabled');
         }
 
         playPauseBtn.disabled = true;
-        playPauseBtn.title = "Connect an animation to enable timeline controls";
+        playPauseBtn.title = 'Connect an animation to enable timeline controls';
 
         timelineSlider.disabled = true;
-        timelineSlider.title =
-          "Connect an animation to enable timeline controls";
+        timelineSlider.title = 'Connect an animation to enable timeline controls';
 
         this.isDisabled = true;
       }
@@ -1914,12 +1790,12 @@ function addTimelineControl(
     setPlaying: function (isPlaying) {
       playing = isPlaying;
       if (playPauseBtn) {
-        playPauseBtn.innerHTML = playing ? "⏸" : "▶";
+        playPauseBtn.innerHTML = playing ? '⏸' : '▶';
       }
       if (timelineSlider) {
         timelineSlider.disabled = playing;
-        timelineSlider.style.opacity = playing ? "0.5" : "1";
-        timelineSlider.style.cursor = playing ? "not-allowed" : "pointer";
+        timelineSlider.style.opacity = playing ? '0.5' : '1';
+        timelineSlider.style.cursor = playing ? 'not-allowed' : 'pointer';
         updateSliderAppearance();
       }
     },
@@ -1927,17 +1803,15 @@ function addTimelineControl(
       // Update the timeline control with new date range and rebuild the axis
       const startDateObj = new Date(newStartDate);
       const endDateObj = new Date(newEndDate);
-      const totalDays = Math.ceil(
-        (endDateObj - startDateObj) / (1000 * 60 * 60 * 24)
-      );
+      const totalDays = Math.ceil((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
 
       // Update the current date display
       const currentDateDisplay = document.getElementById(currentDateId);
       if (currentDateDisplay) {
-        const formattedDate = startDateObj.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
+        const formattedDate = startDateObj.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
         });
         currentDateDisplay.textContent = formattedDate;
       }
@@ -1953,7 +1827,7 @@ function addTimelineControl(
       );
       if (axisContainer) {
         // Remove existing ticks
-        const existingTicks = axisContainer.querySelectorAll(".timeline-tick");
+        const existingTicks = axisContainer.querySelectorAll('.timeline-tick');
         existingTicks.forEach((tick) => tick.remove());
 
         // Generate new axis ticks
@@ -1967,33 +1841,27 @@ function addTimelineControl(
           majorTickPositions.push(0);
           const intermediateCount = maxTicks - 2;
           for (let i = 1; i <= intermediateCount; i++) {
-            const position = Math.floor(
-              (totalDays * i) / (intermediateCount + 1)
-            );
+            const position = Math.floor((totalDays * i) / (intermediateCount + 1));
             majorTickPositions.push(position);
           }
           majorTickPositions.push(totalDays);
         }
 
-        const uniquePositions = [...new Set(majorTickPositions)].sort(
-          (a, b) => a - b
-        );
+        const uniquePositions = [...new Set(majorTickPositions)].sort((a, b) => a - b);
 
         // Create major ticks
         uniquePositions.forEach((dayIndex) => {
-          const tickDate = new Date(
-            startDateObj.getTime() + dayIndex * 24 * 60 * 60 * 1000
-          );
+          const tickDate = new Date(startDateObj.getTime() + dayIndex * 24 * 60 * 60 * 1000);
           const position = (dayIndex / totalDays) * 100;
 
-          const shortDate = tickDate.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: totalDays > 365 ? "numeric" : undefined,
+          const shortDate = tickDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: totalDays > 365 ? 'numeric' : undefined,
           });
 
-          const tickElement = document.createElement("div");
-          tickElement.className = "timeline-tick major-tick";
+          const tickElement = document.createElement('div');
+          tickElement.className = 'timeline-tick major-tick';
           tickElement.style.left = `${position}%`;
           tickElement.innerHTML = `
             <div class="timeline-tick-line"></div>
@@ -2007,8 +1875,8 @@ function addTimelineControl(
         for (let i = minorTickInterval; i < totalDays; i += minorTickInterval) {
           if (!uniquePositions.includes(i)) {
             const position = (i / totalDays) * 100;
-            const tickElement = document.createElement("div");
-            tickElement.className = "timeline-tick minor-tick";
+            const tickElement = document.createElement('div');
+            tickElement.className = 'timeline-tick minor-tick';
             tickElement.style.left = `${position}%`;
             tickElement.innerHTML = '<div class="timeline-tick-line"></div>';
             axisContainer.appendChild(tickElement);
@@ -2044,18 +1912,17 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
 
   // Set default options
   const speedValues = options.values || [0.5, 1, 2];
-  const speedLabels = options.labels || ["Slow", "Normal", "Fast"];
-  const defaultIndex =
-    options.defaultIndex !== undefined ? options.defaultIndex : 1;
+  const speedLabels = options.labels || ['Slow', 'Normal', 'Fast'];
+  const defaultIndex = options.defaultIndex !== undefined ? options.defaultIndex : 1;
 
   // Validate inputs
   if (speedValues.length !== speedLabels.length) {
-    console.warn("Speed values and labels arrays must have the same length");
+    console.warn('Speed values and labels arrays must have the same length');
     return;
   }
 
   if (defaultIndex < 0 || defaultIndex >= speedValues.length) {
-    console.warn("Default index is out of range");
+    console.warn('Default index is out of range');
     return;
   }
 
@@ -2074,15 +1941,13 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
       </div>
     `;
     })
-    .join("");
+    .join('');
 
   // HTML for the speed control
   const html = `
     <div class="speed-control-container">
       <div class="speed-slider-container">
-        <input type="range" id="${speedSliderId}" min="0" max="${
-    speedValues.length - 1
-  }" 
+        <input type="range" id="${speedSliderId}" min="0" max="${speedValues.length - 1}" 
                value="${defaultIndex}" step="1"  />
         ${ticksHTML}
       </div>
@@ -2093,42 +1958,32 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
   const useControlPanel = options.useControlPanel || false;
   const panelId = options.panelId;
 
-  if (
-    useControlPanel &&
-    panelId &&
-    map._controlPanels &&
-    map._controlPanels[panelId]
-  ) {
+  if (useControlPanel && panelId && map._controlPanels && map._controlPanels[panelId]) {
     // Add to existing control panel
     const groupId = options.groupId || null;
     map._controlPanels[panelId].addControl(
       html,
       speedControlId,
       options.panelTitle,
-      "toro-speed-panel-control",
+      'toro-speed-panel-control',
       groupId
     );
   } else {
     // Add as standalone control
-    addCustomControl(
-      map,
-      speedControlId,
-      html,
-      options.position || "top-right"
-    );
+    addCustomControl(map, speedControlId, html, options.position || 'top-right');
   }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
     const speedControl = document.getElementById(speedControlId);
     if (speedControl) {
-      speedControl.style.pointerEvents = "auto";
-      speedControl.style.zIndex = "1000";
+      speedControl.style.pointerEvents = 'auto';
+      speedControl.style.zIndex = '1000';
 
       // Set pointer events on all child elements
-      const allElements = speedControl.querySelectorAll("*");
+      const allElements = speedControl.querySelectorAll('*');
       allElements.forEach((el) => {
-        el.style.pointerEvents = "auto";
+        el.style.pointerEvents = 'auto';
       });
     }
   }, 100);
@@ -2149,7 +2004,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     currentSpeed = speed;
     currentIndex = sliderIndex;
 
-    if (typeof onSpeedChange === "function") {
+    if (typeof onSpeedChange === 'function') {
       onSpeedChange(speed);
     }
   };
@@ -2158,33 +2013,33 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     const speedSlider = document.getElementById(speedSliderId);
 
     if (!speedSlider) {
-      console.warn("Speed control slider not found, retrying...");
+      console.warn('Speed control slider not found, retrying...');
       setTimeout(setupEventHandlers, 50);
       return;
     }
 
     // Check if speed control should be disabled (no animation callback provided)
-    const isSpeedDisabled = typeof onSpeedChange !== "function";
+    const isSpeedDisabled = typeof onSpeedChange !== 'function';
 
     if (isSpeedDisabled) {
       // Disable speed control when no animation is connected
       // Add disabled class to the speed control container
-      const speedContainer = speedSlider.closest(".speed-control-container");
+      const speedContainer = speedSlider.closest('.speed-control-container');
       if (speedContainer) {
-        speedContainer.classList.add("disabled");
+        speedContainer.classList.add('disabled');
       }
 
       speedSlider.disabled = true;
-      speedSlider.title = "Connect an animation to enable speed controls";
+      speedSlider.title = 'Connect an animation to enable speed controls';
 
       // Don't add interactive event handlers when disabled
       return;
     }
 
     // Add change handler to speed slider using the handler defined outside this function
-    speedSlider.addEventListener("input", handleSpeedChange);
+    speedSlider.addEventListener('input', handleSpeedChange);
 
-    speedSlider.addEventListener("mousedown", function (e) {
+    speedSlider.addEventListener('mousedown', function (e) {
       e.stopPropagation();
     });
   }
@@ -2204,10 +2059,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     setSpeed: function (speed) {
       // Find the closest available speed option
       const closestIndex = speedValues.reduce((closest, current, index) => {
-        return Math.abs(current - speed) <
-          Math.abs(speedValues[closest] - speed)
-          ? index
-          : closest;
+        return Math.abs(current - speed) < Math.abs(speedValues[closest] - speed) ? index : closest;
       }, 0);
 
       currentSpeed = speedValues[closestIndex];
@@ -2219,7 +2071,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
         speedSlider.value = closestIndex;
       }
 
-      if (typeof onSpeedChange === "function") {
+      if (typeof onSpeedChange === 'function') {
         onSpeedChange(currentSpeed);
       }
     },
@@ -2234,7 +2086,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
           speedSlider.value = index;
         }
 
-        if (typeof onSpeedChange === "function") {
+        if (typeof onSpeedChange === 'function') {
           onSpeedChange(currentSpeed);
         }
       }
@@ -2244,23 +2096,23 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
       const speedSlider = document.getElementById(speedSliderId);
       if (speedSlider) {
         // Remove disabled class and enable control
-        const speedContainer = speedSlider.closest(".speed-control-container");
+        const speedContainer = speedSlider.closest('.speed-control-container');
         if (speedContainer) {
-          speedContainer.classList.remove("disabled");
+          speedContainer.classList.remove('disabled');
         }
 
         speedSlider.disabled = false;
-        speedSlider.title = "";
+        speedSlider.title = '';
 
         // Update callback
         onSpeedChange = newOnSpeedChange;
 
         // Remove existing event listener to avoid duplicates
-        speedSlider.removeEventListener("input", handleSpeedChange);
+        speedSlider.removeEventListener('input', handleSpeedChange);
 
         // Set up event handler with new callback
-        if (typeof onSpeedChange === "function") {
-          speedSlider.addEventListener("input", handleSpeedChange);
+        if (typeof onSpeedChange === 'function') {
+          speedSlider.addEventListener('input', handleSpeedChange);
         }
 
         this.isDisabled = false;
@@ -2271,18 +2123,18 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
       const speedSlider = document.getElementById(speedSliderId);
       if (speedSlider) {
         // Add disabled class
-        const speedContainer = speedSlider.closest(".speed-control-container");
+        const speedContainer = speedSlider.closest('.speed-control-container');
         if (speedContainer) {
-          speedContainer.classList.add("disabled");
+          speedContainer.classList.add('disabled');
         }
 
         speedSlider.disabled = true;
-        speedSlider.title = "Connect an animation to enable speed controls";
+        speedSlider.title = 'Connect an animation to enable speed controls';
 
         this.isDisabled = true;
       }
     },
-    isDisabled: typeof onSpeedChange !== "function",
+    isDisabled: typeof onSpeedChange !== 'function',
   };
 }
 
@@ -2306,11 +2158,8 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   const map = widgetInstance.getMap();
 
   // Set default options - get available tiles from the map's loaded tiles
-  const mapElement = document.querySelector(
-    `[data-for="${widgetInstance.getId()}"]`
-  );
-  const loadedTiles =
-    mapElement?.tileLayers || options.availableTiles || map.getAvailableTiles();
+  const mapElement = document.querySelector(`[data-for="${widgetInstance.getId()}"]`);
+  const loadedTiles = mapElement?.tileLayers || options.availableTiles || map.getAvailableTiles();
   const availableTiles = options.availableTiles || loadedTiles;
   const labels = options.labels || {};
 
@@ -2318,21 +2167,18 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   const tileSelectorId = `tile-selector-${widgetInstance.getId()}`;
 
   // Use current active tile as default, falling back to first available tile
-  const activeTile = widgetInstance.getCurrentTiles
-    ? widgetInstance.getCurrentTiles()
-    : null;
+  const activeTile = widgetInstance.getCurrentTiles ? widgetInstance.getCurrentTiles() : null;
   const defaultTile =
-    options.defaultTile ||
-    (availableTiles.includes(activeTile) ? activeTile : availableTiles[0]);
+    options.defaultTile || (availableTiles.includes(activeTile) ? activeTile : availableTiles[0]);
 
   // Generate select options HTML
   const selectOptions = availableTiles
     .map((tileId) => {
       const label = labels[tileId] || tileId;
-      const selected = tileId === defaultTile ? "selected" : "";
+      const selected = tileId === defaultTile ? 'selected' : '';
       return `<option value="${tileId}" ${selected}>${label}</option>`;
     })
-    .join("");
+    .join('');
 
   // HTML for the control
   const html = `
@@ -2390,43 +2236,26 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   const panelId = options.panelId;
   const selectControlId = `tile-selector-control-${widgetInstance.getId()}`;
 
-  if (
-    useControlPanel &&
-    panelId &&
-    map._controlPanels &&
-    map._controlPanels[panelId]
-  ) {
+  if (useControlPanel && panelId && map._controlPanels && map._controlPanels[panelId]) {
     // Add to existing control panel
     const groupId = options.groupId || null;
-    addHtmlToPanel(
-      widgetInstance,
-      panelId,
-      html,
-      options.panelTitle,
-      null,
-      groupId
-    );
+    addHtmlToPanel(widgetInstance, panelId, html, options.panelTitle, null, groupId);
   } else {
     // Add as standalone control
-    addCustomControl(
-      widgetInstance,
-      selectControlId,
-      html,
-      options.position || "top-right"
-    );
+    addCustomControl(widgetInstance, selectControlId, html, options.position || 'top-right');
   }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
     const tileSelectorControl = document.getElementById(selectControlId);
     if (tileSelectorControl) {
-      tileSelectorControl.style.pointerEvents = "auto";
-      tileSelectorControl.style.zIndex = "1000";
+      tileSelectorControl.style.pointerEvents = 'auto';
+      tileSelectorControl.style.zIndex = '1000';
 
       // Set pointer events on all child elements
-      const allElements = tileSelectorControl.querySelectorAll("*");
+      const allElements = tileSelectorControl.querySelectorAll('*');
       allElements.forEach((el) => {
-        el.style.pointerEvents = "auto";
+        el.style.pointerEvents = 'auto';
       });
     }
   }, 100);
@@ -2443,7 +2272,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     const selectedTile = this.value;
     currentTile = selectedTile;
 
-    if (typeof onTileChange === "function") {
+    if (typeof onTileChange === 'function') {
       onTileChange(selectedTile);
     }
   };
@@ -2451,34 +2280,32 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   const tileSelector = document.getElementById(tileSelectorId);
   function setupEventHandlers() {
     if (!tileSelector) {
-      console.warn("Tile selector control not found, retrying...");
+      console.warn('Tile selector control not found, retrying...');
       setTimeout(setupEventHandlers, 50);
       return;
     }
 
     // Check if tile selector should be disabled (no tile change callback provided)
-    const isTileSelectorDisabled = typeof onTileChange !== "function";
+    const isTileSelectorDisabled = typeof onTileChange !== 'function';
 
     if (isTileSelectorDisabled) {
       // Disable tile selector when no callback is connected
-      const tileSelectorContainer = tileSelector.closest(
-        ".tile-selector-container"
-      );
+      const tileSelectorContainer = tileSelector.closest('.tile-selector-container');
       if (tileSelectorContainer) {
-        tileSelectorContainer.classList.add("disabled");
+        tileSelectorContainer.classList.add('disabled');
       }
 
       tileSelector.disabled = true;
-      tileSelector.title = "Tile switching is not available";
+      tileSelector.title = 'Tile switching is not available';
 
       // Don't add interactive event handlers when disabled
       return;
     }
 
     // Add change handler to tile selector
-    tileSelector.addEventListener("change", handleTileChange);
+    tileSelector.addEventListener('change', handleTileChange);
 
-    tileSelector.addEventListener("mousedown", function (e) {
+    tileSelector.addEventListener('mousedown', function (e) {
       e.stopPropagation();
     });
   }
@@ -2504,7 +2331,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
           tileSelector.value = tileId;
         }
 
-        if (typeof onTileChange === "function") {
+        if (typeof onTileChange === 'function') {
           onTileChange(currentTile);
         }
       }
@@ -2514,25 +2341,23 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
       const tileSelector = document.getElementById(tileSelectorId);
       if (tileSelector) {
         // Remove disabled class and enable control
-        const tileSelectorContainer = tileSelector.closest(
-          ".tile-selector-container"
-        );
+        const tileSelectorContainer = tileSelector.closest('.tile-selector-container');
         if (tileSelectorContainer) {
-          tileSelectorContainer.classList.remove("disabled");
+          tileSelectorContainer.classList.remove('disabled');
         }
 
         tileSelector.disabled = false;
-        tileSelector.title = "";
+        tileSelector.title = '';
 
         // Update callback
         onTileChange = newOnTileChange;
 
         // Remove existing event listener to avoid duplicates
-        tileSelector.removeEventListener("change", handleTileChange);
+        tileSelector.removeEventListener('change', handleTileChange);
 
         // Set up event handler with new callback
-        if (typeof onTileChange === "function") {
-          tileSelector.addEventListener("change", handleTileChange);
+        if (typeof onTileChange === 'function') {
+          tileSelector.addEventListener('change', handleTileChange);
         }
 
         this.isDisabled = false;
@@ -2543,20 +2368,18 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
       const tileSelector = document.getElementById(tileSelectorId);
       if (tileSelector) {
         // Add disabled class
-        const tileSelectorContainer = tileSelector.closest(
-          ".tile-selector-container"
-        );
+        const tileSelectorContainer = tileSelector.closest('.tile-selector-container');
         if (tileSelectorContainer) {
-          tileSelectorContainer.classList.add("disabled");
+          tileSelectorContainer.classList.add('disabled');
         }
 
         tileSelector.disabled = true;
-        tileSelector.title = "Tile switching is not available";
+        tileSelector.title = 'Tile switching is not available';
 
         this.isDisabled = true;
       }
     },
-    isDisabled: typeof onTileChange !== "function",
+    isDisabled: typeof onTileChange !== 'function',
   };
 }
 
@@ -2583,13 +2406,13 @@ function generateToggleInputHtml(
   useInlineHandler = false,
   includeWrapper = false
 ) {
-  const dataAttribute = type === "cluster" ? "data-clustered" : "data-visible";
+  const dataAttribute = type === 'cluster' ? 'data-clustered' : 'data-visible';
 
   const onclickHandler = useInlineHandler
     ? `onclick="handle${
-        type === "cluster" ? "Cluster" : "Visibility"
+        type === 'cluster' ? 'Cluster' : 'Visibility'
       }Toggle('${layerId}', '${mapId}', this)"`
-    : "";
+    : '';
 
   const toggleHtml = `
     <label class="toro-toggle" 
@@ -2597,21 +2420,17 @@ function generateToggleInputHtml(
            ${dataAttribute}="${initialState}"
            
            ${onclickHandler}>
-           <span class="toro-toggle-label">${leftLabel || ""}</span>
-      <input class="toro-toggle-checkbox" type="checkbox" ${
-        initialState ? "checked" : ""
-      }>
-      <div class="toro-toggle-switch${initialState ? " checked" : ""}"></div>
-      <span class="toro-toggle-label">${rightLabel || ""}</span>
+           <span class="toro-toggle-label">${leftLabel || ''}</span>
+      <input class="toro-toggle-checkbox" type="checkbox" ${initialState ? 'checked' : ''}>
+      <div class="toro-toggle-switch${initialState ? ' checked' : ''}"></div>
+      <span class="toro-toggle-label">${rightLabel || ''}</span>
     </label>
   `;
 
   // For panels, wrap in the same control container as standalone controls
   if (includeWrapper) {
     const containerClass =
-      type === "cluster"
-        ? "cluster-toggle-control"
-        : "visibility-toggle-control";
+      type === 'cluster' ? 'cluster-toggle-control' : 'visibility-toggle-control';
     return `
       <div class="toro-ctrl toro-toggle-container ${containerClass}">
         ${toggleHtml}
@@ -2639,28 +2458,25 @@ function addClusterToggleControl(
   map,
   controlId,
   layerId,
-  leftLabel = "Toggle Clustering",
+  leftLabel = 'Toggle Clustering',
   rightLabel = null,
   initialState = false,
-  position = "top-right",
+  position = 'top-right',
   widgetInstance = null
 ) {
   // Generate proper namespaced ID if widgetInstance is available
-  const finalControlId = widgetInstance
-    ? `${controlId}-${widgetInstance.getId()}`
-    : controlId;
+  const finalControlId = widgetInstance ? `${controlId}-${widgetInstance.getId()}` : controlId;
 
   class ClusterToggleControl {
     onAdd(mapInstance) {
-      this._container = document.createElement("div");
+      this._container = document.createElement('div');
       this._container.id = finalControlId;
-      this._container.className =
-        "toro-ctrl toro-toggle-container cluster-toggle-control";
+      this._container.className = 'toro-ctrl toro-toggle-container cluster-toggle-control';
 
       // Use shared HTML generator
-      const mapId = widgetInstance ? widgetInstance.getId() : "standalone";
+      const mapId = widgetInstance ? widgetInstance.getId() : 'standalone';
       const buttonHtml = generateToggleInputHtml(
-        "cluster",
+        'cluster',
         layerId,
         leftLabel,
         rightLabel,
@@ -2671,53 +2487,53 @@ function addClusterToggleControl(
       this._container.innerHTML = buttonHtml;
 
       // Get reference to the toggle elements
-      this._toggle = this._container.querySelector(".toro-toggle");
-      this._checkbox = this._container.querySelector(".toro-toggle-checkbox");
+      this._toggle = this._container.querySelector('.toro-toggle');
+      this._checkbox = this._container.querySelector('.toro-toggle-checkbox');
 
       if (!this._toggle || !this._checkbox) {
-        console.error("Cluster toggle elements not found!");
+        console.error('Cluster toggle elements not found!');
         return this._container;
       }
 
       // Listen for both checkbox change and label click events
-      this._checkbox.addEventListener("change", () => {
+      this._checkbox.addEventListener('change', () => {
         const newState = this._checkbox.checked;
 
         // Toggle clustering
         toggleLayerClustering(mapInstance, layerId, newState);
 
         // Update toggle state
-        this._toggle.setAttribute("data-clustered", newState.toString());
+        this._toggle.setAttribute('data-clustered', newState.toString());
         this._checkbox.checked = newState;
 
         // Force visual update by managing CSS classes directly
-        const switchElement = this._toggle.querySelector(".toro-toggle-switch");
+        const switchElement = this._toggle.querySelector('.toro-toggle-switch');
         if (switchElement) {
           if (newState) {
-            switchElement.classList.add("checked");
+            switchElement.classList.add('checked');
           } else {
-            switchElement.classList.remove("checked");
+            switchElement.classList.remove('checked');
           }
         }
 
         this._updateToggleState(newState);
 
         // Emit custom event for external listeners
-        const event = new CustomEvent("cluster-toggle", {
+        const event = new CustomEvent('cluster-toggle', {
           detail: { layerId: layerId, clustered: newState },
         });
         this._container.dispatchEvent(event);
       });
 
       // Listen for clicks anywhere on the toggle (labels, switch, etc.)
-      this._toggle.addEventListener("click", (e) => {
+      this._toggle.addEventListener('click', (e) => {
         // Only prevent default if we're not clicking the checkbox directly
         if (e.target !== this._checkbox) {
           e.preventDefault();
           // Manually toggle the checkbox
           this._checkbox.checked = !this._checkbox.checked;
           // Trigger the change event
-          this._checkbox.dispatchEvent(new Event("change"));
+          this._checkbox.dispatchEvent(new Event('change'));
         }
         // If clicking checkbox directly, let it handle naturally
       });
@@ -2731,9 +2547,9 @@ function addClusterToggleControl(
 
     _updateToggleState(clustered) {
       if (clustered) {
-        this._toggle.title = "Click to disable clustering";
+        this._toggle.title = 'Click to disable clustering';
       } else {
-        this._toggle.title = "Click to enable clustering";
+        this._toggle.title = 'Click to enable clustering';
       }
     }
   }
@@ -2758,28 +2574,25 @@ function addVisibilityToggleControl(
   map,
   controlId,
   layerId,
-  leftLabel = "Toggle Layer",
-  rightLabel = "",
+  leftLabel = 'Toggle Layer',
+  rightLabel = '',
   initialState = true,
-  position = "top-right",
+  position = 'top-right',
   widgetInstance = null
 ) {
   // Generate proper namespaced ID if widgetInstance is available
-  const finalControlId = widgetInstance
-    ? `${controlId}-${widgetInstance.getId()}`
-    : controlId;
+  const finalControlId = widgetInstance ? `${controlId}-${widgetInstance.getId()}` : controlId;
 
   class VisibilityToggleControl {
     onAdd(mapInstance) {
-      this._container = document.createElement("div");
+      this._container = document.createElement('div');
       this._container.id = finalControlId;
-      this._container.className =
-        "toro-ctrl toro-toggle-container visibility-toggle-control";
+      this._container.className = 'toro-ctrl toro-toggle-container visibility-toggle-control';
 
       // Use shared HTML generator
-      const mapId = widgetInstance ? widgetInstance.getId() : "standalone";
+      const mapId = widgetInstance ? widgetInstance.getId() : 'standalone';
       const buttonHtml = generateToggleInputHtml(
-        "visibility",
+        'visibility',
         layerId,
         leftLabel,
         rightLabel,
@@ -2790,16 +2603,16 @@ function addVisibilityToggleControl(
       this._container.innerHTML = buttonHtml;
 
       // Get reference to the toggle elements
-      this._toggle = this._container.querySelector(".toro-toggle");
-      this._checkbox = this._container.querySelector(".toro-toggle-checkbox");
+      this._toggle = this._container.querySelector('.toro-toggle');
+      this._checkbox = this._container.querySelector('.toro-toggle-checkbox');
 
       if (!this._toggle || !this._checkbox) {
-        console.error("Visibility toggle elements not found!");
+        console.error('Visibility toggle elements not found!');
         return this._container;
       }
 
       // Listen for both checkbox change and label click events
-      this._checkbox.addEventListener("change", () => {
+      this._checkbox.addEventListener('change', () => {
         const newState = this._checkbox.checked;
 
         // Toggle layer visibility
@@ -2810,37 +2623,37 @@ function addVisibilityToggleControl(
         }
 
         // Update toggle state
-        this._toggle.setAttribute("data-visible", newState.toString());
+        this._toggle.setAttribute('data-visible', newState.toString());
         this._checkbox.checked = newState;
 
         // Force visual update by managing CSS classes directly
-        const switchElement = this._toggle.querySelector(".toro-toggle-switch");
+        const switchElement = this._toggle.querySelector('.toro-toggle-switch');
         if (switchElement) {
           if (newState) {
-            switchElement.classList.add("checked");
+            switchElement.classList.add('checked');
           } else {
-            switchElement.classList.remove("checked");
+            switchElement.classList.remove('checked');
           }
         }
 
         this._updateToggleState(newState);
 
         // Emit custom event for external listeners
-        const event = new CustomEvent("visibility-toggle", {
+        const event = new CustomEvent('visibility-toggle', {
           detail: { layerId: layerId, visible: newState },
         });
         this._container.dispatchEvent(event);
       });
 
       // Listen for clicks anywhere on the toggle (labels, switch, etc.)
-      this._toggle.addEventListener("click", (e) => {
+      this._toggle.addEventListener('click', (e) => {
         // Only prevent default if we're not clicking the checkbox directly
         if (e.target !== this._checkbox) {
           e.preventDefault();
           // Manually toggle the checkbox
           this._checkbox.checked = !this._checkbox.checked;
           // Trigger the change event
-          this._checkbox.dispatchEvent(new Event("change"));
+          this._checkbox.dispatchEvent(new Event('change'));
         }
         // If clicking checkbox directly, let it handle naturally
       });
@@ -2853,7 +2666,7 @@ function addVisibilityToggleControl(
     }
 
     _updateToggleState(visible) {
-      this._toggle.classList.toggle("active", visible);
+      this._toggle.classList.toggle('active', visible);
     }
   }
 
@@ -2869,12 +2682,7 @@ function addVisibilityToggleControl(
  * @param {string} sectionTitle   Section title for the control.
  * @returns {void}
  */
-function addClusterToggleControlToPanel(
-  widgetInstance,
-  panelId,
-  options,
-  sectionTitle
-) {
+function addClusterToggleControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
 
@@ -2883,17 +2691,14 @@ function addClusterToggleControlToPanel(
     return;
   }
 
-  const controlId = `cluster-toggle-${
-    options.layerId
-  }-${widgetInstance.getId()}`;
-  const leftLabel = options.leftLabel || "";
-  const rightLabel = options.rightLabel || "";
-  const initialState =
-    options.initialState !== undefined ? options.initialState : false;
+  const controlId = `cluster-toggle-${options.layerId}-${widgetInstance.getId()}`;
+  const leftLabel = options.leftLabel || '';
+  const rightLabel = options.rightLabel || '';
+  const initialState = options.initialState !== undefined ? options.initialState : false;
 
   // Use shared HTML generator with inline handler and wrapper for panels
   const htmlContent = generateToggleInputHtml(
-    "cluster",
+    'cluster',
     options.layerId,
     leftLabel,
     rightLabel,
@@ -2909,7 +2714,7 @@ function addClusterToggleControlToPanel(
     htmlContent,
     controlId,
     sectionTitle,
-    "toro-cluster-toggle-panel-control",
+    'toro-cluster-toggle-panel-control',
     groupId
   );
 }
@@ -2923,12 +2728,7 @@ function addClusterToggleControlToPanel(
  * @param {string} sectionTitle   Section title for the control.
  * @returns {void}
  */
-function addVisibilityToggleControlToPanel(
-  widgetInstance,
-  panelId,
-  options,
-  sectionTitle
-) {
+function addVisibilityToggleControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
 
@@ -2937,17 +2737,14 @@ function addVisibilityToggleControlToPanel(
     return;
   }
 
-  const controlId = `visibility-toggle-${
-    options.layerId
-  }-${widgetInstance.getId()}`;
-  const leftLabel = options.leftLabel || "";
-  const rightLabel = options.rightLabel || "";
-  const initialState =
-    options.initialState !== undefined ? options.initialState : true;
+  const controlId = `visibility-toggle-${options.layerId}-${widgetInstance.getId()}`;
+  const leftLabel = options.leftLabel || '';
+  const rightLabel = options.rightLabel || '';
+  const initialState = options.initialState !== undefined ? options.initialState : true;
 
   // Use shared HTML generator with inline handler and wrapper for panels
   const htmlContent = generateToggleInputHtml(
-    "visibility",
+    'visibility',
     options.layerId,
     leftLabel,
     rightLabel,
@@ -2982,33 +2779,31 @@ function addControlGroup(el, panelId, groupConfig) {
   }
 
   const groupId = groupConfig.groupId;
-  const groupTitle = groupConfig.groupTitle || "Control Group";
+  const groupTitle = groupConfig.groupTitle || 'Control Group';
   const collapsible = groupConfig.collapsible !== false;
   const collapsed = groupConfig.collapsed === true;
 
   // Create the group HTML structure
   const groupHTML = `
-    <div class="control-group ${collapsed ? "collapsed" : ""}" id="${groupId}">
-      <div class="control-group-header ${collapsible ? "collapsible" : ""}" ${
-    collapsible ? "onclick=\"toggleControlGroup('" + groupId + "')\"" : ""
-  }>
+    <div class="control-group ${collapsed ? 'collapsed' : ''}" id="${groupId}">
+      <div class="control-group-header ${collapsible ? 'collapsible' : ''}" ${
+        collapsible ? 'onclick="toggleControlGroup(\'' + groupId + '\')"' : ''
+      }>
         <span class="control-group-title">${groupTitle}</span>
         ${
           collapsible
-            ? '<span class="control-group-toggle">' +
-              (collapsed ? "▶" : "▼") +
-              "</span>"
-            : ""
+            ? '<span class="control-group-toggle">' + (collapsed ? '▶' : '▼') + '</span>'
+            : ''
         }
       </div>
-      <div class="control-group-content ${collapsed ? "hidden" : ""}">
+      <div class="control-group-content ${collapsed ? 'hidden' : ''}">
         <!-- Controls will be added here -->
       </div>
     </div>
   `;
 
   // Use the panel's addControl method
-  panel.addControl(groupHTML, groupId, null, "control-group-container");
+  panel.addControl(groupHTML, groupId, null, 'control-group-container');
 }
 
 /**
@@ -3044,20 +2839,20 @@ function toggleControlGroup(groupId) {
   const groupElement = document.getElementById(groupId);
   if (!groupElement) return;
 
-  const isCollapsed = groupElement.classList.contains("collapsed");
-  const contentElement = groupElement.querySelector(".control-group-content");
-  const toggleElement = groupElement.querySelector(".control-group-toggle");
+  const isCollapsed = groupElement.classList.contains('collapsed');
+  const contentElement = groupElement.querySelector('.control-group-content');
+  const toggleElement = groupElement.querySelector('.control-group-toggle');
 
   if (isCollapsed) {
     // Expand the group
-    groupElement.classList.remove("collapsed");
-    contentElement.classList.remove("hidden");
-    if (toggleElement) toggleElement.textContent = "▼";
+    groupElement.classList.remove('collapsed');
+    contentElement.classList.remove('hidden');
+    if (toggleElement) toggleElement.textContent = '▼';
   } else {
     // Collapse the group
-    groupElement.classList.add("collapsed");
-    contentElement.classList.add("hidden");
-    if (toggleElement) toggleElement.textContent = "▶";
+    groupElement.classList.add('collapsed');
+    contentElement.classList.add('hidden');
+    if (toggleElement) toggleElement.textContent = '▶';
   }
 }
 
@@ -3091,24 +2886,24 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
   const labels = options.labels || {};
   const defaultLayer = options.defaultLayer || null;
   const noneOption = options.noneOption || false;
-  const noneLabel = options.noneLabel || "None";
+  const noneLabel = options.noneLabel || 'None';
 
   // Generate unique IDs using the map ID
   const layerSelectorId = `layer-selector-${widgetInstance.getId()}`;
 
   // Generate select options HTML
-  let selectOptions = "";
+  let selectOptions = '';
 
   // Add "None" option if enabled
   if (noneOption) {
-    const noneSelected = !defaultLayer ? "selected" : "";
+    const noneSelected = !defaultLayer ? 'selected' : '';
     selectOptions += `<option value="" ${noneSelected}>${noneLabel}</option>`;
   }
 
   // Add layer options
   layerIds.forEach((layerId) => {
     const label = labels[layerId] || layerId;
-    const selected = layerId === defaultLayer ? "selected" : "";
+    const selected = layerId === defaultLayer ? 'selected' : '';
     selectOptions += `<option value="${layerId}" ${selected}>${label}</option>`;
   });
 
@@ -3168,49 +2963,32 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
   const panelId = options.panelId;
   const selectControlId = `layer-selector-control-${widgetInstance.getId()}`;
 
-  if (
-    useControlPanel &&
-    panelId &&
-    map._controlPanels &&
-    map._controlPanels[panelId]
-  ) {
+  if (useControlPanel && panelId && map._controlPanels && map._controlPanels[panelId]) {
     // Add to existing control panel
     const groupId = options.groupId || null;
-    addHtmlToPanel(
-      widgetInstance,
-      panelId,
-      html,
-      options.panelTitle,
-      null,
-      groupId
-    );
+    addHtmlToPanel(widgetInstance, panelId, html, options.panelTitle, null, groupId);
   } else {
     // Add as standalone control
-    addCustomControl(
-      map,
-      selectControlId,
-      html,
-      options.position || "top-right"
-    );
+    addCustomControl(map, selectControlId, html, options.position || 'top-right');
   }
 
   // Ensure the control is clickable by setting pointer events
   setTimeout(() => {
     const layerSelectorControl = document.getElementById(selectControlId);
     if (layerSelectorControl) {
-      layerSelectorControl.style.pointerEvents = "auto";
-      layerSelectorControl.style.zIndex = "1000";
+      layerSelectorControl.style.pointerEvents = 'auto';
+      layerSelectorControl.style.zIndex = '1000';
 
       // Set pointer events on all child elements
-      const allElements = layerSelectorControl.querySelectorAll("*");
+      const allElements = layerSelectorControl.querySelectorAll('*');
       allElements.forEach((el) => {
-        el.style.pointerEvents = "auto";
+        el.style.pointerEvents = 'auto';
       });
     }
   }, 100);
 
   // Setup event handlers with retry mechanism
-  let currentLayer = defaultLayer || (noneOption ? "" : layerIds[0]);
+  let currentLayer = defaultLayer || (noneOption ? '' : layerIds[0]);
   let handleLayerChange;
 
   // Define layer change handler function
@@ -3225,31 +3003,31 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
     // Hide all layers first
     layerIds.forEach((layerId) => {
       if (map.getLayer(layerId)) {
-        map.setLayoutProperty(layerId, "visibility", "none");
+        map.setLayoutProperty(layerId, 'visibility', 'none');
       }
     });
 
     // Show the selected layer (if any)
     if (selectedLayer && map.getLayer(selectedLayer)) {
-      map.setLayoutProperty(selectedLayer, "visibility", "visible");
+      map.setLayoutProperty(selectedLayer, 'visibility', 'visible');
     }
 
     // Call the callback with the selected layer
-    if (typeof onLayerChange === "function") {
+    if (typeof onLayerChange === 'function') {
       onLayerChange(selectedLayer, previousLayer);
     }
 
     // Trigger Shiny event if in Shiny mode
     if (HTMLWidgets.shinyMode) {
       Shiny.setInputValue(
-        el.id + "_layer_selected",
+        el.id + '_layer_selected',
         {
           selected: selectedLayer,
           previous: previousLayer,
           timestamp: new Date().getTime(),
         },
         {
-          priority: "event",
+          priority: 'event',
         }
       );
     }
@@ -3258,34 +3036,32 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
   function setupEventHandlers() {
     const layerSelector = document.getElementById(layerSelectorId);
     if (!layerSelector) {
-      console.warn("Layer selector control not found, retrying...");
+      console.warn('Layer selector control not found, retrying...');
       setTimeout(setupEventHandlers, 50);
       return;
     }
 
     // Check if layer selector should be disabled (no layer change callback provided)
-    const isLayerSelectorDisabled = typeof onLayerChange !== "function";
+    const isLayerSelectorDisabled = typeof onLayerChange !== 'function';
 
     if (isLayerSelectorDisabled) {
       // Disable layer selector when no callback is connected
-      const layerSelectorContainer = layerSelector.closest(
-        ".layer-selector-container"
-      );
+      const layerSelectorContainer = layerSelector.closest('.layer-selector-container');
       if (layerSelectorContainer) {
-        layerSelectorContainer.classList.add("disabled");
+        layerSelectorContainer.classList.add('disabled');
       }
 
       layerSelector.disabled = true;
-      layerSelector.title = "Layer switching is not available";
+      layerSelector.title = 'Layer switching is not available';
 
       // Don't add interactive event handlers when disabled
       return;
     }
 
     // Add change handler to layer selector
-    layerSelector.addEventListener("change", handleLayerChange);
+    layerSelector.addEventListener('change', handleLayerChange);
 
-    layerSelector.addEventListener("mousedown", function (e) {
+    layerSelector.addEventListener('mousedown', function (e) {
       e.stopPropagation();
     });
 
@@ -3294,19 +3070,19 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
       // Hide all layers first
       layerIds.forEach((layerId) => {
         if (map.getLayer(layerId)) {
-          map.setLayoutProperty(layerId, "visibility", "none");
+          map.setLayoutProperty(layerId, 'visibility', 'none');
         }
       });
 
       // Show the default selected layer
       if (map.getLayer(currentLayer)) {
-        map.setLayoutProperty(currentLayer, "visibility", "visible");
+        map.setLayoutProperty(currentLayer, 'visibility', 'visible');
       }
     } else if (noneOption) {
       // Hide all layers if "None" is selected by default
       layerIds.forEach((layerId) => {
         if (map.getLayer(layerId)) {
-          map.setLayoutProperty(layerId, "visibility", "none");
+          map.setLayoutProperty(layerId, 'visibility', 'none');
         }
       });
     }
@@ -3323,7 +3099,7 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
       return currentLayer;
     },
     setLayer: function (layerId) {
-      if (layerIds.includes(layerId) || (noneOption && layerId === "")) {
+      if (layerIds.includes(layerId) || (noneOption && layerId === '')) {
         const previousLayer = currentLayer;
         currentLayer = layerId;
 
@@ -3336,15 +3112,15 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
         // Update layer visibility
         layerIds.forEach((id) => {
           if (map.getLayer(id)) {
-            map.setLayoutProperty(id, "visibility", "none");
+            map.setLayoutProperty(id, 'visibility', 'none');
           }
         });
 
         if (layerId && map.getLayer(layerId)) {
-          map.setLayoutProperty(layerId, "visibility", "visible");
+          map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
 
-        if (typeof onLayerChange === "function") {
+        if (typeof onLayerChange === 'function') {
           onLayerChange(currentLayer, previousLayer);
         }
       }
@@ -3354,25 +3130,23 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
       const layerSelector = document.getElementById(layerSelectorId);
       if (layerSelector) {
         // Remove disabled class and enable control
-        const layerSelectorContainer = layerSelector.closest(
-          ".layer-selector-container"
-        );
+        const layerSelectorContainer = layerSelector.closest('.layer-selector-container');
         if (layerSelectorContainer) {
-          layerSelectorContainer.classList.remove("disabled");
+          layerSelectorContainer.classList.remove('disabled');
         }
 
         layerSelector.disabled = false;
-        layerSelector.title = "";
+        layerSelector.title = '';
 
         // Update callback
         onLayerChange = newOnLayerChange;
 
         // Remove existing event listener to avoid duplicates
-        layerSelector.removeEventListener("change", handleLayerChange);
+        layerSelector.removeEventListener('change', handleLayerChange);
 
         // Set up event handler with new callback
-        if (typeof onLayerChange === "function") {
-          layerSelector.addEventListener("change", handleLayerChange);
+        if (typeof onLayerChange === 'function') {
+          layerSelector.addEventListener('change', handleLayerChange);
         }
 
         this.isDisabled = false;
@@ -3383,20 +3157,18 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
       const layerSelector = document.getElementById(layerSelectorId);
       if (layerSelector) {
         // Add disabled class
-        const layerSelectorContainer = layerSelector.closest(
-          ".layer-selector-container"
-        );
+        const layerSelectorContainer = layerSelector.closest('.layer-selector-container');
         if (layerSelectorContainer) {
-          layerSelectorContainer.classList.add("disabled");
+          layerSelectorContainer.classList.add('disabled');
         }
 
         layerSelector.disabled = true;
-        layerSelector.title = "Layer switching is not available";
+        layerSelector.title = 'Layer switching is not available';
 
         this.isDisabled = true;
       }
     },
-    isDisabled: typeof onLayerChange !== "function",
+    isDisabled: typeof onLayerChange !== 'function',
   };
 }
 
@@ -3409,12 +3181,7 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
  * @param {string} sectionTitle     Optional section title for the control.
  * @returns {void}
  */
-function addLayerSelectorControlToPanel(
-  widgetInstance,
-  panelId,
-  options,
-  sectionTitle
-) {
+function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
 
@@ -3440,9 +3207,5 @@ function addLayerSelectorControlToPanel(
   };
 
   // Add the layer selector control
-  addLayerSelectorControl(
-    widgetInstance,
-    layerChangeCallback,
-    layerSelectorOptions
-  );
+  addLayerSelectorControl(widgetInstance, layerChangeCallback, layerSelectorOptions);
 }

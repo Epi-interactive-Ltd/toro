@@ -1,28 +1,28 @@
 HTMLWidgets.widget({
-  name: "map",
-  type: "output",
+  name: 'map',
+  type: 'output',
 
   factory: function (el, width, height) {
     let mapInstance = null;
 
     return {
       renderValue: function (x) {
-        if (typeof maplibregl === "undefined") {
-          console.error("Maplibre GL JS not loaded.");
+        if (typeof maplibregl === 'undefined') {
+          console.error('Maplibre GL JS not loaded.');
           return;
         }
         if (mapInstance) {
           mapInstance.remove();
         }
         // Clear the container
-        el.innerHTML = "";
+        el.innerHTML = '';
 
         // Create the map
         mapInstance = new maplibregl.Map({
           container: el.id,
           style: {
             version: 8,
-            glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+            glyphs: 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf',
             sources: {},
             layers: [],
           },
@@ -52,7 +52,7 @@ HTMLWidgets.widget({
            * If the map is being used in Shiny, do a few things on load:
            * - Update Shiny inputs for the map's view properties
            */
-          mapInstance.on(["load", "moveend"], function () {
+          mapInstance.on(['load', 'moveend'], function () {
             updateShinyView(el, mapInstance);
           });
         }
@@ -61,61 +61,44 @@ HTMLWidgets.widget({
          * Add any layers/sources needed after the map is fully loaded.
          * Also, update the Shiny input for the map's loaded state.
          */
-        mapInstance.on("load", function () {
+        mapInstance.on('load', function () {
           mapInstance.resize();
 
           if (x.sources) {
             x.sources.forEach((source) =>
-              mapInstance.addSource(source.sourceId, source.sourceOptions),
+              mapInstance.addSource(source.sourceId, source.sourceOptions)
             );
           }
 
           if (x.featureSources) {
             x.featureSources.forEach((featureSource) => {
-              addFeatureServerSource(
-                el,
-                featureSource.sourceUrl,
-                featureSource.sourceId,
-              );
+              addFeatureServerSource(el, featureSource.sourceUrl, featureSource.sourceId);
             });
           }
 
           // Add the default pin image source
           _addImageToMapSource(
             mapInstance,
-            "toro-pin",
-            "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png",
+            'toro-pin',
+            'https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'
           );
 
           if (x.imageSources) {
             x.imageSources.forEach((imageSource) =>
-              _addImageToMapSource(
-                mapInstance,
-                imageSource.imageId,
-                imageSource.imageUrl,
-              ),
+              _addImageToMapSource(mapInstance, imageSource.imageId, imageSource.imageUrl)
             );
           }
 
           initiateTiles(el, x);
           if (x.mapServerTiles) {
             x.mapServerTiles.forEach((layer) =>
-              addTilesFromMapServer(
-                el.widgetInstance,
-                layer.tileId,
-                layer.mapServiceUrl,
-              ),
+              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl)
             );
           }
 
           if (x.imageLayerTiles) {
             x.imageLayerTiles.forEach((layer) =>
-              addTilesFromMapServer(
-                el.widgetInstance,
-                layer.tileId,
-                layer.mapServiceUrl,
-                true,
-              ),
+              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl, true)
             );
           }
 
@@ -130,12 +113,7 @@ HTMLWidgets.widget({
           }
 
           if (x.setBounds) {
-            setMapBounds(
-              mapInstance,
-              x.setBounds.bounds,
-              x.setBounds.maxZoom,
-              x.setBounds.padding,
-            );
+            setMapBounds(mapInstance, x.setBounds.bounds, x.setBounds.maxZoom, x.setBounds.padding);
           }
 
           if (x.setZoom) {
@@ -149,7 +127,7 @@ HTMLWidgets.widget({
           // Ensures that the controls are added in the desired order
           if (x.controls) {
             x.controls.forEach((control) => {
-              if (control.type === "cursor") {
+              if (control.type === 'cursor') {
                 if (control.panelId) {
                   // Will be added to panel later during panel processing
                   return;
@@ -159,9 +137,9 @@ HTMLWidgets.widget({
                   control.position,
                   control.longLabel,
                   control.latLabel,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
-              } else if (control.type === "zoom") {
+              } else if (control.type === 'zoom') {
                 if (control.panelId) {
                   // Will be added to panel later during panel processing
                   return;
@@ -170,20 +148,15 @@ HTMLWidgets.widget({
                   mapInstance,
                   control.position,
                   control.controlOptions,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
-              } else if (control.type === "custom") {
+              } else if (control.type === 'custom') {
                 if (control.panelId) {
                   // Will be added to panel later during panel processing
                   return;
                 }
-                addCustomControl(
-                  mapInstance,
-                  control.controlId,
-                  control.html,
-                  control.position,
-                );
-              } else if (control.type === "draw") {
+                addCustomControl(mapInstance, control.controlId, control.html, control.position);
+              } else if (control.type === 'draw') {
                 if (control.panelId) {
                   // Will be added to panel later during panel processing
                   return;
@@ -195,7 +168,7 @@ HTMLWidgets.widget({
                   control.activeColour,
                   control.inactiveColour,
                   control.modeLabels,
-                  control.controlId,
+                  control.controlId
                 );
               }
             });
@@ -219,7 +192,7 @@ HTMLWidgets.widget({
               // Add any panel controls added via add_control_to_panel
               if (options.panelControls && options.panelControls.length > 0) {
                 options.panelControls.forEach(function (control) {
-                  if (control.type === "timeline") {
+                  if (control.type === 'timeline') {
                     // Create dummy callback functions for initial rendering
                     const dummyPlayPause = function (playing) {
                       // console.log(
@@ -237,15 +210,10 @@ HTMLWidgets.widget({
                       control.options.endDate,
                       dummyPlayPause,
                       dummySliderChange,
-                      control.options,
+                      control.options
                     );
-                    addHtmlToPanel(
-                      el.widgetInstance,
-                      panelId,
-                      timelineElement,
-                      control.title,
-                    );
-                  } else if (control.type === "speed") {
+                    addHtmlToPanel(el.widgetInstance, panelId, timelineElement, control.title);
+                  } else if (control.type === 'speed') {
                     // Create dummy callback function for initial rendering
                     const dummySpeedChange = function (speed) {
                       // console.log("Speed changed to:", speed);
@@ -254,22 +222,12 @@ HTMLWidgets.widget({
                     const speedElement = addSpeedControl(
                       el.widgetInstance,
                       dummySpeedChange,
-                      control.options,
+                      control.options
                     );
-                    addHtmlToPanel(
-                      el.widgetInstance,
-                      panelId,
-                      speedElement,
-                      control.title,
-                    );
-                  } else if (control.type === "custom") {
-                    addHtmlToPanel(
-                      el.widgetInstance,
-                      panelId,
-                      control.options.html,
-                      control.title,
-                    );
-                  } else if (control.type === "group") {
+                    addHtmlToPanel(el.widgetInstance, panelId, speedElement, control.title);
+                  } else if (control.type === 'custom') {
+                    addHtmlToPanel(el.widgetInstance, panelId, control.options.html, control.title);
+                  } else if (control.type === 'group') {
                     // Add control group to the panel
                     addControlGroup(el, panelId, control);
                   }
@@ -292,10 +250,7 @@ HTMLWidgets.widget({
           }
 
           // Process timeline controls (both standalone and panel-based)
-          if (
-            x.timelineControls &&
-            Object.keys(x.timelineControls).length > 0
-          ) {
+          if (x.timelineControls && Object.keys(x.timelineControls).length > 0) {
             Object.keys(x.timelineControls).forEach(function (controlId) {
               const timelineOptions = x.timelineControls[controlId];
 
@@ -307,7 +262,7 @@ HTMLWidgets.widget({
                 timelineOptions.endDate,
                 null, // No play/pause callback - will be disabled
                 null, // No slider callback - will be disabled
-                timelineOptions,
+                timelineOptions
               );
             });
           }
@@ -322,16 +277,13 @@ HTMLWidgets.widget({
               addSpeedControl(
                 el.widgetInstance,
                 null, // No speed change callback - will be disabled
-                speedOptions,
+                speedOptions
               );
             });
           }
 
           // Process tile selector controls (both standalone and panel-based)
-          if (
-            x.tileSelectorControls &&
-            Object.keys(x.tileSelectorControls).length > 0
-          ) {
+          if (x.tileSelectorControls && Object.keys(x.tileSelectorControls).length > 0) {
             Object.keys(x.tileSelectorControls).forEach(function (controlId) {
               const tileSelectorOptions = x.tileSelectorControls[controlId];
 
@@ -343,30 +295,20 @@ HTMLWidgets.widget({
               // Set available tiles from the map's loaded tiles if not specified
               if (!tileSelectorOptions.availableTiles) {
                 tileSelectorOptions.availableTiles = el.tileLayers ||
-                  x.loadedTiles || ["lightgrey"];
+                  x.loadedTiles || ['lightgrey'];
               }
 
-              addTileSelectorControl(
-                el.widgetInstance,
-                tileChangeCallback,
-                tileSelectorOptions,
-              );
+              addTileSelectorControl(el.widgetInstance, tileChangeCallback, tileSelectorOptions);
             });
           }
 
           // Process layer selector controls (both standalone and panel-based)
-          if (
-            x.layerSelectorControls &&
-            Object.keys(x.layerSelectorControls).length > 0
-          ) {
+          if (x.layerSelectorControls && Object.keys(x.layerSelectorControls).length > 0) {
             Object.keys(x.layerSelectorControls).forEach(function (controlId) {
               const layerSelectorOptions = x.layerSelectorControls[controlId];
 
               // Create layer change callback that manages layer visibility
-              const layerChangeCallback = function (
-                selectedLayer,
-                previousLayer,
-              ) {
+              const layerChangeCallback = function (selectedLayer, previousLayer) {
                 // Layer visibility is already managed by the control itself
                 // console.log(
                 //   `Layer changed from "${previousLayer || "none"}" to "${
@@ -375,19 +317,12 @@ HTMLWidgets.widget({
                 // );
               };
 
-              addLayerSelectorControl(
-                el.widgetInstance,
-                layerChangeCallback,
-                layerSelectorOptions,
-              );
+              addLayerSelectorControl(el.widgetInstance, layerChangeCallback, layerSelectorOptions);
             });
           }
 
           // Process cluster toggle controls (both standalone and panel-based)
-          if (
-            x.clusterToggleControls &&
-            Object.keys(x.clusterToggleControls).length > 0
-          ) {
+          if (x.clusterToggleControls && Object.keys(x.clusterToggleControls).length > 0) {
             Object.keys(x.clusterToggleControls).forEach(function (controlId) {
               const toggleOptions = x.clusterToggleControls[controlId];
 
@@ -397,7 +332,7 @@ HTMLWidgets.widget({
                   el.widgetInstance,
                   toggleOptions.panelId,
                   toggleOptions,
-                  toggleOptions.panelTitle,
+                  toggleOptions.panelTitle
                 );
               } else {
                 // Add as standalone control
@@ -409,50 +344,45 @@ HTMLWidgets.widget({
                   toggleOptions.rightLabel,
                   toggleOptions.initialState,
                   toggleOptions.position,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
               }
             });
           }
 
           // Process visibility toggle controls (both standalone and panel-based)
-          if (
-            x.visibilityToggleControls &&
-            Object.keys(x.visibilityToggleControls).length > 0
-          ) {
-            Object.keys(x.visibilityToggleControls).forEach(
-              function (controlId) {
-                const toggleOptions = x.visibilityToggleControls[controlId];
+          if (x.visibilityToggleControls && Object.keys(x.visibilityToggleControls).length > 0) {
+            Object.keys(x.visibilityToggleControls).forEach(function (controlId) {
+              const toggleOptions = x.visibilityToggleControls[controlId];
 
-                if (toggleOptions.panelId) {
-                  // Add to control panel
-                  addVisibilityToggleControlToPanel(
-                    el.widgetInstance,
-                    toggleOptions.panelId,
-                    toggleOptions,
-                    toggleOptions.panelTitle,
-                  );
-                } else {
-                  // Add as standalone control
-                  addVisibilityToggleControl(
-                    el.mapInstance,
-                    toggleOptions.controlId,
-                    toggleOptions.layerId,
-                    toggleOptions.leftLabel,
-                    toggleOptions.rightLabel,
-                    toggleOptions.initialState,
-                    toggleOptions.position,
-                    el.widgetInstance,
-                  );
-                }
-              },
-            );
+              if (toggleOptions.panelId) {
+                // Add to control panel
+                addVisibilityToggleControlToPanel(
+                  el.widgetInstance,
+                  toggleOptions.panelId,
+                  toggleOptions,
+                  toggleOptions.panelTitle
+                );
+              } else {
+                // Add as standalone control
+                addVisibilityToggleControl(
+                  el.mapInstance,
+                  toggleOptions.controlId,
+                  toggleOptions.layerId,
+                  toggleOptions.leftLabel,
+                  toggleOptions.rightLabel,
+                  toggleOptions.initialState,
+                  toggleOptions.position,
+                  el.widgetInstance
+                );
+              }
+            });
           }
 
           if (HTMLWidgets.shinyMode) {
             // Trigger a input event to notify Shiny that the map is loaded
-            Shiny.setInputValue(el.id + "_loaded", Math.random(), {
-              priority: "event",
+            Shiny.setInputValue(el.id + '_loaded', Math.random(), {
+              priority: 'event',
             });
           }
 
@@ -464,7 +394,7 @@ HTMLWidgets.widget({
               compact: true,
               collapsible: true,
             }),
-            x.options.attributionPosition || "bottom-right",
+            x.options.attributionPosition || 'bottom-right'
           );
 
           closeAttribution(el.id, el.widgetInstance); // By default, close the attribution panel
@@ -481,28 +411,19 @@ HTMLWidgets.widget({
 
         el.clusterColour = x.options.clusterColour;
 
-        el.initiallyLoaded =
-          x.options.initialLoadedLayers == null ? true : false; // Track if the map was initially loaded without a loader
+        el.initiallyLoaded = x.options.initialLoadedLayers == null ? true : false; // Track if the map was initially loaded without a loader
 
-        if (
-          HTMLWidgets.shinyMode &&
-          !el.initiallyLoaded &&
-          x.options.initialLoadedLayers
-        ) {
+        if (HTMLWidgets.shinyMode && !el.initiallyLoaded && x.options.initialLoadedLayers) {
           addMapLoader(
             el,
             false,
             x.options.initialLoaderBgColour,
-            toRgbValues(x.options.initialLoaderColour),
+            toRgbValues(x.options.initialLoaderColour)
           );
         }
 
         // Idle event when sources and layers are loaded
-        if (
-          HTMLWidgets.shinyMode &&
-          !el.initiallyLoaded &&
-          x.options.initialLoadedLayers
-        ) {
+        if (HTMLWidgets.shinyMode && !el.initiallyLoaded && x.options.initialLoadedLayers) {
           function initialMapLoaderHandler(e) {
             var currentLayers = el.mapInstance
               .getStyle()
@@ -518,9 +439,9 @@ HTMLWidgets.widget({
               el.initiallyLoaded = true;
             }
           }
-          el.mapInstance.on("idle", initialMapLoaderHandler);
+          el.mapInstance.on('idle', initialMapLoaderHandler);
         } else if (HTMLWidgets.shinyMode && el.initiallyLoaded) {
-          el.mapInstance.off("idle", initialMapLoaderHandler);
+          el.mapInstance.off('idle', initialMapLoaderHandler);
         }
         if (HTMLWidgets.shinyMode && x.options.spinnerWhileBusy) {
           function showSpinner() {
@@ -528,7 +449,7 @@ HTMLWidgets.widget({
               el,
               (changeLoader = true),
               x.options.busyLoaderBgColour,
-              x.options.busyLoaderColour,
+              x.options.busyLoaderColour
             );
           }
           function hideSpinner() {
@@ -537,7 +458,7 @@ HTMLWidgets.widget({
           el.busyTimer = null;
           el.spinnerShown = false;
 
-          $(document).on("shiny:busy", function () {
+          $(document).on('shiny:busy', function () {
             // Start timer only if not already started
             if (!el.busyTimer && el.initiallyLoaded) {
               el.busyTimer = setTimeout(function () {
@@ -548,7 +469,7 @@ HTMLWidgets.widget({
             }
           });
 
-          $(document).on("shiny:idle", function () {
+          $(document).on('shiny:idle', function () {
             if (!el.initiallyLoaded) {
               return; // Don't hide spinner if map is not initially loaded
             }
@@ -624,10 +545,10 @@ HTMLWidgets.widget({
           // Find visible tile layers, excluding satellite which is always visible as base
           for (const layer of layers) {
             if (
-              layer.type === "raster" &&
-              layer.id !== "satellite" &&
+              layer.type === 'raster' &&
+              layer.id !== 'satellite' &&
               layer.layout &&
-              layer.layout.visibility === "visible"
+              layer.layout.visibility === 'visible'
             ) {
               return layer.id;
             }
@@ -635,15 +556,15 @@ HTMLWidgets.widget({
 
           // If no other tile is visible, check if satellite is the only one visible
           const satelliteLayer = layers.find(
-            (layer) => layer.id === "satellite" && layer.type === "raster",
+            (layer) => layer.id === 'satellite' && layer.type === 'raster'
           );
           if (satelliteLayer) {
-            return "satellite";
+            return 'satellite';
           }
 
           return null;
         } catch (error) {
-          console.warn("Error getting current tiles:", error);
+          console.warn('Error getting current tiles:', error);
           return null;
         }
       },
@@ -663,74 +584,72 @@ function withMapInstance(id, fn) {
   if (el && el.mapInstance) {
     fn(el);
   } else {
-    console.warn("Map element or instance not found for ID:", id);
+    console.warn('Map element or instance not found for ID:', id);
   }
 }
 
-function saveElementAsPng(elementId, filename = "capture.png") {
+function saveElementAsPng(elementId, filename = 'capture.png') {
   var el = document.getElementById(elementId);
   html2canvas(el).then(function (canvas) {
-    var link = document.createElement("a");
+    var link = document.createElement('a');
     link.download = filename;
     link.href = canvas.toDataURL();
     link.click();
   });
 }
 
-async function exportElementBundled(elementId, filename = "bundle.html") {
+async function exportElementBundled(elementId, filename = 'bundle.html') {
   const el = document.getElementById(elementId);
   if (!el) return;
 
   // Collect all CSS and JS URLs
-  const cssLinks = Array.from(
-    document.head.querySelectorAll('link[rel="stylesheet"]'),
-  ).map((l) => l.href);
-  const jsLinks = Array.from(document.head.querySelectorAll("script[src]")).map(
-    (s) => s.src,
+  const cssLinks = Array.from(document.head.querySelectorAll('link[rel="stylesheet"]')).map(
+    (l) => l.href
   );
+  const jsLinks = Array.from(document.head.querySelectorAll('script[src]')).map((s) => s.src);
 
   // Fetch and inline CSS
-  let cssContent = "";
+  let cssContent = '';
   for (const url of cssLinks) {
     try {
       const resp = await fetch(url);
-      cssContent += (await resp.text()) + "\n";
+      cssContent += (await resp.text()) + '\n';
     } catch (e) {}
   }
 
   // Fetch and inline JS
-  let jsContent = "";
+  let jsContent = '';
   for (const url of jsLinks) {
     try {
       const resp = await fetch(url);
-      jsContent += (await resp.text()) + "\n";
+      jsContent += (await resp.text()) + '\n';
     } catch (e) {}
   }
 
   // Build HTML
   const html =
-    "<!DOCTYPE html>\n<html>\n<head>\n" +
+    '<!DOCTYPE html>\n<html>\n<head>\n' +
     `<style>\n${cssContent}\n</style>\n` +
     `<script>\n${jsContent}\n</script>\n` +
-    "</head>\n<body>\n" +
+    '</head>\n<body>\n' +
     el.outerHTML +
-    "\n</body>\n</html>";
+    '\n</body>\n</html>';
 
   // Download
-  const blob = new Blob([html], { type: "text/html" });
-  const link = document.createElement("a");
+  const blob = new Blob([html], { type: 'text/html' });
+  const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = filename;
   link.click();
   URL.revokeObjectURL(link.href);
 }
 
-function saveElementAsHtml(elementId, filename = "content.html") {
+function saveElementAsHtml(elementId, filename = 'content.html') {
   var el = document.getElementById(elementId);
   if (el) {
     var html = el.outerHTML;
-    var blob = new Blob([html], { type: "text/html" });
-    var link = document.createElement("a");
+    var blob = new Blob([html], { type: 'text/html' });
+    var link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = filename;
     link.click();
@@ -739,7 +658,7 @@ function saveElementAsHtml(elementId, filename = "content.html") {
 }
 
 if (HTMLWidgets.shinyMode) {
-  Shiny.addCustomMessageHandler("downloadMapImage", function (message) {
+  Shiny.addCustomMessageHandler('downloadMapImage', function (message) {
     withMapInstance(message.id, function (el) {
       console.log(message);
       console.log(el);
@@ -762,13 +681,13 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
-  Shiny.addCustomMessageHandler("addCursorCoordsControl", function (message) {
+  Shiny.addCustomMessageHandler('addCursorCoordsControl', function (message) {
     withMapInstance(message.id, function (el) {
       const control = message.control || message;
       if (control.panelId) {
         // Add to control panel
         addControlToPanel(el, control.panelId, {
-          type: "cursor",
+          type: 'cursor',
           options: control,
           title: control.panelTitle,
         });
@@ -779,49 +698,49 @@ if (HTMLWidgets.shinyMode) {
           control.position,
           control.longLabel,
           control.latLabel,
-          el.widgetInstance,
+          el.widgetInstance
         );
       }
     });
   });
 
-  Shiny.addCustomMessageHandler("setMapZoom", function (message) {
+  Shiny.addCustomMessageHandler('setMapZoom', function (message) {
     withMapInstance(message.id, function (el) {
       el.mapInstance.setZoom(message.zoom);
     });
   });
 
-  Shiny.addCustomMessageHandler("addLatLngGrid", function (message) {
+  Shiny.addCustomMessageHandler('addLatLngGrid', function (message) {
     withMapInstance(message.id, function (el) {
       addLatLngGrid(el, message.gridColour);
     });
   });
 
-  Shiny.addCustomMessageHandler("toggleLatLngGrid", function (message) {
+  Shiny.addCustomMessageHandler('toggleLatLngGrid', function (message) {
     withMapInstance(message.id, function (el) {
       toggleLatLngGrid(el, (show = message.show));
     });
   });
 
-  Shiny.addCustomMessageHandler("hideDrawControls", function (message) {
+  Shiny.addCustomMessageHandler('hideDrawControls', function (message) {
     withMapInstance(message.id, function (el) {
       hideDrawControls(el);
     });
   });
 
-  Shiny.addCustomMessageHandler("showDrawControls", function (message) {
+  Shiny.addCustomMessageHandler('showDrawControls', function (message) {
     withMapInstance(message.id, function (el) {
       showDrawControls(el);
     });
   });
 
-  Shiny.addCustomMessageHandler("addDraw", function (message) {
+  Shiny.addCustomMessageHandler('addDraw', function (message) {
     withMapInstance(message.id, function (el) {
       const options = message.options;
       if (options.panelId) {
         // Add to control panel
         addControlToPanel(el, options.panelId, {
-          type: "draw",
+          type: 'draw',
           options: options,
           title: options.panelTitle,
         });
@@ -834,78 +753,64 @@ if (HTMLWidgets.shinyMode) {
           options.activeColour,
           options.inactiveColour,
           options.modeLabels,
-          options.controlId,
+          options.controlId
         );
       }
     });
   });
 
-  Shiny.addCustomMessageHandler("addZoomControl", function (message) {
+  Shiny.addCustomMessageHandler('addZoomControl', function (message) {
     withMapInstance(message.id, function (el) {
       if (message.panelId) {
         // Add to control panel
         addControlToPanel(el, message.panelId, {
-          type: "zoom",
+          type: 'zoom',
           options: message,
           title: message.panelTitle,
         });
       } else {
         // Add as standalone control
-        addZoomControl(
-          el.mapInstance,
-          message.position,
-          message.controlOptions,
-          el.widgetInstance,
-        );
+        addZoomControl(el.mapInstance, message.position, message.controlOptions, el.widgetInstance);
       }
     });
   });
 
-  Shiny.addCustomMessageHandler("addCustomControl", function (message) {
+  Shiny.addCustomMessageHandler('addCustomControl', function (message) {
     withMapInstance(message.id, function (el) {
       const options = message.options || message.control;
       if (options.panelId) {
         // Add to control panel
         addControlToPanel(el, options.panelId, {
-          type: "custom",
+          type: 'custom',
           options: options,
           title: options.panelTitle,
         });
       } else {
         // Add as standalone control
-        addCustomControl(
-          el.mapInstance,
-          options.controlId,
-          options.html,
-          options.position,
-        );
+        addCustomControl(el.mapInstance, options.controlId, options.html, options.position);
       }
     });
   });
 
-  Shiny.addCustomMessageHandler("toggleControl", function (message) {
+  Shiny.addCustomMessageHandler('toggleControl', function (message) {
     withMapInstance(message.id, function (el) {
       toggleControl(el, message.controlId, message.show);
     });
   });
 
-  Shiny.addCustomMessageHandler("removeControl", function (message) {
+  Shiny.addCustomMessageHandler('removeControl', function (message) {
     withMapInstance(message.id, function (el) {
       removeControl(el.widgetInstance, message.controlId);
     });
   });
 
-  Shiny.addCustomMessageHandler("removeControlFromPanel", function (message) {
+  Shiny.addCustomMessageHandler('removeControlFromPanel', function (message) {
     withMapInstance(message.id, function (el) {
-      removeControlFromPanel(
-        el.widgetInstance,
-        message.panelId,
-        message.controlId,
-      );
+      removeControlFromPanel(el.widgetInstance, message.panelId, message.controlId);
     });
   });
 
-  Shiny.addCustomMessageHandler("addClusterToggleControl", function (message) {
+  Shiny.addCustomMessageHandler('addClusterToggleControl', function (message) {
     withMapInstance(message.id, function (el) {
       const options = message.options;
       if (options.panelId) {
@@ -914,7 +819,7 @@ if (HTMLWidgets.shinyMode) {
           el.widgetInstance,
           options.panelId,
           options,
-          options.panelTitle,
+          options.panelTitle
         );
       } else {
         // Add as standalone control
@@ -926,86 +831,83 @@ if (HTMLWidgets.shinyMode) {
           options.rightLabel,
           options.initialState,
           options.position,
-          el.widgetInstance,
+          el.widgetInstance
         );
       }
     });
   });
 
-  Shiny.addCustomMessageHandler(
-    "addVisibilityToggleControl",
-    function (message) {
-      withMapInstance(message.id, function (el) {
-        const options = message.options;
-        if (options.panelId) {
-          // Add to control panel
-          addVisibilityToggleControlToPanel(
-            el.widgetInstance,
-            options.panelId,
-            options,
-            options.panelTitle,
-          );
-        } else {
-          // Add as standalone control
-          addVisibilityToggleControl(
-            el.mapInstance,
-            options.controlId,
-            options.layerId,
-            options.leftLabel,
-            options.rightLabel,
-            options.initialState,
-            options.position,
-            el.widgetInstance,
-          );
-        }
-      });
-    },
-  );
+  Shiny.addCustomMessageHandler('addVisibilityToggleControl', function (message) {
+    withMapInstance(message.id, function (el) {
+      const options = message.options;
+      if (options.panelId) {
+        // Add to control panel
+        addVisibilityToggleControlToPanel(
+          el.widgetInstance,
+          options.panelId,
+          options,
+          options.panelTitle
+        );
+      } else {
+        // Add as standalone control
+        addVisibilityToggleControl(
+          el.mapInstance,
+          options.controlId,
+          options.layerId,
+          options.leftLabel,
+          options.rightLabel,
+          options.initialState,
+          options.position,
+          el.widgetInstance
+        );
+      }
+    });
+  });
 
-  Shiny.addCustomMessageHandler("deleteDrawnShape", function (message) {
+  Shiny.addCustomMessageHandler('deleteDrawnShape', function (message) {
     withMapInstance(message.id, function (el) {
       deleteDrawnShape(el, message.shapeId);
     });
   });
 
-  Shiny.addCustomMessageHandler("setMapBounds", function (message) {
+  Shiny.addCustomMessageHandler('setMapBounds', function (message) {
     withMapInstance(message.id, function (el) {
       setMapBounds(
         el.mapInstance,
         message.options.bounds,
         message.options.maxZoom,
-        message.options.padding,
+        message.options.padding
       );
     });
   });
 
-  Shiny.addCustomMessageHandler("setSelectedTiles", function (message) {
+  Shiny.addCustomMessageHandler('setSelectedTiles', function (message) {
     withMapInstance(message.id, function (el) {
       setTileLayer(el, message.tiles);
     });
   });
 
-  Shiny.addCustomMessageHandler("addFilter", function (message) {
+  Shiny.addCustomMessageHandler('addFilter', function (message) {
     withMapInstance(message.id, function (el) {
       addFilterToLayer(el.mapInstance, message.layerId, message.filter);
     });
   });
 
-  Shiny.addCustomMessageHandler("toggleClustering", function (message) {
+  Shiny.addCustomMessageHandler('toggleClustering', function (message) {
     withMapInstance(message.id, function (el) {
       toggleLayerClustering(el.mapInstance, message.layerId, message.cluster);
     });
   });
 
-  Shiny.addCustomMessageHandler("addLayer", function (message) {
+  Shiny.addCustomMessageHandler('addLayer', function (message) {
     withMapInstance(message.id, function (el) {
       addLayerToMap(el, message.layer);
     });
   });
 
-  Shiny.addCustomMessageHandler("hideLayer", function (message) {
+  Shiny.addCustomMessageHandler('hideLayer', function (message) {
     withMapInstance(message.id, function (el) {
-      if (message.layerId !== "satellite") {
+      if (message.layerId !== 'satellite') {
         /**
          * Satellite layer should always be visible as a backup, and is
          * under other layers if not the selected layer.
@@ -1015,193 +917,161 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
-  Shiny.addCustomMessageHandler("showLayer", function (message) {
+  Shiny.addCustomMessageHandler('showLayer', function (message) {
     withMapInstance(message.id, function (el) {
       showLayer(el.mapInstance, message.layerId);
     });
   });
 
-  Shiny.addCustomMessageHandler("addImageSource", function (message) {
+  Shiny.addCustomMessageHandler('addImageSource', function (message) {
     withMapInstance(message.id, function (el) {
       _addImageToMapSource(el.mapInstance, message.imageId, message.imageUrl);
     });
   });
 
-  Shiny.addCustomMessageHandler("addMapSource", function (message) {
+  Shiny.addCustomMessageHandler('addMapSource', function (message) {
     withMapInstance(message.id, function (el) {
       el.mapInstance.addSource(message.sourceId, message.sourceOptions);
     });
   });
 
-  Shiny.addCustomMessageHandler("addFeatureServerSource", function (message) {
+  Shiny.addCustomMessageHandler('addFeatureServerSource', function (message) {
     withMapInstance(message.id, function (el) {
       addFeatureServerSource(el, message.sourceUrl, message.sourceId);
     });
   });
 
-  Shiny.addCustomMessageHandler("updateSourceData", function (message) {
+  Shiny.addCustomMessageHandler('updateSourceData', function (message) {
     withMapInstance(message.id, function (el) {
       const src = el.mapInstance.getSource(message.sourceId);
       if (src && src.setData) {
         src.setData(message.data);
       } else {
-        console.warn(
-          "Source not found or not a GeoJSON source:",
-          message.sourceId,
-        );
+        console.warn('Source not found or not a GeoJSON source:', message.sourceId);
       }
     });
   });
 
-  Shiny.addCustomMessageHandler("setPaintProp", function (message) {
+  Shiny.addCustomMessageHandler('setPaintProp', function (message) {
     withMapInstance(message.id, function (el) {
-      el.mapInstance.setPaintProperty(
-        message.layerId,
-        message.property,
-        message.value,
-      );
+      el.mapInstance.setPaintProperty(message.layerId, message.property, message.value);
     });
   });
 
-  Shiny.addCustomMessageHandler("setLayoutProp", function (message) {
+  Shiny.addCustomMessageHandler('setLayoutProp', function (message) {
     withMapInstance(message.id, function (el) {
-      el.mapInstance.setLayoutProperty(
-        message.layerId,
-        message.property,
-        message.value,
-      );
+      el.mapInstance.setLayoutProperty(message.layerId, message.property, message.value);
     });
   });
 
-  Shiny.addCustomMessageHandler("addRoute", function (message) {
+  Shiny.addCustomMessageHandler('addRoute', function (message) {
     withMapInstance(message.id, function (el) {
       addRoute(el.widgetInstance, message.options);
     });
   });
 
-  Shiny.addCustomMessageHandler("animateRoute", function (message) {
+  Shiny.addCustomMessageHandler('animateRoute', function (message) {
     withMapInstance(message.id, function (el) {
       animateRoute(el.widgetInstance, message.options);
     });
   });
 
-  Shiny.addCustomMessageHandler("pauseRoute", function (message) {
+  Shiny.addCustomMessageHandler('pauseRoute', function (message) {
     withMapInstance(message.id, function (el) {
       pauseAnimation(el.widgetInstance, message.options);
     });
   });
 
-  Shiny.addCustomMessageHandler("removeRoute", function (message) {
+  Shiny.addCustomMessageHandler('removeRoute', function (message) {
     withMapInstance(message.id, function (el) {
       removeRoute(el.widgetInstance, message.options);
     });
   });
 
   // Control Panel message handlers
-  Shiny.addCustomMessageHandler("addControlPanel", function (message) {
+  Shiny.addCustomMessageHandler('addControlPanel', function (message) {
     withMapInstance(message.id, function (el) {
       addControlPanel(el, message.panelId, message.options);
     });
   });
 
-  Shiny.addCustomMessageHandler("addControlToPanel", function (message) {
+  Shiny.addCustomMessageHandler('addControlToPanel', function (message) {
     withMapInstance(message.id, function (el) {
       addControlToPanel(el, message.panelId, message.controlConfig);
     });
   });
 
-  Shiny.addCustomMessageHandler("addControlGroup", function (message) {
+  Shiny.addCustomMessageHandler('addControlGroup', function (message) {
     withMapInstance(message.id, function (el) {
       addControlGroup(el, message.panelId, message.groupConfig);
     });
   });
 
-  Shiny.addCustomMessageHandler("removeControlGroup", function (message) {
+  Shiny.addCustomMessageHandler('removeControlGroup', function (message) {
     withMapInstance(message.id, function (el) {
       removeControlGroup(el, message.panelId, message.groupId);
     });
   });
 
-  Shiny.addCustomMessageHandler(
-    "addTimelineControlStandalone",
-    function (message) {
-      withMapInstance(message.id, function (el) {
-        // Pass null callbacks for standalone timeline control so it starts disabled
-        // It will be enabled automatically when connected to an animation
-        addTimelineControl(
-          el.widgetInstance,
-          message.options.startDate,
-          message.options.endDate,
-          null, // No play/pause callback - will be disabled
-          null, // No slider callback - will be disabled
-          message.options,
-        );
-      });
-    },
-  );
+  Shiny.addCustomMessageHandler('addTimelineControlStandalone', function (message) {
+    withMapInstance(message.id, function (el) {
+      // Pass null callbacks for standalone timeline control so it starts disabled
+      // It will be enabled automatically when connected to an animation
+      addTimelineControl(
+        el.widgetInstance,
+        message.options.startDate,
+        message.options.endDate,
+        null, // No play/pause callback - will be disabled
+        null, // No slider callback - will be disabled
+        message.options
+      );
+    });
+  });
 
-  Shiny.addCustomMessageHandler(
-    "addSpeedControlStandalone",
-    function (message) {
-      withMapInstance(message.id, function (el) {
-        // Pass null callback for standalone speed control so it starts disabled
-        // It will be enabled automatically when connected to an animation
-        addSpeedControl(
-          el.widgetInstance,
-          null, // No speed change callback - will be disabled
-          message.options,
-        );
-      });
-    },
-  );
+  Shiny.addCustomMessageHandler('addSpeedControlStandalone', function (message) {
+    withMapInstance(message.id, function (el) {
+      // Pass null callback for standalone speed control so it starts disabled
+      // It will be enabled automatically when connected to an animation
+      addSpeedControl(
+        el.widgetInstance,
+        null, // No speed change callback - will be disabled
+        message.options
+      );
+    });
+  });
 
-  Shiny.addCustomMessageHandler(
-    "addTileSelectorControlStandalone",
-    function (message) {
-      withMapInstance(message.id, function (el) {
-        // Create tile change callback that uses the existing setTileLayer function
-        const tileChangeCallback = function (selectedTile) {
-          setTileLayer(el, selectedTile);
-        };
+  Shiny.addCustomMessageHandler('addTileSelectorControlStandalone', function (message) {
+    withMapInstance(message.id, function (el) {
+      // Create tile change callback that uses the existing setTileLayer function
+      const tileChangeCallback = function (selectedTile) {
+        setTileLayer(el, selectedTile);
+      };
 
-        // Set available tiles from the map's loaded tiles if not specified
-        const tileSelectorOptions = message.options;
-        if (!tileSelectorOptions.availableTiles) {
-          tileSelectorOptions.availableTiles = el.tileLayers ||
-            el.loadedTiles || ["lightgrey"];
-        }
+      // Set available tiles from the map's loaded tiles if not specified
+      const tileSelectorOptions = message.options;
+      if (!tileSelectorOptions.availableTiles) {
+        tileSelectorOptions.availableTiles = el.tileLayers || el.loadedTiles || ['lightgrey'];
+      }
 
-        addTileSelectorControl(
-          el.widgetInstance,
-          tileChangeCallback,
-          tileSelectorOptions,
-        );
-      });
-    },
-  );
+      addTileSelectorControl(el.widgetInstance, tileChangeCallback, tileSelectorOptions);
+    });
+  });
 
-  Shiny.addCustomMessageHandler(
-    "addLayerSelectorControlStandalone",
-    function (message) {
-      withMapInstance(message.id, function (el) {
-        // Create layer change callback that manages layer visibility
-        const layerChangeCallback = function (selectedLayer, previousLayer) {
-          // Layer visibility is already managed by the control itself
-          // console.log(
-          //   `Layer changed from "${previousLayer || "none"}" to "${
-          //     selectedLayer || "none"
-          //   }"`
-          // );
-        };
+  Shiny.addCustomMessageHandler('addLayerSelectorControlStandalone', function (message) {
+    withMapInstance(message.id, function (el) {
+      // Create layer change callback that manages layer visibility
+      const layerChangeCallback = function (selectedLayer, previousLayer) {
+        // Layer visibility is already managed by the control itself
+        // console.log(
+        //   `Layer changed from "${previousLayer || "none"}" to "${
+        //     selectedLayer || "none"
+        //   }"`
+        // );
+      };
 
-        addLayerSelectorControl(
-          el.widgetInstance,
-          layerChangeCallback,
-          message.options,
-        );
-      });
-    },
-  );
+      addLayerSelectorControl(el.widgetInstance, layerChangeCallback, message.options);
+    });
+  });
 }
 
 // Global handler functions for toggle controls in panels
@@ -1215,38 +1085,36 @@ window.handleClusterToggle = function (layerId, mapId, toggleElement) {
       toggleElement._enhancedClickSetup = true;
 
       // Store the original onclick handler
-      const originalOnclick = toggleElement.getAttribute("onclick");
+      const originalOnclick = toggleElement.getAttribute('onclick');
 
       // Remove the original onclick handler to prevent conflicts
-      toggleElement.removeAttribute("onclick");
+      toggleElement.removeAttribute('onclick');
 
       // Add enhanced click handling
-      const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+      const checkbox = toggleElement.querySelector('.toro-toggle-checkbox');
 
       // Listen for checkbox changes (natural browser behavior)
       if (checkbox) {
-        checkbox.addEventListener("change", () => {
+        checkbox.addEventListener('change', () => {
           const newState = checkbox.checked;
 
           // Update map state
           toggleLayerClustering(map, layerId, newState);
-          toggleElement.setAttribute("data-clustered", newState.toString());
+          toggleElement.setAttribute('data-clustered', newState.toString());
 
           // Update visual state
-          const switchElement = toggleElement.querySelector(
-            ".toro-toggle-switch",
-          );
+          const switchElement = toggleElement.querySelector('.toro-toggle-switch');
           if (switchElement) {
             if (newState) {
-              switchElement.classList.add("checked");
+              switchElement.classList.add('checked');
             } else {
-              switchElement.classList.remove("checked");
+              switchElement.classList.remove('checked');
             }
           }
 
-          toggleElement.classList.toggle("active", newState);
+          toggleElement.classList.toggle('active', newState);
 
-          const event = new CustomEvent("cluster-toggle", {
+          const event = new CustomEvent('cluster-toggle', {
             detail: { layerId: layerId, clustered: newState },
           });
           toggleElement.dispatchEvent(event);
@@ -1254,7 +1122,7 @@ window.handleClusterToggle = function (layerId, mapId, toggleElement) {
       }
 
       // Listen for clicks on non-checkbox elements (labels, switch, etc.)
-      toggleElement.addEventListener("click", (e) => {
+      toggleElement.addEventListener('click', (e) => {
         // Only handle clicks on non-checkbox elements
         if (e.target !== checkbox && !checkbox.contains(e.target)) {
           e.preventDefault();
@@ -1262,7 +1130,7 @@ window.handleClusterToggle = function (layerId, mapId, toggleElement) {
 
           // Manually toggle the checkbox (this will trigger the change event above)
           checkbox.checked = !checkbox.checked;
-          checkbox.dispatchEvent(new Event("change"));
+          checkbox.dispatchEvent(new Event('change'));
         }
       });
 
@@ -1271,24 +1139,23 @@ window.handleClusterToggle = function (layerId, mapId, toggleElement) {
     }
 
     // This is a fallback call (shouldn't normally happen with enhanced handler)
-    const currentState =
-      toggleElement.getAttribute("data-clustered") === "true";
+    const currentState = toggleElement.getAttribute('data-clustered') === 'true';
     const newState = !currentState;
 
     // Toggle clustering
     toggleLayerClustering(map, layerId, newState);
 
     // Update toggle state
-    toggleElement.setAttribute("data-clustered", newState.toString());
-    const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+    toggleElement.setAttribute('data-clustered', newState.toString());
+    const checkbox = toggleElement.querySelector('.toro-toggle-checkbox');
 
     if (checkbox) {
       checkbox.checked = newState;
     }
-    toggleElement.classList.toggle("active", newState);
+    toggleElement.classList.toggle('active', newState);
 
     // Emit custom event
-    const event = new CustomEvent("cluster-toggle", {
+    const event = new CustomEvent('cluster-toggle', {
       detail: { layerId: layerId, clustered: newState },
     });
     toggleElement.dispatchEvent(event);
@@ -1305,14 +1172,14 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
       toggleElement._enhancedClickSetup = true;
 
       // Remove the original onclick handler to prevent conflicts
-      toggleElement.removeAttribute("onclick");
+      toggleElement.removeAttribute('onclick');
 
       // Add enhanced click handling
-      const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+      const checkbox = toggleElement.querySelector('.toro-toggle-checkbox');
 
       // Listen for checkbox changes (natural browser behavior)
       if (checkbox) {
-        checkbox.addEventListener("change", () => {
+        checkbox.addEventListener('change', () => {
           const newState = checkbox.checked;
 
           // Update map state
@@ -1322,23 +1189,21 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
             hideLayer(map, layerId);
           }
 
-          toggleElement.setAttribute("data-visible", newState.toString());
+          toggleElement.setAttribute('data-visible', newState.toString());
 
           // Update visual state
-          const switchElement = toggleElement.querySelector(
-            ".toro-toggle-switch",
-          );
+          const switchElement = toggleElement.querySelector('.toro-toggle-switch');
           if (switchElement) {
             if (newState) {
-              switchElement.classList.add("checked");
+              switchElement.classList.add('checked');
             } else {
-              switchElement.classList.remove("checked");
+              switchElement.classList.remove('checked');
             }
           }
 
-          toggleElement.classList.toggle("active", newState);
+          toggleElement.classList.toggle('active', newState);
 
-          const event = new CustomEvent("visibility-toggle", {
+          const event = new CustomEvent('visibility-toggle', {
             detail: { layerId: layerId, visible: newState },
           });
           toggleElement.dispatchEvent(event);
@@ -1346,7 +1211,7 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
       }
 
       // Listen for clicks on non-checkbox elements (labels, switch, etc.)
-      toggleElement.addEventListener("click", (e) => {
+      toggleElement.addEventListener('click', (e) => {
         // Only handle clicks on non-checkbox elements
         if (e.target !== checkbox && !checkbox.contains(e.target)) {
           e.preventDefault();
@@ -1354,7 +1219,7 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
 
           // Manually toggle the checkbox (this will trigger the change event above)
           checkbox.checked = !checkbox.checked;
-          checkbox.dispatchEvent(new Event("change"));
+          checkbox.dispatchEvent(new Event('change'));
         }
       });
 
@@ -1363,7 +1228,7 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
     }
 
     // This is a fallback call (shouldn't normally happen with enhanced handler)
-    const currentState = toggleElement.getAttribute("data-visible") === "true";
+    const currentState = toggleElement.getAttribute('data-visible') === 'true';
     const newState = !currentState;
 
     // Toggle layer visibility
@@ -1374,16 +1239,16 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
     }
 
     // Update toggle state
-    toggleElement.setAttribute("data-visible", newState.toString());
-    const checkbox = toggleElement.querySelector(".toro-toggle-checkbox");
+    toggleElement.setAttribute('data-visible', newState.toString());
+    const checkbox = toggleElement.querySelector('.toro-toggle-checkbox');
 
     if (checkbox) {
       checkbox.checked = newState;
     }
-    toggleElement.classList.toggle("active", newState);
+    toggleElement.classList.toggle('active', newState);
 
     // Emit custom event
-    const event = new CustomEvent("visibility-toggle", {
+    const event = new CustomEvent('visibility-toggle', {
       detail: { layerId: layerId, visible: newState },
     });
     toggleElement.dispatchEvent(event);
@@ -1398,27 +1263,27 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
  */
 function setupPopupCloseHandlers(map) {
   // Close popups when the map is moved (dragged or panned)
-  map.on("movestart", function () {
+  map.on('movestart', function () {
     closeAllPopups(map);
   });
 
   // Close popups when the map is zoomed
-  map.on("zoomstart", function () {
+  map.on('zoomstart', function () {
     closeAllPopups(map);
   });
 
   // Close popups when the map is rotated
-  map.on("rotatestart", function () {
+  map.on('rotatestart', function () {
     closeAllPopups(map);
   });
 
   // Close popups when the map is pitched (3D tilt)
-  map.on("pitchstart", function () {
+  map.on('pitchstart', function () {
     closeAllPopups(map);
   });
 
   // Close popups when clicking on empty areas of the map (not on features)
-  map.on("click", function (e) {
+  map.on('click', function (e) {
     // Only close if the click wasn't on a feature with a popup
     // We'll let the layer-specific click handlers manage their own popups
     const features = map.queryRenderedFeatures(e.point);
@@ -1437,11 +1302,11 @@ function setupPopupCloseHandlers(map) {
   });
 
   // Close popups when any layer is toggled (visibility or clustering)
-  map.getContainer().addEventListener("visibility-toggle", function () {
+  map.getContainer().addEventListener('visibility-toggle', function () {
     closeAllPopups(map);
   });
 
-  map.getContainer().addEventListener("cluster-toggle", function () {
+  map.getContainer().addEventListener('cluster-toggle', function () {
     closeAllPopups(map);
   });
 }
