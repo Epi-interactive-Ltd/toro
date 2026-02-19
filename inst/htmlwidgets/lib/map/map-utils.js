@@ -86,15 +86,34 @@ function addFeatureServerSource(el, url, sourceId) {
  * Close the attribution control on a MapLibre map once it has loaded.
  *
  * @param {string} mapId ID of the map element.
+ * @param {object} widgetInstance Map widget instance containing the map.
  * @returns {void}
  */
-function closeAttribution(mapId) {
-  let map = document.getElementById(mapId);
-  const attributionControl = map.querySelector(
-    ".maplibregl-ctrl-attrib-button",
-  );
-  if (attributionControl) {
-    attributionControl.click();
+function closeAttribution(mapId, widgetInstance) {
+  waitForFullLoad(widgetInstance, () => {
+    let map = document.getElementById(mapId);
+    const attributionControl = map.querySelector(
+      ".maplibregl-ctrl-attrib-button",
+    );
+    if (attributionControl) {
+      attributionControl.click();
+    }
+  });
+}
+
+/**
+ * Wait for the MapLibre map to fully load before executing a callback function.
+ *
+ * @param {object} widgetInstance Map widget instance containing the map.
+ * @param {function} callback     Function to execute once the map has fully loaded.
+ * @return {void}
+ */
+function waitForFullLoad(widgetInstance, callback) {
+  const map = widgetInstance.getMap();
+  if (map.loaded()) {
+    callback();
+  } else {
+    map.once("idle", callback);
   }
 }
 

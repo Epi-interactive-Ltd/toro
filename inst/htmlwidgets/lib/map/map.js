@@ -28,6 +28,7 @@ HTMLWidgets.widget({
           },
           center: x.center,
           zoom: x.zoom,
+          attributionControl: false,
           ...x.options,
         });
 
@@ -466,7 +467,7 @@ HTMLWidgets.widget({
             x.options.attributionPosition || "bottom-right",
           );
 
-          closeAttribution(el.id); // By default, close the attribution panel
+          closeAttribution(el.id, el.widgetInstance); // By default, close the attribution panel
         });
 
         // ------------------------------------------------------------
