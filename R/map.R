@@ -8,6 +8,9 @@
 #' @param width     The width of the widget. Optional.
 #' @param height    The height of the widget. Optional.
 #' @param session   The Shiny session object. Default is the current session.
+#' @param loadedTiles One of \code{...} options. Either a character vector of the tile ids to load,
+#' or a named list of tile options. If a character vector, the default options will be used for
+#' each tile.
 #' @param ...       Additional options to customize the map.
 #' @return          An object of class \code{htmlwidget} representing the gauge plot.
 #'
@@ -15,7 +18,12 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'   map()
+#' map()
+#'
+#' map(loadedTiles = c("natgeo", "streets"))
+#'
+#' # Add maxzoom to satellite layer
+#' map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
 #' }
 #' @export
 map <- function(
