@@ -2,7 +2,8 @@
 % Please edit documentation in R/sources.R
 \name{add_tiles_from_wms}
 \alias{add_tiles_from_wms}
-\title{Add an Image Server source to a toro map}
+\title{Add an Image Server source to a toro map
+TODO: WIP}
 \usage{
 add_tiles_from_wms(map, url, tile_id, as_image_layer = FALSE, ...)
 }
@@ -20,5 +21,6 @@ The updated map object.
 }
 \description{
 Add an Image Server source to a toro map
+TODO: WIP
 }
 \keyword{internal}

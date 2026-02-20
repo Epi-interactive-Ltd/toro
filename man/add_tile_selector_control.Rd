@@ -43,6 +43,8 @@ Functions:
 \item remove_layer_selector_control: Remove the layer selector control from the map.
 \item add_cluster_toggle:            Add a cluster toggle control to the map or control panel.
 \item remove_cluster_toggle:         Remove a cluster toggle control from the map.
+\item add_visibility_toggle:         Add a visibility toggle control to the map or control panel.
+\item remove_visibility_toggle:      Remove a visibility toggle control from the map.
 Add a tile selector control to the map or control panel
 }
 }
