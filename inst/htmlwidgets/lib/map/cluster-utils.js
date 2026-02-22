@@ -14,15 +14,16 @@
 /**
  * Add layers needed for clustering a specific layer.
  *
- * @param {object} el       HTML widget element containing the map instance.
- * @param {string} layerId  ID of the layer to add clusters to.
- * @param {string} sourceId ID of the source that contains the cluster data.
+ * @param {object} el         HTML widget element containing the map instance.
+ * @param {string} layerId    ID of the layer to add clusters to.
+ * @param {string} sourceId   ID of the source that contains the cluster data.
+ * @param {string} popupColumn Optional popup column for spiderfy pins.
  * @returns {void}
  *
  * @see {@link addClusterSpiderfying}
  * @see {@link toggleLayerClustering}
  */
-function addClusterLayer(el, layerId, sourceId) {
+function addClusterLayer(el, layerId, sourceId, popupColumn) {
   el.mapInstance.addLayer(
     {
       id: `${layerId}-clusters`,
@@ -58,7 +59,7 @@ function addClusterLayer(el, layerId, sourceId) {
   el.ourLayers.push(`${layerId}-cluster-count`);
   el.ourLayers.push(`${layerId}-clusters`);
 
-  addClusterSpiderfying(el, layerId, sourceId);
+  addClusterSpiderfying(el, layerId, sourceId, popupColumn);
   toggleLayerClustering(el.mapInstance, layerId, true);
   addLayerCursor(el.mapInstance, [layerId, `${layerId}-clusters`, `${layerId}-cluster-count`]);
 }
@@ -66,15 +67,16 @@ function addClusterLayer(el, layerId, sourceId) {
 /**
  * Add spiderfying to clusters.
  *
- * @param {object} el       HTML widget element containing the map instance.
- * @param {string} layerId  ID of the layer to add clusters to.
- * @param {string} sourceId ID of the source that contains the cluster data.
+ * @param {object} el         HTML widget element containing the map instance.
+ * @param {string} layerId    ID of the layer to add clusters to.
+ * @param {string} sourceId   ID of the source that contains the cluster data.
+ * @param {string} popupColumn Optional popup column for spiderfy pins.
  * @returns {void}
  *
  * @see {@link closeSpiderfy}
  * @see {@link onClusterClick}
  */
-function addClusterSpiderfying(el, layerId, sourceId) {
+function addClusterSpiderfying(el, layerId, sourceId, popupColumn) {
   // Close the spiderfy when clicking outside of the spiderfy layers.
   const spiderfyLayers = [
     'spiderfy-lines',
@@ -104,6 +106,11 @@ function addClusterSpiderfying(el, layerId, sourceId) {
       el.openClusterId = null; // Reset the open cluster ID
     }
   });
+
+  // Add popup functionality to spiderfy-pins if popup column is provided
+  if (popupColumn) {
+    addLayerPopup(el.mapInstance, 'spiderfy-pins', popupColumn);
+  }
 }
 
 /**
@@ -140,7 +147,6 @@ function addSpiderfyingLayers(map) {
     type: 'symbol',
     source: 'spiderfy-pins-source',
   });
-  addLayerPopup(map, 'spiderfy-pins', 'popup');
 }
 
 /**

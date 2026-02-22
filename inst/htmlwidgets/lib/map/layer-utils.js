@@ -164,10 +164,10 @@ function addLayerToMap(el, layer) {
 
   // Always add cluster layers for GeoJSON sources to handle overlapping coordinates
   if (typeof layer.source === 'object' && layer.source.type === 'geojson') {
-    addClusterLayer(el, layerObj.id, sourceId);
+    addClusterLayer(el, layerObj.id, sourceId, layer.popupColumn);
   } else if (layer.canCluster) {
     // For string source references, only add clustering if explicitly requested
-    addClusterLayer(el, layerObj.id, sourceId);
+    addClusterLayer(el, layerObj.id, sourceId, layer.popupColumn);
   }
 
   // if (layer.onFeatureClick) {
@@ -648,6 +648,11 @@ function addLayerPopup(map, layerId, popupColumn) {
 
     let coordinates = e.features[0].geometry.coordinates.slice();
     const description = e.features[0].properties[popupColumn];
+
+    // Don't show popup if the property doesn't exist or is undefined/null
+    if (description === undefined || description === null) {
+      return;
+    }
 
     const featureType = e.features[0].geometry.type;
 
