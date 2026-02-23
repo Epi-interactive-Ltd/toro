@@ -152,7 +152,7 @@ function addLayerToMap(el, layer) {
     sourceId = layer.source;
     layerObj.source = layer.source;
   }
-  map.addLayer(layerObj, 'spiderfy-lines');
+  map.addLayer(layerObj, layer.beforeId || 'spiderfy-lines');
   el.ourLayers.push(layerObj.id); // Store the layer ID for later reference
 
   if (layer.popupColumn) {
@@ -774,21 +774,58 @@ function closeAllPopups(map) {
   });
 }
 
+/**
+ * Copy the style from one layer to another in a MapLibre map.
+ *
+ * Used in spiderfying to copy the style from the original layer to the spiderfy layers, so that they look the same.
+ *
+ * @param {object} map Maplibre map instance.
+ * @param {string} fromLayerId ID of the layer to copy style from.
+ * @param {string} toLayerId ID of the layer to copy style to.
+ * @returns {void}
+ */
 function copyLayerStyle(map, fromLayerId, toLayerId) {
   const fromLayer = map.getLayer(fromLayerId);
   if (!fromLayer) return;
 
-  // Copy paint properties
-  const paintProps = map.getStyle().layers.find((l) => l.id === fromLayerId).paint || {};
-  Object.keys(paintProps).forEach((prop) => {
-    const value = map.getPaintProperty(fromLayerId, prop);
-    map.setPaintProperty(toLayerId, prop, value);
-  });
+  const toLayer = map.getLayer(toLayerId);
+  if (!toLayer) return;
 
-  // Copy layout properties
-  const layoutProps = map.getStyle().layers.find((l) => l.id === fromLayerId).layout || {};
-  Object.keys(layoutProps).forEach((prop) => {
-    const value = map.getLayoutProperty(fromLayerId, prop);
-    map.setLayoutProperty(toLayerId, prop, value);
-  });
+  try {
+    // Copy paint properties
+    const paintProps = map.getStyle().layers.find((l) => l.id === fromLayerId).paint || {};
+    Object.keys(paintProps).forEach((prop) => {
+      try {
+        const value = map.getPaintProperty(fromLayerId, prop);
+        // Only set property if the value is defined and not null
+        if (value !== undefined && value !== null) {
+          map.setPaintProperty(toLayerId, prop, value);
+        }
+      } catch (error) {
+        console.warn(
+          `Failed to copy paint property ${prop} from ${fromLayerId} to ${toLayerId}:`,
+          error
+        );
+      }
+    });
+
+    // Copy layout properties
+    const layoutProps = map.getStyle().layers.find((l) => l.id === fromLayerId).layout || {};
+    Object.keys(layoutProps).forEach((prop) => {
+      try {
+        const value = map.getLayoutProperty(fromLayerId, prop);
+        // Only set property if the value is defined and not null
+        if (value !== undefined && value !== null) {
+          map.setLayoutProperty(toLayerId, prop, value);
+        }
+      } catch (error) {
+        console.warn(
+          `Failed to copy layout property ${prop} from ${fromLayerId} to ${toLayerId}:`,
+          error
+        );
+      }
+    });
+  } catch (error) {
+    console.warn(`Failed to copy layer style from ${fromLayerId} to ${toLayerId}:`, error);
+  }
 }
