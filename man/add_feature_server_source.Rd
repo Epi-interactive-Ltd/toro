@@ -4,7 +4,7 @@
 \alias{add_feature_server_source}
 \title{Add a FeatureServer source to the map.}
 \usage{
-add_feature_server_source(map, source_url, source_id)
+add_feature_server_source(map, source_url, source_id, append_query_url = TRUE)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
@@ -12,6 +12,8 @@ add_feature_server_source(map, source_url, source_id)
 \item{source_url}{The URL of the FeatureServer source.}
 
 \item{source_id}{The ID for the source.}
+
+\item{append_query_url}{Whether to append the query parameters to the URL. Default is \code{TRUE}.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.
@@ -19,4 +21,14 @@ add_feature_server_source(map, source_url, source_id)
 }
 \description{
 Add a FeatureServer source to the map.
+}
+\examples{
+if (interactive()) {
+ map() |>
+   add_feature_server_source(
+     "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
+     "eez"
+   ) |>
+   add_line_layer(id = "eez_lines", source = "eez")
+}
 }

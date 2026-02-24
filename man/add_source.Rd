@@ -32,3 +32,13 @@ Functions:
 Add a source to the map.
 }
 }
+\examples{
+if (interactive()) {
+ map() |>
+   add_source(
+     source_id = "my_source",
+     data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+   ) |>
+   add_circle_layer(id = "quakes", source = "my_source")
+}
+}

@@ -16,6 +16,16 @@
 #' @param cluster   Whether to enable clustering for this source. Default is `FALSE`.
 #' @return          The map or map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' if (interactive()) {
+#'  map() |>
+#'    add_source(
+#'      source_id = "my_source",
+#'      data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'    ) |>
+#'    add_circle_layer(id = "quakes", source = "my_source")
+#' }
 add_source <- function(
   map,
   source_id,
@@ -51,12 +61,28 @@ add_source <- function(
 #' @param map         The map or map proxy object.
 #' @param source_url  The URL of the FeatureServer source.
 #' @param source_id   The ID for the source.
+#' @param append_query_url Whether to append the query parameters to the URL. Default is `TRUE`.
 #' @return            The map or map proxy object for chaining.
 #' @export
-add_feature_server_source <- function(map, source_url, source_id) {
+#'
+#' @examples
+#' if (interactive()) {
+#'  map() |>
+#'    add_feature_server_source(
+#'      "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
+#'      "eez"
+#'    ) |>
+#'    add_line_layer(id = "eez_lines", source = "eez")
+#' }
+add_feature_server_source <- function(map, source_url, source_id, append_query_url = TRUE) {
+  full_url <- ifelse(
+    append_query_url,
+    paste0(source_url, "/query?outFields=*&where=1%3D1&f=geojson"),
+    source_url
+  )
   source_options <- list(
     type = "geojson",
-    data = paste0(source_url, "/0/query?where=1=1&outFields=*&f=geojson")
+    data = full_url
   )
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
@@ -155,6 +181,26 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 #' @param image_url   The URL of the image to add.
 #' @return            The map or map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' if (interactive()) {
+#'  map() |>
+#'    add_image(
+#'      image_id = "leaf-icon",
+#'      image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Leaf_icon.png/600px-Leaf_icon.png"
+#'    ) |>
+#'    add_symbol_layer(
+#'      id = "text_layer",
+#'      source = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326),
+#'      layout = toro::get_layout_options(
+#'        "symbol",
+#'        options = list(
+#'          icon_image = "leaf-icon",
+#'          icon_size = 0.1
+#'        )
+#'      )
+#'    )
+#' }
 add_image <- function(map, image_id, image_url) {
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
