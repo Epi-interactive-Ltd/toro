@@ -132,15 +132,21 @@ function addLayerToMap(el, layer) {
     sourceId = `source-${layer.id}`;
 
     // Always enable clustering for GeoJSON sources to handle overlapping coordinates
-    const sourceOptions = {
+    let sourceOptions = {
       ...layer.source,
-      generateId: true,
-      cluster: true,
-      // If can_cluster=false, use very restrictive settings to only cluster identical coordinates
-      clusterRadius: layer.canCluster ? 50 : 0, // 0 radius = only exact same coords cluster
-      clusterMaxZoom: 24, // Always allow clustering at all zoom levels to handle overlaps
-      clusterMinPoints: 2, // Always require at least 2 points to form a cluster
     };
+
+    if (layer.canCluster !== false) {
+      sourceOptions = {
+        ...sourceOptions,
+        generateId: false,
+        cluster: true,
+        // If can_cluster=false, use very restrictive settings to only cluster identical coordinates
+        clusterRadius: layer.canCluster ? 50 : 0, // 0 radius = only exact same coords cluster
+        clusterMaxZoom: 24, // Always allow clustering at all zoom levels to handle overlaps
+        clusterMinPoints: 2, // Always require at least 2 points to form a cluster
+      };
+    }
 
     // Add the source to the map
     map.addSource(sourceId, sourceOptions);
@@ -163,7 +169,11 @@ function addLayerToMap(el, layer) {
   }
 
   // Always add cluster layers for GeoJSON sources to handle overlapping coordinates
-  if (typeof layer.source === 'object' && layer.source.type === 'geojson') {
+  if (
+    typeof layer.source === 'object' &&
+    layer.source.type === 'geojson' &&
+    layer.canCluster !== false
+  ) {
     addClusterLayer(el, layerObj.id, sourceId, layer.popupColumn);
   } else if (layer.canCluster) {
     // For string source references, only add clustering if explicitly requested
