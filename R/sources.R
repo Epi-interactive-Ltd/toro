@@ -77,7 +77,7 @@ add_source <- function(
 add_feature_server_source <- function(map, source_url, source_id, append_query_url = TRUE) {
   full_url <- ifelse(
     append_query_url,
-    paste0(source_url, "/query?outFields=*&where=1%3D1&f=geojson"),
+    paste0(source_url, "/0/query?where=1=1&outFields=*&f=geojson"),
     source_url
   )
   source_options <- list(
