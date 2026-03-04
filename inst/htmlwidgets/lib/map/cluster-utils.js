@@ -52,6 +52,8 @@ function addClusterLayer(el, layerId, sourceId, popupColumn) {
         'text-field': '{point_count_abbreviated}',
         'text-font': ['Open Sans Regular'],
         'text-size': 12,
+        'icon-overlap': 'always',
+        'text-allow-overlap': true,
       },
     },
     layerId
@@ -293,6 +295,40 @@ async function onClusterClick(e, el, layerId, sourceId) {
   }
 }
 
+const DEFAULT_CLUSTER_OPTS = {
+  cluster: true,
+  clusterRadius: 50,
+  clusterMaxZoom: 24,
+  clusterMinPoints: 2,
+};
+const DEFAULT__NO_CLUSTER_OPTS = {
+  cluster: true,
+  clusterRadius: 0, // Ensure that points with same coords still cluster
+  clusterMaxZoom: 24,
+  clusterMinPoints: 2,
+};
+
+/**
+ * Get cluster options based on the provided clusterOptions object.
+ *
+ * @param {object} clusterOptions Cluster options object that may contain `cluster` or `can_cluster` properties.
+ * @returns {object} Cluster options to be used in MapLibre source configuration.
+ */
+function getClusterOptions(clusterOptions) {
+  if (!clusterOptions) return DEFAULT__NO_CLUSTER_OPTS;
+
+  if (clusterOptions?.cluster === true || clusterOptions?.can_cluster === true) {
+    return {
+      ...DEFAULT_CLUSTER_OPTS,
+      ...clusterOptions,
+    };
+  }
+  return {
+    ...DEFAULT__NO_CLUSTER_OPTS,
+    ...clusterOptions,
+  };
+}
+
 /**
  * Turn clustering on/off for a specific layer in a MapLibre map.
  *
@@ -308,10 +344,7 @@ function toggleLayerClustering(map, layerId, enable) {
   if (layer) {
     const sourceId = layer.source; // Assuming layerId is the source ID
     map.getSource(sourceId).setClusterOptions({
-      cluster: enable,
-      clusterRadius: enable ? 30 : 50, // Smaller radius for less aggressive clustering
-      clusterMaxZoom: 24, // Always allow clustering at all zoom levels to handle overlapping points
-      clusterMinPoints: enable ? 2 : null, // Minimum points required to form a cluster
+      ...getClusterOptions({ cluster: enable }),
     });
 
     if (enable) {

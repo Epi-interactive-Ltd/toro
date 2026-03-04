@@ -31,7 +31,8 @@ add_source <- function(
   source_id,
   data,
   type = "geojson",
-  cluster = FALSE
+  cluster = FALSE,
+  ...
 ) {
   if (type == "geojson" && !"geojson" %in% class(data)) {
     data <- geojsonsf::sf_geojson(data)
@@ -41,6 +42,12 @@ add_source <- function(
     data = data,
     cluster = cluster
   )
+
+  # Add any additional arguments from ...
+  extra_args <- list(...)
+  if (length(extra_args) > 0) {
+    source_options <- c(source_options, extra_args)
+  }
 
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(

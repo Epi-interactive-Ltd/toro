@@ -4,7 +4,7 @@
 \alias{add_source}
 \title{Utilities for the map related to map sources.}
 \usage{
-add_source(map, source_id, data, type = "geojson", cluster = FALSE)
+add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
