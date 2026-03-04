@@ -29,6 +29,7 @@ HTMLWidgets.widget({
           center: x.center,
           zoom: x.zoom,
           attributionControl: false,
+          fadeDuration: 0, // this is in order for the text and circles to move "as-one"
           ...x.options,
         });
 
@@ -66,7 +67,7 @@ HTMLWidgets.widget({
 
           if (x.sources) {
             x.sources.forEach((source) =>
-              mapInstance.addSource(source.sourceId, source.sourceOptions)
+              addDataSourceToMap(mapInstance, source.sourceId, source.sourceOptions)
             );
           }
 
@@ -931,7 +932,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('addMapSource', function (message) {
     withMapInstance(message.id, function (el) {
-      el.mapInstance.addSource(message.sourceId, message.sourceOptions);
+      addDataSourceToMap(el.mapInstance, message.sourceId, message.sourceOptions);
     });
   });
 
@@ -943,12 +944,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('updateSourceData', function (message) {
     withMapInstance(message.id, function (el) {
-      const src = el.mapInstance.getSource(message.sourceId);
-      if (src && src.setData) {
-        src.setData(message.data);
-      } else {
-        console.warn('Source not found or not a GeoJSON source:', message.sourceId);
-      }
+      updateSourceData(el.mapInstance, message.sourceId, message.data);
     });
   });
 

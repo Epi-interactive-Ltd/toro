@@ -15,7 +15,8 @@ add_layer(
   hover_column = NULL,
   can_cluster = FALSE,
   under_id = NULL,
-  filter = NULL
+  filter = NULL,
+  cluster_options = list()
 )
 }
 \arguments{

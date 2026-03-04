@@ -27,6 +27,7 @@ dependencies:
       file: htmlwidgets/lib/map
     script:
       - map.js
+      - source-utils.js
       - map-utils.js
       - control-utils.js
       - layer-utils.js

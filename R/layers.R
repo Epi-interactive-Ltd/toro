@@ -29,6 +29,8 @@
 #' @param can_cluster   Whether the layer can be clustered. Default is `FALSE`.
 #' @param under_id      The ID of another layer to place this layer under. Default is `NULL`.
 #' @param filter        A filter expression to apply to the layer. Default is `NULL`.
+#' @param cluster_options A list of options for clustering, if `can_cluster` is `TRUE`.
+#'  Default is an empty list.
 #' @return              The updated map object with the new layer added.
 #' @export
 add_layer <- function(
@@ -42,7 +44,8 @@ add_layer <- function(
   hover_column = NULL,
   can_cluster = FALSE,
   under_id = NULL,
-  filter = NULL
+  filter = NULL,
+  cluster_options = list()
 ) {
   if (is.null(paint)) {
     paint <- toro::get_paint_options(type)
@@ -72,6 +75,7 @@ add_layer <- function(
     popupColumn = popup_column,
     hoverColumn = hover_column,
     canCluster = can_cluster,
+    clusterOptions = cluster_options,
     filter = filter,
     beforeId = under_id
   )

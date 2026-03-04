@@ -134,22 +134,12 @@ function addLayerToMap(el, layer) {
     // Always enable clustering for GeoJSON sources to handle overlapping coordinates
     let sourceOptions = {
       ...layer.source,
+      generateId: false,
+      ...getClusterOptions({ cluster: layer.canCluster !== false }),
     };
 
-    if (layer.canCluster !== false) {
-      sourceOptions = {
-        ...sourceOptions,
-        generateId: false,
-        cluster: true,
-        // If can_cluster=false, use very restrictive settings to only cluster identical coordinates
-        clusterRadius: layer.canCluster ? 50 : 0, // 0 radius = only exact same coords cluster
-        clusterMaxZoom: 24, // Always allow clustering at all zoom levels to handle overlaps
-        clusterMinPoints: 2, // Always require at least 2 points to form a cluster
-      };
-    }
-
     // Add the source to the map
-    map.addSource(sourceId, sourceOptions);
+    addDataSourceToMap(map, sourceId, sourceOptions);
 
     // Update layerObj to reference the source ID
     layerObj.source = sourceId;
