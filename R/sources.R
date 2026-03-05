@@ -16,12 +16,23 @@
 #' @param cluster   Whether to enable clustering for this source. Default is `FALSE`.
 #' @return          The map or map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' if (interactive()) {
+#'  map() |>
+#'    add_source(
+#'      source_id = "my_source",
+#'      data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'    ) |>
+#'    add_circle_layer(id = "quakes", source = "my_source")
+#' }
 add_source <- function(
   map,
   source_id,
   data,
   type = "geojson",
-  cluster = FALSE
+  cluster = FALSE,
+  ...
 ) {
   if (type == "geojson" && !"geojson" %in% class(data)) {
     data <- geojsonsf::sf_geojson(data)
@@ -31,6 +42,12 @@ add_source <- function(
     data = data,
     cluster = cluster
   )
+
+  # Add any additional arguments from ...
+  extra_args <- list(...)
+  if (length(extra_args) > 0) {
+    source_options <- c(source_options, extra_args)
+  }
 
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
@@ -51,22 +68,114 @@ add_source <- function(
 #' @param map         The map or map proxy object.
 #' @param source_url  The URL of the FeatureServer source.
 #' @param source_id   The ID for the source.
+#' @param append_query_url Whether to append the query parameters to the URL. Default is `TRUE`.
 #' @return            The map or map proxy object for chaining.
 #' @export
-add_feature_server_source <- function(map, source_url, source_id) {
+#'
+#' @examples
+#' if (interactive()) {
+#'  map() |>
+#'    add_feature_server_source(
+#'      "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
+#'      "eez"
+#'    ) |>
+#'    add_line_layer(id = "eez_lines", source = "eez")
+#' }
+add_feature_server_source <- function(map, source_url, source_id, append_query_url = TRUE) {
+  full_url <- ifelse(
+    append_query_url,
+    paste0(source_url, "/0/query?where=1=1&outFields=*&f=geojson"),
+    source_url
+  )
+  source_options <- list(
+    type = "geojson",
+    data = full_url
+  )
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
-      "addFeatureServerSource",
+      "addMapSource",
       list(
         id = map$id,
-        sourceUrl = source_url,
+        sourceOptions = source_options,
         sourceId = source_id
       )
     )
   }
-  map$x$featureSources <- c(
-    map$x$featureSources,
-    list(list(sourceId = source_id, sourceUrl = source_url))
+  map$x$sources <- c(
+    map$x$sources,
+    list(list(sourceId = source_id, sourceOptions = source_options))
+  )
+  map
+}
+
+#' Add an Image Server source to a toro map
+#' TODO: WIP
+#'
+#' @param map A toro map object or a map proxy object.
+#' @param url The URL of the ArcGIS Image Server.
+#' @param source_id A unique identifier for the source.
+#' @param ... Additional parameters for the Image Server source.
+#' @return The updated map object.
+#' @keywords internal
+add_tiles_from_map_server <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
+  source_options <- list(
+    tileId = tile_id,
+    tiles = paste0(url, "/tile/{z}/{y}/{x}"),
+    ...
+  )
+
+  # if (inherits(map, "mapProxy")) {
+  #   map$session$sendCustomMessage(
+  #     "addTilesFromMapServer",
+  #     list(
+  #       id = map$id,
+  #       sourceOptions = source_options,
+  #       sourceId = tile_id
+  #     )
+  #   )
+  # }
+  key <- ifelse(as_image_layer, "imageLayerTiles", "mapServerTiles")
+  map$x[[key]] <- c(
+    map$x[[key]],
+    list(list(tileId = tile_id, mapServiceUrl = url, options = ...))
+  )
+  map
+}
+
+#' Add an Image Server source to a toro map
+#' TODO: WIP
+#'
+#' @param map A toro map object or a map proxy object.
+#' @param url The URL of the ArcGIS Image Server.
+#' @param source_id A unique identifier for the source.
+#' @param ... Additional parameters for the Image Server source.
+#' @return The updated map object.
+#' @keywords internal
+add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
+  source_options <- list(
+    tileId = tile_id,
+    tiles = url,
+    # tiles = paste0(
+    #   url,
+    #   "?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256"
+    # ),
+    ...
+  )
+
+  # if (inherits(map, "mapProxy")) {
+  #   map$session$sendCustomMessage(
+  #     "addTilesFromMapServer",
+  #     list(
+  #       id = map$id,
+  #       sourceOptions = source_options,
+  #       sourceId = tile_id
+  #     )
+  #   )
+  # }
+  key <- ifelse(as_image_layer, "imageLayerTiles", "mapServerTiles")
+  map$x[[key]] <- c(
+    map$x[[key]],
+    list(list(tileId = tile_id, mapServiceUrl = url, options = ...))
   )
   map
 }
@@ -79,6 +188,26 @@ add_feature_server_source <- function(map, source_url, source_id) {
 #' @param image_url   The URL of the image to add.
 #' @return            The map or map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' if (interactive()) {
+#'  map() |>
+#'    add_image(
+#'      image_id = "leaf-icon",
+#'      image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Leaf_icon.png/600px-Leaf_icon.png"
+#'    ) |>
+#'    add_symbol_layer(
+#'      id = "text_layer",
+#'      source = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326),
+#'      layout = toro::get_layout_options(
+#'        "symbol",
+#'        options = list(
+#'          icon_image = "leaf-icon",
+#'          icon_size = 0.1
+#'        )
+#'      )
+#'    )
+#' }
 add_image <- function(map, image_id, image_url) {
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(

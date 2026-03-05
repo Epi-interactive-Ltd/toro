@@ -2,12 +2,15 @@
 #'
 #' This function creates a map htmlwidget for use in R and Shiny applications.
 #'
-#' @param style     The style of the map. Default is "light-grey".
+#' @param style     The style of the map. Default is "lightgrey".
 #' @param center    The initial center of the map as a longitude/latitude pair. Default is c(174, -41).
 #' @param zoom      The initial zoom level of the map. Default is 2.
 #' @param width     The width of the widget. Optional.
 #' @param height    The height of the widget. Optional.
 #' @param session   The Shiny session object. Default is the current session.
+#' @param loadedTiles One of \code{...} options. Either a character vector of the tile ids to load,
+#' or a named list of tile options. If a character vector, the default options will be used for
+#' each tile.
 #' @param ...       Additional options to customize the map.
 #' @return          An object of class \code{htmlwidget} representing the gauge plot.
 #'
@@ -15,11 +18,16 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'   map()
+#' map()
+#'
+#' map(loadedTiles = c("natgeo", "streets"))
+#'
+#' # Add maxzoom to satellite layer
+#' map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
 #' }
 #' @export
 map <- function(
-  style = "light-grey",
+  style = "lightgrey",
   center = c(174, -41),
   zoom = 2,
   width = "100%",
@@ -30,11 +38,11 @@ map <- function(
   in_shiny <- !is.null(session)
 
   default_options <- list(
-    minZoom = 2,
-    maxZoom = 18,
+    minZoom = 2, # 0-24
+    maxZoom = 18, # 0-24
     clusterColour = "#808080",
-    # Full options: c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "light-grey")
-    loadedTiles = c("light-grey", "satellite"),
+    # Full options: c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey")
+    loadedTiles = c("lightgrey", "satellite"),
     initialTileLayer = NULL,
     backgroundColour = "#D0CFD4",
     enable3D = FALSE,
@@ -47,6 +55,17 @@ map <- function(
   )
   user_options <- list(...)
   map_options <- modifyList(default_options, user_options)
+
+  # If the style is not in loadedTiles, add it
+  if (class(map_options$loadedTiles) == "list") {
+    if (!style %in% names(map_options$loadedTiles)) {
+      map_options$loadedTiles[[style]] <- list()
+    }
+  } else {
+    if (!style %in% map_options$loadedTiles) {
+      map_options$loadedTiles <- c(map_options$loadedTiles, style)
+    }
+  }
 
   htmlwidgets::createWidget(
     name = "map",

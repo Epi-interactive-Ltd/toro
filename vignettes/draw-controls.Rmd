@@ -1,0 +1,19 @@
+---
+title: "draw-controls"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{draw-controls}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(toro)
+```

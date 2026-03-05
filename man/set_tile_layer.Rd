@@ -11,7 +11,7 @@ set_tile_layer(map, tiles)
 
 \item{tiles}{A character vector of tile layer names.
 Options include "natgeo", "satellite", "topo", "terrain",
-"streets", "shaded", "light-grey".}
+"streets", "shaded", "lightgrey".}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{ The map or map proxy object for chaining.

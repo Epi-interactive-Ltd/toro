@@ -9,6 +9,9 @@ add_symbol_layer(map, ...)
 }
 \arguments{
 \item{map}{The map object or map proxy to which the layer will be added.}
+
+\item{...}{Additional arguments to include in the layer definition.
+Default is an empty list.}
 }
 \value{
 The updated map object with the symbol layer added.
@@ -16,4 +19,23 @@ The updated map object with the symbol layer added.
 \description{
 Add a symbol layer to a map or map proxy.
 This layer is typically used for icons or text labels.
+}
+\examples{
+\dontrun{
+# Load libraries
+library(toro)
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- quakes |>
+ st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+# Create map and add fill layer
+map() |>
+ add_symbol_layer(
+   id = "test_layer",
+   source = quakes_data
+ )
+}
 }

@@ -15,7 +15,8 @@ add_layer(
   hover_column = NULL,
   can_cluster = FALSE,
   under_id = NULL,
-  filter = NULL
+  filter = NULL,
+  ...
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ add_layer(
 \item{under_id}{The ID of another layer to place this layer under. Default is \code{NULL}.}
 
 \item{filter}{A filter expression to apply to the layer. Default is \code{NULL}.}
+
+\item{...}{Additional arguments to include in the layer definition.
+Default is an empty list.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{         The updated map object with the new layer added.

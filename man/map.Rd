@@ -5,7 +5,7 @@
 \title{Create a Maplibre map widget.}
 \usage{
 map(
-  style = "light-grey",
+  style = "lightgrey",
   center = c(174, -41),
   zoom = 2,
   width = "100\%",
@@ -15,7 +15,7 @@ map(
 )
 }
 \arguments{
-\item{style}{The style of the map. Default is "light-grey".}
+\item{style}{The style of the map. Default is "lightgrey".}
 
 \item{center}{The initial center of the map as a longitude/latitude pair. Default is c(174, -41).}
 
@@ -28,6 +28,10 @@ map(
 \item{session}{The Shiny session object. Default is the current session.}
 
 \item{...}{Additional options to customize the map.}
+
+\item{loadedTiles}{One of \code{...} options. Either a character vector of the tile ids to load,
+or a named list of tile options. If a character vector, the default options will be used for
+each tile.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     An object of class \code{htmlwidget} representing the gauge plot.
@@ -38,6 +42,11 @@ This function creates a map htmlwidget for use in R and Shiny applications.
 }
 \examples{
 if (interactive()) {
-  map()
+map()
+
+map(loadedTiles = c("natgeo", "streets"))
+
+# Add maxzoom to satellite layer
+map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
 }
 }

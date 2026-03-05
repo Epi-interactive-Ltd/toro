@@ -28,7 +28,7 @@ Functions:
 Download the map as an image.
 }
 }
-\note{
-THIS IS A WIP !!!
+\details{
+TODO: WIP
 }
 \keyword{internal}

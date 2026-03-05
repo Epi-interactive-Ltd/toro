@@ -4,7 +4,7 @@
 \alias{add_source}
 \title{Utilities for the map related to map sources.}
 \usage{
-add_source(map, source_id, data, type = "geojson", cluster = FALSE)
+add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
@@ -30,5 +30,15 @@ Functions:
 \item \code{add_image}: Add an image source to the map.
 \item \code{set_source_data}: Set data for a source on the map.
 Add a source to the map.
+}
+}
+\examples{
+if (interactive()) {
+ map() |>
+   add_source(
+     source_id = "my_source",
+     data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+   ) |>
+   add_circle_layer(id = "quakes", source = "my_source")
 }
 }

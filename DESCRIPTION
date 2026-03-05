@@ -1,14 +1,20 @@
 Package: toro
 Title: Maplibre GL JS integration for R
-Version: 0.0.4
+Version: 0.0.5
+Date: 2026-03-05
 Authors@R: c(
-    person("Poppy", "Schlaadt", , "poppy@epi.group", role = c("aut", "cre")),
-    person("Epi", "", role = c("cph", "fnd")))
+    person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")))
+FundedBy: epi group [https://epi.group/]
+Maintainer: Poppy Pakinui <poppy@epi.group>
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.
+URL: https://epi-interactive-ltd.github.io/toro/
+BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Depends:
+  R (>= 4.5.1)
 Imports:
     htmlwidgets,
     shiny,
@@ -18,5 +24,6 @@ Imports:
     sf
 Suggests: 
     knitr,
+    usethis,
     rmarkdown
 VignetteBuilder: knitr

@@ -1,0 +1,19 @@
+---
+title: "view-controls"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{view-controls}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(toro)
+```

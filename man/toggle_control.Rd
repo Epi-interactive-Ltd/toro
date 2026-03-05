@@ -20,12 +20,30 @@ toggle_control(proxy, control_id, show = TRUE)
 \description{
 Functions:
 \itemize{
-\item \code{toggle_control}:            Toggle the visibility of a control on the map.
-\item \code{add_cursor_coords_control}: Add a cursor coordinates control to the map.
-\item \code{add_draw_control}:          Add a draw control to the map.
-\item \code{add_zoom_control}:          Add a zoom control to the map.
-\item \code{add_custom_control}:        Add a custom HTML control to the map.
-\item \code{delete_drawn_shape}:        Delete a drawn shape from the map.
+\item toggle_control:                Toggle the visibility of a control on the map.
+\item remove_control:                Remove a control from the map.
+\item add_custom_control:            Add a custom HTML control to the map.
+\item remove_custom_control:         Remove a custom control from the map.
+\item add_cursor_coords_control:     Add a cursor coordinates control to the map.
+\item remove_cursor_coords_control:  Remove the cursor coordinates control from the map.
 Toggle the visibility of a control on the map.
+}
+}
+\examples{
+if (interactive()) {
+# In a Shiny app:
+output$map <- renderMap({
+ map() |>
+   add_zoom_control() |>
+   add_custom_control(
+     id = "custom_control",
+     html = "<p>I am a custom control</p>"
+   )
+})
+
+# In an observer:
+mapProxy("map") |>
+ toggle_control("zoom_control", show = FALSE) |>
+ toggle_control("custom_control", show = FALSE)
 }
 }

@@ -8,7 +8,10 @@ add_cursor_coords_control(
   map,
   position = "bottom-left",
   long_label = "Lng",
-  lat_label = "Lat"
+  lat_label = "Lat",
+  panel_id = NULL,
+  section_title = NULL,
+  group_id = NULL
 )
 }
 \arguments{
@@ -21,6 +24,10 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 \item{long_label}{The label for the longitude coordinate. Default is \code{"Lng"}.}
 
 \item{lat_label}{The label for the latitude coordinate. Default is \code{"Lat"}.}
+
+\item{panel_id}{ID of control panel to add to (optional).}
+
+\item{section_title}{Section title when added to a control panel.}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.
@@ -28,4 +35,34 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 }
 \description{
 Add a cursor coordinates control to the map.
+}
+\examples{
+if (interactive()) {
+# Add to a map
+map() |>
+ add_cursor_coords_control()
+
+# Change default options
+map() |>
+ add_cursor_coords_control(
+   position = "top-right",
+   long_label = "Longitude",
+   lat_label = "Latitude"
+ )
+
+# Add to a control panel
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+ add_cursor_coords_control(panel_id = "my_panel", section_title = "Cursor Coordinates")
+
+# Add to a control panel inside a control group
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+ add_control_group(
+   panel_id = "my_panel",
+   group_id = "map_state",
+   group_title = "Map State"
+   ) |>
+ add_cursor_coords_control(panel_id = "my_panel", group_id = "map_state")
+}
 }
