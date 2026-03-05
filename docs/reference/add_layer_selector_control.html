@@ -11,7 +11,7 @@ data layers or allowing users to choose between mutually exclusive visualization
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,6 +30,7 @@ data layers or allowing users to choose between mutually exclusive visualization
     <li><a class="dropdown-item" href="../articles/map-tiles.html">Modifying map tiles</a></li>
     <li><a class="dropdown-item" href="../articles/layers.html">Customising layers</a></li>
     <li><a class="dropdown-item" href="../articles/popups.html">Popups/Hovers</a></li>
+    <li><a class="dropdown-item" href="../articles/map-clusters.html">Clusters/Spiderfying</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Controls</h6></li>
     <li><a class="dropdown-item" href="../articles/controls.html">Adding controls to your map</a></li>
@@ -41,8 +42,10 @@ data layers or allowing users to choose between mutually exclusive visualization
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/contributing.html">Contributing to toro</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Epi-interactive-Ltd/toro/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -52,7 +55,7 @@ data layers or allowing users to choose between mutually exclusive visualization
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Add a layer selector control to the map or control panel</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/R/layer_controls.R" class="external-link"><code>R/layer_controls.R</code></a></small>
       <div class="d-none name"><code>add_layer_selector_control.Rd</code></div>
     </div>
 
@@ -131,9 +134,9 @@ data layers or allowing users to choose between mutually exclusive visualization
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="co"># Create a map with multiple layers</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="add_circle_layer.html">add_circle_layer</a></span><span class="op">(</span><span class="st">"points"</span>, <span class="va">data1</span>, id <span class="op">=</span> <span class="st">"layer1"</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="add_fill_layer.html">add_fill_layer</a></span><span class="op">(</span><span class="st">"polygons"</span>, <span class="va">data2</span>, id <span class="op">=</span> <span class="st">"layer2"</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="add_circle_layer.html">add_circle_layer</a></span><span class="op">(</span><span class="st">"points"</span>, <span class="va">data1</span>, id <span class="op">=</span> <span class="st">"layer1"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="add_fill_layer.html">add_fill_layer</a></span><span class="op">(</span><span class="st">"polygons"</span>, <span class="va">data2</span>, id <span class="op">=</span> <span class="st">"layer2"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="fu">add_layer_selector_control</span><span class="op">(</span></span></span>
 <span class="r-in"><span>      layer_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"layer1"</span>, <span class="st">"layer2"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"layer1"</span> <span class="op">=</span> <span class="st">"Points"</span>, <span class="st">"layer2"</span> <span class="op">=</span> <span class="st">"Polygons"</span><span class="op">)</span>,</span></span>
@@ -147,7 +150,7 @@ data layers or allowing users to choose between mutually exclusive visualization
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Poppy Schlaadt, Epi.</p>
+  <p>Developed by <a href="https://github.com/pakinui" class="external-link">Poppy Pakinui</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

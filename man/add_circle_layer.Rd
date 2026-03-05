@@ -8,10 +8,69 @@ add_circle_layer(map, ...)
 }
 \arguments{
 \item{map}{The map object or map proxy to which the layer will be added.}
+
+\item{...}{Additional arguments to include in the layer definition.
+Default is an empty list.}
 }
 \value{
 The updated map object with the circle layer added.
 }
 \description{
 Add a circle layer to a map or map proxy.
+}
+\examples{
+\dontrun{
+# Load libraries
+library(toro)
+library(sf)
+
+base_map <- map() |>
+ add_feature_server_source(
+   "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M\%C4\%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson",
+   "maori_maunga_data",
+   append_query_url = FALSE
+ )
+
+base_map |>
+ add_circle_layer(
+   id = "maunga_circles",
+   source = "maori_maunga_data",
+   hover_column = "name_mi",
+   popup_column = "name"
+ )
+
+base_map |>
+ add_circle_layer(
+   id = "maunga_peaks",
+   source = "maori_maunga_data",
+   hover_column = "name_mi",
+   popup_column = "name",
+   filter = get_layer_filter("type != volcano"),
+   paint = get_paint_options(
+     "circle",
+     options = list(
+       colour = "#a3b18a",
+       outline_colour = "#588157",
+       opacity = 0.8,
+       outline_opacity = 0.8,
+       circle_radius = 4
+     )
+   )
+ ) |>
+ add_circle_layer(
+   id = "maunga_volcanoes",
+   source = "maori_maunga_data",
+   hover_column = "name_mi",
+   popup_column = "name",
+   filter = get_layer_filter("type == volcano"),
+   paint = get_paint_options(
+     "circle",
+     options = list(
+       colour = "#9d0208",
+       outline_colour = "#6a040f",
+       circle_radius = 7
+     )
+   )
+ )
+}
 }

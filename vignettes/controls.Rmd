@@ -2,7 +2,7 @@
 title: "Map Controls"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{controls}
+  %\VignetteIndexEntry{Map Controls}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 format: html

@@ -7,7 +7,7 @@
 #' @param options     A list of additional options to customize the layout properties.
 #' @returns           A list of layout options suitable for the specified layer type.
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
-#'          \code{\link{get_column_step_colours}}
+#'          \code{\link{get_column_step_steps}}
 #' @examples
 #' get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 #' get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
@@ -66,7 +66,7 @@ get_layout_options <- function(layer_type, options = list()) {
 #' @param options     A list of additional options to customize the paint properties.
 #' @returns           A list of paint options suitable for the specified layer type.
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
-#'          \code{\link{get_column_step_colours}}
+#'          \code{\link{get_column_step_steps}}
 #' @examples
 #' get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 #' get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
@@ -76,7 +76,7 @@ get_layout_options <- function(layer_type, options = list()) {
 #'    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 #' ))
 #' get_paint_options("fill", list(
-#'    opacity = get_column_step_colours("percent", c(25, 75), c("red", "orange", "yellow"))
+#'    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 #' ))
 #'
 #' @export
@@ -88,7 +88,7 @@ get_paint_options <- function(layer_type, options = list()) {
     outline_opacity = 1,
     line_width = 1,
     circle_radius = 5,
-    line_dash = list(0, 1) # No dash by default
+    line_dash = list(1, 0) # No dash by default
   )
   merged_options <- utils::modifyList(default_options, options)
   paint_options <- structure(list(), names = character(0))
