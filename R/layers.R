@@ -29,7 +29,7 @@
 #' @param can_cluster   Whether the layer can be clustered. Default is `FALSE`.
 #' @param under_id      The ID of another layer to place this layer under. Default is `NULL`.
 #' @param filter        A filter expression to apply to the layer. Default is `NULL`.
-#' @param cluster_options A list of options for clustering, if `can_cluster` is `TRUE`.
+#' @param ...           Additional arguments to include in the layer definition.
 #'  Default is an empty list.
 #' @return              The updated map object with the new layer added.
 #' @export
@@ -45,7 +45,7 @@ add_layer <- function(
   can_cluster = FALSE,
   under_id = NULL,
   filter = NULL,
-  cluster_options = list()
+  ...
 ) {
   if (is.null(paint)) {
     paint <- toro::get_paint_options(type)
@@ -75,10 +75,13 @@ add_layer <- function(
     popupColumn = popup_column,
     hoverColumn = hover_column,
     canCluster = can_cluster,
-    clusterOptions = cluster_options,
     filter = filter,
     beforeId = under_id
   )
+  extra_args <- list(...)
+  if (length(extra_args) > 0) {
+    layer <- c(layer, extra_args)
+  }
 
   map$x$layers <- c(map$x$layers, list(layer))
 
@@ -93,6 +96,75 @@ add_layer <- function(
 #' @inheritParams add_layer
 #' @return The updated map object with the fill layer added.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(sf)
+#'
+#' base_map <- map() |>
+#'  add_feature_server_source(
+#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/3/query?where=1=1&outFields=*&f=geojson",
+#'    "maori_moana_data",
+#'    append_query_url = FALSE
+#'  ) |>
+#' add_feature_server_source(
+#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/1/query?where=1=1&outFields=*&f=geojson",
+#'    "maori_region_data",
+#'    append_query_url = FALSE
+#'  )
+#'
+#' base_map |>
+#'  add_fill_layer(
+#'    id = "moana_polygons",
+#'    source = "maori_moana_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name"
+#'  )
+#'
+#' base_map |>
+#'  add_fill_layer(
+#'    id = "region_polygons",
+#'    source = "maori_region_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name",
+#'    paint = get_paint_options(
+#'      "fill",
+#'      options = list(
+#'        colour = "#a3b18a",
+#'        opacity = 0.3,
+#'        outline_colour = "#588157"
+#'      )
+#'    )
+#'  ) |>
+#'  add_fill_layer(
+#'    id = "moana_polygons",
+#'    source = "maori_moana_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name",
+#'    paint = get_paint_options(
+#'      "fill",
+#'      options = list(
+#'        colour = get_column_group(
+#'          "type",
+#'          c(
+#'            "lake" = "#a9d6e5",
+#'            "reservoir" = "#89c2d9",
+#'            "river" = "#61a5c2",
+#'            "bay" = "#468faf",
+#'            "sea" = "#2c7da0",
+#'            "ocean" = "#2a6f97",
+#'            "glacier" = "#014f86",
+#'            "swamp" = "#01497c",
+#'            "lagoon" = "#013a63"
+#'          ),
+#'          "#012a4a"
+#'        )
+#'      )
+#'    )
+#'  )
+#' }
 add_fill_layer <- function(map, ...) {
   add_layer(map = map, type = "fill", ...)
 }
@@ -102,6 +174,62 @@ add_fill_layer <- function(map, ...) {
 #' @inheritParams add_layer
 #' @return The updated map object with the circle layer added.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(sf)
+#'
+#' base_map <- map() |>
+#'  add_feature_server_source(
+#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson",
+#'    "maori_maunga_data",
+#'    append_query_url = FALSE
+#'  )
+#'
+#' base_map |>
+#'  add_circle_layer(
+#'    id = "maunga_circles",
+#'    source = "maori_maunga_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name"
+#'  )
+#'
+#' base_map |>
+#'  add_circle_layer(
+#'    id = "maunga_peaks",
+#'    source = "maori_maunga_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name",
+#'    filter = get_layer_filter("type != volcano"),
+#'    paint = get_paint_options(
+#'      "circle",
+#'      options = list(
+#'        colour = "#a3b18a",
+#'        outline_colour = "#588157",
+#'        opacity = 0.8,
+#'        outline_opacity = 0.8,
+#'        circle_radius = 4
+#'      )
+#'    )
+#'  ) |>
+#'  add_circle_layer(
+#'    id = "maunga_volcanoes",
+#'    source = "maori_maunga_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name",
+#'    filter = get_layer_filter("type == volcano"),
+#'    paint = get_paint_options(
+#'      "circle",
+#'      options = list(
+#'        colour = "#9d0208",
+#'        outline_colour = "#6a040f",
+#'        circle_radius = 7
+#'      )
+#'    )
+#'  )
+#' }
 add_circle_layer <- function(map, ...) {
   add_layer(map = map, type = "circle", ...)
 }
@@ -111,6 +239,48 @@ add_circle_layer <- function(map, ...) {
 #' @inheritParams add_layer
 #' @return The updated map object with the line layer added.
 #' @export
+#' 
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(sf)
+#'
+#' base_map <- map() |>
+#'  add_feature_server_source(
+#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/4/query?where=1=1&outFields=*&f=geojson",
+#'    "maori_awa_data",
+#'    append_query_url = FALSE
+#'  )
+#'
+#' base_map |>
+#'  add_line_layer(
+#'    id = "awa_lines",
+#'    source = "maori_awa_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name"
+#'  )
+#'
+#' base_map |>
+#'  add_line_layer(
+#'    id = "awa_lines",
+#'    source = "maori_awa_data",
+#'    hover_column = "name_mi",
+#'    popup_column = "name",
+#'    paint = get_paint_options(
+#'      "line",
+#'      options = list(
+#'        colour = get_column_group(
+#'          "type",
+#'          c("river" = "#014f86", "stream" = "#61a5c2"),
+#'          "#a9d6e5"
+#'        ),
+#'        line_width = get_column_group("type", c("river" = 3), 1),
+#'        opacity = 0.8
+#'      )
+#'    )
+#'  )
+#' }
 add_line_layer <- function(map, ...) {
   add_layer(map = map, type = "line", ...)
 }
@@ -121,6 +291,25 @@ add_line_layer <- function(map, ...) {
 #' @inheritParams add_layer
 #' @return The updated map object with the symbol layer added.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(sf)
+#'
+#' # Prepare data
+#' data(quakes)
+#' quakes_data <- quakes |>
+#'  st_as_sf(coords = c("long", "lat"), crs = 4326)
+#'
+#' # Create map and add fill layer
+#' map() |>
+#'  add_symbol_layer(
+#'    id = "test_layer",
+#'    source = quakes_data
+#'  )
+#' }
 add_symbol_layer <- function(map, ...) {
   add_layer(map = map, type = "symbol", ...)
 }

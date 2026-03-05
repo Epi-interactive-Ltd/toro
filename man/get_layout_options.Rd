@@ -28,5 +28,5 @@ get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = T
 }
 \seealso{
 \code{\link{get_column}}, \code{\link{get_column_group}},
-\code{\link{get_column_step_colours}}
+\code{\link{get_column_step_steps}}
 }

@@ -38,8 +38,8 @@ map <- function(
   in_shiny <- !is.null(session)
 
   default_options <- list(
-    minZoom = 2,
-    maxZoom = 18,
+    minZoom = 2, # 0-24
+    maxZoom = 18, # 0-24
     clusterColour = "#808080",
     # Full options: c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey")
     loadedTiles = c("lightgrey", "satellite"),

@@ -28,7 +28,7 @@ get_tile_options()
 When declaring a map, you can specify the style and any tiles you want the map to start with
 by using the `style` parameter.
 
-By default, the `style` is set to `light-grey`, but you can change it to any of the options
+By default, the `style` is set to `lightgrey`, but you can change it to any of the options
 available.
 
 ```{r basic-tiles, results='asis'}
@@ -41,7 +41,28 @@ a vector of the tiles you want to be able to switch between.
 ```{r loaded-tiles, results='asis'}
 map(
   style="satellite",
-  loadedTiles = c("satellite", "light-grey", "natgeo")
+  loadedTiles = c("satellite", "lightgrey", "natgeo")
+)
+```
+
+You can also supply options for each tile set.
+
+> **Note**: `loadedTiles` either needs to be a character vector (like above) or a names list (like below). These two cannot be combined. If you do not want to supply options for a certain tile set just make it an empty list.
+
+> **Note**: Currently the only option supported in `maxZoom` but more will be added in the future.
+
+```{r loaded-tiles-options, results='asis'}
+map(
+  style="satellite",
+  loadedTiles = list(
+    satellite = list(
+      maxZoom = 19
+    ),
+    lightgrey = list(),
+    natgeo = list(
+      maxZoom = 16
+    )
+  )
 )
 ```
 

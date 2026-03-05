@@ -23,7 +23,7 @@ get_column <- function(column_name) {
 #' @param false_value Value to use when the column value is `FALSE`.
 #' @returns           List containing the paint or layout option to be set.
 #' @examples
-#' get_column_boolean("group", c("A" = "red", "B" = "blue"), "grey")
+#' get_column_boolean("group", "red", "grey")
 #'
 #' @export
 get_column_boolean <- function(column_name, true_value, false_value) {
@@ -67,23 +67,23 @@ get_column_group <- function(column_name, named_group_values, default_value = "#
   )
 }
 
-#' Get the colours for a column in a map layer based on step breaks.
+#' Get the properties for a column in a map layer based on step breaks.
 #'
 #' Allows the data to be styled by the step breaks in the column.
 #'
 #' @param column_name     String representing the name of the column to be used.
 #' @param breaks          Numeric vector of thresholds (must be sorted ascending).
-#' @param colours         Vector of colours, length = length(breaks) + 1.
+#' @param values          Vector of values, length = length(breaks) + 1.
 #' @returns               List containing the paint or layout option to be set.
 #' @examples
-#' get_column_step_colours("value", c(10, 20, 30), c("red", "orange", "yellow", "green", "blue"))
+#' get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
 #'
 #' @export
-get_column_step_colours <- function(column_name, breaks, colours) {
-  stopifnot(length(colours) == length(breaks) + 1)
-  expr <- list("step", list("get", column_name), colours[[1]])
+get_column_step_steps <- function(column_name, breaks, values) {
+  stopifnot(length(values) == length(breaks) + 1)
+  expr <- list("step", list("get", column_name), values[[1]])
   for (i in seq_along(breaks)) {
-    expr <- append(expr, list(breaks[[i]], colours[[i + 1]]))
+    expr <- append(expr, list(breaks[[i]], values[[i + 1]]))
   }
   expr
 }

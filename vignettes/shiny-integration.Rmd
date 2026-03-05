@@ -2,7 +2,7 @@
 title: "Integration with Shiny"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{shiny-integration}
+  %\VignetteIndexEntry{Integration with Shiny}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 format: html

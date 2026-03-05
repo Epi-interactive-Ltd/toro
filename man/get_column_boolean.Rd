@@ -21,6 +21,6 @@ get_column_boolean(column_name, true_value, false_value)
 Allows the data to be styled by the group option in the column.
 }
 \examples{
-get_column_boolean("group", c("A" = "red", "B" = "blue"), "grey")
+get_column_boolean("group", "red", "grey")
 
 }

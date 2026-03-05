@@ -28,11 +28,11 @@ get_paint_options("fill", list(
    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 ))
 get_paint_options("fill", list(
-   opacity = get_column_step_colours("percent", c(25, 75), c("red", "orange", "yellow"))
+   opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 ))
 
 }
 \seealso{
 \code{\link{get_column}}, \code{\link{get_column_group}},
-\code{\link{get_column_step_colours}}
+\code{\link{get_column_step_steps}}
 }
