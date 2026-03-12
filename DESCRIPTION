@@ -31,5 +31,6 @@ Suggests:
     devtools,
     webshot2,
     mapshot,
-    webshot
+    webshot,
+    devtools
 VignetteBuilder: knitr
