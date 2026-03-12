@@ -6,6 +6,6 @@ linters: linters_with_defaults(
   object_usage_linter = NULL,
   object_name_linter(styles = c("snake_case", "SNAKE_CASE", "CamelCase", "camelCase")),
   line_length_linter(length = 100L),
-  pipe_consistency_linter("%>%"),
+  pipe_consistency_linter("|>"),
   return_linter = NULL)
 encoding: "UTF-8"

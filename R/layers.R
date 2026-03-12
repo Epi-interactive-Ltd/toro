@@ -1,20 +1,4 @@
 #' Utilities for the map related to layers.
-#'
-#' Functions:
-#' - `add_layer`: Add a layer to the map.
-#' - `add_fill_layer`: Add a fill layer to the map.
-#' - `add_circle_layer`: Add a circle layer to the map.
-#' - `add_line_layer`: Add a line layer to the map.
-#' - `add_symbol_layer`: Add a symbol layer to the map.
-#' - `add_lat_lng_grid`: Add a grid of latitude and longitude lines to the map.
-#' - `toggle_lat_lng_grid`: Show or hide the latitude and longitude grid.
-#' - `show_layer`: Show a previously hidden layer.
-#' - `hide_layer`: Hide a layer from the map.
-#' - `set_tile_layer`: Set the tile layer for the map.
-#' - `toggle_clustering`: Toggle clustering for a layer.
-#' - `set_paint_property`: Set a paint property for a layer.
-#' - `set_layout_property`: Set a layout property for a layer.
-#' - `get_tile_options`: Get available tile layer options.
 
 #' Add a layer to a map or map proxy.
 #'

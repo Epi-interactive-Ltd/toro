@@ -19,13 +19,8 @@ Use the navigation menu on the left to explore all available examples, or click 
 
 ### [Adding line layers](layers/add-line-layer.html)
 
----
+### [Adding circle layers](layers/add-circle-layer.html)
 
-Each example includes:
+### [Adding symbol layers](layers/add-symbol-layer.html)
 
-- Complete, runnable R code
-- Step-by-step explanations
-- Interactive map demonstrations
-- Code you can copy and modify for your own projects
-
-Navigate between examples using the sidebar on the left!
+### [Latitude and Longitude Grid](layers/lat-lng-grid.html)

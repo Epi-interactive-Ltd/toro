@@ -42,36 +42,13 @@ base_map |>
     source = "maori_places_data",
     hover_column = "type",
     popup_column = "name",
-    can_cluster = TRUE,
+    can_cluster = FALSE,
     filter = get_layer_filter("type == village"),
     layout = toro::get_layout_options(
       "symbol",
       options = list(
         icon_image = "map_pin",
         icon_size = 0.05
-      )
-    )
-  )
-```
-
-### Advanced example
-
-```{r advanced-symbol, results='asis'}
-base_map |>
-  add_symbol_layer(
-    id = "awa_symbols",
-    source = "maori_awa_data",
-    hover_column = "name_mi",
-    popup_column = "name",
-    paint = get_paint_options(
-      "symbol",
-      options = list(
-        colour = get_column_group(
-          "type",
-          c("river" = "#014f86", "stream" = "#61a5c2"),
-          "#a9d6e5"
-        ),
-        symbol_width = get_column_group("type", c("river" = 3), 1)
       )
     )
   )
