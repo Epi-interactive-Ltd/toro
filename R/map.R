@@ -2,17 +2,40 @@
 #'
 #' This function creates a map htmlwidget for use in R and Shiny applications.
 #'
-#' @param style     The style of the map. Default is "lightgrey".
-#' @param center    The initial center of the map as a longitude/latitude pair. Default is c(174, -41).
-#' @param zoom      The initial zoom level of the map. Default is 2.
-#' @param width     The width of the widget. Optional.
-#' @param height    The height of the widget. Optional.
-#' @param session   The Shiny session object. Default is the current session.
-#' @param loadedTiles One of \code{...} options. Either a character vector of the tile ids to load,
-#' or a named list of tile options. If a character vector, the default options will be used for
-#' each tile.
-#' @param ...       Additional options to customize the map.
-#' @return          An object of class \code{htmlwidget} representing the gauge plot.
+#' @param style The style of the map. Default is "lightgrey".
+#' @param center The initial center of the map as a longitude/latitude pair.
+#'  Default is c(174, -41).
+#' @param zoom The initial zoom level of the map. Default is 2.
+#' @param width The width of the widget. Optional.
+#' @param height The height of the widget. Optional.
+#' @param session The Shiny session object. Default is the current session.
+#' @param ... Additional options to customize the map.
+#'  \itemize{
+#'    \item minZoom: Minimum zoom level (0-24). Default is 2.
+#'    \item maxZoom: Maximum zoom level (0-24). Default is 18.
+#'    \item clusterColour: The colour of the cluster circles. Default is "#808080".
+#'    \item loadedTiles: A character vector of tile ids to load, or a named list of tile options.
+#'      Full options: c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey").
+#'      Default is c("lightgrey", "satellite").
+#'    \item initialTileLayer: The tile layer to use when the map is first loaded.
+#'      Default is NULL (the first layer in loadedTiles).
+#'    \item backgroundColour: The background colour of the map. Default is "#D0CFD4".
+#'    \item enable3D: Whether to enable 3D dragging/view. Default is FALSE.
+#'    \item initialLoadedLayers: A character vector of layer ids that should be loaded before the
+#'      initial map spinner is hidden. Default is NULL.
+#'    \item spinnerWhileBusy: Whether to show a spinner while the map is busy (e.g. loading tiles).
+#'      Default is FALSE.
+#'    \item busyLoaderBgColour: The background colour of the busy loader.
+#'      Default is "rgba(0, 0, 0, 0.2)".
+#'    \item busyLoaderColour: The colour of the busy loader. Default is "white".
+#'    \item initialLoaderBgColour: The background colour of the initial loader. Default is "white".
+#'    \item initialLoaderColour: The colour of the initial loader. Default is "black".
+#'    \item clusterOptions: A list of options for clustering, if `can_cluster` is `TRUE`.
+#'      See the [cluster vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html)
+#'      for details on available options.
+#'    \item attributionPosition: The position of the attribution control. Default is "bottom-right".
+#'  }
+#' @return An object of class \code{htmlwidget} representing the map.
 #'
 #' @import htmlwidgets
 #'
@@ -35,8 +58,6 @@ map <- function(
   session = shiny::getDefaultReactiveDomain(),
   ...
 ) {
-  in_shiny <- !is.null(session)
-
   default_options <- list(
     minZoom = 2, # 0-24
     maxZoom = 18, # 0-24

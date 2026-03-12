@@ -3,16 +3,36 @@
 #' This function returns a list of layout options based on the layer type and any additional
 #' options provided.
 #'
-#' @param layer_type  A string indicating the type of layer (e.g., "fill", "circle", "line").
-#' @param options     A list of additional options to customize the layout properties.
-#' @returns           A list of layout options suitable for the specified layer type.
+#' @note You can provide any layout options found in the
+#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers) in the `options`
+#' argument, and they will be included in the returned list.
+#' The default options are just a starting point and can be overridden by providing them in the
+#' `options` argument.
+#'
+#' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
+#' @param options A list of additional options to customize the layout properties.
+#' @return A list of layout options suitable for the specified layer type.
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
 #' @examples
 #' get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
+#'
 #' get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
+#'
 #' # For horizontal flipping, provide left/right versions of your icon or use rotation fallback
 #' get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
+#'
+#' # Provide options outside of the defaults
+#' get_layout_options(
+#'  "circle",
+#'  list(
+#'    "circle-sort-key" = get_column_step_steps(
+#'      "elevation",
+#'      c(3000),
+#'      c(100, 200)
+#'    )
+#'  )
+#' )
 #'
 #' @export
 get_layout_options <- function(layer_type, options = list()) {
@@ -54,7 +74,13 @@ get_layout_options <- function(layer_type, options = list()) {
       layout_options[["text-field"]] <- merged_options$text_field
     }
   }
-  return(layout_options)
+  non_default_options <- setdiff(names(merged_options), c(names(default_options)))
+
+  if (length(non_default_options) > 0) {
+    return(c(layout_options, merged_options[non_default_options]))
+  }
+
+  layout_options
 }
 
 #' Get paint options for a specific layer type
@@ -62,44 +88,59 @@ get_layout_options <- function(layer_type, options = list()) {
 #' This function returns a list of paint options based on the layer type and any
 #' additional options provided.
 #'
-#' @param layer_type  A string indicating the type of layer (e.g., "fill", "circle", "line").
-#' @param options     A list of additional options to customize the paint properties.
-#' @returns           A list of paint options suitable for the specified layer type.
+#' @note You can provide any paint options found in the
+#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers) in the `options`
+#' argument, and they will be included in the returned list.
+#' The default options are just a starting point and can be overridden by providing them in the
+#' `options` argument.
+#'
+#' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
+#' @param options A list of additional options to customize the paint properties.
+#' @return A list of paint options suitable for the specified layer type.
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
 #' @examples
 #' get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
+#'
 #' get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
+#'
 #' # Use with get_column for data-driven styling:
 #' get_paint_options("fill", list(colour = get_column("color"), opacity = get_column("opacity")))
+#'
 #' get_paint_options("fill", list(
 #'    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 #' ))
+#'
 #' get_paint_options("fill", list(
 #'    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 #' ))
+#'
+#' # Provide options outside of the defaults
+#' get_paint_options("circle", list("circle-blur" = 0.5))
 #'
 #' @export
 get_paint_options <- function(layer_type, options = list()) {
   default_options <- list(
     colour = "grey",
     opacity = 1,
-    outline_colour = "grey",
-    outline_opacity = 1,
     line_width = 1,
-    circle_radius = 5,
+    radius = 5,
     line_dash = list(1, 0) # No dash by default
   )
   merged_options <- utils::modifyList(default_options, options)
   paint_options <- structure(list(), names = character(0))
   if (layer_type %in% c("fill", "circle", "line")) {
-    paint_options[[paste0(layer_type, "-color")]] <- merged_options$colour
+    paint_options[[paste0(layer_type, "-color")]] <- merged_options$color %||% merged_options$colour
     paint_options[[paste0(layer_type, "-opacity")]] <- merged_options$opacity
   }
   if (layer_type == "circle") {
-    paint_options[["circle-radius"]] <- merged_options$circle_radius
-    paint_options[["circle-stroke-color"]] <- merged_options$outline_colour
-    paint_options[["circle-stroke-opacity"]] <- merged_options$outline_opacity
+    paint_options[["circle-radius"]] <- merged_options$circle_radius %||% merged_options$radius
+    paint_options[["circle-stroke-color"]] <- merged_options$outline_color %||%
+      merged_options$outline_colour %||%
+      merged_options$color %||%
+      merged_options$colour
+    paint_options[["circle-stroke-opacity"]] <- merged_options$outline_opacity %||%
+      merged_options$opacity
     paint_options[["circle-stroke-width"]] <- merged_options$line_width
   }
   if (layer_type == "line") {
@@ -107,13 +148,24 @@ get_paint_options <- function(layer_type, options = list()) {
     paint_options[["line-dasharray"]] <- merged_options$line_dash
   }
   if (layer_type == "fill") {
-    paint_options[["fill-outline-color"]] <- merged_options$outline_colour
+    paint_options[["fill-outline-color"]] <- merged_options$outline_color %||%
+      merged_options$outline_colour %||%
+      merged_options$color %||%
+      merged_options$colour
   }
   if (layer_type == "symbol") {
     paint_options[["icon-opacity"]] <- merged_options$opacity
-    paint_options[["text-color"]] <- merged_options$colour
+    paint_options[["text-color"]] <- merged_options$color %||% merged_options$colour
   }
-  return(paint_options)
+  non_default_options <- setdiff(
+    names(merged_options),
+    c(names(default_options), "color", "outline_color", "outline_opacity", "circle_radius")
+  )
+  if (length(non_default_options) > 0) {
+    return(c(paint_options, merged_options[non_default_options]))
+  }
+
+  paint_options
 }
 
 #' Get a filter for a layer
@@ -121,10 +173,14 @@ get_paint_options <- function(layer_type, options = list()) {
 #' Parse a filter string into a list of filters that the map can use.
 #'
 #' @param filter_str  A string or vector of strings representing the filter conditions.
-#' @returns           A list where the first element is "all" if multiple filters are provided,
+#' @return           A list where the first element is "all" if multiple filters are provided,
 #'                    or a single filter condition.
 #' @examples
+#' # Filter to only show rows where the "layer_id" column is equal to "forests"
 #' get_layer_filter("layer_id == forests")
+#'
+#' # Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"
+#' # column is equal to "Confirmed"
 #' get_layer_filter(c("layer_id == sites", "project_status == Confirmed"))
 #'
 #' @export

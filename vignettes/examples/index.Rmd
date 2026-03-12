@@ -1,0 +1,31 @@
+---
+title: 'Examples'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# toro Examples
+
+Welcome to the toro examples gallery! These interactive examples demonstrate how to create powerful map visualizations using toro.
+
+Use the navigation menu on the left to explore all available examples, or click the links below to jump to specific examples:
+
+## Layers
+
+### [Adding fill layers](layers/add-fill-layer.html)
+
+### [Adding line layers](layers/add-line-layer.html)
+
+---
+
+Each example includes:
+
+- Complete, runnable R code
+- Step-by-step explanations
+- Interactive map demonstrations
+- Code you can copy and modify for your own projects
+
+Navigate between examples using the sidebar on the left!

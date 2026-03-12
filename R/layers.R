@@ -18,20 +18,29 @@
 
 #' Add a layer to a map or map proxy.
 #'
-#' @param map           The map object or map proxy to which the layer will be added.
-#' @param id            A unique identifier for the layer.
-#' @param type          The type of layer to add (e.g., "fill", "circle", "line").
-#' @param source        The data source for the layer, if not a GeoJSON, it will be converted.
-#' @param paint         A list of paint options for styling the layer.
-#' @param layout        A list of layout options for the layer.
-#' @param popup_column  The column name to use for popups. Default is `NULL`.
-#' @param hover_column  The column name to use for hover effects. Default is `NULL`.
-#' @param can_cluster   Whether the layer can be clustered. Default is `FALSE`.
-#' @param under_id      The ID of another layer to place this layer under. Default is `NULL`.
-#' @param filter        A filter expression to apply to the layer. Default is `NULL`.
-#' @param ...           Additional arguments to include in the layer definition.
-#'  Default is an empty list.
-#' @return              The updated map object with the new layer added.
+#' @param map The map object or map proxy to which the layer will be added.
+#' @param id  A unique identifier for the layer.
+#' @param type The type of layer to add (e.g., "fill", "circle", "line").
+#'  Default is "fill".
+#' @param source The data source for the layer, if not a GeoJSON, it will be converted.
+#' @param paint A list of paint options for styling the layer. See `get_paint_options()`
+#'  for defaults and options.
+#' @param layout A list of layout options for the layer. See `get_layout_options()` for defaults
+#'  and options.
+#' @param popup_column The column name to use for popups. Default is `NULL`.
+#' @param hover_column The column name to use for hover effects. Default is `NULL`.
+#' @param can_cluster Whether the layer can be clustered. Default is `FALSE`.
+#' @param under_id The ID of an layer already on the map to place this layer under.
+#'  Default is `NULL`.
+#' @param filter A filter expression to apply to the layer. Default is `NULL`. See
+#'  `get_layer_filter()` for more details on how to create filter expressions.
+#' @param ... Additional arguments to include in the layer definition.
+#'  \itemize{
+#'    \item clusterOptions: A list of options for clustering, if `can_cluster` is `TRUE`.
+#'      See the [cluster vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html)
+#'      for details on available options.
+#'  }
+#' @return The updated map object with the new layer added.
 #' @export
 add_layer <- function(
   map,
@@ -101,66 +110,31 @@ add_layer <- function(
 #' \dontrun{
 #' # Load libraries
 #' library(toro)
+#' library(spData)
 #' library(sf)
 #'
-#' base_map <- map() |>
-#'  add_feature_server_source(
-#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/3/query?where=1=1&outFields=*&f=geojson",
-#'    "maori_moana_data",
-#'    append_query_url = FALSE
-#'  ) |>
-#' add_feature_server_source(
-#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/1/query?where=1=1&outFields=*&f=geojson",
-#'    "maori_region_data",
-#'    append_query_url = FALSE
+#' nz_data <- spData::nz |>
+#'   rename(geometry = geom) |>
+#'   sf::st_transform(4326)
+#'
+#' map() |>
+#'  add_fill_layer(
+#'    id = "nz_regions",
+#'    source = nz_data,
+#'    hover_column = "Name"
 #'  )
 #'
-#' base_map |>
+#' map() |>
 #'  add_fill_layer(
-#'    id = "moana_polygons",
-#'    source = "maori_moana_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name"
-#'  )
-#'
-#' base_map |>
-#'  add_fill_layer(
-#'    id = "region_polygons",
-#'    source = "maori_region_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name",
+#'    id = "nz_regions",
+#'    source = nz_data,
+#'    hover_column = "Name",
 #'    paint = get_paint_options(
 #'      "fill",
 #'      options = list(
 #'        colour = "#a3b18a",
 #'        opacity = 0.3,
 #'        outline_colour = "#588157"
-#'      )
-#'    )
-#'  ) |>
-#'  add_fill_layer(
-#'    id = "moana_polygons",
-#'    source = "maori_moana_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name",
-#'    paint = get_paint_options(
-#'      "fill",
-#'      options = list(
-#'        colour = get_column_group(
-#'          "type",
-#'          c(
-#'            "lake" = "#a9d6e5",
-#'            "reservoir" = "#89c2d9",
-#'            "river" = "#61a5c2",
-#'            "bay" = "#468faf",
-#'            "sea" = "#2c7da0",
-#'            "ocean" = "#2a6f97",
-#'            "glacier" = "#014f86",
-#'            "swamp" = "#01497c",
-#'            "lagoon" = "#013a63"
-#'          ),
-#'          "#012a4a"
-#'        )
 #'      )
 #'    )
 #'  )
@@ -179,53 +153,34 @@ add_fill_layer <- function(map, ...) {
 #' \dontrun{
 #' # Load libraries
 #' library(toro)
+#' library(spData)
 #' library(sf)
 #'
-#' base_map <- map() |>
-#'  add_feature_server_source(
-#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson",
-#'    "maori_maunga_data",
-#'    append_query_url = FALSE
+#' nz_data <- spData::nz_height |>
+#'   sf::st_transform(4326)
+#'
+#' map() |>
+#'  set_bounds(bounds = nz_data) |>
+#'  add_circle_layer(
+#'    id = "nz_elevation",
+#'    source = nz_data,
+#'    hover_column = "elevation"
 #'  )
 #'
 #' base_map |>
+#'  set_bounds(bounds = nz_data) |>
 #'  add_circle_layer(
-#'    id = "maunga_circles",
-#'    source = "maori_maunga_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name"
-#'  )
-#'
-#' base_map |>
-#'  add_circle_layer(
-#'    id = "maunga_peaks",
-#'    source = "maori_maunga_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name",
-#'    filter = get_layer_filter("type != volcano"),
+#'    id = "nz_elevation",
+#'    source = nz_data,
+#'    hover_column = "elevation",
 #'    paint = get_paint_options(
 #'      "circle",
 #'      options = list(
-#'        colour = "#a3b18a",
-#'        outline_colour = "#588157",
-#'        opacity = 0.8,
-#'        outline_opacity = 0.8,
-#'        circle_radius = 4
-#'      )
-#'    )
-#'  ) |>
-#'  add_circle_layer(
-#'    id = "maunga_volcanoes",
-#'    source = "maori_maunga_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name",
-#'    filter = get_layer_filter("type == volcano"),
-#'    paint = get_paint_options(
-#'      "circle",
-#'      options = list(
-#'        colour = "#9d0208",
-#'        outline_colour = "#6a040f",
-#'        circle_radius = 7
+#'        colour = get_column_step_steps(
+#'          "elevation",
+#'          c(3000),
+#'          c("grey", "black")
+#'        )
 #'      )
 #'    )
 #'  )
@@ -239,45 +194,35 @@ add_circle_layer <- function(map, ...) {
 #' @inheritParams add_layer
 #' @return The updated map object with the line layer added.
 #' @export
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' # Load libraries
 #' library(toro)
+#' library(spData)
 #' library(sf)
 #'
-#' base_map <- map() |>
-#'  add_feature_server_source(
-#'    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/4/query?where=1=1&outFields=*&f=geojson",
-#'    "maori_awa_data",
-#'    append_query_url = FALSE
+#' seine_data <- spData::nz_height |>
+#'   sf::st_transform(4326)
+#' seine_data$colour <- rainbow(nrow(seine_data))
+#'
+#' map() |>
+#'  set_bounds(bounds = seine_data) |>
+#'  add_circle_layer(
+#'    id = "seine_lines",
+#'    source = seine_data,
+#'    hover_column = "name"
 #'  )
 #'
 #' base_map |>
-#'  add_line_layer(
-#'    id = "awa_lines",
-#'    source = "maori_awa_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name"
-#'  )
-#'
-#' base_map |>
-#'  add_line_layer(
-#'    id = "awa_lines",
-#'    source = "maori_awa_data",
-#'    hover_column = "name_mi",
-#'    popup_column = "name",
+#'  set_bounds(bounds = seine_data) |>
+#'  add_circle_layer(
+#'    id = "seine_lines",
+#'    source = seine_data,
+#'    hover_column = "name",
 #'    paint = get_paint_options(
-#'      "line",
-#'      options = list(
-#'        colour = get_column_group(
-#'          "type",
-#'          c("river" = "#014f86", "stream" = "#61a5c2"),
-#'          "#a9d6e5"
-#'        ),
-#'        line_width = get_column_group("type", c("river" = 3), 1),
-#'        opacity = 0.8
-#'      )
+#'      "circle",
+#'      options = list(colour = get_column("colour"))
 #'    )
 #'  )
 #' }

@@ -3,7 +3,7 @@
 #' Allows the column value to be used for styling features in a map layer.
 #'
 #' @param column_name String representing the name of the column to be used.
-#' @returns           List containing the paint or layout option to be set.
+#' @return           List containing the paint or layout option to be set.
 #' @examples
 #' get_column("opacity")
 #' get_column("icon")
@@ -21,7 +21,7 @@ get_column <- function(column_name) {
 #' @param column_name String representing the name of the column to be used.
 #' @param true_value  Value to use when the column value is `TRUE`.
 #' @param false_value Value to use when the column value is `FALSE`.
-#' @returns           List containing the paint or layout option to be set.
+#' @return           List containing the paint or layout option to be set.
 #' @examples
 #' get_column_boolean("group", "red", "grey")
 #'
@@ -47,7 +47,7 @@ get_column_boolean <- function(column_name, true_value, false_value) {
 #'                            The names of the vector should match the group values in the column.
 #' @param default_value       String for the default value to use if no match is found.
 #'                            Default is "#cccccc".
-#' @returns                   List containing the paint or layout option to be set.
+#' @return                   List containing the paint or layout option to be set.
 #' @examples
 #' get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
 #' get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
@@ -74,7 +74,7 @@ get_column_group <- function(column_name, named_group_values, default_value = "#
 #' @param column_name     String representing the name of the column to be used.
 #' @param breaks          Numeric vector of thresholds (must be sorted ascending).
 #' @param values          Vector of values, length = length(breaks) + 1.
-#' @returns               List containing the paint or layout option to be set.
+#' @return               List containing the paint or layout option to be set.
 #' @examples
 #' get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
 #'

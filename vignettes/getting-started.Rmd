@@ -1,5 +1,5 @@
 ---
-title: "Getting started with toro"
+title: 'Getting started with toro'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting started with toro}
@@ -21,7 +21,7 @@ library(toro)
 
 To install the development version from Github:
 
-``` r
+```r
 remotes::install_github("Epi-interactive-Ltd/toro")
 ```
 
@@ -53,9 +53,7 @@ map(
 
 You can add layers to the map using layer functions like `add_symbol_layer`, `add_fill_layer`, etc.
 
-Data layers like fill, marker, and line layers need source data for the layers to show anything. There is two ways to provide this source data to a layer.
-
-#### 1. Passing the data inside the layer function
+For more detailed information see the [layers vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html)
 
 ```{r source-in-function}
 map() |>
@@ -69,24 +67,6 @@ map() |>
   )
 ```
 
-#### 2. Adding the source data before adding the layer
-
-```{r source-before-function}
-map() |>
-  add_source(
-    source_id = "marker-data",
-    data = sf::st_as_sf(
-      data.frame(lat = c(-41.306579555227245), long = c(174.82263228933076)),
-      coords = c("long", "lat"),
-      crs = 4326
-    )
-  ) |>
-  add_symbol_layer(
-    id = "marker-layer",
-    source = "marker-data"
-  )
-```
-
 ## Where to Next?
 
-It is highly recommended that you read through the [tiles vignette](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.html) page next.
+It is highly recommended that you read through the [layers vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html) next.
