@@ -10,6 +10,14 @@
 #' @param zoom The zoom level to set. Default is 2.
 #' @return The map or map proxy object for chaining.
 #' @export
+#' @examples
+#' \dontrun{
+#'  map() |>
+#'   set_zoom(5)
+#'
+#'  mapProxy("map") |>
+#'    set_zoom(5)
+#' }
 set_zoom <- function(map, zoom) {
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage("setMapZoom", list(id = map$id, zoom = zoom))
@@ -30,6 +38,22 @@ set_zoom <- function(map, zoom) {
 #' @param max_zoom The maximum zoom level to set. Default is the object's `maxZoom`.
 #' @return The map or map proxy object for chaining.
 #' @export
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(spData)
+#' library(sf)
+#'
+#' nz_data <- spData::nz_height |>
+#'   sf::st_transform(4326)
+#'
+#' map() |>
+#'   set_bounds(list(list(-79, 43), list(-73, 45)))
+#'
+#' map() |>
+#'  set_bounds(bounds = nz_data)
+#' }
 set_bounds <- function(map, bounds, padding = 50, max_zoom = map$maxZoom) {
   if ("sf" %in% class(bounds)) {
     # Convert sf object to bounding box

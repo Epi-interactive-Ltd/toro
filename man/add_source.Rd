@@ -2,7 +2,8 @@
 % Please edit documentation in R/sources.R
 \name{add_source}
 \alias{add_source}
-\title{Utilities for the map related to map sources.}
+\title{Utilities for the map related to map sources.
+Add a source to the map.}
 \usage{
 add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 }
@@ -19,21 +20,14 @@ Other options include \code{"vector"} or \code{"raster"}.}
 \item{cluster}{Whether to enable clustering for this source. Default is \code{FALSE}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item \code{add_source}: Add a source to the map.
-\item \code{add_feature_server_source}: Add a FeatureServer source to the map.
-\item \code{add_image}: Add an image source to the map.
-\item \code{set_source_data}: Set data for a source on the map.
+Utilities for the map related to map sources.
 Add a source to the map.
 }
-}
 \examples{
-if (interactive()) {
+\dontrun{
  map() |>
    add_source(
      source_id = "my_source",

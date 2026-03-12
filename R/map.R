@@ -49,6 +49,50 @@
 #' map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
 #' }
 #' @export
+
+# Helper function to convert local image to data URI
+.image_to_data_uri <- function(image_path) {
+  if (!file.exists(image_path)) {
+    stop("Image file not found: ", image_path)
+  }
+
+  # Get file extension
+  ext <- tolower(tools::file_ext(image_path))
+
+  # Determine MIME type
+  mime_type <- switch(
+    ext,
+    "png" = "image/png",
+    "jpg" = "image/jpeg",
+    "jpeg" = "image/jpeg",
+    "gif" = "image/gif",
+    "svg" = "image/svg+xml",
+    "image/png" # default
+  )
+
+  # Read file as binary and encode as base64
+  image_data <- base64enc::base64encode(image_path)
+
+  # Create data URI
+  paste0("data:", mime_type, ";base64,", image_data)
+}
+
+# Helper function to detect if URL is a local file path
+.is_local_file <- function(url) {
+  # Check if it's a URL (starts with http/https)
+  if (grepl("^https?://", url)) {
+    return(FALSE)
+  }
+
+  # Check if it's already a data URI
+  if (grepl("^data:", url)) {
+    return(FALSE)
+  }
+
+  # If it exists as a file, treat as local
+  return(file.exists(url))
+}
+
 map <- function(
   style = "lightgrey",
   center = c(174, -41),
@@ -77,6 +121,26 @@ map <- function(
   user_options <- list(...)
   map_options <- modifyList(default_options, user_options)
 
+  # Process imageSources to convert local file paths to data URIs
+  if (!is.null(user_options$imageSources)) {
+    processed_image_sources <- lapply(
+      user_options$imageSources,
+      function(image_source) {
+        if (!is.null(image_source$url) && .is_local_file(image_source$url)) {
+          # Check if base64enc package is available
+          if (!requireNamespace("base64enc", quietly = TRUE)) {
+            stop(
+              "The 'base64enc' package is required to use local image files. Please install it with: install.packages('base64enc')"
+            )
+          }
+          image_source$url <- .image_to_data_uri(image_source$url)
+        }
+        return(image_source)
+      }
+    )
+    map_options$imageSources <- processed_image_sources
+  }
+
   # If the style is not in loadedTiles, add it
   if (class(map_options$loadedTiles) == "list") {
     if (!style %in% names(map_options$loadedTiles)) {
@@ -94,7 +158,8 @@ map <- function(
       style = style,
       center = center,
       zoom = zoom,
-      options = map_options
+      options = map_options,
+      imageSources = map_options$imageSources
     ),
     width = width,
     height = height,

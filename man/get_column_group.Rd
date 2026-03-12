@@ -16,8 +16,7 @@ The names of the vector should match the group values in the column.}
 Default is "#cccccc".}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{              List containing the paint or layout option to be set.
-}\if{html}{\out{</div>}}
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the data to be styled by the group option in the column.

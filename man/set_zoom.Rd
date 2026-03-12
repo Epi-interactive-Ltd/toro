@@ -12,8 +12,7 @@ set_zoom(map, zoom)
 \item{zoom}{The zoom level to set. Default is 2.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Functions:
@@ -21,5 +20,14 @@ Functions:
 \item \code{set_zoom}: Set the map zoom level.
 \item \code{set_bounds}: Set the map bounds.
 Set the map zoom level.
+}
+}
+\examples{
+\dontrun{
+ map() |>
+  set_zoom(5)
+
+ mapProxy("map") |>
+   set_zoom(5)
 }
 }

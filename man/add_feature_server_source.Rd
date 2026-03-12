@@ -2,28 +2,33 @@
 % Please edit documentation in R/sources.R
 \name{add_feature_server_source}
 \alias{add_feature_server_source}
-\title{Add a FeatureServer source to the map.}
+\title{Add a FeatureService source to the map.}
 \usage{
-add_feature_server_source(map, source_url, source_id, append_query_url = TRUE)
+add_feature_server_source(
+  map,
+  source_url,
+  source_id,
+  append_query_url = "/0/query?where=1=1&outFields=*&f=geojson"
+)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
 
-\item{source_url}{The URL of the FeatureServer source.}
+\item{source_url}{The URL of the FeatureService source.}
 
 \item{source_id}{The ID for the source.}
 
-\item{append_query_url}{Whether to append the query parameters to the URL. Default is \code{TRUE}.}
+\item{append_query_url}{The query URL to append to the source URL. Default is
+\code{"/0/query?where=1=1&outFields=*&f=geojson"}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Add a FeatureServer source to the map.
+Add a FeatureService source to the map.
 }
 \examples{
-if (interactive()) {
+\dontrun{
  map() |>
    add_feature_server_source(
      "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",

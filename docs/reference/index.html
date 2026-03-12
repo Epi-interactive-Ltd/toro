@@ -38,7 +38,11 @@
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/contributing.html">Contributing to toro</a></li>
   </ul></li>
+<<<<<<< HEAD
 <li class="nav-item"><a class="nav-link" href="../articles/examples-index.html">Examples</a></li>
+=======
+<li class="nav-item"><a class="nav-link" href="../articles/examples/index.html">Examples</a></li>
+>>>>>>> 4c6ec81 (Working on updating documentation)
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -59,8 +63,7 @@
 
       <div class="section-desc"><p>Function to create maps</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -76,8 +79,7 @@
 
       <div class="section-desc"><p>Functions to interact with map data sources</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -88,25 +90,29 @@
 
         </dt>
         <dd>Utilities for the map related to map sources.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="set_source_data.html">set_source_data()</a></code>
 
         </dt>
         <dd>Set data for a source on the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_feature_server_source.html">add_feature_server_source()</a></code>
 
         </dt>
         <dd>Add a FeatureServer source to the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_tiles_from_map_server.html">add_tiles_from_map_server()</a></code>
 
         </dt>
         <dd>Add an Image Server source to a toro map TODO: WIP</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_image.html">add_image()</a></code>
 
@@ -117,8 +123,7 @@
 
       <div class="section-desc"><p>Functions to add map layers</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -129,31 +134,43 @@
 
         </dt>
         <dd>Utilities for the map related to layers.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_fill_layer.html">add_fill_layer()</a></code>
 
         </dt>
         <dd>Add a fill layer to a map or map proxy.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_circle_layer.html">add_circle_layer()</a></code>
 
         </dt>
         <dd>Add a circle layer to a map or map proxy.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_line_layer.html">add_line_layer()</a></code>
 
         </dt>
         <dd>Add a line layer to a map or map proxy.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_symbol_layer.html">add_symbol_layer()</a></code>
 
         </dt>
-        <dd>Add a symbol layer to a map or map proxy. This layer is typically used for icons or text labels.</dd>
-      </dl><dl><dt>
+        <dd>Add a symbol layer to a map or map proxy. This layer is typically used for icons or pins.</dd>
+
+        <dt>
+
+          <code><a href="add_text_layer.html">add_text_layer()</a></code>
+
+        </dt>
+        <dd>Add a text layer to a map or map proxy. This layer is typically used for text labels.</dd>
+
+        <dt>
 
           <code><a href="add_lat_lng_grid.html">add_lat_lng_grid()</a></code>
 
@@ -164,8 +181,7 @@
 
       <div class="section-desc"><p>Functions to update map layers</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -176,19 +192,22 @@
 
         </dt>
         <dd>Show a previously hidden layer on the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="hide_layer.html">hide_layer()</a></code>
 
         </dt>
         <dd>Hide a layer from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="toggle_clustering.html">toggle_clustering()</a></code>
 
         </dt>
         <dd>Toggle clustering for a layer on the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="toggle_lat_lng_grid.html">toggle_lat_lng_grid()</a></code>
 
@@ -199,8 +218,7 @@
 
       <div class="section-desc"><p>Functions to update map layer styling</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -211,7 +229,8 @@
 
         </dt>
         <dd>Set a paint property for a layer on the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="set_layout_property.html">set_layout_property()</a></code>
 
@@ -222,8 +241,7 @@
 
       <div class="section-desc"><p>Functions to help with map/layer styling</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -234,37 +252,43 @@
 
         </dt>
         <dd>Get layout options for a specific layer type</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_paint_options.html">get_paint_options()</a></code>
 
         </dt>
         <dd>Get paint options for a specific layer type</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_layer_filter.html">get_layer_filter()</a></code>
 
         </dt>
         <dd>Get a filter for a layer</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_column.html">get_column()</a></code>
 
         </dt>
         <dd>Get a column from a dataset to use as a paint or layout option in a map layer.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_column_boolean.html">get_column_boolean()</a></code>
 
         </dt>
         <dd>Get the value for a paint or layout option in a map layer based on a column boolean value.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_column_group.html">get_column_group()</a></code>
 
         </dt>
         <dd>Get the values for a paint or layout option in a map layer based on a column value.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_column_step_steps.html">get_column_step_steps()</a></code>
 
@@ -275,8 +299,7 @@
 
       <div class="section-desc"><p>Functions to update map tiles</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -287,7 +310,8 @@
 
         </dt>
         <dd>Set the tile layer for the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_tile_options.html">get_tile_options()</a></code>
 
@@ -298,8 +322,7 @@
 
       <div class="section-desc"><p>Functions to manipulate the map view</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -310,7 +333,8 @@
 
         </dt>
         <dd>Utilites for the map related to the view.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="set_bounds.html">set_bounds()</a></code>
 
@@ -321,8 +345,7 @@
 
       <div class="section-desc"><p>Functions to get information from map interaction</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -333,7 +356,8 @@
 
         </dt>
         <dd>Get the sf data frame of a clicked feature from the map widget.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="get_drawn_shape.html">get_drawn_shape()</a></code>
 
@@ -344,8 +368,7 @@
 
       <div class="section-desc"><p>Simple map controls</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -356,7 +379,8 @@
 
         </dt>
         <dd>Utilities for the map related to controls.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_control.html">remove_control()</a></code>
 
@@ -367,8 +391,7 @@
 
       <div class="section-desc"><p>Controls for draw/edit workflows</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -379,13 +402,15 @@
 
         </dt>
         <dd>Functions related to the draw control.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_draw_control.html">remove_draw_control()</a></code>
 
         </dt>
         <dd>Remove the draw control from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="delete_drawn_shape.html">delete_drawn_shape()</a></code>
 
@@ -396,8 +421,7 @@
 
       <div class="section-desc"><p>Controls for map view manipulation</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -408,7 +432,8 @@
 
         </dt>
         <dd>Functions related to zoom controls.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_zoom_control.html">remove_zoom_control()</a></code>
 
@@ -419,8 +444,7 @@
 
       <div class="section-desc"><p>Controls for updating map layers</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -431,43 +455,50 @@
 
         </dt>
         <dd>Functions relating to layer controls on the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_tile_selector_control.html">remove_tile_selector_control()</a></code>
 
         </dt>
         <dd>Remove the tile selector control from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_layer_selector_control.html">add_layer_selector_control()</a></code>
 
         </dt>
         <dd>Add a layer selector control to the map or control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_layer_selector_control.html">remove_layer_selector_control()</a></code>
 
         </dt>
         <dd>Remove the layer selector control from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_cluster_toggle.html">add_cluster_toggle()</a></code>
 
         </dt>
         <dd>Add a cluster toggle control to the map or control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_cluster_toggle.html">remove_cluster_toggle()</a></code>
 
         </dt>
         <dd>Remove a cluster toggle control from the map</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_visibility_toggle.html">add_visibility_toggle()</a></code>
 
         </dt>
         <dd>Add a visibility toggle control to the map or control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_visibility_toggle.html">remove_visibility_toggle()</a></code>
 
@@ -478,8 +509,7 @@
 
       <div class="section-desc"><p>Controls for performing map animations</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -490,43 +520,50 @@
 
         </dt>
         <dd>Add a route to a toro map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="play_route.html">play_route()</a></code>
 
         </dt>
         <dd>Play a route animation on a toro map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="pause_route.html">pause_route()</a></code>
 
         </dt>
         <dd>Pause a route animation on a toro map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_route.html">remove_route()</a></code>
 
         </dt>
         <dd>Remove an animation route from a toro map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_timeline_control.html">add_timeline_control()</a></code>
 
         </dt>
         <dd>Functions related to animation controls.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_timeline_control.html">remove_timeline_control()</a></code>
 
         </dt>
         <dd>Remove the timeline control from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_speed_control.html">add_speed_control()</a></code>
 
         </dt>
         <dd>Add a speed control to the map or control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_speed_control.html">remove_speed_control()</a></code>
 
@@ -537,8 +574,7 @@
 
       <div class="section-desc"><p>Additional interactive controls</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -549,25 +585,29 @@
 
         </dt>
         <dd>Add a cursor coordinates control to the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_cursor_coords_control.html">remove_cursor_coords_control()</a></code>
 
         </dt>
         <dd>Remove the cursor coordinates control from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_custom_control.html">add_custom_control()</a></code>
 
         </dt>
         <dd>Add a custom HTML control to the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_custom_control.html">remove_custom_control()</a></code>
 
         </dt>
         <dd>Remove a custom control from the map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_cluster_toggle.html">add_cluster_toggle()</a></code>
 
@@ -578,8 +618,7 @@
 
       <div class="section-desc"><p>Functions to add/edit control panels for map interaction</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -590,25 +629,29 @@
 
         </dt>
         <dd>Functions to manage control panel elements in a map.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_control_group.html">add_control_group()</a></code>
 
         </dt>
         <dd>Add a control group to a control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_control_group.html">remove_control_group()</a></code>
 
         </dt>
         <dd>Remove a control group from a control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="add_control_to_panel.html">add_control_to_panel()</a></code>
 
         </dt>
         <dd>Add a control to an existing control panel</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="remove_control_from_panel.html">remove_control_from_panel()</a></code>
 
@@ -619,8 +662,7 @@
 
       <div class="section-desc"><p>Functions to get information from map interaction</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -631,23 +673,47 @@
 
         </dt>
         <dd>Shiny bindings for map</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="mapProxy.html">mapProxy()</a></code>
 
         </dt>
         <dd>Create a proxy object for updating the map.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="extra-features">Extra features<a class="anchor" aria-label="anchor" href="#extra-features"></a></h2>
+
+      <div class="section-desc"><p>Additional functions</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="export_map_image.html">export_map_image()</a></code>
+
+        </dt>
+        <dd>Utilities for the map related to exports. Export map as an image (non-Shiny context).</dd>
+
+        <dt>
+
+          <code><a href="save_map_html.html">save_map_html()</a></code>
+
+        </dt>
+        <dd>Save map as standalone HTML file.</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/pakinui" class="external-link">Poppy Pakinui</a>.</p>
+  <p>Funded by epi.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

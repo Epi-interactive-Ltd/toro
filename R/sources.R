@@ -1,24 +1,18 @@
 #' Utilities for the map related to map sources.
-#'
-#' Functions:
-#' - `add_source`: Add a source to the map.
-#' - `add_feature_server_source`: Add a FeatureServer source to the map.
-#' - `add_image`: Add an image source to the map.
-#' - `set_source_data`: Set data for a source on the map.
 
 #' Add a source to the map.
 #'
-#' @param map       The map or map proxy object.
+#' @param map The map or map proxy object.
 #' @param source_id The ID for the source.
-#' @param data      The data for the source, typically in GeoJSON format.
-#' @param type      The type of the source. Default is `"geojson"`.
-#'                  Other options include `"vector"` or `"raster"`.
-#' @param cluster   Whether to enable clustering for this source. Default is `FALSE`.
-#' @return          The map or map proxy object for chaining.
+#' @param data The data for the source, typically in GeoJSON format.
+#' @param type The type of the source. Default is `"geojson"`.
+#'    Other options include `"vector"` or `"raster"`.
+#' @param cluster Whether to enable clustering for this source. Default is `FALSE`.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #'  map() |>
 #'    add_source(
 #'      source_id = "my_source",
@@ -45,6 +39,13 @@ add_source <- function(
 
   # Add any additional arguments from ...
   extra_args <- list(...)
+
+  # Allow for both `source_id` and `id` to be used for backward compatibility
+  src_id <- source_id
+  if (is.null(src_id) && !is.null(extra_args$id)) {
+    src_id <- extra_args$id
+    extra_args$id <- NULL # Remove 'id' from extra_args to avoid confusion
+  }
   if (length(extra_args) > 0) {
     source_options <- c(source_options, extra_args)
   }
@@ -52,28 +53,34 @@ add_source <- function(
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
       "addMapSource",
-      list(id = map$id, sourceId = source_id, sourceOptions = source_options)
+      list(id = map$id, sourceId = src_id, sourceOptions = source_options)
     )
   }
   map$x$sources <- c(
     map$x$sources,
-    list(list(sourceId = source_id, sourceOptions = source_options))
+    list(list(sourceId = src_id, sourceOptions = source_options))
   )
   map
 }
 
 
-#' Add a FeatureServer source to the map.
+#' Add a FeatureService source to the map.
 #'
-#' @param map         The map or map proxy object.
-#' @param source_url  The URL of the FeatureServer source.
-#' @param source_id   The ID for the source.
-#' @param append_query_url Whether to append the query parameters to the URL. Default is `TRUE`.
-#' @return            The map or map proxy object for chaining.
+#' @note By default the function appends a query URL to the provided `source_url` to retrieve all
+#'    features in GeoJSON format. If you need more control over the query parameters, you can
+#'    provide the full query URL directly in the `source_url` argument and set `append_query_url`
+#'    to an empty string to prevent appending the default query parameters.
+#'
+#' @param map The map or map proxy object.
+#' @param source_url The URL of the FeatureService source.
+#' @param source_id The ID for the source.
+#' @param append_query_url The query URL to append to the source URL. Default is
+#'    `"/0/query?where=1=1&outFields=*&f=geojson"`.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #'  map() |>
 #'    add_feature_server_source(
 #'      "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
@@ -81,15 +88,15 @@ add_source <- function(
 #'    ) |>
 #'    add_line_layer(id = "eez_lines", source = "eez")
 #' }
-add_feature_server_source <- function(map, source_url, source_id, append_query_url = TRUE) {
-  full_url <- ifelse(
-    append_query_url,
-    paste0(source_url, "/0/query?where=1=1&outFields=*&f=geojson"),
-    source_url
-  )
+add_feature_server_source <- function(
+  map,
+  source_url,
+  source_id,
+  append_query_url = "/0/query?where=1=1&outFields=*&f=geojson"
+) {
   source_options <- list(
     type = "geojson",
-    data = full_url
+    data = paste0(source_url, append_query_url)
   )
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
@@ -117,7 +124,13 @@ add_feature_server_source <- function(map, source_url, source_id, append_query_u
 #' @param ... Additional parameters for the Image Server source.
 #' @return The updated map object.
 #' @keywords internal
-add_tiles_from_map_server <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
+add_tiles_from_map_server <- function(
+  map,
+  url,
+  tile_id,
+  as_image_layer = FALSE,
+  ...
+) {
   source_options <- list(
     tileId = tile_id,
     tiles = paste0(url, "/tile/{z}/{y}/{x}"),
@@ -180,24 +193,75 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   map
 }
 
+#' Helper function to convert local image to data URI
+#'
+#' @param image_path The file path to the local image.
+#' @return A data URI string representing the image.
+#' @keywords internal
+.image_to_data_uri <- function(image_path) {
+  if (!file.exists(image_path)) {
+    stop("Image file not found: ", image_path)
+  }
+
+  # Get file extension
+  ext <- tolower(tools::file_ext(image_path))
+
+  # Determine MIME type
+  mime_type <- switch(
+    ext,
+    "png" = "image/png",
+    "jpg" = "image/jpeg",
+    "jpeg" = "image/jpeg",
+    "gif" = "image/gif",
+    "svg" = "image/svg+xml",
+    "image/png" # default
+  )
+
+  # Read file as binary and encode as base64
+  image_data <- base64enc::base64encode(image_path)
+
+  # Create data URI
+  paste0("data:", mime_type, ";base64,", image_data)
+}
+
+#' Helper function to detect if URL is a local file path
+#'
+#' @param url The URL or file path to check.
+#' @return TRUE if the URL is a local file path, FALSE otherwise.
+#' @keywords internal
+.is_local_file <- function(url) {
+  # Check if it's a URL (starts with http/https)
+  if (grepl("^https?://", url)) {
+    return(FALSE)
+  }
+
+  # Check if it's already a data URI
+  if (grepl("^data:", url)) {
+    return(FALSE)
+  }
+
+  # If it exists as a file, treat as local
+  return(file.exists(url))
+}
+
 
 #' Add an image source to the map.
 #'
-#' @param map         The map or map proxy object.
-#' @param image_id    The ID of the image source.
-#' @param image_url   The URL of the image to add.
-#' @return            The map or map proxy object for chaining.
+#' @param map The map or map proxy object.
+#' @param image_id The ID of the image source.
+#' @param image_url The URL of the image to add.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #'  map() |>
 #'    add_image(
 #'      image_id = "leaf-icon",
 #'      image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Leaf_icon.png/600px-Leaf_icon.png"
 #'    ) |>
 #'    add_symbol_layer(
-#'      id = "text_layer",
+#'      id = "leaf_symbols",
 #'      source = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326),
 #'      layout = toro::get_layout_options(
 #'        "symbol",
@@ -209,19 +273,31 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 #'    )
 #' }
 add_image <- function(map, image_id, image_url) {
+  # Convert local file paths to data URIs for compatibility
+  processed_url <- image_url
+  if (.is_local_file(image_url)) {
+    # Check if base64enc package is available
+    if (!requireNamespace("base64enc", quietly = TRUE)) {
+      stop(
+        "The 'base64enc' package is required to use local image files. Please install it with: install.packages('base64enc')"
+      )
+    }
+    processed_url <- .image_to_data_uri(image_url)
+  }
+
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
       "addImageSource",
       list(
         id = map$id,
         imageId = image_id,
-        imageUrl = image_url
+        imageUrl = processed_url
       )
     )
   }
   map$x$imageSources <- c(
     map$x$imageSources,
-    list(list(imageId = image_id, imageUrl = image_url))
+    list(list(imageId = image_id, imageUrl = processed_url))
   )
   map
 }

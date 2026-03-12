@@ -7,20 +7,49 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# toro Examples
+```{r, echo = FALSE}
+knitr::opts_chunk$set(fig.path = "man/figures/")
+```
 
 Welcome to the toro examples gallery! These interactive examples demonstrate how to create powerful map visualizations using toro.
 
 Use the navigation menu on the left to explore all available examples, or click the links below to jump to specific examples:
 
-## Layers
+# Sources
 
-### [Adding fill layers](layers/add-fill-layer.html)
+Sources are required to add data to your map.
 
-### [Adding line layers](layers/add-line-layer.html)
+## [Add a GeoJSON source](sources/add-geojson-source.html)
 
-### [Adding circle layers](layers/add-circle-layer.html)
+## [Add a feature service source](sources/add-feature-service-source.html)
 
-### [Adding symbol layers](layers/add-symbol-layer.html)
+## [Add an image source](sources/add-image-source.html)
 
-### [Latitude and Longitude Grid](layers/lat-lng-grid.html)
+---
+
+# Layers
+
+## [Add a fill layer](layers/add-fill-layer.html)
+
+![Add a fill layer image](../images/add-fill-layer.png)
+
+## [Add a line layer](layers/add-line-layer.html)
+
+![Add a line layer image](../images/add-line-layer.png)
+
+## [Add a circle layer](layers/add-circle-layer.html)
+
+![Add a circle layer image](../images/add-circle-layer.png)
+
+## [Add a symbol layer](layers/add-symbol-layer.html)
+
+![Add a symbol layer image](../images/add-symbol-layer.png)
+
+## [Add a text layer](layers/add-text-layer.html)
+
+![Add a text layer image](../images/add-text-layer.png)
+
+
+
+---
+

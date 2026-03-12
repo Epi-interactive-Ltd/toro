@@ -2,18 +2,32 @@ url: https://epi-interactive-ltd.github.io/toro/
 template:
   bootstrap: 5
 
+assets: vignettes/images
+
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
+  footer:
+    roles: [fnd]
+    text: 'Funded by'
+  sidebar:
+    roles: [aut, ctb]
+    before: 'So *who* does the work?'
+    after: 'Thanks all!'
+  before: 'This package is proudly brought to you by:'
+  after: 'See the [changelog](news/index.html) for other contributors. :pray:'
+
+home:
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+  links:
+    - text: 'Roadmap coming soon! :soon:'
+      href: '#'
 
 navbar:
   structure:
-    left:
-      - home
-      - reference
-      - articles
-      - examples
-      - news
+    left: [home, reference, articles, examples, news]
+    right: [search, github, lightswitch]
 
   components:
     home:
@@ -178,6 +192,11 @@ reference:
       - mapOutput
       - renderMap
       - mapProxy
+  - title: 'Extra features'
+    desc: 'Additional functions'
+    contents:
+      - export_map_image
+      - save_map_html
 
 articles:
   - title: 'Getting Started'
@@ -208,3 +227,6 @@ articles:
       - examples/index
       - examples/layers/add-fill-layer
       - examples/layers/add-line-layer
+      - examples/layers/add-circle-layer
+      - examples/layers/add-symbol-layer
+      - examples/layers/add-text-layer

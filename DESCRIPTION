@@ -3,7 +3,8 @@ Title: Maplibre GL JS integration for R
 Version: 0.0.5
 Date: 2026-03-05
 Authors@R: c(
-    person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")))
+    person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
+    person(given = "epi", family = "", email = "", role = c("fnd")))
 FundedBy: epi group [https://epi.group/]
 Maintainer: Poppy Pakinui <poppy@epi.group>
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.

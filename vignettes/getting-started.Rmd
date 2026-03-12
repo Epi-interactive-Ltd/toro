@@ -17,6 +17,9 @@ knitr::opts_chunk$set(
 library(toro)
 ```
 
+
+![Add text layer image](images/add-text-layer.png)
+
 ## Installation
 
 To install the development version from Github:

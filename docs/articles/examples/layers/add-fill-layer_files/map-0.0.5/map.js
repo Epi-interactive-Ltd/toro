@@ -667,6 +667,7 @@ function saveElementAsHtml(elementId, filename = 'content.html') {
 if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('downloadMapImage', function (message) {
     withMapInstance(message.id, function (el) {
+<<<<<<< HEAD
       console.log(message);
       console.log(el);
       // saveElementAsPng(el.id);
@@ -685,6 +686,110 @@ if (HTMLWidgets.shinyMode) {
       //     link.click();
       //   });
       // }, 1000);
+=======
+      const filename = message.filename || 'map_export.png';
+      const format = message.format || 'png';
+      const width = message.width || null;
+      const height = message.height || null;
+
+      // Set custom dimensions if provided
+      let originalWidth, originalHeight;
+      if (width || height) {
+        const mapContainer = document.getElementById(message.id);
+        originalWidth = mapContainer.style.width;
+        originalHeight = mapContainer.style.height;
+
+        if (width) mapContainer.style.width = width + 'px';
+        if (height) mapContainer.style.height = height + 'px';
+
+        // Trigger map resize
+        setTimeout(() => {
+          el.mapInstance.resize();
+        }, 100);
+      }
+
+      // Wait for map to settle before capturing
+      setTimeout(function () {
+        const element = document.getElementById(message.id);
+
+        const html2canvasOptions = {
+          backgroundColor: '#ffffff',
+          scale: 1,
+          useCORS: true,
+          allowTaint: true,
+          scrollX: 0,
+          scrollY: 0,
+          width: width || element.offsetWidth,
+          height: height || element.offsetHeight,
+        };
+
+        html2canvas(element, html2canvasOptions)
+          .then((canvas) => {
+            let mimeType, fileExtension;
+
+            switch (format.toLowerCase()) {
+              case 'jpeg':
+              case 'jpg':
+                mimeType = 'image/jpeg';
+                fileExtension = '.jpg';
+                break;
+              case 'png':
+              default:
+                mimeType = 'image/png';
+                fileExtension = '.png';
+                break;
+            }
+
+            const imgData = canvas.toDataURL(mimeType, 0.9);
+
+            // Create download link
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = filename.endsWith(fileExtension) ? filename : filename + fileExtension;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Restore original dimensions if they were changed
+            if (width || height) {
+              const mapContainer = document.getElementById(message.id);
+              mapContainer.style.width = originalWidth;
+              mapContainer.style.height = originalHeight;
+
+              setTimeout(() => {
+                el.mapInstance.resize();
+              }, 100);
+            }
+
+            // Send success message back to R
+            if (Shiny && Shiny.setInputValue) {
+              Shiny.setInputValue(
+                message.id + '_export_complete',
+                {
+                  filename: link.download,
+                  timestamp: new Date().toISOString(),
+                },
+                { priority: 'event' }
+              );
+            }
+          })
+          .catch((error) => {
+            console.error('Error exporting map image:', error);
+
+            // Send error message back to R
+            if (Shiny && Shiny.setInputValue) {
+              Shiny.setInputValue(
+                message.id + '_export_error',
+                {
+                  error: error.message,
+                  timestamp: new Date().toISOString(),
+                },
+                { priority: 'event' }
+              );
+            }
+          });
+      }, 500);
+>>>>>>> 4c6ec81 (Working on updating documentation)
     });
   });
 

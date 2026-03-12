@@ -153,6 +153,13 @@ function addLayerToMap(el, layer) {
     sourceId = layer.source;
     layerObj.source = layer.source;
   }
+<<<<<<< HEAD
+=======
+  if (layerObj.type === 'text') {
+    // Text is actually a symbol layer in Maplibre
+    layerObj.type = 'symbol';
+  }
+>>>>>>> 4c6ec81 (Working on updating documentation)
   map.addLayer(layerObj, layer.beforeId || 'spiderfy-lines');
   el.ourLayers.push(layerObj.id); // Store the layer ID for later reference
 
@@ -168,7 +175,11 @@ function addLayerToMap(el, layer) {
     (typeof layer.source === 'object' &&
       layer.source.type === 'geojson' &&
       layer.canCluster !== false) ||
+<<<<<<< HEAD
     layer.type === 'symbol' // Symbol layers always cluster to handle points with the same coordinates
+=======
+    layer.type === 'symbol'
+>>>>>>> 4c6ec81 (Working on updating documentation)
   ) {
     addClusterLayer(
       el,
@@ -681,7 +692,14 @@ function addLayerPopup(map, layerId, popupColumn) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
+<<<<<<< HEAD
     const popup = new maplibregl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
+=======
+    const popup = new maplibregl.Popup({ className: 'popup-overlay' })
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
+>>>>>>> 4c6ec81 (Working on updating documentation)
     map._popup = popup;
   });
 
@@ -705,6 +723,10 @@ function addLayerHover(map, layerId, hoverColumn) {
     popup = new maplibregl.Popup({
       closeButton: false,
       closeOnClick: false,
+<<<<<<< HEAD
+=======
+      className: 'hover-overlay',
+>>>>>>> 4c6ec81 (Working on updating documentation)
     })
       .setLngLat(coordinates)
       .setHTML(description)

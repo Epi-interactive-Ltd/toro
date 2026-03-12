@@ -11,16 +11,65 @@
 #'
 #' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
 #' @param options A list of additional options to customize the layout properties.
+#'    See Maplibre docs for options.
+#'    \itemize{
+#'      \item line_cap: A list of options for the line cap, if `layer_type` is "line".
+#'        Default is "round".
+#'      \item line_join: A list of options for the line join, if `layer_type` is "line".
+#'        Default is "round".
+#'      \item icon_image: The name of the icon image to use for symbol layers, if `layer_type` is
+#'        "symbol". Default is "toro-pin".
+#'      \item icon_size: The size of the icon for symbol layers, if `layer_type` is "symbol".
+#'        Default is 1.
+#'      \item icon_anchor: The anchor point for the icon in symbol layers, if `layer_type` is
+#'        "symbol". Default is "bottom".
+#'      \item text_anchor: The anchor point for the text in symbol layers, if `layer_type` is
+#'        "symbol". Default is "center".
+#'      \item icon_offset: The offset for the icon in symbol layers, if `layer_type` is "symbol".
+#'        Default is list(0, 0).
+#'      \item icon_allow_overlap: Whether to allow icons to overlap in symbol layers, if
+#'        `layer_type` is "symbol". Default is TRUE.
+#'      \item text_allow_overlap: Whether to allow text to overlap in symbol layers, if `layer_type`
+#'        is "symbol". Default is TRUE.
+#'      \item icon_rotate: The rotation angle for icons in symbol layers, if `layer_type` is
+#'        "symbol". Default is 0.
+#'      \item icon_flip_horizontal: Whether to flip icons horizontally in symbol layers, if
+#'        `layer_type` is "symbol". Default is FALSE. Note that this uses the `icon-flip-horizontal`
+#'        property in Maplibre, which may not be supported by all icons.
+#'      \item text_font: The font for text in symbol layers, if `layer_type` is "symbol". Default is
+#'        "Open Sans Regular".
+#'      \item text_field: The text field for symbol layers, if `layer_type` is "symbol". Default is
+#'        NULL, which means no text will be shown. This can be set to a column value using
+#'        `get_column` or other functions to show text from the data.
+#'      \item text_size: The size of the text in symbol layers, if `layer_type` is "symbol".
+#'        Default is 12.
+#'      You can also provide any other layout options found in the Maplibre docs for the specific
+#'        layer type, and they will be included in the returned list.
+#'    }
 #' @return A list of layout options suitable for the specified layer type.
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
 #' @examples
 #' get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 #'
+#'
 #' get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
+#'
 #'
 #' # For horizontal flipping, provide left/right versions of your icon or use rotation fallback
 #' get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
+#'
+#' # Provide options outside of the defaults
+#' get_layout_options(
+#'  "circle",
+#'  list(
+#'    "circle-sort-key" = get_column_step_steps(
+#'      "elevation",
+#'      c(3000),
+#'      c(100, 200)
+#'    )
+#'  )
+#' )
 #'
 #' # Provide options outside of the defaults
 #' get_layout_options(
@@ -85,12 +134,14 @@ get_layout_options <- function(layer_type, options = list()) {
     layout_options[["text-size"]] <- merged_options$text_size
     layout_options[["text-field"]] <- merged_options$text_field
   }
-  non_default_options <- setdiff(names(merged_options), c(names(default_options)))
+  non_default_options <- setdiff(
+    names(merged_options),
+    c(names(default_options))
+  )
 
   if (length(non_default_options) > 0) {
     return(c(layout_options, merged_options[non_default_options]))
   }
-
   layout_options
 }
 
@@ -107,24 +158,49 @@ get_layout_options <- function(layer_type, options = list()) {
 #'
 #' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
 #' @param options A list of additional options to customize the paint properties.
+#'    See Maplibre docs for full options.
+#'    \itemize{
+#'      \item colour: The color to use for the layer. Default is "grey". `color` is also accepted as
+#'        an alias for `colour`.
+#'      \item opacity: The opacity to use for the layer. Default is 1 (fully opaque).
+#'      \item line_width: The width of lines in line layers or the outline width for circle layers.
+#'        Default is 1.
+#'      \item line_dash: The dash pattern for line layers. Default is no dash (solid line).
+#'        You can provide a vector of numbers to specify the dash pattern (e.g., c(2, 4) for a
+#'        pattern of 2 units on, 4 units off).
+#'      \item outline_colour: The color to use for the outline of circle or fill layers.
+#'        Default is the same as `colour`. `outline_color` is also accepted as an alias for
+#'        `outline_colour`.
+#'      \item outline_opacity: The opacity to use for the outline of circle or fill layers.
+#'        Default is the same as `opacity`.
+#'      You can also provide any other paint options found in the Maplibre docs for the specific
+#'      layer type, and they will be included in the returned list.
+#' }
 #' @return A list of paint options suitable for the specified layer type.
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
 #' @examples
 #' get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 #'
+#'
 #' get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
+#'
 #'
 #' # Use with get_column for data-driven styling:
 #' get_paint_options("fill", list(colour = get_column("color"), opacity = get_column("opacity")))
+#'
 #'
 #' get_paint_options("fill", list(
 #'    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 #' ))
 #'
+#'
 #' get_paint_options("fill", list(
 #'    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 #' ))
+#'
+#' # Provide options outside of the defaults
+#' get_paint_options("circle", list("circle-blur" = 0.5))
 #'
 #' # Provide options outside of the defaults
 #' get_paint_options("circle", list("circle-blur" = 0.5))
@@ -136,21 +212,26 @@ get_paint_options <- function(layer_type, options = list()) {
     opacity = 1,
     line_width = 1,
     radius = 5,
+    radius = 5,
     line_dash = list(1, 0) # No dash by default
   )
   merged_options <- utils::modifyList(default_options, options)
   paint_options <- structure(list(), names = character(0))
   if (layer_type %in% c("fill", "circle", "line")) {
-    paint_options[[paste0(layer_type, "-color")]] <- merged_options$color %||% merged_options$colour
+    paint_options[[paste0(layer_type, "-color")]] <- merged_options$color %||%
+      merged_options$colour
     paint_options[[paste0(layer_type, "-opacity")]] <- merged_options$opacity
   }
   if (layer_type == "circle") {
-    paint_options[["circle-radius"]] <- merged_options$circle_radius %||% merged_options$radius
+    paint_options[["circle-radius"]] <- merged_options$circle_radius %||%
+      merged_options$radius
     paint_options[["circle-stroke-color"]] <- merged_options$outline_color %||%
       merged_options$outline_colour %||%
       merged_options$color %||%
       merged_options$colour
-    paint_options[["circle-stroke-opacity"]] <- merged_options$outline_opacity %||%
+    paint_options[[
+      "circle-stroke-opacity"
+    ]] <- merged_options$outline_opacity %||%
       merged_options$opacity
     paint_options[["circle-stroke-width"]] <- merged_options$line_width
   }
@@ -163,14 +244,35 @@ get_paint_options <- function(layer_type, options = list()) {
       merged_options$outline_colour %||%
       merged_options$color %||%
       merged_options$colour
+    paint_options[["fill-outline-color"]] <- merged_options$outline_color %||%
+      merged_options$outline_colour %||%
+      merged_options$color %||%
+      merged_options$colour
   }
   if (layer_type == "symbol") {
     paint_options[["icon-opacity"]] <- merged_options$opacity
-    paint_options[["text-color"]] <- merged_options$color %||% merged_options$colour
+    paint_options[["text-color"]] <- merged_options$color %||%
+      merged_options$colour
   }
   if (layer_type == "text") {
-    paint_options[["text-color"]] <- merged_options$colour
+    paint_options[["text-color"]] <- merged_options$color %||%
+      merged_options$colour
   }
+  non_default_options <- setdiff(
+    names(merged_options),
+    c(
+      names(default_options),
+      "color",
+      "outline_color",
+      "outline_opacity",
+      "circle_radius"
+    )
+  )
+  if (length(non_default_options) > 0) {
+    return(c(paint_options, merged_options[non_default_options]))
+  }
+
+  paint_options
   non_default_options <- setdiff(
     names(merged_options),
     c(
@@ -192,12 +294,16 @@ get_paint_options <- function(layer_type, options = list()) {
 #'
 #' Parse a filter string into a list of filters that the map can use.
 #'
-#' @param filter_str  A string or vector of strings representing the filter conditions.
-#' @return           A list where the first element is "all" if multiple filters are provided,
-#'                    or a single filter condition.
+#' @param filter_str A string or vector of strings representing the filter conditions.
+#' @return A list where the first element is "all" if multiple filters are provided,
+#'    or a single filter condition.
 #' @examples
 #' # Filter to only show rows where the "layer_id" column is equal to "forests"
+#' # Filter to only show rows where the "layer_id" column is equal to "forests"
 #' get_layer_filter("layer_id == forests")
+#'
+#' # Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"
+#' # column is equal to "Confirmed"
 #'
 #' # Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"
 #' # column is equal to "Confirmed"
@@ -222,5 +328,5 @@ get_layer_filter <- function(filter_str) {
   if (length(filters) > 1) {
     return(list("all", filters[[1]]))
   }
-  return(filters[[1]])
+  filters[[1]]
 }

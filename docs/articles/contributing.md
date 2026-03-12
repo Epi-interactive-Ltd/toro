@@ -1,0 +1,3 @@
+# contributing
+
+## Contributing to {toro}
