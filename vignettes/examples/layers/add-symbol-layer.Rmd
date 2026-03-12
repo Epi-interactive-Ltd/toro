@@ -42,7 +42,7 @@ base_map |>
     source = "maori_places_data",
     hover_column = "type",
     popup_column = "name",
-    can_cluster = TRUE,
+    can_cluster = FALSE,
     filter = get_layer_filter("type == village"),
     layout = toro::get_layout_options(
       "symbol",

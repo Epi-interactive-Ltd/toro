@@ -49,7 +49,7 @@ Sources are required to add data to your map.
 
 ![Add a text layer image](../images/add-text-layer.png)
 
-
+### [Latitude and Longitude Grid](layers/lat-lng-grid.html)
 
 ---
 
