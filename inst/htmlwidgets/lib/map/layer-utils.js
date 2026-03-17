@@ -681,7 +681,10 @@ function addLayerPopup(map, layerId, popupColumn) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    const popup = new maplibregl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
+    const popup = new maplibregl.Popup({ className: 'popup-overlay' })
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
     map._popup = popup;
   });
 
@@ -705,6 +708,7 @@ function addLayerHover(map, layerId, hoverColumn) {
     popup = new maplibregl.Popup({
       closeButton: false,
       closeOnClick: false,
+      className: 'hover-overlay',
     })
       .setLngLat(coordinates)
       .setHTML(description)
