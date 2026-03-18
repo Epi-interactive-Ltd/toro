@@ -153,6 +153,10 @@ function addLayerToMap(el, layer) {
     sourceId = layer.source;
     layerObj.source = layer.source;
   }
+  if (layerObj.type === 'text') {
+    // Text is actually a symbol layer in Maplibre
+    layerObj.type = 'symbol';
+  }
   map.addLayer(layerObj, layer.beforeId || 'spiderfy-lines');
   el.ourLayers.push(layerObj.id); // Store the layer ID for later reference
 
@@ -168,7 +172,7 @@ function addLayerToMap(el, layer) {
     (typeof layer.source === 'object' &&
       layer.source.type === 'geojson' &&
       layer.canCluster !== false) ||
-    layer.type === 'symbol' // Symbol layers always cluster to handle points with the same coordinates
+    layer.type === 'symbol'
   ) {
     addClusterLayer(
       el,

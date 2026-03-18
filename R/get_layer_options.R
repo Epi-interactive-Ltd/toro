@@ -22,8 +22,10 @@ get_layout_options <- function(layer_type, options = list()) {
     icon_image = "toro-pin",
     icon_size = 1,
     icon_anchor = "bottom",
+    text_anchor = "center",
     icon_offset = list(0, 0),
     icon_allow_overlap = TRUE,
+    text_allow_overlap = TRUE,
     icon_rotate = 0,
     icon_flip_horizontal = FALSE,
     text_font = "Open Sans Regular",
@@ -48,11 +50,20 @@ get_layout_options <- function(layer_type, options = list()) {
 
     if (merged_options$icon_flip_horizontal) {
       # Use a rotation of 180 degrees as a simple way to flip horizontally
-      layout_options[["icon-flip-horizontal"]] <- merged_options$icon_flip_horizontal
+      layout_options[[
+        "icon-flip-horizontal"
+      ]] <- merged_options$icon_flip_horizontal
     }
     if (!is.null(merged_options$text_field)) {
       layout_options[["text-field"]] <- merged_options$text_field
     }
+  }
+  if (layer_type == "text") {
+    layout_options[["text-allow-overlap"]] <- merged_options$text_allow_overlap
+    layout_options[["icon-image"]] <- ""
+    layout_options[["text-font"]] <- list(merged_options$text_font)
+    layout_options[["text-size"]] <- merged_options$text_size
+    layout_options[["text-field"]] <- merged_options$text_field
   }
   return(layout_options)
 }
@@ -111,6 +122,9 @@ get_paint_options <- function(layer_type, options = list()) {
   }
   if (layer_type == "symbol") {
     paint_options[["icon-opacity"]] <- merged_options$opacity
+    paint_options[["text-color"]] <- merged_options$colour
+  }
+  if (layer_type == "text") {
     paint_options[["text-color"]] <- merged_options$colour
   }
   return(paint_options)
