@@ -215,7 +215,7 @@ add_line_layer <- function(map, ...) {
 }
 
 #' Add a symbol layer to a map or map proxy.
-#' This layer is typically used for icons or text labels.
+#' This layer is typically used for icons or pins.
 #'
 #' @inheritParams add_layer
 #' @return The updated map object with the symbol layer added.
@@ -241,6 +241,35 @@ add_line_layer <- function(map, ...) {
 #' }
 add_symbol_layer <- function(map, ...) {
   add_layer(map = map, type = "symbol", ...)
+}
+
+#' Add a text layer to a map or map proxy.
+#' This layer is typically used for text labels.
+#'
+#' @inheritParams add_layer
+#' @return The updated map object with the text layer added.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(sf)
+#'
+#' # Prepare data
+#' data(quakes)
+#' quakes_data <- quakes |>
+#'  st_as_sf(coords = c("long", "lat"), crs = 4326)
+#'
+#' # Create map and add fill layer
+#' map() |>
+#'  add_text_layer(
+#'    id = "test_layer",
+#'    source = quakes_data
+#'  )
+#' }
+add_text_layer <- function(map, ...) {
+  add_layer(map = map, type = "text", ...)
 }
 
 #' Add a grid of latitude and longitude lines to the map.
