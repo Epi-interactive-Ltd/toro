@@ -111,6 +111,8 @@ Add functions:
 
 - `add_symbol_layer()`
 
+- `add_text_layer()`
+
 - `add_lat_lng_grid()`
 
 Visibility functions:

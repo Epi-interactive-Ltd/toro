@@ -25,5 +25,6 @@ Imports:
 Suggests: 
     knitr,
     usethis,
-    rmarkdown
+    rmarkdown,
+    lintr
 VignetteBuilder: knitr
