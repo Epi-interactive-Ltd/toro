@@ -26,5 +26,8 @@ Suggests:
     knitr,
     usethis,
     rmarkdown,
-    lintr
+    lintr,
+    webshot2,
+    mapshot,
+    webshot
 VignetteBuilder: knitr
