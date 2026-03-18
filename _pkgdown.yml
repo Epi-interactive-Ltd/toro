@@ -79,6 +79,7 @@ reference:
       - add_circle_layer
       - add_line_layer
       - add_symbol_layer
+      - add_text_layer
       - add_lat_lng_grid
   - title: 'Updating Layers'
     desc: 'Functions to update map layers'

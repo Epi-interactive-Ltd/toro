@@ -26,5 +26,6 @@ Suggests:
     knitr,
     usethis,
     rmarkdown,
-    devtools
+    devtools,
+    lintr
 VignetteBuilder: knitr
