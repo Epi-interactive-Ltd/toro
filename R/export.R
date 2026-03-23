@@ -14,6 +14,7 @@
 #' @param ...      Additional arguments passed to webshot2::webshot() or mapshot().
 #' @return         The file path of the saved image (invisibly).
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Create and export a map
@@ -107,6 +108,7 @@ export_map_image <- function(
 #' @param ...      Additional arguments passed to htmlwidgets::saveWidget().
 #' @return         The file path of the saved HTML file (invisibly).
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Create and save a map as HTML

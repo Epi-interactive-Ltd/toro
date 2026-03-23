@@ -4,12 +4,12 @@
 #'
 #' @param column_name String representing the name of the column to be used.
 #' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column("opacity")
 #' get_column("icon")
 #' # Use in a paint property: list("circle-color" = get_column("color"))
-#'
-#' @export
 get_column <- function(column_name) {
   list("get", column_name)
 }
@@ -22,10 +22,10 @@ get_column <- function(column_name) {
 #' @param true_value Value to use when the column value is `TRUE`.
 #' @param false_value Value to use when the column value is `FALSE`.
 #' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column_boolean("group", "red", "grey")
-#'
-#' @export
 get_column_boolean <- function(column_name, true_value, false_value) {
   append(
     list("case", list("boolean", list("get", column_name), FALSE)),
@@ -46,11 +46,11 @@ get_column_boolean <- function(column_name, true_value, false_value) {
 #' @param default_value String for the default value to use if no match is found.
 #'    Default is "#cccccc".
 #' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
 #' get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
-#'
-#' @export
 get_column_group <- function(
   column_name,
   named_group_values,
@@ -75,10 +75,10 @@ get_column_group <- function(
 #' @param breaks Numeric vector of thresholds (must be sorted ascending).
 #' @param values Vector of values, length = length(breaks) + 1.
 #' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
-#'
-#' @export
 get_column_step_steps <- function(column_name, breaks, values) {
   stopifnot(length(values) == length(breaks) + 1)
   expr <- list("step", list("get", column_name), values[[1]])

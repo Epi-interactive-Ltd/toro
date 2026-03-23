@@ -21,7 +21,7 @@ base_map <- map(
   add_feature_server_source(
     "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/0/query?where=1=1&outFields=*&f=geojson",
     "maori_places_data",
-    append_query_url = FALSE
+    append_query_url = ""
   )
 ```
 
@@ -35,7 +35,7 @@ base_map |>
     source = "maori_places_data",
     hover_column = "type",
     popup_column = "name",
-    can_cluster = TRUE,
+    can_cluster = FALSE,
     filter = get_layer_filter("type == village"),
     layout = toro::get_layout_options(
       "symbol",

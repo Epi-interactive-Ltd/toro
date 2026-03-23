@@ -22,7 +22,7 @@
 #' @param under_id The ID of an layer already on the map to place this layer under.
 #'  Default is `NULL`.
 #' @param filter A filter expression to apply to the layer. Default is `NULL`. See
-#'  `get_layer_filter()` for more details on how to create filter expressions.
+#'    `get_layer_filter()` for more details on how to create filter expressions.
 #' @param ... Additional arguments to include in the layer definition.
 #'  \itemize{
 #'    \item clusterOptions: A list of options for clustering, if `can_cluster` is `TRUE`.
@@ -31,6 +31,26 @@
 #'  }
 #' @return The updated map object with the new layer added.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Load libraries
+#' library(toro)
+#' library(spData)
+#' library(sf)
+#'
+#' nz_data <- spData::nz |>
+#'   rename(geometry = geom) |>
+#'   sf::st_transform(4326)
+#'
+#' map() |>
+#'  add_layer(
+#'    id = "nz_regions",
+#'    type = "fill",
+#'    source = nz_data,
+#'    hover_column = "Name"
+#'  )
+#' }
 add_layer <- function(
   map,
   id,
@@ -100,33 +120,21 @@ add_layer <- function(
 #' # Load libraries
 #' library(toro)
 #' library(spData)
-#' library(spData)
 #' library(sf)
 #'
 #' nz_data <- spData::nz |>
 #'   rename(geometry = geom) |>
 #'   sf::st_transform(4326)
-#' nz_data <- spData::nz |>
-#'   rename(geometry = geom) |>
-#'   sf::st_transform(4326)
 #'
 #' map() |>
-#' map() |>
 #'  add_fill_layer(
-#'    id = "nz_regions",
-#'    source = nz_data,
-#'    hover_column = "Name"
 #'    id = "nz_regions",
 #'    source = nz_data,
 #'    hover_column = "Name"
 #'  )
 #'
 #' map() |>
-#' map() |>
 #'  add_fill_layer(
-#'    id = "nz_regions",
-#'    source = nz_data,
-#'    hover_column = "Name",
 #'    id = "nz_regions",
 #'    source = nz_data,
 #'    hover_column = "Name",
@@ -155,7 +163,6 @@ add_fill_layer <- function(map, ...) {
 #' # Load libraries
 #' library(toro)
 #' library(spData)
-#' library(spData)
 #' library(sf)
 #'
 #' nz_data <- spData::nz_height |>
@@ -163,15 +170,7 @@ add_fill_layer <- function(map, ...) {
 #'
 #' map() |>
 #'  set_bounds(bounds = nz_data) |>
-#' nz_data <- spData::nz_height |>
-#'   sf::st_transform(4326)
-#'
-#' map() |>
-#'  set_bounds(bounds = nz_data) |>
 #'  add_circle_layer(
-#'    id = "nz_elevation",
-#'    source = nz_data,
-#'    hover_column = "elevation"
 #'    id = "nz_elevation",
 #'    source = nz_data,
 #'    hover_column = "elevation"
@@ -179,22 +178,13 @@ add_fill_layer <- function(map, ...) {
 #'
 #' base_map |>
 #'  set_bounds(bounds = nz_data) |>
-#'  set_bounds(bounds = nz_data) |>
 #'  add_circle_layer(
-#'    id = "nz_elevation",
-#'    source = nz_data,
-#'    hover_column = "elevation",
 #'    id = "nz_elevation",
 #'    source = nz_data,
 #'    hover_column = "elevation",
 #'    paint = get_paint_options(
 #'      "circle",
 #'      options = list(
-#'        colour = get_column_step_steps(
-#'          "elevation",
-#'          c(3000),
-#'          c("grey", "black")
-#'        )
 #'        colour = get_column_step_steps(
 #'          "elevation",
 #'          c(3000),
@@ -219,19 +209,8 @@ add_circle_layer <- function(map, ...) {
 #' # Load libraries
 #' library(toro)
 #' library(spData)
-#' library(spData)
 #' library(sf)
 #'
-#' seine_data <- spData::nz_height |>
-#'   sf::st_transform(4326)
-#' seine_data$colour <- rainbow(nrow(seine_data))
-#'
-#' map() |>
-#'  set_bounds(bounds = seine_data) |>
-#'  add_circle_layer(
-#'    id = "seine_lines",
-#'    source = seine_data,
-#'    hover_column = "name"
 #' seine_data <- spData::nz_height |>
 #'   sf::st_transform(4326)
 #' seine_data$colour <- rainbow(nrow(seine_data))
@@ -250,14 +229,7 @@ add_circle_layer <- function(map, ...) {
 #'    id = "seine_lines",
 #'    source = seine_data,
 #'    hover_column = "name",
-#'  set_bounds(bounds = seine_data) |>
-#'  add_circle_layer(
-#'    id = "seine_lines",
-#'    source = seine_data,
-#'    hover_column = "name",
 #'    paint = get_paint_options(
-#'      "circle",
-#'      options = list(colour = get_column("colour"))
 #'      "circle",
 #'      options = list(colour = get_column("colour"))
 #'    )
@@ -327,10 +299,16 @@ add_text_layer <- function(map, ...) {
 
 #' Add a grid of latitude and longitude lines to the map.
 #'
-#' @param map         The map or map proxy object.
+#' @param map The map or map proxy object.
 #' @param grid_colour The colour of the grid lines. Default is `"#000000"`.
-#' @return            The map or map proxy object for chaining.
+#' @return The map or map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' map() |>
+#'  add_lat_lng_grid()
+#' }
 add_lat_lng_grid <- function(map, grid_colour = "#000000") {
   grid_control <- list(gridColour = grid_colour)
 
@@ -350,9 +328,42 @@ add_lat_lng_grid <- function(map, grid_colour = "#000000") {
 #' Show/hide the latitude and longitude grid on the map.
 #'
 #' @param proxy The map proxy object created by `mapProxy()`.
-#' @param show  Logical indicating whether to show or hide the grid. Default is `TRUE`.
-#' @return      The map proxy object for chaining.
+#' @param show Logical indicating whether to show or hide the grid. Default is `TRUE`.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(toro)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    actionButton("show_grid", "Show Grid"),
+#'    actionButton("hide_grid", "Hide Grid")
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_lat_lng_grid()
+#'   })
+#'
+#'   observe({
+#'     mapProxy("map") |>
+#'       toggle_lat_lng_grid(show = TRUE)
+#'   }) |>
+#'     bindEvent(input$show_grid)
+#'
+#'   observe({
+#'     mapProxy("map") |>
+#'       toggle_lat_lng_grid(show = FALSE)
+#'    }) |>
+#'      bindEvent(input$hide_grid)
+#' }
+#' }
 toggle_lat_lng_grid <- function(proxy, show = TRUE) {
   proxy$session$sendCustomMessage(
     "toggleLatLngGrid",
@@ -363,10 +374,49 @@ toggle_lat_lng_grid <- function(proxy, show = TRUE) {
 
 #' Show a previously hidden layer on the map.
 #'
-#' @param proxy     The map proxy object created by `mapProxy()`.
-#' @param layer_id  The ID of the layer to show.
-#' @return          The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer to show.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(sf)
+#' library(toro)
+#'
+#' data(quakes)
+#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    actionButton("show_layer", "Show Layer"),
+#'    actionButton("hide_layer", "Hide Layer")
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_circle_layer(
+#'        id = "quakes",
+#'        source = quakes_data
+#'      )
+#'  })
+#'
+#'  observe({
+#'    mapProxy("map") |>
+#'      show_layer(layer_id = "quakes")
+#'  }) |>
+#'    bindEvent(input$show_layer)
+#'
+#'  observe({
+#'    mapProxy("map") |>
+#'      hide_layer(layer_id = "quakes")
+#'  }) |>
+#'    bindEvent(input$hide_layer)
+#' }
+#' }
 show_layer <- function(proxy, layer_id) {
   proxy$session$sendCustomMessage(
     "showLayer",
@@ -380,10 +430,49 @@ show_layer <- function(proxy, layer_id) {
 #'
 #' @note This does not remove the layer, it only hides it from view.
 #'
-#' @param proxy     The map proxy object created by `mapProxy()`.
-#' @param layer_id  The ID of the layer to hide.
-#' @return          The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer to hide.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(sf)
+#' library(toro)
+#'
+#' data(quakes)
+#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    actionButton("show_layer", "Show Layer"),
+#'    actionButton("hide_layer", "Hide Layer")
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_circle_layer(
+#'        id = "quakes",
+#'        source = quakes_data
+#'      )
+#'  })
+#'
+#'  observe({
+#'    mapProxy("map") |>
+#'      show_layer(layer_id = "quakes")
+#'  }) |>
+#'    bindEvent(input$show_layer)
+#'
+#'  observe({
+#'    mapProxy("map") |>
+#'      hide_layer(layer_id = "quakes")
+#'  }) |>
+#'    bindEvent(input$hide_layer)
+#' }
+#' }
 hide_layer <- function(proxy, layer_id) {
   proxy$session$sendCustomMessage(
     "hideLayer",
@@ -394,12 +483,38 @@ hide_layer <- function(proxy, layer_id) {
 
 #' Set the tile layer for the map.
 #'
-#' @param map   The map or map proxy object.
+#' @param map The map or map proxy object.
 #' @param tiles A character vector of tile layer names.
-#'              Options include "natgeo", "satellite", "topo", "terrain",
-#'              "streets", "shaded", "lightgrey".
-#' @return      The map or map proxy object for chaining.
+#'    Options include values returned from get_tile_options().
+#' @return The map or map proxy object for chaining.
+#' @seealso get_tile_options
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(toro)
+#'
+#' all_tiles <- get_tile_options()
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    selectInput("tile_layer", "Select Tile Layer", choices = all_tiles)
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map(loadedTiles = all_tiles)
+#'  })
+#'
+#'  observe({
+#'    mapProxy("map") |>
+#'      set_tile_layer(tiles = input$tile_layer)
+#'  }) |>
+#'    bindEvent(input$tile_layer)
+#' }
+#' }
 set_tile_layer <- function(map, tiles) {
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
@@ -413,11 +528,44 @@ set_tile_layer <- function(map, tiles) {
 
 #' Toggle clustering for a layer on the map.
 #'
-#' @param proxy     The map proxy object created by `mapProxy()`.
-#' @param layer_id  The ID of the layer to toggle clustering for.
-#' @param cluster   Whether to enable clustering. Default is `FALSE`.
-#' @return          The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer to toggle clustering for.
+#' @param cluster Whether to enable clustering. Default is `FALSE`.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(sf)
+#' library(toro)
+#'
+#' data(quakes)
+#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    checkboxInput("toggle_cluster", "Toggle Clustering", value = TRUE)
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_symbol_layer(
+#'        id = "quakes"
+#'        source = quakes_data,
+#'        can_cluster = TRUE
+#'      )
+#'  })
+#'
+#'  observe({
+#'    mapProxy("map") |>
+#'      toggle_clustering(layer_id = "quakes", cluster = input$toggle_cluster)
+#'  }) |>
+#'    bindEvent(input$toggle_cluster)
+#' }
+#' }
 toggle_clustering <- function(proxy, layer_id, cluster = FALSE) {
   proxy$session$sendCustomMessage(
     "toggleClustering",
@@ -433,12 +581,58 @@ toggle_clustering <- function(proxy, layer_id, cluster = FALSE) {
 
 #' Set a paint property for a layer on the map.
 #'
-#' @param proxy         The map proxy object created by `mapProxy()`.
-#' @param layer_id      The ID of the layer to update.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer to update.
 #' @param property_name The name of the paint property to set.
-#' @param value         The value to set for the paint property.
-#' @return              The map proxy object for chaining.
+#' @param value The value to set for the paint property.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(sf)
+#' library(toro)
+#'
+#' data(quakes)
+#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    selectInput(
+#'      "colour",
+#'      "Select Tile Layer",
+#'      choices = c(
+#'        "red",
+#'        "orange",
+#'        "yellow",
+#'        "green",
+#'        "blue",
+#'        "indigo",
+#'        "violet"
+#'      )
+#'    )
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_circle_layer(id = "quakes", source = quakes_data)
+#'  })
+#'
+#'  observe({
+#'    req(input$map_loaded)
+#'    mapProxy("map") |>
+#'      set_paint_property(
+#'        layer_id = "quakes",
+#'        property_name = "circle-color",
+#'        value = input$colour
+#'      )
+#'  }) |>
+#'    bindEvent(input$colour)
+#' }
+#' }
 set_paint_property <- function(proxy, layer_id, property_name, value) {
   proxy$session$sendCustomMessage(
     "setPaintProp",
@@ -455,12 +649,59 @@ set_paint_property <- function(proxy, layer_id, property_name, value) {
 
 #' Set a layout property for a layer on the map.
 #'
-#' @param proxy         The map proxy object created by `mapProxy()`.
-#' @param layer_id      The ID of the layer to update.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer to update.
 #' @param property_name The name of the layout property to set.
-#' @param value         The value to set for the layout property.
-#' @return              The map proxy object for chaining.
+#' @param value The value to set for the layout property.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(sf)
+#' library(toro)
+#'
+#' data(quakes)
+#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    selectInput(
+#'      "text_column",
+#'      "Select Text Column",
+#'      choices = c("depth", "mag", "stations")
+#'    )
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_text_layer(
+#'        id = "quakes",
+#'        source = quakes_data,
+#'        layout = get_layout_options(
+#'          "text",
+#'          options = list(
+#'            text_field = get_column("depth")
+#'          )
+#'        )
+#'      )
+#'  })
+#'
+#'  observe({
+#'    req(input$map_loaded)
+#'    mapProxy("map") |>
+#'      set_layout_property(
+#'        layer_id = "quakes",
+#'        property_name = "text-field",
+#'        value = get_column(input$text_column)
+#'      )
+#'  }) |>
+#'    bindEvent(input$text_column)
+#' }
+#' }
 set_layout_property <- function(proxy, layer_id, property_name, value) {
   proxy$session$sendCustomMessage(
     "setLayoutProp",
@@ -478,6 +719,9 @@ set_layout_property <- function(proxy, layer_id, property_name, value) {
 #'
 #' @return A character vector of available tile layer options.
 #' @export
+#'
+#' @examples
+#' all_tiles <- get_tile_options()
 get_tile_options <- function() {
   c("natgeo", "satellite", "topo", "terrain", "streets", "shaded", "lightgrey")
 }

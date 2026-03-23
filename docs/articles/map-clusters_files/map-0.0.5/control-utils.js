@@ -2616,7 +2616,21 @@ function addVisibilityToggleControl(
         const newState = this._checkbox.checked;
 
         // Toggle layer visibility
-        if (newState) {
+        if (layerId === 'lat_lng_grid') {
+          // For the lat-lng grid, we may have multiple layers (e.g., different zoom levels), so we need to toggle all of them
+          const gridLayerIds =
+            widgetInstance
+              ?.getMap()
+              .getLayersOrder()
+              ?.filter((id) => id.startsWith('lat-lng-grid')) || [];
+          gridLayerIds.forEach((id) => {
+            if (newState) {
+              showLayer(mapInstance, id);
+            } else {
+              hideLayer(mapInstance, id);
+            }
+          });
+        } else if (newState) {
           showLayer(mapInstance, layerId);
         } else {
           hideLayer(mapInstance, layerId);

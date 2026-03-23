@@ -6,45 +6,42 @@ demonstrate how to create powerful map visualizations using toro.
 Use the navigation menu on the left to explore all available examples,
 or click the links below to jump to specific examples:
 
-## Layers
+## Sources
 
-### [Adding fill layers](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-fill-layer.md)
+Sources are required to add data to your map.
 
-![Add fill layer image](add-fill-layer.png)
+### [Add a GeoJSON source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-geojson-source.md)
 
-Add fill layer image
+### [Add a feature service source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-feature-service-source.md)
 
-### [Adding line layers](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-line-layer.md)
-
-![Add line layer image](articles/figures/add-line-layer.png)
-
-Add line layer image
-
-### [Adding circle layers](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-circle-layer.md)
-
-![Add circle layer image](reference/figures/add-circle-layer.png)
-
-Add circle layer image
-
-### [Adding symbol layers](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-symbol-layer.md)
-
-![Add symbol layer image](reference/figures/add-symbol-layer.png)
-
-Add symbol layer image
-
-### [Adding text layers](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-text-layer.md)
-
-![Add text layer image](../../images/add-text-layer.png)
-
-Add text layer image
+### [Add an image source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-image-source.md)
 
 ------------------------------------------------------------------------
 
-Each example includes:
+## Layers
 
-- Complete, runnable R code
-- Step-by-step explanations
-- Interactive map demonstrations
-- Code you can copy and modify for your own projects
+### [Add a fill layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-fill-layer.md)
 
-Navigate between examples using the sidebar on the left!
+![](../../reference/figures/add-fill-layer.png)
+
+### [Add a line layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-line-layer.md)
+
+![](../../reference/figures/add-line-layer.png)
+
+### [Add a circle layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-circle-layer.md)
+
+![](../../reference/figures/add-circle-layer.png)
+
+### [Add a symbol layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-symbol-layer.md)
+
+![](../../reference/figures/add-symbol-layer.png)
+
+### [Add a text layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-text-layer.md)
+
+![](../../reference/figures/add-text-layer.png)
+
+#### [Latitude and Longitude Grid](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/lat-lng-grid.md)
+
+![](../../reference/figures/lat-lng-grid.png)
+
+------------------------------------------------------------------------

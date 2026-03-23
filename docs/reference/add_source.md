@@ -1,15 +1,6 @@
-# Utilities for the map related to map sources.
+# Utilities for the map related to map sources. Add a source to the map.
 
-Functions:
-
-- `add_source`: Add a source to the map.
-
-- `add_feature_server_source`: Add a FeatureServer source to the map.
-
-- `add_image`: Add an image source to the map.
-
-- `set_source_data`: Set data for a source on the map. Add a source to
-  the map.
+Utilities for the map related to map sources. Add a source to the map.
 
 ## Usage
 
@@ -42,17 +33,17 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 
 ## Value
 
-         The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
  map() |>
    add_source(
      source_id = "my_source",
      data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
    ) |>
    add_circle_layer(id = "quakes", source = "my_source")
-}
+} # }
 ```

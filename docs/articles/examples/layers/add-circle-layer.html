@@ -99,7 +99,7 @@
 <span>  <span class="fu"><a href="../../../reference/add_feature_server_source.html">add_feature_server_source</a></span><span class="op">(</span></span>
 <span>    <span class="st">"https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&amp;outFields=*&amp;f=geojson"</span>,</span>
 <span>    <span class="st">"maori_maunga_data"</span>,</span>
-<span>    append_query_url <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    append_query_url <span class="op">=</span> <span class="st">""</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="basic-example">Basic example<a class="anchor" aria-label="anchor" href="#basic-example"></a>
@@ -113,7 +113,7 @@
 <span>    popup_column <span class="op">=</span> <span class="st">"name"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:100%;height:432.632880098888px;" class="map html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"sources":[{"sourceId":"maori_maunga_data","sourceOptions":{"type":"geojson","data":"https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson"}}],"layers":[{"id":"maunga_circles","type":"circle","source":"maori_moana_data","paint":{"circle-color":"grey","circle-opacity":1,"circle-radius":5,"circle-stroke-color":"grey","circle-stroke-opacity":1,"circle-stroke-width":1},"layout":{},"popupColumn":"name","hoverColumn":"name_mi","canCluster":false,"filter":null,"beforeId":null}]},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"sources":[{"sourceId":"maori_maunga_data","sourceOptions":{"type":"geojson","data":"https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson"}}],"layers":[{"id":"maunga_circles","type":"circle","source":"maori_moana_data","paint":{"circle-color":"grey","circle-opacity":1,"circle-radius":5,"circle-stroke-color":"grey","circle-stroke-opacity":1,"circle-stroke-width":1},"layout":{},"popupColumn":"name","hoverColumn":"name_mi","canCluster":false,"filter":null,"beforeId":null}]},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
 <h3 id="advanced-example">Advanced example<a class="anchor" aria-label="anchor" href="#advanced-example"></a>
@@ -141,7 +141,7 @@
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div id="htmlwidget-e5c8c404fe174e4c81bd" style="width:100%;height:432.632880098888px;" class="map html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"sources":[{"sourceId":"maori_maunga_data","sourceOptions":{"type":"geojson","data":"https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson"}}],"layers":[{"id":"maunga_peaks","type":"circle","source":"maori_maunga_data","paint":{"circle-color":["match",["get","type"],"volcano","#9d0208","#a3b18a"],"circle-opacity":["match",["get","type"],"volcano",1,0.8],"circle-radius":["match",["get","type"],"volcano",7,4],"circle-stroke-color":["match",["get","type"],"volcano","#9d0208","#a3b18a"],"circle-stroke-opacity":["match",["get","type"],"volcano",1,0.8],"circle-stroke-width":1},"layout":{"circle-sort-key":["match",["get","type"],"volcano",2,1]},"popupColumn":"name","hoverColumn":"name_mi","canCluster":false,"filter":null,"beforeId":null}]},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"sources":[{"sourceId":"maori_maunga_data","sourceOptions":{"type":"geojson","data":"https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson"}}],"layers":[{"id":"maunga_peaks","type":"circle","source":"maori_maunga_data","paint":{"circle-color":["match",["get","type"],"volcano","#9d0208","#a3b18a"],"circle-opacity":["match",["get","type"],"volcano",1,0.8],"circle-radius":["match",["get","type"],"volcano",7,4],"circle-stroke-color":["match",["get","type"],"volcano","#9d0208","#a3b18a"],"circle-stroke-opacity":["match",["get","type"],"volcano",1,0.8],"circle-stroke-width":1},"layout":{"circle-sort-key":["match",["get","type"],"volcano",2,1]},"popupColumn":"name","hoverColumn":"name_mi","canCluster":false,"filter":null,"beforeId":null}]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -151,7 +151,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Funded by epi.</p>
+  <p>Funded by <a href="https://epi.group/" class="external-link"><img src="reference/figures/epi-logo.png" alt="Epi Group" height="25" style="max-height: 25px;"></a>. Copyright text coming soon (TODO)</p>
 </div>
 
 <div class="pkgdown-footer-right">

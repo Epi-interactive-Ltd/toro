@@ -1,4 +1,4 @@
-# toro
+# toro ![](reference/figures/toro-logo.png)
 
 **toro** is a package that provides [Maplibre GL
 JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.

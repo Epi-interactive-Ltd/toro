@@ -24,19 +24,19 @@ add_image(map, image_id, image_url)
 
 ## Value
 
-           The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
  map() |>
    add_image(
      image_id = "leaf-icon",
      image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Leaf_icon.png/600px-Leaf_icon.png"
    ) |>
    add_symbol_layer(
-     id = "text_layer",
+     id = "leaf_symbols",
      source = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326),
      layout = toro::get_layout_options(
        "symbol",
@@ -46,5 +46,5 @@ if (interactive()) {
        )
      )
    )
-}
+} # }
 ```

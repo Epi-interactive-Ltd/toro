@@ -1,8 +1,4 @@
 #' Utilites for the map related to the view.
-#'
-#' Functions:
-#' - `set_zoom`: Set the map zoom level.
-#' - `set_bounds`: Set the map bounds.
 
 #' Set the map zoom level.
 #'
@@ -10,6 +6,7 @@
 #' @param zoom The zoom level to set. Default is 2.
 #' @return The map or map proxy object for chaining.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #'  map() |>
@@ -38,6 +35,7 @@ set_zoom <- function(map, zoom) {
 #' @param max_zoom The maximum zoom level to set. Default is the object's `maxZoom`.
 #' @return The map or map proxy object for chaining.
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Load libraries

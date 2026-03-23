@@ -45,3 +45,11 @@
   layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-symbol-layer.md):
 - [Add a text
   layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-text-layer.md):
+- [Add a feature service
+  source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-feature-service-source.md):
+- [Add a GeoJSON
+  source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-geojson-source.md):
+- [Add an image
+  source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-image-source.md):
+- [Latitude and longitude grid
+  layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/lat-lng-grid.md):

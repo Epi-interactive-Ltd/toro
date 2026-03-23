@@ -2,6 +2,9 @@
 
 #' Add a source to the map.
 #'
+#' @note If you add a source directly in an add layer function, the source ID will
+#' be automatically generated as "source-[layer-id]".
+#'
 #' @param map The map or map proxy object.
 #' @param source_id The ID for the source.
 #' @param data The data for the source, typically in GeoJSON format.
@@ -193,58 +196,6 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   map
 }
 
-#' Helper function to convert local image to data URI
-#'
-#' @param image_path The file path to the local image.
-#' @return A data URI string representing the image.
-#' @keywords internal
-.image_to_data_uri <- function(image_path) {
-  if (!file.exists(image_path)) {
-    stop("Image file not found: ", image_path)
-  }
-
-  # Get file extension
-  ext <- tolower(tools::file_ext(image_path))
-
-  # Determine MIME type
-  mime_type <- switch(
-    ext,
-    "png" = "image/png",
-    "jpg" = "image/jpeg",
-    "jpeg" = "image/jpeg",
-    "gif" = "image/gif",
-    "svg" = "image/svg+xml",
-    "image/png" # default
-  )
-
-  # Read file as binary and encode as base64
-  image_data <- base64enc::base64encode(image_path)
-
-  # Create data URI
-  paste0("data:", mime_type, ";base64,", image_data)
-}
-
-#' Helper function to detect if URL is a local file path
-#'
-#' @param url The URL or file path to check.
-#' @return TRUE if the URL is a local file path, FALSE otherwise.
-#' @keywords internal
-.is_local_file <- function(url) {
-  # Check if it's a URL (starts with http/https)
-  if (grepl("^https?://", url)) {
-    return(FALSE)
-  }
-
-  # Check if it's already a data URI
-  if (grepl("^data:", url)) {
-    return(FALSE)
-  }
-
-  # If it exists as a file, treat as local
-  return(file.exists(url))
-}
-
-
 #' Add an image source to the map.
 #'
 #' @param map The map or map proxy object.
@@ -275,14 +226,14 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 add_image <- function(map, image_id, image_url) {
   # Convert local file paths to data URIs for compatibility
   processed_url <- image_url
-  if (.is_local_file(image_url)) {
+  if (is_local_file(image_url)) {
     # Check if base64enc package is available
     if (!requireNamespace("base64enc", quietly = TRUE)) {
       stop(
         "The 'base64enc' package is required to use local image files. Please install it with: install.packages('base64enc')"
       )
     }
-    processed_url <- .image_to_data_uri(image_url)
+    processed_url <- image_to_data_uri(image_url)
   }
 
   if (inherits(map, "mapProxy")) {
@@ -305,13 +256,51 @@ add_image <- function(map, image_id, image_url) {
 
 #' Set data for a source on the map.
 #'
-#' @param proxy     The map proxy object created by `mapProxy()`.
+#' @param proxy The map proxy object created by `mapProxy()`.
 #' @param source_id The ID of the source to update.
-#' @param data      The data for the source, typically in GeoJSON format.
-#' @param type      The type of the source. Default is `"geojson"`.
-#'                  Other options include `"vector"` or `"raster"`.
-#' @return          The map proxy object for chaining.
+#' @param data The data for the source, typically in GeoJSON format.
+#' @param type The type of the source. Default is `"geojson"`. Other options include `"vector"` or `"raster"`.
+#' @return The map proxy object for chaining.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(sf)
+#' library(toro)
+#'
+#' data(quakes)
+#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    actionButton("btn", "Update Source Data")
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  get_random_points <- function(data, n = 10) {
+#'    random_rows <- runif(n, min = 1, max = nrow(data))
+#'    return(data[random_rows, ])
+#'  }
+#'
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_symbol_layer(
+#'        id = "quakes",
+#'        source = get_random_points(quakes_data)
+#'      )
+#'    })
+#'  observe({
+#'    mapProxy("map") |>
+#'      set_source_data(
+#'        source_id = "source-quakes",
+#'        data = get_random_points(quakes_data)
+#'      )
+#'  }) |>
+#'  bindEvent(input$btn)
+#' }
+#' }
 set_source_data <- function(proxy, source_id, data, type = "geojson") {
   if (type == "geojson" && !"geojson" %in% class(data)) {
     data <- geojsonsf::sf_geojson(data)

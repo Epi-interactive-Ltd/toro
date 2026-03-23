@@ -47,8 +47,10 @@
 #'        layer type, and they will be included in the returned list.
 #'    }
 #' @return A list of layout options suitable for the specified layer type.
+#' @export
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
+#'
 #' @examples
 #' get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 #'
@@ -82,8 +84,6 @@
 #'    )
 #'  )
 #' )
-#'
-#' @export
 get_layout_options <- function(layer_type, options = list()) {
   default_options <- list(
     line_cap = "round",
@@ -177,8 +177,10 @@ get_layout_options <- function(layer_type, options = list()) {
 #'      layer type, and they will be included in the returned list.
 #' }
 #' @return A list of paint options suitable for the specified layer type.
+#' @export
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
+#'
 #' @examples
 #' get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 #'
@@ -204,8 +206,6 @@ get_layout_options <- function(layer_type, options = list()) {
 #'
 #' # Provide options outside of the defaults
 #' get_paint_options("circle", list("circle-blur" = 0.5))
-#'
-#' @export
 get_paint_options <- function(layer_type, options = list()) {
   default_options <- list(
     colour = "grey",
@@ -297,6 +297,8 @@ get_paint_options <- function(layer_type, options = list()) {
 #' @param filter_str A string or vector of strings representing the filter conditions.
 #' @return A list where the first element is "all" if multiple filters are provided,
 #'    or a single filter condition.
+#' @export
+#'
 #' @examples
 #' # Filter to only show rows where the "layer_id" column is equal to "forests"
 #' # Filter to only show rows where the "layer_id" column is equal to "forests"
@@ -308,8 +310,6 @@ get_paint_options <- function(layer_type, options = list()) {
 #' # Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"
 #' # column is equal to "Confirmed"
 #' get_layer_filter(c("layer_id == sites", "project_status == Confirmed"))
-#'
-#' @export
 get_layer_filter <- function(filter_str) {
   filter_str <- as.character(filter_str)
 

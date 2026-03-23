@@ -14,12 +14,12 @@ base_map <- map() |>
   add_feature_server_source(
     "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/3/query?where=1=1&outFields=*&f=geojson",
     "maori_moana_data",
-    append_query_url = FALSE
+    append_query_url = ""
   ) |>
   add_feature_server_source(
     "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/1/query?where=1=1&outFields=*&f=geojson",
     "maori_region_data",
-    append_query_url = FALSE
+    append_query_url = ""
   )
 ```
 

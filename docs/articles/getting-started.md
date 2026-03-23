@@ -1,9 +1,5 @@
 # Getting started with toro
 
-![Add text layer image](images/add-text-layer.png)
-
-Add text layer image
-
 ## Installation
 
 To install the development version from Github:

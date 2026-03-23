@@ -36,11 +36,12 @@
 #'    \item attributionPosition: The position of the attribution control. Default is "bottom-right".
 #'  }
 #' @return An object of class \code{htmlwidget} representing the map.
+#' @export
 #'
 #' @import htmlwidgets
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #' map()
 #'
 #' map(loadedTiles = c("natgeo", "streets"))
@@ -48,51 +49,6 @@
 #' # Add maxzoom to satellite layer
 #' map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
 #' }
-#' @export
-
-# Helper function to convert local image to data URI
-.image_to_data_uri <- function(image_path) {
-  if (!file.exists(image_path)) {
-    stop("Image file not found: ", image_path)
-  }
-
-  # Get file extension
-  ext <- tolower(tools::file_ext(image_path))
-
-  # Determine MIME type
-  mime_type <- switch(
-    ext,
-    "png" = "image/png",
-    "jpg" = "image/jpeg",
-    "jpeg" = "image/jpeg",
-    "gif" = "image/gif",
-    "svg" = "image/svg+xml",
-    "image/png" # default
-  )
-
-  # Read file as binary and encode as base64
-  image_data <- base64enc::base64encode(image_path)
-
-  # Create data URI
-  paste0("data:", mime_type, ";base64,", image_data)
-}
-
-# Helper function to detect if URL is a local file path
-.is_local_file <- function(url) {
-  # Check if it's a URL (starts with http/https)
-  if (grepl("^https?://", url)) {
-    return(FALSE)
-  }
-
-  # Check if it's already a data URI
-  if (grepl("^data:", url)) {
-    return(FALSE)
-  }
-
-  # If it exists as a file, treat as local
-  return(file.exists(url))
-}
-
 map <- function(
   style = "lightgrey",
   center = c(174, -41),
@@ -126,14 +82,14 @@ map <- function(
     processed_image_sources <- lapply(
       user_options$imageSources,
       function(image_source) {
-        if (!is.null(image_source$url) && .is_local_file(image_source$url)) {
+        if (!is.null(image_source$url) && is_local_file(image_source$url)) {
           # Check if base64enc package is available
           if (!requireNamespace("base64enc", quietly = TRUE)) {
             stop(
               "The 'base64enc' package is required to use local image files. Please install it with: install.packages('base64enc')"
             )
           }
-          image_source$url <- .image_to_data_uri(image_source$url)
+          image_source$url <- image_to_data_uri(image_source$url)
         }
         return(image_source)
       }
@@ -219,6 +175,37 @@ renderMap <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @param session   The Shiny session object (default is the current session).
 #' @return          A proxy object for the map.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(toro)
+#'
+#' ui <- fluidPage(
+#'  tagList(
+#'    mapOutput("map"),
+#'    checkboxInput("has_zoom_controls", "Remove Zoom Controls", value = TRUE)
+#'  )
+#' )
+#' server <- function(input, output, session) {
+#'  output$map <- renderMap({
+#'    map() |>
+#'      add_zoom_control()
+#'  })
+#'
+#'  observe({
+#'    req(input$map_loaded)
+#'    if (input$has_zoom_controls == TRUE) {
+#'      mapProxy("map") |>
+#'        add_zoom_control()
+#'    } else {
+#'      mapProxy("map") |>
+#'        remove_zoom_control()
+#'    }
+#'  }) |>
+#'    bindEvent(input$has_zoom_controls)
+#' }
+#' }
 mapProxy <- function(outputId, session = shiny::getDefaultReactiveDomain()) {
   structure(list(id = outputId, session = session), class = "mapProxy")
 }

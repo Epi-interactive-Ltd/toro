@@ -4,18 +4,27 @@ template:
 
 assets: vignettes/images
 
+footer:
+  structure:
+    left: [developed_by, copyright]
+  components:
+    copyright: >
+      Copyright text coming soon (TODO)
+
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
+  epi:
+    href: https://epi.group/
+    html: '<img src="man/figures/epi-logo.png" alt="Epi Group" height="25" style="max-height: 25px;">'
   footer:
     roles: [fnd]
     text: 'Funded by'
   sidebar:
     roles: [aut, ctb]
     before: 'So *who* does the work?'
-    after: 'Thanks all!'
   before: 'This package is proudly brought to you by:'
-  after: 'See the [changelog](news/index.html) for other contributors. :pray:'
+  after: 'See the [changelog](news/index.html) for other contributors.'
 
 home:
   sidebar:
@@ -83,7 +92,6 @@ reference:
       - add_source
       - set_source_data
       - add_feature_server_source
-      - add_tiles_from_map_server
       - add_image
   - title: 'Adding Layers'
     desc: 'Functions to add map layers'
@@ -230,3 +238,7 @@ articles:
       - examples/layers/add-circle-layer
       - examples/layers/add-symbol-layer
       - examples/layers/add-text-layer
+      - examples/sources/add-feature-service-source
+      - examples/sources/add-geojson-source
+      - examples/sources/add-image-source
+      - examples/layers/lat-lng-grid

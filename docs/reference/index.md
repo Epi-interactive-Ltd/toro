@@ -12,13 +12,12 @@ Function to create maps
 Functions to interact with map data sources
 
 - [`add_source()`](https://epi-interactive-ltd.github.io/toro/reference/add_source.md)
-  : Utilities for the map related to map sources.
+  : Utilities for the map related to map sources. Add a source to the
+  map.
 - [`set_source_data()`](https://epi-interactive-ltd.github.io/toro/reference/set_source_data.md)
   : Set data for a source on the map.
 - [`add_feature_server_source()`](https://epi-interactive-ltd.github.io/toro/reference/add_feature_server_source.md)
-  : Add a FeatureServer source to the map.
-- [`add_tiles_from_map_server()`](https://epi-interactive-ltd.github.io/toro/reference/add_tiles_from_map_server.md)
-  : Add an Image Server source to a toro map TODO: WIP
+  : Add a FeatureService source to the map.
 - [`add_image()`](https://epi-interactive-ltd.github.io/toro/reference/add_image.md)
   : Add an image source to the map.
 
@@ -27,7 +26,8 @@ Functions to interact with map data sources
 Functions to add map layers
 
 - [`add_layer()`](https://epi-interactive-ltd.github.io/toro/reference/add_layer.md)
-  : Utilities for the map related to layers.
+  : Utilities for the map related to layers. Add a layer to a map or map
+  proxy.
 - [`add_fill_layer()`](https://epi-interactive-ltd.github.io/toro/reference/add_fill_layer.md)
   : Add a fill layer to a map or map proxy.
 - [`add_circle_layer()`](https://epi-interactive-ltd.github.io/toro/reference/add_circle_layer.md)

@@ -1,7 +1,6 @@
-# toro
+# toro <img src="man/figures/toro-logo.png" align="right" height="100" style="max-height: 100px;" />
 
 **toro** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
-
 
 See these vignettes for learning how to use the package:
 

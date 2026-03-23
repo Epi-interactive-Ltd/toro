@@ -667,26 +667,6 @@ function saveElementAsHtml(elementId, filename = 'content.html') {
 if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('downloadMapImage', function (message) {
     withMapInstance(message.id, function (el) {
-<<<<<<< HEAD
-      console.log(message);
-      console.log(el);
-      // saveElementAsPng(el.id);
-      // saveElementAsHtml(el.id);
-      // exportElementBundled(el.id);
-
-      // const element = document.querySelector("#" + el.id + ".html-widget"); // or any selector
-
-      // setTimeout(function () {
-      //   html2canvas(element).then((canvas) => {
-      //     const imgData = canvas.toDataURL("image/png");
-      //     // Create a download link:
-      //     const link = document.createElement("a");
-      //     link.href = imgData;
-      //     link.download = "export.png";
-      //     link.click();
-      //   });
-      // }, 1000);
-=======
       const filename = message.filename || 'map_export.png';
       const format = message.format || 'png';
       const width = message.width || null;
@@ -789,7 +769,6 @@ if (HTMLWidgets.shinyMode) {
             }
           });
       }, 500);
->>>>>>> 4c6ec81 (Working on updating documentation)
     });
   });
 
@@ -1061,6 +1040,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('setPaintProp', function (message) {
     withMapInstance(message.id, function (el) {
+      console.log('mes', message);
       el.mapInstance.setPaintProperty(message.layerId, message.property, message.value);
     });
   });
