@@ -21,5 +21,4 @@ Allows the data to be styled by the step breaks in the column.
 }
 \examples{
 get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
-
 }

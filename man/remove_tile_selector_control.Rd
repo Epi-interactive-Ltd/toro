@@ -9,12 +9,11 @@ remove_tile_selector_control(proxy, panel_id = NULL)
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{Optional. If provided, removes the tile selector control from the specified control panel.
-If NULL, removes the standalone tile selector control.}
+\item{panel_id}{Optional. If provided, removes the tile selector control from the specified
+control panel. If NULL, removes the standalone tile selector control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove the tile selector control from the map.

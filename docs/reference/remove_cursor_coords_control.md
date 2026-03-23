@@ -23,12 +23,12 @@ remove_cursor_coords_control(proxy, panel_id = NULL)
 
 ## Value
 
-         The map proxy object for chaining.
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # Add to a map
 map() |>
  add_cursor_coords_control()
@@ -43,5 +43,5 @@ map() |>
 # In an observer
 mapProxy("map") |>
  remove_cursor_coords_control(panel_id = "my_panel")
-}
+} # }
 ```

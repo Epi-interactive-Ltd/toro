@@ -21,12 +21,12 @@ remove_control(proxy, control_id)
 
 ## Value
 
-           The map proxy object for chaining.
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # In a Shiny app:
 output$map <- renderMap({
  map() |>
@@ -41,5 +41,5 @@ output$map <- renderMap({
 mapProxy("map") |>
  remove_control("zoom_control") |>
  remove_control("custom_control")
-}
+} # }
 ```

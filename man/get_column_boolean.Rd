@@ -21,5 +21,4 @@ Allows the data to be styled by the group option in the column.
 }
 \examples{
 get_column_boolean("group", "red", "grey")
-
 }

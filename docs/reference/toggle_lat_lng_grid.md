@@ -22,4 +22,40 @@ toggle_lat_lng_grid(proxy, show = TRUE)
 
 ## Value
 
-     The map proxy object for chaining.
+The map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("show_grid", "Show Grid"),
+   actionButton("hide_grid", "Hide Grid")
+ )
+)
+server <- function(input, output, session) {
+
+ output$map <- renderMap({
+   map() |>
+     add_lat_lng_grid()
+  })
+
+  observe({
+    mapProxy("map") |>
+      toggle_lat_lng_grid(show = TRUE)
+  }) |>
+    bindEvent(input$show_grid)
+
+  observe({
+    mapProxy("map") |>
+      toggle_lat_lng_grid(show = FALSE)
+   }) |>
+     bindEvent(input$hide_grid)
+}
+} # }
+```

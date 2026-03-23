@@ -16,9 +16,42 @@ set_tile_layer(map, tiles)
 
 - tiles:
 
-  A character vector of tile layer names. Options include "natgeo",
-  "satellite", "topo", "terrain", "streets", "shaded", "lightgrey".
+  A character vector of tile layer names. Options include values
+  returned from get_tile_options().
 
 ## Value
 
-     The map or map proxy object for chaining.
+The map or map proxy object for chaining.
+
+## See also
+
+get_tile_options
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+
+all_tiles <- get_tile_options()
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   selectInput("tile_layer", "Select Tile Layer", choices = all_tiles)
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map(loadedTiles = all_tiles)
+ })
+
+ observe({
+   mapProxy("map") |>
+     set_tile_layer(tiles = input$tile_layer)
+ }) |>
+   bindEvent(input$tile_layer)
+}
+} # }
+```

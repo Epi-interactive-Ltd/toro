@@ -10,13 +10,40 @@ set_tile_layer(map, tiles)
 \item{map}{The map or map proxy object.}
 
 \item{tiles}{A character vector of tile layer names.
-Options include "natgeo", "satellite", "topo", "terrain",
-"streets", "shaded", "lightgrey".}
+Options include values returned from get_tile_options().}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Set the tile layer for the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(toro)
+
+all_tiles <- get_tile_options()
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   selectInput("tile_layer", "Select Tile Layer", choices = all_tiles)
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map(loadedTiles = all_tiles)
+ })
+
+ observe({
+   mapProxy("map") |>
+     set_tile_layer(tiles = input$tile_layer)
+ }) |>
+   bindEvent(input$tile_layer)
+}
+}
+}
+\seealso{
+get_tile_options
 }

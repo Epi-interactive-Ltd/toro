@@ -23,4 +23,4 @@ remove_layer_selector_control(proxy, panel_id = NULL)
 
 ## Value
 
-         The map proxy object for chaining.
+The map proxy object for chaining.

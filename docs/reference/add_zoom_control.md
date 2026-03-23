@@ -1,11 +1,6 @@
-# Functions related to zoom controls.
+# Functions related to zoom controls. Add a zoom control to the map.
 
-Functions:
-
-- add_zoom_control: Add a zoom control to the map or control panel.
-
-- remove_zoom_control: Remove the zoom control from the map. Add a zoom
-  control to the map.
+Functions related to zoom controls. Add a zoom control to the map.
 
 ## Usage
 
@@ -44,10 +39,23 @@ add_zoom_control(
 
 ## Value
 
-               The map proxy object for chaining.
+The map proxy object for chaining.
 
 ## Note
 
 See [Maplibre NavigationControl
 docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/)
 for more information on available options.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+add_zoom_control(map())
+
+# Inside a control panel
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "View Controls") |>
+ add_zoom_control(panel_id = "my_panel")
+} # }
+```

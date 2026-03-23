@@ -44,14 +44,18 @@ add_custom_control(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  ID of control group to add to (optional).
+
 ## Value
 
-           The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # Add to a map
 map() |>
  add_custom_control(
@@ -83,5 +87,5 @@ map() |>
    panel_id = "my_panel",
    group_id = "custom_controls"
  )
-}
+} # }
 ```

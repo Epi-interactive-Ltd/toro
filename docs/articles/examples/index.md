@@ -42,6 +42,6 @@ Sources are required to add data to your map.
 
 #### [Latitude and Longitude Grid](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/lat-lng-grid.md)
 
-![](../../reference/figures/lat-lng-grid.png)
+![](../../reference/figures/add-lat-lng-grid.png)
 
 ------------------------------------------------------------------------

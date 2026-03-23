@@ -1,29 +1,7 @@
-# Functions relating to layer controls on the map.
+# Functions relating to layer controls on the map. Add a tile selector control to the map or control panel
 
-Functions:
-
-- add_tile_selector_control: Add a tile selector control to the map or
-  control panel.
-
-- remove_tile_selector_control: Remove the tile selector control from
-  the map.
-
-- add_layer_selector_control: Add a layer selector control to the map or
-  control panel.
-
-- remove_layer_selector_control: Remove the layer selector control from
-  the map.
-
-- add_cluster_toggle: Add a cluster toggle control to the map or control
-  panel.
-
-- remove_cluster_toggle: Remove a cluster toggle control from the map.
-
-- add_visibility_toggle: Add a visibility toggle control to the map or
-  control panel.
-
-- remove_visibility_toggle: Remove a visibility toggle control from the
-  map. Add a tile selector control to the map or control panel
+Functions relating to layer controls on the map. Add a tile selector
+control to the map or control panel
 
 ## Usage
 
@@ -74,4 +52,4 @@ add_tile_selector_control(
 
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.

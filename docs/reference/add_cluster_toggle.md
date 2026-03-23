@@ -40,7 +40,8 @@ add_cluster_toggle(
 
 - right_label:
 
-  Label text for the toggle button when clustering is off. Default
+  Label text for the toggle button when clustering is off. Default is
+  "Clustering Off".
 
 - initial_state:
 
@@ -61,4 +62,4 @@ add_cluster_toggle(
 
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.

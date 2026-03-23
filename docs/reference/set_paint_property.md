@@ -29,4 +29,53 @@ set_paint_property(proxy, layer_id, property_name, value)
 
 ## Value
 
-             The map proxy object for chaining.
+The map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(sf)
+library(toro)
+
+data(quakes)
+quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   selectInput(
+     "colour",
+     "Select Tile Layer",
+     choices = c(
+       "red",
+       "orange",
+       "yellow",
+       "green",
+       "blue",
+       "indigo",
+       "violet"
+     )
+   )
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_circle_layer(id = "quakes", source = quakes_data)
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     set_paint_property(
+       layer_id = "quakes",
+       property_name = "circle-color",
+       value = input$colour
+     )
+ }) |>
+   bindEvent(input$colour)
+}
+} # }
+```

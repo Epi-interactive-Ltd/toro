@@ -122,7 +122,7 @@ Functions to update map tiles
 Functions to manipulate the map view
 
 - [`set_zoom()`](https://epi-interactive-ltd.github.io/toro/reference/set_zoom.md)
-  : Utilites for the map related to the view.
+  : Utilites for the map related to the view. Set the map zoom level.
 - [`set_bounds()`](https://epi-interactive-ltd.github.io/toro/reference/set_bounds.md)
   : Set the map bounds.
 
@@ -140,7 +140,8 @@ Functions to get information from map interaction
 Simple map controls
 
 - [`toggle_control()`](https://epi-interactive-ltd.github.io/toro/reference/toggle_control.md)
-  : Utilities for the map related to controls.
+  : Utilities for the map related to controls. Toggle the visibility of
+  a control on the map.
 - [`remove_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_control.md)
   : Remove a control from the map.
 
@@ -160,7 +161,7 @@ Controls for draw/edit workflows
 Controls for map view manipulation
 
 - [`add_zoom_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_zoom_control.md)
-  : Functions related to zoom controls.
+  : Functions related to zoom controls. Add a zoom control to the map.
 - [`remove_zoom_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_zoom_control.md)
   : Remove the zoom control from the map.
 
@@ -169,7 +170,8 @@ Controls for map view manipulation
 Controls for updating map layers
 
 - [`add_tile_selector_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_tile_selector_control.md)
-  : Functions relating to layer controls on the map.
+  : Functions relating to layer controls on the map. Add a tile selector
+  control to the map or control panel
 - [`remove_tile_selector_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_tile_selector_control.md)
   : Remove the tile selector control from the map.
 - [`add_layer_selector_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_layer_selector_control.md)

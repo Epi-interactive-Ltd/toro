@@ -84,6 +84,7 @@ get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 #> 
 #> 
 
+
 get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
 #> $`circle-color`
 #> [1] "red"
@@ -106,6 +107,7 @@ get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_col
 #> $outline_colour
 #> [1] "black"
 #> 
+
 
 # Use with get_column for data-driven styling:
 get_paint_options("fill", list(colour = get_column("color"), opacity = get_column("opacity")))
@@ -133,6 +135,7 @@ get_paint_options("fill", list(colour = get_column("color"), opacity = get_colum
 #> [1] "color"
 #> 
 #> 
+
 
 get_paint_options("fill", list(
    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
@@ -197,6 +200,7 @@ get_paint_options("fill", list(
 #> 
 #> 
 
+
 get_paint_options("fill", list(
    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 ))
@@ -233,6 +237,30 @@ get_paint_options("fill", list(
 #> 
 #> $`fill-outline-color`
 #> [1] "grey"
+#> 
+
+# Provide options outside of the defaults
+get_paint_options("circle", list("circle-blur" = 0.5))
+#> $`circle-color`
+#> [1] "grey"
+#> 
+#> $`circle-opacity`
+#> [1] 1
+#> 
+#> $`circle-radius`
+#> [1] 5
+#> 
+#> $`circle-stroke-color`
+#> [1] "grey"
+#> 
+#> $`circle-stroke-opacity`
+#> [1] 1
+#> 
+#> $`circle-stroke-width`
+#> [1] 1
+#> 
+#> $`circle-blur`
+#> [1] 0.5
 #> 
 
 # Provide options outside of the defaults

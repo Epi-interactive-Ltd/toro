@@ -2,7 +2,8 @@
 % Please edit documentation in R/controls.R
 \name{toggle_control}
 \alias{toggle_control}
-\title{Utilities for the map related to controls.}
+\title{Utilities for the map related to controls.
+Toggle the visibility of a control on the map.}
 \usage{
 toggle_control(proxy, control_id, show = TRUE)
 }
@@ -14,23 +15,14 @@ toggle_control(proxy, control_id, show = TRUE)
 \item{show}{Logical indicating whether to show or hide the control. Default is \code{TRUE}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item toggle_control:                Toggle the visibility of a control on the map.
-\item remove_control:                Remove a control from the map.
-\item add_custom_control:            Add a custom HTML control to the map.
-\item remove_custom_control:         Remove a custom control from the map.
-\item add_cursor_coords_control:     Add a cursor coordinates control to the map.
-\item remove_cursor_coords_control:  Remove the cursor coordinates control from the map.
+Utilities for the map related to controls.
 Toggle the visibility of a control on the map.
 }
-}
 \examples{
-if (interactive()) {
+\dontrun{
 # In a Shiny app:
 output$map <- renderMap({
  map() |>

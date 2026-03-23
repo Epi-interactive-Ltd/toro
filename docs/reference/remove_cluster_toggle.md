@@ -26,4 +26,4 @@ remove_cluster_toggle(proxy, layer_id, panel_id = NULL)
 
 ## Value
 
-           The map proxy object for chaining.
+The map proxy object for chaining.

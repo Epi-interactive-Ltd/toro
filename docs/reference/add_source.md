@@ -35,6 +35,11 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 
 The map or map proxy object for chaining.
 
+## Note
+
+If you add a source directly in an add layer function, the source ID
+will be automatically generated as "source-".
+
 ## Examples
 
 ``` r

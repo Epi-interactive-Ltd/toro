@@ -9,12 +9,11 @@ remove_layer_selector_control(proxy, panel_id = NULL)
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{Optional. If provided, removes the layer selector control from the specified control panel.
-If NULL, removes the standalone layer selector control.}
+\item{panel_id}{Optional. If provided, removes the layer selector control from the specified
+control panel. If NULL, removes the standalone layer selector control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove the layer selector control from the map.

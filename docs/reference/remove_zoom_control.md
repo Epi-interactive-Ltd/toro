@@ -22,4 +22,38 @@ remove_zoom_control(proxy, panel_id = NULL)
 
 ## Value
 
-         The map proxy object for chaining.
+The map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   checkboxInput("has_zoom_controls", "Remove Zoom Controls", value = TRUE)
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_zoom_control()
+ })
+
+ observe({
+   req(input$map_loaded)
+   if (input$has_zoom_controls == TRUE) {
+     mapProxy("map") |>
+       add_zoom_control()
+   } else {
+     mapProxy("map") |>
+       remove_zoom_control()
+   }
+ }) |>
+   bindEvent(input$has_zoom_controls)
+}
+} # }
+```

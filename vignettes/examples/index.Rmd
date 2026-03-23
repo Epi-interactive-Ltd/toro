@@ -51,6 +51,6 @@ Sources are required to add data to your map.
 
 ### [Latitude and Longitude Grid](layers/lat-lng-grid.html)
 
-![](../../man/figures/lat-lng-grid.png)
+![](../../man/figures/add-lat-lng-grid.png)
 
 ---

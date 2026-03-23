@@ -27,6 +27,12 @@ The map or map proxy object for chaining.
 \description{
 Add a FeatureService source to the map.
 }
+\note{
+By default the function appends a query URL to the provided \code{source_url} to retrieve all
+features in GeoJSON format. If you need more control over the query parameters, you can
+provide the full query URL directly in the \code{source_url} argument and set \code{append_query_url}
+to an empty string to prevent appending the default query parameters.
+}
 \examples{
 \dontrun{
  map() |>

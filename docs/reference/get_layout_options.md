@@ -98,6 +98,7 @@ get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 #> [1] "bevel"
 #> 
 
+
 get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
 #> $`icon-allow-overlap`
 #> [1] TRUE
@@ -130,6 +131,7 @@ get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
 #> $`text-size`
 #> [1] 12
 #> 
+
 
 # For horizontal flipping, provide left/right versions of your icon or use rotation fallback
 get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
@@ -166,6 +168,40 @@ get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = T
 #> 
 #> $`icon-flip-horizontal`
 #> [1] TRUE
+#> 
+
+# Provide options outside of the defaults
+get_layout_options(
+ "circle",
+ list(
+   "circle-sort-key" = get_column_step_steps(
+     "elevation",
+     c(3000),
+     c(100, 200)
+   )
+ )
+)
+#> $`circle-sort-key`
+#> $`circle-sort-key`[[1]]
+#> [1] "step"
+#> 
+#> $`circle-sort-key`[[2]]
+#> $`circle-sort-key`[[2]][[1]]
+#> [1] "get"
+#> 
+#> $`circle-sort-key`[[2]][[2]]
+#> [1] "elevation"
+#> 
+#> 
+#> $`circle-sort-key`[[3]]
+#> [1] 100
+#> 
+#> $`circle-sort-key`[[4]]
+#> [1] 3000
+#> 
+#> $`circle-sort-key`[[5]]
+#> [1] 200
+#> 
 #> 
 
 # Provide options outside of the defaults

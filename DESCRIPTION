@@ -8,7 +8,7 @@ Authors@R: c(
 FundedBy: epi group [https://epi.group/]
 Maintainer: Poppy Pakinui <poppy@epi.group>
 Description: Makes using maplibre JS in R easier and with more customisation than current R packages.
-URL: https://github.com/Epi-interactive-Ltd/toro
+URL: https://epi-interactive-ltd.github.io/toro, https://github.com/Epi-interactive-Ltd/toro
 BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
 License: MIT + file LICENSE
 Encoding: UTF-8

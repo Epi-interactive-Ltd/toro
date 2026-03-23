@@ -2,7 +2,8 @@
 % Please edit documentation in R/layer_controls.R
 \name{add_tile_selector_control}
 \alias{add_tile_selector_control}
-\title{Functions relating to layer controls on the map.}
+\title{Functions relating to layer controls on the map.
+Add a tile selector control to the map or control panel}
 \usage{
 add_tile_selector_control(
   map,
@@ -18,7 +19,8 @@ add_tile_selector_control(
 \arguments{
 \item{map}{The map or map proxy object.}
 
-\item{available_tiles}{Vector of available tile options. If NULL, uses all loaded tiles from the map.}
+\item{available_tiles}{Vector of available tile options. If NULL, uses all loaded tiles
+from the map.}
 
 \item{labels}{Named vector of labels for tiles. If NULL, uses tile names directly.}
 
@@ -31,20 +33,9 @@ add_tile_selector_control(
 \item{section_title}{Section title when added to a control panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item add_tile_selector_control:     Add a tile selector control to the map or control panel.
-\item remove_tile_selector_control:  Remove the tile selector control from the map.
-\item add_layer_selector_control:    Add a layer selector control to the map or control panel.
-\item remove_layer_selector_control: Remove the layer selector control from the map.
-\item add_cluster_toggle:            Add a cluster toggle control to the map or control panel.
-\item remove_cluster_toggle:         Remove a cluster toggle control from the map.
-\item add_visibility_toggle:         Add a visibility toggle control to the map or control panel.
-\item remove_visibility_toggle:      Remove a visibility toggle control from the map.
+Functions relating to layer controls on the map.
 Add a tile selector control to the map or control panel
-}
 }

@@ -21,12 +21,12 @@ Source:
 
 Pakinui P (2026). *toro: Interactive and Customisable Maps using the
 Maplibre GL JS Library*. R package version 0.0.5,
-<https://epi-interactive-ltd.github.io/toro/>.
+<https://epi-interactive-ltd.github.io/toro>.
 
     @Manual{,
       title = {toro: Interactive and Customisable Maps using the Maplibre GL JS Library},
       author = {Poppy Pakinui},
       year = {2026},
       note = {R package version 0.0.5},
-      url = {https://epi-interactive-ltd.github.io/toro/},
+      url = {https://epi-interactive-ltd.github.io/toro},
     }

@@ -19,5 +19,4 @@ Allows the column value to be used for styling features in a map layer.
 get_column("opacity")
 get_column("icon")
 # Use in a paint property: list("circle-color" = get_column("color"))
-
 }

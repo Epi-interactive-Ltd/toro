@@ -25,4 +25,6 @@ toggle_clustering(proxy, layer_id, cluster = FALSE)
 
 ## Value
 
-         The map proxy object for chaining.
+The map proxy object for chaining.
+
+## Examples

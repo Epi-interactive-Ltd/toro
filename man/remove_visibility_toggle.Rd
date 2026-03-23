@@ -14,8 +14,7 @@ remove_visibility_toggle(proxy, layer_id, panel_id = NULL)
 \item{panel_id}{Optional. If provided, removes the control from the specified control panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove a visibility toggle control from the map

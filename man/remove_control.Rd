@@ -12,14 +12,13 @@ remove_control(proxy, control_id)
 \item{control_id}{The ID of the control to remove.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove a control from the map.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 # In a Shiny app:
 output$map <- renderMap({
  map() |>

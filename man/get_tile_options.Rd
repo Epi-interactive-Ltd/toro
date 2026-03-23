@@ -12,3 +12,6 @@ A character vector of available tile layer options.
 \description{
 Get available tile layer options.
 }
+\examples{
+all_tiles <- get_tile_options()
+}

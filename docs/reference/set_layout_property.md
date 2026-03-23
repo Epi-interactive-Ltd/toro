@@ -29,4 +29,54 @@ set_layout_property(proxy, layer_id, property_name, value)
 
 ## Value
 
-             The map proxy object for chaining.
+The map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(sf)
+library(toro)
+
+data(quakes)
+quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   selectInput(
+     "text_column",
+     "Select Text Column",
+     choices = c("depth", "mag", "stations")
+   )
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_text_layer(
+       id = "quakes",
+       source = quakes_data,
+       layout = get_layout_options(
+         "text",
+         options = list(
+           text_field = get_column("depth")
+         )
+       )
+     )
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     set_layout_property(
+       layer_id = "quakes",
+       property_name = "text-field",
+       value = get_column(input$text_column)
+     )
+ }) |>
+   bindEvent(input$text_column)
+}
+} # }
+```

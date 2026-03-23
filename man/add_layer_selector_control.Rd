@@ -39,8 +39,7 @@ add_layer_selector_control(
 \item{group_id}{ID of control group to add to (optional).}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{          The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Creates a dropdown selector that allows switching between layers, showing only the
@@ -48,7 +47,7 @@ selected layer while hiding all others. This is useful for comparing different
 data layers or allowing users to choose between mutually exclusive visualizations.
 }
 \examples{
-if (interactive()) {
+\dontrun{
   # Create a map with multiple layers
   map() \%>\%
     add_circle_layer("points", data1, id = "layer1") \%>\%

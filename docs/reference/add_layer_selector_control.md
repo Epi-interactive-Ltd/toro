@@ -68,12 +68,12 @@ add_layer_selector_control(
 
 ## Value
 
-              The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
   # Create a map with multiple layers
   map() %>%
     add_circle_layer("points", data1, id = "layer1") %>%
@@ -83,5 +83,5 @@ if (interactive()) {
       labels = c("layer1" = "Points", "layer2" = "Polygons"),
       default_layer = "layer1"
     )
-}
+} # }
 ```

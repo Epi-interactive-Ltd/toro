@@ -141,6 +141,7 @@ The default options are just a starting point and can be overridden by providing
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bevel"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_layout_options</span><span class="op">(</span><span class="st">"symbol"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>icon_image <span class="op">=</span> <span class="st">"yellow_pin"</span>, icon_size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`icon-allow-overlap`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -173,6 +174,7 @@ The default options are just a starting point and can be overridden by providing
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`text-size`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For horizontal flipping, provide left/right versions of your icon or use rotation fallback</span></span></span>
 <span class="r-in"><span><span class="fu">get_layout_options</span><span class="op">(</span><span class="st">"symbol"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>icon_image <span class="op">=</span> <span class="st">"arrow"</span>, icon_flip_horizontal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -245,6 +247,39 @@ The default options are just a starting point and can be overridden by providing
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Provide options outside of the defaults</span></span></span>
+<span class="r-in"><span><span class="fu">get_layout_options</span><span class="op">(</span></span></span>
+<span class="r-in"><span> <span class="st">"circle"</span>,</span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="st">"circle-sort-key"</span> <span class="op">=</span> <span class="fu"><a href="get_column_step_steps.html">get_column_step_steps</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     <span class="st">"elevation"</span>,</span></span>
+<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[2]][[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[2]][[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "elevation"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-sort-key`[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

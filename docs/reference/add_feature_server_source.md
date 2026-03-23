@@ -36,6 +36,14 @@ add_feature_server_source(
 
 The map or map proxy object for chaining.
 
+## Note
+
+By default the function appends a query URL to the provided `source_url`
+to retrieve all features in GeoJSON format. If you need more control
+over the query parameters, you can provide the full query URL directly
+in the `source_url` argument and set `append_query_url` to an empty
+string to prevent appending the default query parameters.
+
 ## Examples
 
 ``` r

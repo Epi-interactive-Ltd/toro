@@ -3,7 +3,7 @@
 #' Add a source to the map.
 #'
 #' @note If you add a source directly in an add layer function, the source ID will
-#' be automatically generated as "source-[layer-id]".
+#' be automatically generated as "source-<layer-id>".
 #'
 #' @param map The map or map proxy object.
 #' @param source_id The ID for the source.

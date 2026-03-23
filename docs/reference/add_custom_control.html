@@ -101,15 +101,19 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".</p></dd>
 <dt id="arg-section-title">section_title<a class="anchor" aria-label="anchor" href="#arg-section-title"></a></dt>
 <dd><p>Section title when added to a control panel.</p></dd>
 
+
+<dt id="arg-group-id">group_id<a class="anchor" aria-label="anchor" href="#arg-group-id"></a></dt>
+<dd><p>ID of control group to add to (optional).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>       The map or map proxy object <span class="cf">for</span> chaining.</span></code></pre><p></p></div>
+    <p>The map or map proxy object for chaining.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co"># Add to a map</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="fu">add_custom_control</span><span class="op">(</span></span></span>
@@ -141,7 +145,7 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".</p></dd>
 <span class="r-in"><span>   panel_id <span class="op">=</span> <span class="st">"my_panel"</span>,</span></span>
 <span class="r-in"><span>   group_id <span class="op">=</span> <span class="st">"custom_controls"</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

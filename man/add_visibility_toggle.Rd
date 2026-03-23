@@ -26,7 +26,8 @@ add_visibility_toggle(
 
 \item{left_label}{Label text for the toggle button. Default is "Toggle Layer".}
 
-\item{right_label}{Label text for the toggle button when layer is hidden. Default}
+\item{right_label}{Label text for the toggle button when layer is hidden.
+Default is "Layer Hidden".}
 
 \item{initial_state}{Initial visibility state. Default is TRUE.}
 
@@ -37,8 +38,7 @@ add_visibility_toggle(
 \item{section_title}{Section title when added to a control panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Creates a toggle button that can show/hide a specific layer.

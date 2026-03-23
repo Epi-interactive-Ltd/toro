@@ -100,12 +100,12 @@ An object of class `htmlwidget` representing the map.
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 map()
 
 map(loadedTiles = c("natgeo", "streets"))
 
 # Add maxzoom to satellite layer
 map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
-}
+} # }
 ```

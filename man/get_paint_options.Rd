@@ -46,14 +46,18 @@ The default options are just a starting point and can be overridden by providing
 \examples{
 get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 
+
 get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
+
 
 # Use with get_column for data-driven styling:
 get_paint_options("fill", list(colour = get_column("color"), opacity = get_column("opacity")))
 
+
 get_paint_options("fill", list(
    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 ))
+
 
 get_paint_options("fill", list(
    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
@@ -62,6 +66,8 @@ get_paint_options("fill", list(
 # Provide options outside of the defaults
 get_paint_options("circle", list("circle-blur" = 0.5))
 
+# Provide options outside of the defaults
+get_paint_options("circle", list("circle-blur" = 0.5))
 }
 \seealso{
 \code{\link{get_column}}, \code{\link{get_column_group}},

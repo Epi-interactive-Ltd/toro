@@ -1040,7 +1040,6 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('setPaintProp', function (message) {
     withMapInstance(message.id, function (el) {
-      console.log('mes', message);
       el.mapInstance.setPaintProperty(message.layerId, message.property, message.value);
     });
   });

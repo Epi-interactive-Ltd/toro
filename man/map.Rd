@@ -62,7 +62,7 @@ An object of class \code{htmlwidget} representing the map.
 This function creates a map htmlwidget for use in R and Shiny applications.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 map()
 
 map(loadedTiles = c("natgeo", "streets"))

@@ -28,5 +28,4 @@ than a named vector, as the names of the vector will be coerced to strings.
 \examples{
 get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
 get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
-
 }

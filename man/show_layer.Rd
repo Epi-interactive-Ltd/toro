@@ -12,9 +12,47 @@ show_layer(proxy, layer_id)
 \item{layer_id}{The ID of the layer to show.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Show a previously hidden layer on the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(sf)
+library(toro)
+
+data(quakes)
+quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("show_layer", "Show Layer"),
+   actionButton("hide_layer", "Hide Layer")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_circle_layer(
+       id = "quakes",
+       source = quakes_data
+     )
+ })
+
+ observe({
+   mapProxy("map") |>
+     show_layer(layer_id = "quakes")
+ }) |>
+   bindEvent(input$show_layer)
+
+ observe({
+   mapProxy("map") |>
+     hide_layer(layer_id = "quakes")
+ }) |>
+   bindEvent(input$hide_layer)
+}
+}
 }

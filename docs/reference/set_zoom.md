@@ -1,10 +1,6 @@
-# Utilites for the map related to the view.
+# Utilites for the map related to the view. Set the map zoom level.
 
-Functions:
-
-- `set_zoom`: Set the map zoom level.
-
-- `set_bounds`: Set the map bounds. Set the map zoom level.
+Utilites for the map related to the view. Set the map zoom level.
 
 ## Usage
 

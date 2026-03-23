@@ -39,7 +39,8 @@ add_visibility_toggle(
 
 - right_label:
 
-  Label text for the toggle button when layer is hidden. Default
+  Label text for the toggle button when layer is hidden. Default is
+  "Layer Hidden".
 
 - initial_state:
 
@@ -60,4 +61,4 @@ add_visibility_toggle(
 
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.

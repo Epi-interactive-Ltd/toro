@@ -28,16 +28,17 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{ID of control group to add to (optional).}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Add a cursor coordinates control to the map.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 # Add to a map
 map() |>
  add_cursor_coords_control()

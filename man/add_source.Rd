@@ -26,6 +26,10 @@ The map or map proxy object for chaining.
 Utilities for the map related to map sources.
 Add a source to the map.
 }
+\note{
+If you add a source directly in an add layer function, the source ID will
+be automatically generated as "source-\if{html}{\out{<layer-id>}}".
+}
 \examples{
 \dontrun{
  map() |>

@@ -26,7 +26,8 @@ add_cluster_toggle(
 
 \item{left_label}{Label text for the toggle button. Default is "Toggle Clustering".}
 
-\item{right_label}{Label text for the toggle button when clustering is off. Default}
+\item{right_label}{Label text for the toggle button when clustering is off.
+Default is "Clustering Off".}
 
 \item{initial_state}{Initial clustering state. Default is FALSE.}
 
@@ -37,8 +38,7 @@ add_cluster_toggle(
 \item{section_title}{Section title when added to a control panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Creates a toggle button that can enable/disable clustering for a specific layer.

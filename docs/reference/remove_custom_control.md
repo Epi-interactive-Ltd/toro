@@ -21,17 +21,17 @@ remove_custom_control(proxy, control_id, panel_id = NULL)
 
 - panel_id:
 
-  Optional. If provided, removes the custom control from the specified
-  control panel. If NULL, removes the standalone custom control.
+  Optional. If provided, removes the control from the specified control
+  panel. If NULL, removes the standalone custom control.
 
 ## Value
 
-           The map proxy object for chaining.
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # Add to a map
 map() |>
  add_custom_control(
@@ -53,5 +53,5 @@ map() |>
 # In an observer
 mapProxy("map") |>
  remove_custom_control("custom_control", panel_id = "my_panel")
-}
+} # }
 ```

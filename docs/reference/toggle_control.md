@@ -1,20 +1,7 @@
-# Utilities for the map related to controls.
+# Utilities for the map related to controls. Toggle the visibility of a control on the map.
 
-Functions:
-
-- toggle_control: Toggle the visibility of a control on the map.
-
-- remove_control: Remove a control from the map.
-
-- add_custom_control: Add a custom HTML control to the map.
-
-- remove_custom_control: Remove a custom control from the map.
-
-- add_cursor_coords_control: Add a cursor coordinates control to the
-  map.
-
-- remove_cursor_coords_control: Remove the cursor coordinates control
-  from the map. Toggle the visibility of a control on the map.
+Utilities for the map related to controls. Toggle the visibility of a
+control on the map.
 
 ## Usage
 
@@ -40,12 +27,12 @@ toggle_control(proxy, control_id, show = TRUE)
 
 ## Value
 
-           The map proxy object for chaining.
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # In a Shiny app:
 output$map <- renderMap({
  map() |>
@@ -60,5 +47,5 @@ output$map <- renderMap({
 mapProxy("map") |>
  toggle_control("zoom_control", show = FALSE) |>
  toggle_control("custom_control", show = FALSE)
-}
+} # }
 ```

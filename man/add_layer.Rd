@@ -68,3 +68,23 @@ GeoJSON source and added to the map automatically. The Id for the source is gene
 appending the layer Id to \verb{source-}. For example, if you add a layer with \code{id = "my_layer"}
 and \code{source} is a sf object, the source is added to the map with the ID \code{"source-my_layer"}.
 }
+\examples{
+\dontrun{
+# Load libraries
+library(toro)
+library(spData)
+library(sf)
+
+nz_data <- spData::nz |>
+  rename(geometry = geom) |>
+  sf::st_transform(4326)
+
+map() |>
+ add_layer(
+   id = "nz_regions",
+   type = "fill",
+   source = nz_data,
+   hover_column = "Name"
+ )
+}
+}

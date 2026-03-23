@@ -82,6 +82,7 @@ or a single filter condition.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Filter to only show rows where the "layer_id" column is equal to "forests"</span></span></span>
+<span class="r-in"><span><span class="co"># Filter to only show rows where the "layer_id" column is equal to "forests"</span></span></span>
 <span class="r-in"><span><span class="fu">get_layer_filter</span><span class="op">(</span><span class="st">"layer_id == forests"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "=="</span>
@@ -92,6 +93,9 @@ or a single filter condition.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "forests"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"</span></span></span>
+<span class="r-in"><span><span class="co"># column is equal to "Confirmed"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"</span></span></span>
 <span class="r-in"><span><span class="co"># column is equal to "Confirmed"</span></span></span>
@@ -110,7 +114,6 @@ or a single filter condition.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sites"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
