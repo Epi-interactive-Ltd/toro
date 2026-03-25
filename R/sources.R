@@ -11,6 +11,13 @@
 #' @param type The type of the source. Default is `"geojson"`.
 #'    Other options include `"vector"` or `"raster"`.
 #' @param cluster Whether to enable clustering for this source. Default is `FALSE`.
+#' @param ... Additional arguments to in pass directly to the JS adSource function. Documentation
+#'  for this can be found on the
+#'  [Maplibre GL JS docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
+#'  \itemize{
+#'    \item id: Alternative to `source_id` for backward compatibility. If both `source_id` and
+#'      `id` are provided, `source_id` will take precedence.
+#'  }
 #' @return The map or map proxy object for chaining.
 #' @export
 #'
@@ -31,7 +38,7 @@ add_source <- function(
   cluster = FALSE,
   ...
 ) {
-  if (type == "geojson" && !"geojson" %in% class(data)) {
+  if (type == "geojson" && !inherits(data, "geojson")) {
     data <- geojsonsf::sf_geojson(data)
   }
   source_options <- list(
@@ -84,11 +91,14 @@ add_source <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
+#' service_url <- paste0(
+#'  "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/",
+#'  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"
+#' )
+#'
 #'  map() |>
-#'    add_feature_server_source(
-#'      "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
-#'      "eez"
-#'    ) |>
+#'    add_feature_server_source(service_url, "eez") |>
 #'    add_line_layer(id = "eez_lines", source = "eez")
 #' }
 add_feature_server_source <- function(
@@ -123,7 +133,6 @@ add_feature_server_source <- function(
 #'
 #' @param map A toro map object or a map proxy object.
 #' @param url The URL of the ArcGIS Image Server.
-#' @param source_id A unique identifier for the source.
 #' @param ... Additional parameters for the Image Server source.
 #' @return The updated map object.
 #' @keywords internal
@@ -163,7 +172,6 @@ add_tiles_from_map_server <- function(
 #'
 #' @param map A toro map object or a map proxy object.
 #' @param url The URL of the ArcGIS Image Server.
-#' @param source_id A unique identifier for the source.
 #' @param ... Additional parameters for the Image Server source.
 #' @return The updated map object.
 #' @keywords internal
@@ -206,10 +214,16 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 #'
 #' @examples
 #' \dontrun{
+#'
+#' image_url <- paste0(
+#'  "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/",
+#'  "Leaf_icon.png/600px-Leaf_icon.png"
+#' )
+#'
 #'  map() |>
 #'    add_image(
 #'      image_id = "leaf-icon",
-#'      image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Leaf_icon.png/600px-Leaf_icon.png"
+#'      image_url = image_url
 #'    ) |>
 #'    add_symbol_layer(
 #'      id = "leaf_symbols",
@@ -302,7 +316,7 @@ add_image <- function(map, image_id, image_url) {
 #' }
 #' }
 set_source_data <- function(proxy, source_id, data, type = "geojson") {
-  if (type == "geojson" && !"geojson" %in% class(data)) {
+  if (type == "geojson" && !inherits(data, "geojson")) {
     data <- geojsonsf::sf_geojson(data)
   }
   proxy$session$sendCustomMessage(

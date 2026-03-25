@@ -26,7 +26,7 @@ library(sf)
 library(toro)
 
 data(quakes)
-quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
 
 ui <- fluidPage(
  tagList(
@@ -38,7 +38,7 @@ server <- function(input, output, session) {
  output$map <- renderMap({
    map() |>
      add_symbol_layer(
-       id = "quakes"
+       id = "quakes",
        source = quakes_data,
        can_cluster = TRUE
      )

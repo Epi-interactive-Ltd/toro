@@ -1,7 +1,7 @@
 # Utilities for the map related to exports. Export map as an image (non-Shiny context).
 
 This function exports a map widget as an image file using webshot2 or
-mapshot. Works in non-Shiny contexts like RMarkdown, scripts, or
+mapview. Works in non-Shiny contexts like RMarkdown, scripts, or
 interactive sessions.
 
 ## Usage
@@ -47,7 +47,8 @@ export_map_image(
 
 - ...:
 
-  Additional arguments passed to webshot2::webshot() or mapshot().
+  Additional arguments passed to webshot2::webshot() or
+  mapview::mapshot().
 
 ## Value
 

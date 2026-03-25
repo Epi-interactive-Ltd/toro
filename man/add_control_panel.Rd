@@ -2,7 +2,8 @@
 % Please edit documentation in R/control_panel.R
 \name{add_control_panel}
 \alias{add_control_panel}
-\title{Functions to manage control panel elements in a map.}
+\title{Functions to manage control panel elements in a map.
+Add a control panel to the map}
 \usage{
 add_control_panel(
   map,
@@ -29,29 +30,20 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 
 \item{collapsed}{Initial collapsed state. Default is FALSE.}
 
+\item{direction}{Layout direction for controls within the panel. Either "row" or "column".
+Default is "column".}
+
 \item{custom_controls}{List of custom controls to add initially. Each should be a list with
 elements: html, id (optional), title (optional).}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item add_control_panel:         Create a control panel on the map.
-\item add_control_group:         Create a collapsible group within a control panel.
-\item remove_control_group:      Remove a control group from a control panel.
-\item add_control_to_panel:      Add a control to an existing control panel.
-\item remove_control_from_panel: Remove a control from a control panel.
-Add a control panel to the map
-}
-}
-\details{
 Creates a flexible control panel that can contain multiple controls.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 map() |>
  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
  add_cursor_coords_control(panel_id = "my_panel") |>

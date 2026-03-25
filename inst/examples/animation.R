@@ -29,7 +29,9 @@ get_route_points <- function() {
   route_points <- sf::st_sf(
     id = paste0("pt", seq_len(nrow(coords))),
     date = date_seq,
-    geometry = sf::st_sfc(lapply(seq_len(nrow(coords)), function(i) sf::st_point(coords[i, ]))),
+    geometry = sf::st_sfc(lapply(seq_len(nrow(coords)), function(i) {
+      sf::st_point(coords[i, ])
+    })),
     crs = 4326
   )
   route_points$hover_text <- paste("Point", route_points$id)
@@ -69,7 +71,10 @@ g_routes <- list(
         "line",
         list(colour = "red", line_width = 2, line_dash = c(1, 2))
       ),
-      visitedPoints = get_paint_options("circle", list(colour = "yellow", circle_radius = 5)),
+      visitedPoints = get_paint_options(
+        "circle",
+        list(colour = "yellow", circle_radius = 5)
+      ),
       steps = 500,
       dropVisited = TRUE,
       showTimelineControls = TRUE,
@@ -95,7 +100,11 @@ ui <- fluidPage(
   selectInput(
     "route",
     "Select route",
-    choices = c("Route 1" = "route1", "Route 2" = "route2", "Route 3" = "route3")
+    choices = c(
+      "Route 1" = "route1",
+      "Route 2" = "route2",
+      "Route 3" = "route3"
+    )
   ),
   actionButton("add_route", "Add route"),
   actionButton("start_route", "Start route"),
@@ -127,28 +136,28 @@ server <- function(input, output, session) {
         g_routes[[input$route]]$points,
         settings = g_routes[[input$route]]$settings
       )
-  }) %>%
+  }) |>
     bindEvent(input$add_route)
 
   observe({
     req(!is.null(input$map_loaded), !is.null(input$route))
     toro::mapProxy("map") |>
       play_route(input$route)
-  }) %>%
+  }) |>
     bindEvent(input$start_route)
 
   observe({
     req(!is.null(input$map_loaded), !is.null(input$route))
     toro::mapProxy("map") |>
       pause_route(input$route)
-  }) %>%
+  }) |>
     bindEvent(input$pause_route)
 
   observe({
     req(!is.null(input$map_loaded), !is.null(input$route))
     toro::mapProxy("map") |>
       remove_route(input$route)
-  }) %>%
+  }) |>
     bindEvent(input$remove_route)
 }
 

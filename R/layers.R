@@ -73,7 +73,7 @@ add_layer <- function(
   }
 
   # Need source to be a GeoJSON
-  if (any(c("sf", "data.frame", "tbl") %in% class(source))) {
+  if (inherits(source, c("sf", "data.frame", "tbl"))) {
     if (length(colnames(source)) == 1) {
       # There is only a geometry column.
       # To convert to geojson, we need to add a dummy column.
@@ -541,7 +541,7 @@ set_tile_layer <- function(map, tiles) {
 #' library(toro)
 #'
 #' data(quakes)
-#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#' quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
 #'
 #' ui <- fluidPage(
 #'  tagList(
@@ -553,7 +553,7 @@ set_tile_layer <- function(map, tiles) {
 #'  output$map <- renderMap({
 #'    map() |>
 #'      add_symbol_layer(
-#'        id = "quakes"
+#'        id = "quakes",
 #'        source = quakes_data,
 #'        can_cluster = TRUE
 #'      )

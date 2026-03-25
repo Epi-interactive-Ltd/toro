@@ -30,10 +30,16 @@ The map or map proxy object for chaining.
 
 ``` r
 if (FALSE) { # \dontrun{
+
+image_url <- paste0(
+ "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/",
+ "Leaf_icon.png/600px-Leaf_icon.png"
+)
+
  map() |>
    add_image(
      image_id = "leaf-icon",
-     image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Leaf_icon.png/600px-Leaf_icon.png"
+     image_url = image_url
    ) |>
    add_symbol_layer(
      id = "leaf_symbols",

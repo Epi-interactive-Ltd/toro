@@ -165,8 +165,6 @@ Add functions:
 
 - [`add_control_group()`](https://epi-interactive-ltd.github.io/toro/reference/add_control_group.md)
 
-- [`add_control_to_panel()`](https://epi-interactive-ltd.github.io/toro/reference/add_control_to_panel.md)
-
 - [`add_draw_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_draw_control.md)
 
 Remove functions:
@@ -178,8 +176,6 @@ Remove functions:
 - [`remove_cursor_coords_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_cursor_coords_control.md)
 
 - [`remove_control_group()`](https://epi-interactive-ltd.github.io/toro/reference/remove_control_group.md)
-
-- [`remove_control_from_panel()`](https://epi-interactive-ltd.github.io/toro/reference/remove_control_from_panel.md)
 
 - [`remove_draw_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_draw_control.md)
 

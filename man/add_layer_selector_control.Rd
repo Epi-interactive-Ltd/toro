@@ -48,14 +48,31 @@ data layers or allowing users to choose between mutually exclusive visualization
 }
 \examples{
 \dontrun{
-  # Create a map with multiple layers
-  map() \%>\%
-    add_circle_layer("points", data1, id = "layer1") \%>\%
-    add_fill_layer("polygons", data2, id = "layer2") \%>\%
-    add_layer_selector_control(
-      layer_ids = c("layer1", "layer2"),
-      labels = c("layer1" = "Points", "layer2" = "Polygons"),
-      default_layer = "layer1"
-    )
+library(shiny)
+library(toro)
+library(spData)
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- quakes |>
+ sf::st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+nz_data <- spData::nz_height |>
+  sf::st_transform(4326)
+
+map() |>
+ add_circle_layer(
+   id = "quakes",
+   source = quakes_data
+ ) |>
+ add_circle_layer(
+   id = "nz_elevation",
+   source = nz_data
+ ) |>
+ add_layer_selector_control(
+   layer_ids = c("quakes", "nz_elevation"),
+   labels = c("quakes" = "Earthquakes", "nz_elevation" = "NZ Elevation")
+ )
 }
 }

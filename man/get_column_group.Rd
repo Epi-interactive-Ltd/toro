@@ -22,10 +22,10 @@ List containing the paint or layout option to be set.
 Allows the data to be styled by the group option in the column.
 }
 \note{
-If using numbers as the group values, then you need to use \code{setNames} rather
+If using numbers as the group values, then you need to use \code{stats::setNames} rather
 than a named vector, as the names of the vector will be coerced to strings.
 }
 \examples{
 get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
-get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
+get_column_group("opacity", stats::setNames(c(0.3, 0.5), c("A", "B")), 0.6)
 }

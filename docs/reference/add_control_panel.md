@@ -1,17 +1,6 @@
-# Functions to manage control panel elements in a map.
+# Functions to manage control panel elements in a map. Add a control panel to the map
 
-Functions:
-
-- add_control_panel: Create a control panel on the map.
-
-- add_control_group: Create a collapsible group within a control panel.
-
-- remove_control_group: Remove a control group from a control panel.
-
-- add_control_to_panel: Add a control to an existing control panel.
-
-- remove_control_from_panel: Remove a control from a control panel. Add
-  a control panel to the map
+Creates a flexible control panel that can contain multiple controls.
 
 ## Usage
 
@@ -56,6 +45,11 @@ add_control_panel(
 
   Initial collapsed state. Default is FALSE.
 
+- direction:
+
+  Layout direction for controls within the panel. Either "row" or
+  "column". Default is "column".
+
 - custom_controls:
 
   List of custom controls to add initially. Each should be a list with
@@ -63,16 +57,12 @@ add_control_panel(
 
 ## Value
 
-             The map or map proxy object for chaining.
-
-## Details
-
-Creates a flexible control panel that can contain multiple controls.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 map() |>
  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
  add_cursor_coords_control(panel_id = "my_panel") |>
@@ -88,5 +78,5 @@ map() |>
    direction = "row"
  ) |>
  add_cursor_coords_control(panel_id = "my_panel", section_title = "Cursor Coordinates")
-}
+} # }
 ```

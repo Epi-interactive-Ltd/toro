@@ -24,3 +24,34 @@ remove_tile_selector_control(proxy, panel_id = NULL)
 ## Value
 
 The map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+
+all_tiles <- get_tile_options()
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("remove_control", "Remove tile selector control")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map(loadedTiles = all_tiles) |>
+     add_tile_selector_control(available_tiles = all_tiles)
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     remove_tile_selector_control()
+ }) |>
+   bindEvent(input$remove_control)
+}
+} # }
+```

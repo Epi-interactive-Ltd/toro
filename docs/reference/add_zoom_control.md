@@ -37,6 +37,10 @@ add_zoom_control(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  Optional ID of the group to add the control to within a panel.
+
 ## Value
 
 The map proxy object for chaining.

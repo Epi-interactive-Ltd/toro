@@ -86,7 +86,6 @@ server <- function(input, output, session) {
       ),
       spinnerWhileBusy = TRUE # Have a secondary loader for when shiny is busy
     ) |>
-
       set_zoom(3) |>
       add_feature_server_source(
         "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
@@ -143,7 +142,7 @@ server <- function(input, output, session) {
         value = toro::get_column_step_steps(
           column_name = "mag",
           breaks = c(4, 5, 6),
-          colours = c("black", input$small, input$med, input$large)
+          values = c("black", input$small, input$med, input$large)
         )
       )
   }) |>
@@ -158,7 +157,7 @@ server <- function(input, output, session) {
         property_name = "fill-opacity",
         value = toro::get_column_group(
           "Name",
-          setNames(0.6, input$target_region),
+          stats::setNames(0.6, input$target_region),
           0.3
         )
       )

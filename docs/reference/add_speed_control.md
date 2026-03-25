@@ -49,14 +49,18 @@ add_speed_control(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  Optional ID of the group to add the control to within a panel.
+
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # Add to a map (no dates specified)
 map() |>
  add_speed_control()
@@ -86,5 +90,5 @@ map() |>
    panel_id = "my_panel",
    group_id = "animation_controls"
  )
-}
+} # }
 ```

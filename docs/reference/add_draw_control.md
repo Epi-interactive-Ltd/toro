@@ -1,13 +1,6 @@
-# Functions related to the draw control.
+# Functions related to the draw control. Add a draw control to the map
 
-Functions:
-
-- add_draw_control: Add a draw control to the map.
-
-- remove_draw_control: Remove the draw control from the map.
-
-- delete_drawn_shape: Delete a drawn shape from the map. Add a draw
-  control to the map
+Functions related to the draw control. Add a draw control to the map
 
 ## Usage
 
@@ -67,6 +60,19 @@ add_draw_control(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  Optional group ID for grouping controls within a panel.
+
 ## Value
 
-               The map or map proxy object for chaining.
+The map or map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+map() |>
+ add_draw_control()
+} # }
+```

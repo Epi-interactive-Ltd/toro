@@ -31,7 +31,8 @@ add_visibility_toggle(
 
 - control_id:
 
-  ID for the control. If NULL, defaults to "visibility-toggle-layer_id".
+  ID for the control. If NULL, defaults to
+  "visibility-toggle-\<layer_id\>".
 
 - left_label:
 
@@ -59,6 +60,32 @@ add_visibility_toggle(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  ID of control group to add to (optional).
+
 ## Value
 
 The map or map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- quakes |>
+ sf::st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+map() |>
+ add_circle_layer(
+   id = "quakes",
+   source = quakes_data
+ ) |>
+ add_visibility_toggle(layer_id = "quakes")
+} # }
+```

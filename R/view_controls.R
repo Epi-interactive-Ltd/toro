@@ -10,6 +10,7 @@
 #' @param control_options Additional options for the zoom control. Default is an empty list.
 #' @param panel_id ID of control panel to add to (optional).
 #' @param section_title Section title when added to a control panel.
+#' @param group_id Optional ID of the group to add the control to within a panel.
 #' @return The map proxy object for chaining.
 #' @export
 #'

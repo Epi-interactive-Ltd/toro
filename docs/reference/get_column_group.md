@@ -30,9 +30,9 @@ List containing the paint or layout option to be set.
 
 ## Note
 
-If using numbers as the group values, then you need to use `setNames`
-rather than a named vector, as the names of the vector will be coerced
-to strings.
+If using numbers as the group values, then you need to use
+[`stats::setNames`](https://rdrr.io/r/stats/setNames.html) rather than a
+named vector, as the names of the vector will be coerced to strings.
 
 ## Examples
 
@@ -64,7 +64,7 @@ get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
 #> [[7]]
 #> [1] "grey"
 #> 
-get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
+get_column_group("opacity", stats::setNames(c(0.3, 0.5), c("A", "B")), 0.6)
 #> [[1]]
 #> [1] "match"
 #> 

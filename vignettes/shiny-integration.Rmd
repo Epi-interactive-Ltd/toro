@@ -12,7 +12,8 @@ editor: visual
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/"
 )
 ```
 
@@ -182,8 +183,6 @@ Add functions:
 
 - `add_control_group()`
 
-- `add_control_to_panel()`
-
 - `add_draw_control()`
 
 
@@ -196,8 +195,6 @@ Remove functions:
 - `remove_cursor_coords_control()`
 
 - `remove_control_group()`
-
-- `remove_control_from_panel()`
 
 - `remove_draw_control()`
 

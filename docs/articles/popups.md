@@ -1,7 +1,5 @@
 # popups
 
-## Popups
-
 When adding a layer you can include for the ability for that layer to
 have popups.
 

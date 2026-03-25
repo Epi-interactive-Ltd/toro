@@ -24,6 +24,8 @@ add_zoom_control(
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
 The map proxy object for chaining.

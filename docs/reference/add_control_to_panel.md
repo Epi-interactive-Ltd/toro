@@ -1,6 +1,6 @@
-# Add a control to an existing control panel
+# Add a control to an existing control panel.
 
-Add a control to an existing control panel
+Used by other toro control functions to add controls to a panel.
 
 ## Usage
 
@@ -43,4 +43,4 @@ add_control_to_panel(
 
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.

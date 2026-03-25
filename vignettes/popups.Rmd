@@ -10,12 +10,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/"
 )
 library(toro)
 ```
-
-## Popups
 
 When adding a layer you can include for the ability for that layer to have popups.
 

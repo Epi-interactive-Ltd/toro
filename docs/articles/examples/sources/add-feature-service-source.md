@@ -26,9 +26,15 @@ appended to the URL to retrieve the data in GeoJSON format.
 
 library(toro)
 
+service_url <- paste0(
+  "https://services1.arcgis.com/",
+  "VwarAUbcaX64Jhub/arcgis/rest/services/",
+  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"
+)
+
 map() |>
   add_feature_server_source(
-    "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
+    service_url,
     "eez"
   ) |>
   add_line_layer(id = "eez_lines", source = "eez")
@@ -45,11 +51,20 @@ query parameters.
 
 library(toro)
 
+# We supply the full query URL here, so we set append_query_url to an empty string to
+# avoid appending the default query parameters.
+service_url <- paste0(
+  "https://services1.arcgis.com/",
+  "AYGZtmUtpARUKBlB/arcgis/rest/services/",
+  "Te_Reo_M%C4%81ori_Place_Names/FeatureServer/",
+  "4/query?where=1=1&outFields=*&f=geojson"
+)
+
 map() |>
   add_feature_server_source(
-    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/4/query?where=1=1&outFields=*&f=geojson",
+    service_url,
     "maori_awa_data",
-    append_query_url = "" # We supply the full query URL here, so we set this to an empty string to avoid appending the default query parameters.
+    append_query_url = ""
   ) |>
   add_line_layer(
     id = "awa_lines",

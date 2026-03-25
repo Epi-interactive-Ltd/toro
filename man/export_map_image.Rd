@@ -28,14 +28,14 @@ export_map_image(
 
 \item{zoom}{The zoom factor for the capture. Default is 1.}
 
-\item{...}{Additional arguments passed to webshot2::webshot() or mapshot().}
+\item{...}{Additional arguments passed to webshot2::webshot() or mapview::mapshot().}
 }
 \value{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{    The file path of the saved image (invisibly).
 }\if{html}{\out{</div>}}
 }
 \description{
-This function exports a map widget as an image file using webshot2 or mapshot.
+This function exports a map widget as an image file using webshot2 or mapview.
 Works in non-Shiny contexts like RMarkdown, scripts, or interactive sessions.
 }
 \examples{

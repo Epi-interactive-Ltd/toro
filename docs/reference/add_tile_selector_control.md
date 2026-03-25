@@ -50,6 +50,21 @@ add_tile_selector_control(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  ID of control group to add to (optional).
+
 ## Value
 
 The map or map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+all_tiles <- get_tile_options()
+
+map(loadedTiles = all_tiles) |>
+ add_tile_selector_control(available_tiles = all_tiles)
+} # }
+```

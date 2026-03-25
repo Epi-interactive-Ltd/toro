@@ -1,16 +1,7 @@
-# Functions related to animation controls.
+# Functions related to animation controls. Add a timeline control to the map or control panel
 
-Functions:
-
-- add_timeline_control: Add a timeline control to the map or control
-  panel.
-
-- remove_timeline_control: Remove the timeline control from the map.
-
-- add_speed_control: Add a speed control to the map or control panel.
-
-- remove_speed_control: Remove the speed control from the map. Add a
-  timeline control to the map or control panel
+Functions related to animation controls. Add a timeline control to the
+map or control panel
 
 ## Usage
 
@@ -58,14 +49,18 @@ add_timeline_control(
 
   Section title when added to a control panel.
 
+- group_id:
+
+  Optional ID of the group to add the control to within a panel.
+
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 # Add to a map (no dates specified)
 map() |>
  add_timeline_control()
@@ -100,5 +95,5 @@ map() |>
    panel_id = "my_panel",
    group_id = "animation_controls"
  )
-}
+} # }
 ```

@@ -1,7 +1,5 @@
 # map-tiles
 
-## Map Tiles
-
 You can find the tile options by using
 [`get_tile_options()`](https://epi-interactive-ltd.github.io/toro/reference/get_tile_options.md).
 

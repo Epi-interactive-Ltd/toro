@@ -31,6 +31,8 @@ from the map.}
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{ID of control group to add to (optional).}
 }
 \value{
 The map or map proxy object for chaining.
@@ -38,4 +40,12 @@ The map or map proxy object for chaining.
 \description{
 Functions relating to layer controls on the map.
 Add a tile selector control to the map or control panel
+}
+\examples{
+\dontrun{
+all_tiles <- get_tile_options()
+
+map(loadedTiles = all_tiles) |>
+ add_tile_selector_control(available_tiles = all_tiles)
+}
 }

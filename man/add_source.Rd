@@ -18,6 +18,14 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 Other options include \code{"vector"} or \code{"raster"}.}
 
 \item{cluster}{Whether to enable clustering for this source. Default is \code{FALSE}.}
+
+\item{...}{Additional arguments to in pass directly to the JS adSource function. Documentation
+for this can be found on the
+\href{https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource}{Maplibre GL JS docs}.
+\itemize{
+\item id: Alternative to \code{source_id} for backward compatibility. If both \code{source_id} and
+\code{id} are provided, \code{source_id} will take precedence.
+}}
 }
 \value{
 The map or map proxy object for chaining.

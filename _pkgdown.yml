@@ -1,8 +1,14 @@
 url: https://epi-interactive-ltd.github.io/toro/
+
 template:
   bootstrap: 5
+  light-switch: true
+  css:
+    - extras.css
 
-assets: vignettes/images
+assets:
+  - pkgdown/assets
+  - vignettes/images
 
 footer:
   structure:
@@ -192,7 +198,6 @@ reference:
       - add_control_panel
       - add_control_group
       - remove_control_group
-      - add_control_to_panel
       - remove_control_from_panel
   - title: 'Shiny Integration'
     desc: 'Functions to get information from map interaction'

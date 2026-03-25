@@ -44,12 +44,12 @@ add_control_group(
 
 ## Value
 
-             The map or map proxy object for chaining.
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (interactive()) {
+if (FALSE) { # \dontrun{
 map() |>
  add_control_panel(panel_id = "my_panel", direction = "row") |>
  add_control_group(
@@ -75,5 +75,5 @@ map() |>
    direction = "row"
  ) |>
  add_cursor_coords_control(panel_id = "my_panel", section_title = "Cursor Coordinates")
-}
+} # }
 ```

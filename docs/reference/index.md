@@ -129,7 +129,7 @@ Simple map controls
 Controls for draw/edit workflows
 
 - [`add_draw_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_draw_control.md)
-  : Functions related to the draw control.
+  : Functions related to the draw control. Add a draw control to the map
 - [`remove_draw_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_draw_control.md)
   : Remove the draw control from the map.
 - [`delete_drawn_shape()`](https://epi-interactive-ltd.github.io/toro/reference/delete_drawn_shape.md)
@@ -179,7 +179,8 @@ Controls for performing map animations
 - [`remove_route()`](https://epi-interactive-ltd.github.io/toro/reference/remove_route.md)
   : Remove an animation route from a toro map.
 - [`add_timeline_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_timeline_control.md)
-  : Functions related to animation controls.
+  : Functions related to animation controls. Add a timeline control to
+  the map or control panel
 - [`remove_timeline_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_timeline_control.md)
   : Remove the timeline control from the map.
 - [`add_speed_control()`](https://epi-interactive-ltd.github.io/toro/reference/add_speed_control.md)
@@ -207,13 +208,12 @@ Additional interactive controls
 Functions to add/edit control panels for map interaction
 
 - [`add_control_panel()`](https://epi-interactive-ltd.github.io/toro/reference/add_control_panel.md)
-  : Functions to manage control panel elements in a map.
+  : Functions to manage control panel elements in a map. Add a control
+  panel to the map
 - [`add_control_group()`](https://epi-interactive-ltd.github.io/toro/reference/add_control_group.md)
   : Add a control group to a control panel
 - [`remove_control_group()`](https://epi-interactive-ltd.github.io/toro/reference/remove_control_group.md)
   : Remove a control group from a control panel
-- [`add_control_to_panel()`](https://epi-interactive-ltd.github.io/toro/reference/add_control_to_panel.md)
-  : Add a control to an existing control panel
 - [`remove_control_from_panel()`](https://epi-interactive-ltd.github.io/toro/reference/remove_control_from_panel.md)
   : Remove a control from a control panel.
 

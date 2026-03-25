@@ -22,4 +22,33 @@ remove_draw_control(proxy, panel_id = NULL)
 
 ## Value
 
-         The map proxy object for chaining.
+The map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("remove_draw_control", "Remove draw control")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+    add_draw_control()
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     remove_draw_control()
+ }) |>
+   bindEvent(input$remove_draw_control)
+}
+} # }
+```

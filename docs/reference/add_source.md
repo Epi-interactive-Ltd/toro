@@ -31,6 +31,15 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 
   Whether to enable clustering for this source. Default is `FALSE`.
 
+- ...:
+
+  Additional arguments to in pass directly to the JS adSource function.
+  Documentation for this can be found on the [Maplibre GL JS
+  docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
+
+  - id: Alternative to `source_id` for backward compatibility. If both
+    `source_id` and `id` are provided, `source_id` will take precedence.
+
 ## Value
 
 The map or map proxy object for chaining.

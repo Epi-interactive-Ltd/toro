@@ -1,6 +1,6 @@
 # Remove a control from a control panel.
 
-Remove a control from a control panel.
+Used by other toro control functions to remove controls from a panel.
 
 ## Usage
 
@@ -25,4 +25,4 @@ remove_control_from_panel(proxy, panel_id, control_id)
 
 ## Value
 
-           The map proxy object for chaining.
+The map proxy object for chaining.

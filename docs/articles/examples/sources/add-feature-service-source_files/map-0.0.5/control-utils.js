@@ -2242,7 +2242,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     addHtmlToPanel(widgetInstance, panelId, html, options.panelTitle, null, groupId);
   } else {
     // Add as standalone control
-    addCustomControl(widgetInstance, selectControlId, html, options.position || 'top-right');
+    addCustomControl(map, selectControlId, html, options.position || 'top-right');
   }
 
   // Ensure the control is clickable by setting pointer events

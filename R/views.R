@@ -53,7 +53,7 @@ set_zoom <- function(map, zoom) {
 #'  set_bounds(bounds = nz_data)
 #' }
 set_bounds <- function(map, bounds, padding = 50, max_zoom = map$maxZoom) {
-  if ("sf" %in% class(bounds)) {
+  if (inherits(bounds, "sf")) {
     # Convert sf object to bounding box
     bbox <- sf::st_bbox(bounds)
     bounds <- list(

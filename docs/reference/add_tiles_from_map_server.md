@@ -22,10 +22,6 @@ add_tiles_from_map_server(map, url, tile_id, as_image_layer = FALSE, ...)
 
   Additional parameters for the Image Server source.
 
-- source_id:
-
-  A unique identifier for the source.
-
 ## Value
 
 The updated map object.

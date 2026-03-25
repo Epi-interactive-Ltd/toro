@@ -6,30 +6,9 @@
 
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 
 data(quakes)
 quakes_data <- quakes |>
-  mutate(
-    description = paste(
-      "<div class='map-popup'>Location:",
-      lat,
-      ",",
-      long,
-      "<br>",
-      "Magnitude:",
-      mag,
-      "</div>"
-    )
-  ) |>
   st_as_sf(coords = c("long", "lat"), crs = 4326)
 ```
 
@@ -59,7 +38,7 @@ map() |>
   add_circle_layer(
     id = "quakes_circles",
     source = "quakes_data",
-    hover_column = "description"
+    hover_column = "depth"
   )
 ```
 
@@ -83,6 +62,6 @@ map() |>
   add_circle_layer(
     id = "quakes_circles",
     source = quakes_data,
-    hover_column = "description"
+    hover_column = "depth"
   )
 ```

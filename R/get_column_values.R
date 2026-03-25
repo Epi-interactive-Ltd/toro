@@ -37,7 +37,7 @@ get_column_boolean <- function(column_name, true_value, false_value) {
 #'
 #' Allows the data to be styled by the group option in the column.
 #'
-#' @note If using numbers as the group values, then you need to use `setNames` rather
+#' @note If using numbers as the group values, then you need to use `stats::setNames` rather
 #' than a named vector, as the names of the vector will be coerced to strings.
 #'
 #' @param column_name String representing the name of the column to be used.
@@ -50,7 +50,7 @@ get_column_boolean <- function(column_name, true_value, false_value) {
 #'
 #' @examples
 #' get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
-#' get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
+#' get_column_group("opacity", stats::setNames(c(0.3, 0.5), c("A", "B")), 0.6)
 get_column_group <- function(
   column_name,
   named_group_values,

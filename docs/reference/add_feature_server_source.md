@@ -48,11 +48,14 @@ string to prevent appending the default query parameters.
 
 ``` r
 if (FALSE) { # \dontrun{
+
+service_url <- paste0(
+ "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/",
+ "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"
+)
+
  map() |>
-   add_feature_server_source(
-     "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/World_Exclusive_Economic_Zones_Boundaries/FeatureServer",
-     "eez"
-   ) |>
+   add_feature_server_source(service_url, "eez") |>
    add_line_layer(id = "eez_lines", source = "eez")
 } # }
 ```

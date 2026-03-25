@@ -4,7 +4,7 @@
 #' options provided.
 #'
 #' @note You can provide any layout options found in the
-#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers) in the `options`
+#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 #' argument, and they will be included in the returned list.
 #' The default options are just a starting point and can be overridden by providing them in the
 #' `options` argument.
@@ -151,7 +151,7 @@ get_layout_options <- function(layer_type, options = list()) {
 #' additional options provided.
 #'
 #' @note You can provide any paint options found in the
-#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers) in the `options`
+#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 #' argument, and they will be included in the returned list.
 #' The default options are just a starting point and can be overridden by providing them in the
 #' `options` argument.

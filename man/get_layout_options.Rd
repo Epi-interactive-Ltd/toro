@@ -55,7 +55,7 @@ options provided.
 }
 \note{
 You can provide any layout options found in the
-\href{https://maplibre.org/maplibre-style-spec/layers}{Maplibre Layers docs} in the \code{options}
+\href{https://maplibre.org/maplibre-style-spec/layers/}{Maplibre Layers docs} in the \code{options}
 argument, and they will be included in the returned list.
 The default options are just a starting point and can be overridden by providing them in the
 \code{options} argument.

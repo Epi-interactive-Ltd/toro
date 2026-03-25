@@ -10,12 +10,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/"
 )
 library(toro)
 ```
-
-## Map Tiles
 
 
 You can find the tile options by using `get_tile_options()`.

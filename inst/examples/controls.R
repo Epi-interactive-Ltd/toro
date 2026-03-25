@@ -63,7 +63,7 @@ server <- function(input, output, session) {
     new_shape <- toro::get_drawn_shape(input$map_shape_created)
 
     shapes(rbind(shapes(), new_shape))
-  }) %>%
+  }) |>
     bindEvent(input$map_shape_created)
 
   # Show/hide controls

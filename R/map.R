@@ -75,30 +75,35 @@ map <- function(
     initialLoaderColour = "black"
   )
   user_options <- list(...)
-  map_options <- modifyList(default_options, user_options)
+  map_options <- utils::modifyList(default_options, user_options)
 
   # Process imageSources to convert local file paths to data URIs
   if (!is.null(user_options$imageSources)) {
     processed_image_sources <- lapply(
       user_options$imageSources,
       function(image_source) {
-        if (!is.null(image_source$url) && is_local_file(image_source$url)) {
+        image_id <- image_source$id %||% image_source$image_id
+        image_url <- image_source$url %||% image_source$image_url
+        if (!is.null(image_url) && is_local_file(image_url)) {
           # Check if base64enc package is available
           if (!requireNamespace("base64enc", quietly = TRUE)) {
             stop(
               "The 'base64enc' package is required to use local image files. Please install it with: install.packages('base64enc')"
             )
           }
-          image_source$url <- image_to_data_uri(image_source$url)
+          image_url <- image_to_data_uri(image_url)
         }
-        return(image_source)
+        return(list(
+          url = image_url,
+          id = image_id
+        ))
       }
     )
     map_options$imageSources <- processed_image_sources
   }
 
   # If the style is not in loadedTiles, add it
-  if (class(map_options$loadedTiles) == "list") {
+  if (is.list(map_options$loadedTiles)) {
     if (!style %in% names(map_options$loadedTiles)) {
       map_options$loadedTiles[[style]] <- list()
     }

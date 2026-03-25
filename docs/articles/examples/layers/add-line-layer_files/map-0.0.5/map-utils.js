@@ -39,6 +39,7 @@ function addImagesToMap(map, imageSources) {
  * @returns {void}
  */
 async function _addImageToMapSource(map, imageId, imageUrl) {
+  if (!map || !imageId || !imageUrl) return;
   const response = await map.loadImage(imageUrl);
   // Add the loaded image to the style's sprite with the ID 'photo'.
   map.addImage(imageId, response.data);

@@ -6,7 +6,8 @@ output: rmarkdown::html_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/"
 )
 ```
 
@@ -15,22 +16,9 @@ knitr::opts_chunk$set(
 
 ```{r prepare-data}
 library(sf)
-library(dplyr)
 
 data(quakes)
 quakes_data <- quakes |>
-  mutate(
-    description = paste(
-      "<div class='map-popup'>Location:",
-      lat,
-      ",",
-      long,
-      "<br>",
-      "Magnitude:",
-      mag,
-      "</div>"
-    )
-  ) |>
   st_as_sf(coords = c("long", "lat"), crs = 4326)
 ```
 
@@ -56,7 +44,7 @@ map() |>
   add_circle_layer(
     id = "quakes_circles",
     source = "quakes_data",
-    hover_column = "description"
+    hover_column = "depth"
   )
 ```
 
@@ -76,6 +64,6 @@ map() |>
   add_circle_layer(
     id = "quakes_circles",
     source = quakes_data,
-    hover_column = "description"
+    hover_column = "depth"
   )
 ```
