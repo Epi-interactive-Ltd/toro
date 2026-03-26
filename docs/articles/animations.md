@@ -1,6 +1,5 @@
 # animations
 
 ``` r
-
 library(toro)
 ```

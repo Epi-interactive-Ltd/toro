@@ -5,7 +5,6 @@
 To install the development version from Github:
 
 ``` r
-
 remotes::install_github("Epi-interactive-Ltd/toro")
 ```
 
@@ -19,7 +18,6 @@ Once installed, this package can be used in the R console and within
 To create the default map widget just call the `map` function.
 
 ``` r
-
 map()
 ```
 
@@ -29,7 +27,6 @@ By passing parameters to the `map` function you can customise several
 features of the map.
 
 ``` r
-
 map(
   style = "natgeo",
   center = c(174, -41),
@@ -46,7 +43,6 @@ For more detailed information see the [layers
 vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html)
 
 ``` r
-
 map() |>
   add_symbol_layer(
     id = "marker-layer",

@@ -6,8 +6,10 @@ This package is proudly brought to you by:
 
 - **[Poppy Pakinui](https://github.com/pakinui)**. Author, maintainer.
 
+- **Jocelyn Qian**. Contributor.
+
 - **[![Epi
-  Group](reference/figures/epi-logo.png)](https://epi.group/)**.
+  Group](https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true)](https://epi.group/)**.
   Copyright holder, funder.
 
 See the

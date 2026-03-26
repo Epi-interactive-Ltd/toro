@@ -5,7 +5,6 @@
 First, set up the base map with our data.
 
 ``` r
-
 library(toro)
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
@@ -21,7 +20,6 @@ base_map <- map() |>
 ### Basic example
 
 ``` r
-
 base_map |>
   add_circle_layer(
     id = "maunga_circles",
@@ -34,7 +32,6 @@ base_map |>
 ### Advanced example
 
 ``` r
-
 base_map |>
   add_circle_layer(
     id = "maunga_peaks",

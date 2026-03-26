@@ -2,7 +2,6 @@ url: https://epi-interactive-ltd.github.io/toro/
 
 template:
   bootstrap: 5
-  light-switch: true
   css:
     - extras.css
 
@@ -10,19 +9,12 @@ assets:
   - pkgdown/assets
   - vignettes/images
 
-footer:
-  structure:
-    left: [developed_by, copyright]
-  components:
-    copyright: >
-      Copyright text coming soon (TODO)
-
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
   epi:
     href: https://epi.group/
-    html: '<img src="man/figures/epi-logo.png" alt="Epi Group" height="25" style="max-height: 25px;">'
+    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
   footer:
     roles: [fnd]
     text: 'Funded by'
@@ -42,7 +34,7 @@ home:
 navbar:
   structure:
     left: [home, reference, articles, examples, news]
-    right: [search, github, lightswitch]
+    right: [search, github]
 
   components:
     home:

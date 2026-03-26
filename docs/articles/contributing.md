@@ -183,7 +183,6 @@ Once you have the correct R version instaled, you can use the following
 code to install the dependencies:
 
 ``` r
-
 # Install dependencies from the DESCRIPTION file
 install.packages("remotes")
 remotes::install_deps(dependencies = TRUE)
@@ -195,7 +194,6 @@ Inside `inst/examples/`, create a new file named `app.R` and add the
 following code to it:
 
 ``` r
-
 library(shiny)
 devtools::load_all("../") # Load the most recent changes from the local repository
 

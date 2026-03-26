@@ -4,11 +4,10 @@ You can find the tile options by using
 [`get_tile_options()`](https://epi-interactive-ltd.github.io/toro/reference/get_tile_options.md).
 
 ``` r
-
 get_tile_options()
 ```
 
-\[1\] “natgeo” “satellite” “topo” “terrain” “streets” “shaded”\
+\[1\] “natgeo” “satellite” “topo” “terrain” “streets” “shaded”  
 \[7\] “lightgrey”
 
 When declaring a map, you can specify the style and any tiles you want
@@ -18,7 +17,6 @@ By default, the `style` is set to `lightgrey`, but you can change it to
 any of the options available.
 
 ``` r
-
 map(style="satellite")
 ```
 
@@ -27,7 +25,6 @@ If you want the ability for the map to change tiles you need to set the
 switch between.
 
 ``` r
-
 map(
   style="satellite",
   loadedTiles = c("satellite", "lightgrey", "natgeo")
@@ -45,7 +42,6 @@ You can also supply options for each tile set.
 > will be added in the future.
 
 ``` r
-
 map(
   style="satellite",
   loadedTiles = list(
@@ -70,7 +66,6 @@ function to update the tiles on the map to any of the options defined in
 `loadedTiles` when the map was created.
 
 ``` r
-
 library(shiny)
 library(toro)
 
@@ -111,7 +106,6 @@ For more information on adding controls to a map see the [controls
 vignette](https://epi-interactive-ltd.github.io/toro/articles/controls.html).
 
 ``` r
-
 library(shiny)
 library(toro)
 

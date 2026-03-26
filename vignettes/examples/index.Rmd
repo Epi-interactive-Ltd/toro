@@ -31,26 +31,26 @@ Sources are required to add data to your map.
 
 ## [Add a fill layer](layers/add-fill-layer.html)
 
-![](../../man/figures/add-fill-layer.png)
+![Description goes here](../../man/figures/add-fill-layer.png)
 
 ## [Add a line layer](layers/add-line-layer.html)
 
-![](../../man/figures/add-line-layer.png)
+![Description goes here](../../man/figures/add-line-layer.png)
 
 ## [Add a circle layer](layers/add-circle-layer.html)
 
-![](../../man/figures/add-circle-layer.png)
+![Description goes here](../../man/figures/add-circle-layer.png)
 
 ## [Add a symbol layer](layers/add-symbol-layer.html)
 
-![](../../man/figures/add-symbol-layer.png)
+![Description goes here](../../man/figures/add-symbol-layer.png)
 
 ## [Add a text layer](layers/add-text-layer.html)
 
-![](../../man/figures/add-text-layer.png)
+![Description goes here](../../man/figures/add-text-layer.png)
 
 ### [Latitude and Longitude Grid](layers/lat-lng-grid.html)
 
-![](../../man/figures/add-lat-lng-grid.png)
+![Description goes here](../../man/figures/add-lat-lng-grid.png)
 
 ---

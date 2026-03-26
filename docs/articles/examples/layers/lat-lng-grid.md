@@ -5,7 +5,6 @@
 ### Basic example
 
 ``` r
-
 library(toro)
 map() |>
   add_lat_lng_grid("red")
@@ -17,7 +16,6 @@ For more info on controls see the [Controls
 Vignette](https://epi-interactive-ltd.github.io/toro/articles/controls.html)
 
 ``` r
-
 library(toro)
 map() |>
   add_lat_lng_grid("red") |>
