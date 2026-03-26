@@ -72,18 +72,6 @@
 #'    )
 #'  )
 #' )
-#'
-#' # Provide options outside of the defaults
-#' get_layout_options(
-#'  "circle",
-#'  list(
-#'    "circle-sort-key" = get_column_step_steps(
-#'      "elevation",
-#'      c(3000),
-#'      c(100, 200)
-#'    )
-#'  )
-#' )
 get_layout_options <- function(layer_type, options = list()) {
   default_options <- list(
     line_cap = "round",
