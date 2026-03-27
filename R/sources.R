@@ -91,7 +91,6 @@ add_source <- function(
 #'
 #' @examples
 #' \dontrun{
-#'
 #' service_url <- paste0(
 #'  "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/",
 #'  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"
@@ -214,7 +213,6 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 #'
 #' @examples
 #' \dontrun{
-#'
 #' image_url <- paste0(
 #'  "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/",
 #'  "Leaf_icon.png/600px-Leaf_icon.png"
