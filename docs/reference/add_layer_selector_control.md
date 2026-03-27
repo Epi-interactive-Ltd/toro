@@ -1,0 +1,104 @@
+# Add a layer selector control to the map or control panel
+
+Creates a dropdown selector that allows switching between layers,
+showing only the selected layer while hiding all others. This is useful
+for comparing different data layers or allowing users to choose between
+mutually exclusive visualizations.
+
+## Usage
+
+``` r
+add_layer_selector_control(
+  map,
+  layer_ids,
+  labels = NULL,
+  default_layer = NULL,
+  none_option = FALSE,
+  none_label = "None",
+  position = "top-right",
+  panel_id = NULL,
+  section_title = NULL,
+  group_id = NULL
+)
+```
+
+## Arguments
+
+- map:
+
+  The map or map proxy object.
+
+- layer_ids:
+
+  Vector of layer IDs to include in the selector.
+
+- labels:
+
+  Named vector of labels for layers. If NULL, uses layer IDs directly.
+
+- default_layer:
+
+  Default layer to select. If NULL, uses the first layer.
+
+- none_option:
+
+  Whether to include a "None" option that hides all layers. Default is
+  FALSE.
+
+- none_label:
+
+  Label for the "None" option. Default is "None".
+
+- position:
+
+  Position on the map if not using a control panel. Default is
+  "top-right".
+
+- panel_id:
+
+  ID of control panel to add to (optional).
+
+- section_title:
+
+  Section title when added to a control panel.
+
+- group_id:
+
+  ID of control group to add to (optional).
+
+## Value
+
+The map or map proxy object for chaining.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(shiny)
+library(toro)
+library(spData)
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- quakes |>
+ sf::st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+nz_data <- spData::nz_height |>
+  sf::st_transform(4326)
+
+map() |>
+ add_circle_layer(
+   id = "quakes",
+   source = quakes_data
+ ) |>
+ add_circle_layer(
+   id = "nz_elevation",
+   source = nz_data
+ ) |>
+ add_layer_selector_control(
+   layer_ids = c("quakes", "nz_elevation"),
+   labels = c("quakes" = "Earthquakes", "nz_elevation" = "NZ Elevation")
+ )
+} # }
+```

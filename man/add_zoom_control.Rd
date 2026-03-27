@@ -2,7 +2,8 @@
 % Please edit documentation in R/view_controls.R
 \name{add_zoom_control}
 \alias{add_zoom_control}
-\title{Functions related to zoom controls.}
+\title{Functions related to zoom controls.
+Add a zoom control to the map.}
 \usage{
 add_zoom_control(
   map,
@@ -16,29 +17,35 @@ add_zoom_control(
 \arguments{
 \item{map}{The map or map proxy object.}
 
-\item{position}{The position of the zoom control on the map.
-Default is \code{"top-right"}.}
+\item{position}{The position of the zoom control on the map. Default is \code{"top-right"}.}
 
-\item{control_options}{Additional options for the zoom control.
-Default is an empty list.}
+\item{control_options}{Additional options for the zoom control. Default is an empty list.}
 
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{           The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item add_zoom_control:    Add a zoom control to the map or control panel.
-\item remove_zoom_control: Remove the zoom control from the map.
+Functions related to zoom controls.
 Add a zoom control to the map.
-}
 }
 \note{
 See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/}{Maplibre NavigationControl docs}
 for more information on available options.
+}
+\examples{
+\dontrun{
+add_zoom_control(map())
+
+# Inside a control panel
+map() |>
+ add_control_panel(panel_id = "my_panel", title = "View Controls") |>
+ add_zoom_control(panel_id = "my_panel")
+}
+
 }

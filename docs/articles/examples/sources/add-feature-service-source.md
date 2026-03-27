@@ -1,0 +1,73 @@
+# Add a feature service source
+
+### Resources
+
+- [ArcGIS Feature Service
+  documentation](https://developers.arcgis.com/rest/services-reference/enterprise/feature-service/)
+
+------------------------------------------------------------------------
+
+## What is a feature service source?
+
+A Feature Service is a web service that provides access to geographic
+features and their attributes. In toro, you can add a feature service as
+a data source for your map layers using the `add_feature_server_source`
+function.
+
+## Adding a feature service source
+
+### Basic example
+
+Most of the time, you can simply provide the URL of the feature service
+and toro will handle the rest. The default query parameters will be
+appended to the URL to retrieve the data in GeoJSON format.
+
+``` r
+library(toro)
+
+service_url <- paste0(
+  "https://services1.arcgis.com/",
+  "VwarAUbcaX64Jhub/arcgis/rest/services/",
+  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"
+)
+
+map() |>
+  add_feature_server_source(
+    service_url,
+    "eez"
+  ) |>
+  add_line_layer(id = "eez_lines", source = "eez")
+```
+
+### Advanced example
+
+If you need more control over the query parameters, you can provide the
+full query URL directly in the `source_url` argument and set
+`append_query_url` to an empty string to prevent appending the default
+query parameters.
+
+``` r
+library(toro)
+
+# We supply the full query URL here, so we set append_query_url to an empty string to
+# avoid appending the default query parameters.
+service_url <- paste0(
+  "https://services1.arcgis.com/",
+  "AYGZtmUtpARUKBlB/arcgis/rest/services/",
+  "Te_Reo_M%C4%81ori_Place_Names/FeatureServer/",
+  "4/query?where=1=1&outFields=*&f=geojson"
+)
+
+map() |>
+  add_feature_server_source(
+    service_url,
+    "maori_awa_data",
+    append_query_url = ""
+  ) |>
+  add_line_layer(
+    id = "awa_lines",
+    source = "maori_awa_data",
+    hover_column = "name_mi",
+    popup_column = "name"
+  )
+```

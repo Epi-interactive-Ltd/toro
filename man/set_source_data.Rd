@@ -13,13 +13,50 @@ set_source_data(proxy, source_id, data, type = "geojson")
 
 \item{data}{The data for the source, typically in GeoJSON format.}
 
-\item{type}{The type of the source. Default is \code{"geojson"}.
-Other options include \code{"vector"} or \code{"raster"}.}
+\item{type}{The type of the source. Default is \code{"geojson"}. Other options include \code{"vector"} or \code{"raster"}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Set data for a source on the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(sf)
+library(toro)
+
+data(quakes)
+quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("btn", "Update Source Data")
+ )
+)
+server <- function(input, output, session) {
+ get_random_points <- function(data, n = 10) {
+   random_rows <- runif(n, min = 1, max = nrow(data))
+   return(data[random_rows, ])
+ }
+
+ output$map <- renderMap({
+   map() |>
+     add_symbol_layer(
+       id = "quakes",
+       source = get_random_points(quakes_data)
+     )
+   })
+ observe({
+   mapProxy("map") |>
+     set_source_data(
+       source_id = "source-quakes",
+       data = get_random_points(quakes_data)
+     )
+ }) |>
+ bindEvent(input$btn)
+}
+}
 }

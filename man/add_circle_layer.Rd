@@ -10,7 +10,11 @@ add_circle_layer(map, ...)
 \item{map}{The map object or map proxy to which the layer will be added.}
 
 \item{...}{Additional arguments to include in the layer definition.
-Default is an empty list.}
+\itemize{
+\item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
+See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
+for details on available options.
+}}
 }
 \value{
 The updated map object with the circle layer added.
@@ -22,53 +26,34 @@ Add a circle layer to a map or map proxy.
 \dontrun{
 # Load libraries
 library(toro)
+library(spData)
 library(sf)
 
-base_map <- map() |>
- add_feature_server_source(
-   "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M\%C4\%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson",
-   "maori_maunga_data",
-   append_query_url = FALSE
+nz_data <- spData::nz_height |>
+  sf::st_transform(4326)
+
+map() |>
+ set_bounds(bounds = nz_data) |>
+ add_circle_layer(
+   id = "nz_elevation",
+   source = nz_data,
+   hover_column = "elevation"
  )
 
 base_map |>
+ set_bounds(bounds = nz_data) |>
  add_circle_layer(
-   id = "maunga_circles",
-   source = "maori_maunga_data",
-   hover_column = "name_mi",
-   popup_column = "name"
- )
-
-base_map |>
- add_circle_layer(
-   id = "maunga_peaks",
-   source = "maori_maunga_data",
-   hover_column = "name_mi",
-   popup_column = "name",
-   filter = get_layer_filter("type != volcano"),
+   id = "nz_elevation",
+   source = nz_data,
+   hover_column = "elevation",
    paint = get_paint_options(
      "circle",
      options = list(
-       colour = "#a3b18a",
-       outline_colour = "#588157",
-       opacity = 0.8,
-       outline_opacity = 0.8,
-       circle_radius = 4
-     )
-   )
- ) |>
- add_circle_layer(
-   id = "maunga_volcanoes",
-   source = "maori_maunga_data",
-   hover_column = "name_mi",
-   popup_column = "name",
-   filter = get_layer_filter("type == volcano"),
-   paint = get_paint_options(
-     "circle",
-     options = list(
-       colour = "#9d0208",
-       outline_colour = "#6a040f",
-       circle_radius = 7
+       colour = get_column_step_steps(
+         "elevation",
+         c(3000),
+         c("grey", "black")
+       )
      )
    )
  )

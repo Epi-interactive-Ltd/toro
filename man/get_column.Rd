@@ -10,8 +10,7 @@ get_column(column_name)
 \item{column_name}{String representing the name of the column to be used.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      List containing the paint or layout option to be set.
-}\if{html}{\out{</div>}}
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the column value to be used for styling features in a map layer.
@@ -20,5 +19,4 @@ Allows the column value to be used for styling features in a map layer.
 get_column("opacity")
 get_column("icon")
 # Use in a paint property: list("circle-color" = get_column("color"))
-
 }

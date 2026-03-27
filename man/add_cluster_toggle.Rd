@@ -22,11 +22,12 @@ add_cluster_toggle(
 
 \item{layer_id}{ID of the layer to toggle clustering for.}
 
-\item{control_id}{ID for the control. If NULL, defaults to "cluster-toggle-{layer_id}".}
+\item{control_id}{ID for the control. If NULL, defaults to "cluster-toggle-<layer_id>".}
 
 \item{left_label}{Label text for the toggle button. Default is "Toggle Clustering".}
 
-\item{right_label}{Label text for the toggle button when clustering is off. Default}
+\item{right_label}{Label text for the toggle button when clustering is off.
+Default is "Clustering Off".}
 
 \item{initial_state}{Initial clustering state. Default is FALSE.}
 
@@ -35,11 +36,32 @@ add_cluster_toggle(
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{ID of control group to add to (optional).}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Creates a toggle button that can enable/disable clustering for a specific layer.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(toro)
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- quakes |>
+ sf::st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+map() |>
+ add_symbol_layer(
+   id = "quakes",
+   source = quakes_data,
+   can_cluster = TRUE
+ ) |>
+ add_cluster_toggle(layer_id = "quakes")
+}
 }

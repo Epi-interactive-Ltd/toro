@@ -29,16 +29,17 @@ add_speed_control(
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Add a speed control to the map or control panel
 }
 \examples{
-if (interactive()) {
+\dontrun{
 # Add to a map (no dates specified)
 map() |>
  add_speed_control()

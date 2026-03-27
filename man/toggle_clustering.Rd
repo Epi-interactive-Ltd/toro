@@ -14,9 +14,41 @@ toggle_clustering(proxy, layer_id, cluster = FALSE)
 \item{cluster}{Whether to enable clustering. Default is \code{FALSE}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Toggle clustering for a layer on the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(sf)
+library(toro)
+
+data(quakes)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   checkboxInput("toggle_cluster", "Toggle Clustering", value = TRUE)
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_symbol_layer(
+       id = "quakes",
+       source = quakes_data,
+       can_cluster = TRUE
+     )
+ })
+
+ observe({
+   mapProxy("map") |>
+     toggle_clustering(layer_id = "quakes", cluster = input$toggle_cluster)
+ }) |>
+   bindEvent(input$toggle_cluster)
+}
+}
 }

@@ -1,25 +1,20 @@
 #' Functions related to animation controls.
-#'
-#' Functions:
-#' - add_timeline_control:    Add a timeline control to the map or control panel.
-#' - remove_timeline_control: Remove the timeline control from the map.
-#' - add_speed_control:       Add a speed control to the map or control panel.
-#' - remove_speed_control:    Remove the speed control from the map.
 
 #' Add a timeline control to the map or control panel
 #'
-#' @param map           The map or map proxy object.
-#' @param start_date    Start date for the timeline (YYYY-MM-DD format).
-#' @param end_date      End date for the timeline (YYYY-MM-DD format).
-#' @param position      Position on the map if not using a control panel. Default is "bottom-left".
-#' @param max_ticks     Maximum number of labeled ticks to prevent overlap. Default is 3.
-#' @param panel_id      ID of control panel to add to (optional).
+#' @param map The map or map proxy object.
+#' @param start_date Start date for the timeline (YYYY-MM-DD format).
+#' @param end_date End date for the timeline (YYYY-MM-DD format).
+#' @param position Position on the map if not using a control panel. Default is "bottom-left".
+#' @param max_ticks Maximum number of labeled ticks to prevent overlap. Default is 3.
+#' @param panel_id ID of control panel to add to (optional).
 #' @param section_title Section title when added to a control panel.
-#' @return              The map or map proxy object for chaining.
+#' @param group_id Optional ID of the group to add the control to within a panel.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #' # Add to a map (no dates specified)
 #' map() |>
 #'  add_timeline_control()
@@ -87,7 +82,14 @@ add_timeline_control <- function(
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "timeline", options, section_title, group_id)
+      add_control_to_panel(
+        map,
+        panel_id,
+        "timeline",
+        options,
+        section_title,
+        group_id
+      )
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -100,7 +102,11 @@ add_timeline_control <- function(
     if (is.null(map$x$timelineControls)) {
       map$x$timelineControls <- list()
     }
-    control_id <- if (!is.null(panel_id)) paste0(panel_id, "_timeline") else "standalone_timeline"
+    control_id <- if (!is.null(panel_id)) {
+      paste0(panel_id, "_timeline")
+    } else {
+      "standalone_timeline"
+    }
     map$x$timelineControls[[control_id]] <- options
   }
 
@@ -109,14 +115,14 @@ add_timeline_control <- function(
 
 #' Remove the timeline control from the map.
 #'
-#' @param proxy     The map proxy object created by `mapProxy()`.
-#' @param panel_id  Optional. If provided, removes the timeline control from the specified control panel.
-#'                  If NULL, removes the standalone timeline control.
-#' @return          The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param panel_id Optional. If provided, removes the timeline control from the specified control
+#'    panel. If NULL, removes the standalone timeline control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #' # Add to a map
 #' map() |>
 #'  add_timeline_control()
@@ -148,18 +154,19 @@ remove_timeline_control <- function(proxy, panel_id = NULL) {
 
 #' Add a speed control to the map or control panel
 #'
-#' @param map           The map or map proxy object.
-#' @param values        Vector of speed multiplier values. Default is c(0.5, 1, 2).
-#' @param labels        Vector of labels for each speed value. Default is c("Slow", "Normal", "Fast").
+#' @param map The map or map proxy object.
+#' @param values Vector of speed multiplier values. Default is c(0.5, 1, 2).
+#' @param labels Vector of labels for each speed value. Default is c("Slow", "Normal", "Fast").
 #' @param default_index Index of the default speed (1-based). Default is 2.
-#' @param position      Position on the map if not using a control panel. Default is "top-right".
-#' @param panel_id      ID of control panel to add to (optional).
+#' @param position Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id ID of control panel to add to (optional).
 #' @param section_title Section title when added to a control panel.
-#' @return              The map or map proxy object for chaining.
+#' @param group_id Optional ID of the group to add the control to within a panel.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #' # Add to a map (no dates specified)
 #' map() |>
 #'  add_speed_control()
@@ -214,7 +221,14 @@ add_speed_control <- function(
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "speed", options, section_title, group_id)
+      add_control_to_panel(
+        map,
+        panel_id,
+        "speed",
+        options,
+        section_title,
+        group_id
+      )
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -227,7 +241,11 @@ add_speed_control <- function(
     if (is.null(map$x$speedControls)) {
       map$x$speedControls <- list()
     }
-    control_id <- if (!is.null(panel_id)) paste0(panel_id, "_speed") else "standalone_speed"
+    control_id <- if (!is.null(panel_id)) {
+      paste0(panel_id, "_speed")
+    } else {
+      "standalone_speed"
+    }
     map$x$speedControls[[control_id]] <- options
   }
 
@@ -236,14 +254,14 @@ add_speed_control <- function(
 
 #' Remove the speed control from the map.
 #'
-#' @param proxy     The map proxy object created by `mapProxy()`.
-#' @param panel_id  Optional. If provided, removes the speed control from the specified control panel.
-#'                  If NULL, removes the standalone speed control.
-#' @return          The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param panel_id Optional. If provided, removes the speed control from the specified control
+#'    panel. If NULL, removes the standalone speed control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
+#' \dontrun{
 #' # Add to a map
 #' map() |>
 #'  add_speed_control()

@@ -1,18 +1,40 @@
 url: https://epi-interactive-ltd.github.io/toro/
+
 template:
   bootstrap: 5
+  css:
+    - extras.css
+
+assets:
+  - pkgdown/assets
+  - vignettes/images
 
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
+  epi:
+    href: https://epi.group/
+    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
+  footer:
+    roles: [fnd]
+    text: 'Funded by'
+  sidebar:
+    roles: [aut, ctb]
+    before: 'So *who* does the work?'
+  before: 'This package is proudly brought to you by:'
+  after: 'See the [changelog](news/index.html) for other contributors.'
+
+home:
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+  links:
+    - text: 'Roadmap coming soon! :soon:'
+      href: '#'
 
 navbar:
   structure:
-    left:
-      - home
-      - reference
-      - articles
-      - news
+    left: [home, reference, articles, examples, news]
+    right: [search, github]
 
   components:
     home:
@@ -53,6 +75,9 @@ navbar:
         - text: '---'
         - text: 'Contributing to toro'
           href: articles/contributing.html
+    examples:
+      text: 'Examples'
+      href: 'articles/examples/index.html'
 
 reference:
   - title: 'Map Creation'
@@ -65,7 +90,6 @@ reference:
       - add_source
       - set_source_data
       - add_feature_server_source
-      - add_tiles_from_map_server
       - add_image
   - title: 'Adding Layers'
     desc: 'Functions to add map layers'
@@ -166,7 +190,6 @@ reference:
       - add_control_panel
       - add_control_group
       - remove_control_group
-      - add_control_to_panel
       - remove_control_from_panel
   - title: 'Shiny Integration'
     desc: 'Functions to get information from map interaction'
@@ -174,3 +197,45 @@ reference:
       - mapOutput
       - renderMap
       - mapProxy
+  - title: 'Extra features'
+    desc: 'Additional functions'
+    contents:
+      - export_map_image
+      - save_map_html
+
+articles:
+  - title: 'Getting Started'
+    contents:
+      - getting-started
+  - title: 'Integration'
+    contents:
+      - shiny-integration
+  - title: 'Layers'
+    contents:
+      - layers
+      - map-tiles
+      - popups
+      - map-clusters
+  - title: 'Controls'
+    contents:
+      - controls
+      - draw-controls
+      - view-controls
+  - title: 'Advanced Features'
+    contents:
+      - animations
+  - title: 'Contributing'
+    contents:
+      - contributing
+  - title: 'Examples'
+    contents:
+      - examples/index
+      - examples/layers/add-fill-layer
+      - examples/layers/add-line-layer
+      - examples/layers/add-circle-layer
+      - examples/layers/add-symbol-layer
+      - examples/layers/add-text-layer
+      - examples/sources/add-feature-service-source
+      - examples/sources/add-geojson-source
+      - examples/sources/add-image-source
+      - examples/layers/lat-lng-grid

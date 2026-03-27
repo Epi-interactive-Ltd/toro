@@ -3,15 +3,15 @@
 #' Allows the column value to be used for styling features in a map layer.
 #'
 #' @param column_name String representing the name of the column to be used.
-#' @returns           List containing the paint or layout option to be set.
+#' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column("opacity")
 #' get_column("icon")
 #' # Use in a paint property: list("circle-color" = get_column("color"))
-#'
-#' @export
 get_column <- function(column_name) {
-  return(list("get", column_name))
+  list("get", column_name)
 }
 
 #' Get the value for a paint or layout option in a map layer based on a column boolean value.
@@ -19,19 +19,17 @@ get_column <- function(column_name) {
 #' Allows the data to be styled by the group option in the column.
 #'
 #' @param column_name String representing the name of the column to be used.
-#' @param true_value  Value to use when the column value is `TRUE`.
+#' @param true_value Value to use when the column value is `TRUE`.
 #' @param false_value Value to use when the column value is `FALSE`.
-#' @returns           List containing the paint or layout option to be set.
+#' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column_boolean("group", "red", "grey")
-#'
-#' @export
 get_column_boolean <- function(column_name, true_value, false_value) {
-  return(
-    append(
-      list("case", list("boolean", list("get", column_name), FALSE)),
-      c(true_value, false_value)
-    )
+  append(
+    list("case", list("boolean", list("get", column_name), FALSE)),
+    c(true_value, false_value)
   )
 }
 
@@ -39,31 +37,33 @@ get_column_boolean <- function(column_name, true_value, false_value) {
 #'
 #' Allows the data to be styled by the group option in the column.
 #'
-#' @note If using numbers as the group values, then you need to use `setNames` rather
+#' @note If using numbers as the group values, then you need to use `stats::setNames` rather
 #' than a named vector, as the names of the vector will be coerced to strings.
 #'
-#' @param column_name         String representing the name of the column to be used.
-#' @param named_group_values  Vector of value strings named by the group values.
-#'                            The names of the vector should match the group values in the column.
-#' @param default_value       String for the default value to use if no match is found.
-#'                            Default is "#cccccc".
-#' @returns                   List containing the paint or layout option to be set.
+#' @param column_name String representing the name of the column to be used.
+#' @param named_group_values Vector of value strings named by the group values.
+#'   The names of the vector should match the group values in the column.
+#' @param default_value String for the default value to use if no match is found.
+#'    Default is "#cccccc".
+#' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column_group("group", c("A" = "red", "B" = "blue"), "grey")
-#' get_column_group("opacity", setNames(c(0.3, 0.5), c("A", "B")), 0.6)
-#'
-#' @export
-get_column_group <- function(column_name, named_group_values, default_value = "#cccccc") {
+#' get_column_group("opacity", stats::setNames(c(0.3, 0.5), c("A", "B")), 0.6)
+get_column_group <- function(
+  column_name,
+  named_group_values,
+  default_value = "#cccccc"
+) {
   options <- vector("list", length(named_group_values) * 2)
   for (i in seq_along(named_group_values)) {
     options[[2 * i - 1]] <- names(named_group_values)[i]
     options[[2 * i]] <- named_group_values[[i]]
   }
-  return(
-    append(
-      list("match", list("get", column_name)),
-      c(options, default_value)
-    )
+  append(
+    list("match", list("get", column_name)),
+    c(options, default_value)
   )
 }
 
@@ -71,14 +71,14 @@ get_column_group <- function(column_name, named_group_values, default_value = "#
 #'
 #' Allows the data to be styled by the step breaks in the column.
 #'
-#' @param column_name     String representing the name of the column to be used.
-#' @param breaks          Numeric vector of thresholds (must be sorted ascending).
-#' @param values          Vector of values, length = length(breaks) + 1.
-#' @returns               List containing the paint or layout option to be set.
+#' @param column_name String representing the name of the column to be used.
+#' @param breaks Numeric vector of thresholds (must be sorted ascending).
+#' @param values Vector of values, length = length(breaks) + 1.
+#' @return List containing the paint or layout option to be set.
+#' @export
+#'
 #' @examples
 #' get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
-#'
-#' @export
 get_column_step_steps <- function(column_name, breaks, values) {
   stopifnot(length(values) == length(breaks) + 1)
   expr <- list("step", list("get", column_name), values[[1]])

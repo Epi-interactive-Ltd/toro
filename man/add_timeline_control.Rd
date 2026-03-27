@@ -2,7 +2,8 @@
 % Please edit documentation in R/animation_controls.R
 \name{add_timeline_control}
 \alias{add_timeline_control}
-\title{Functions related to animation controls.}
+\title{Functions related to animation controls.
+Add a timeline control to the map or control panel}
 \usage{
 add_timeline_control(
   map,
@@ -29,23 +30,18 @@ add_timeline_control(
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item add_timeline_control:    Add a timeline control to the map or control panel.
-\item remove_timeline_control: Remove the timeline control from the map.
-\item add_speed_control:       Add a speed control to the map or control panel.
-\item remove_speed_control:    Remove the speed control from the map.
+Functions related to animation controls.
 Add a timeline control to the map or control panel
 }
-}
 \examples{
-if (interactive()) {
+\dontrun{
 # Add to a map (no dates specified)
 map() |>
  add_timeline_control()

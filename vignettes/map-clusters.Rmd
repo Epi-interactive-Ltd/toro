@@ -12,7 +12,8 @@ editor: visual
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/"
 )
 library(dplyr)
 library(sf)

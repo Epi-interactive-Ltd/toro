@@ -10,7 +10,11 @@ add_line_layer(map, ...)
 \item{map}{The map object or map proxy to which the layer will be added.}
 
 \item{...}{Additional arguments to include in the layer definition.
-Default is an empty list.}
+\itemize{
+\item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
+See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
+for details on available options.
+}}
 }
 \value{
 The updated map object with the line layer added.
@@ -22,40 +26,30 @@ Add a line layer to a map or map proxy.
 \dontrun{
 # Load libraries
 library(toro)
+library(spData)
 library(sf)
 
-base_map <- map() |>
- add_feature_server_source(
-   "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M\%C4\%81ori_Place_Names/FeatureServer/4/query?where=1=1&outFields=*&f=geojson",
-   "maori_awa_data",
-   append_query_url = FALSE
+seine_data <- spData::nz_height |>
+  sf::st_transform(4326)
+seine_data$colour <- rainbow(nrow(seine_data))
+
+map() |>
+ set_bounds(bounds = seine_data) |>
+ add_circle_layer(
+   id = "seine_lines",
+   source = seine_data,
+   hover_column = "name"
  )
 
 base_map |>
- add_line_layer(
-   id = "awa_lines",
-   source = "maori_awa_data",
-   hover_column = "name_mi",
-   popup_column = "name"
- )
-
-base_map |>
- add_line_layer(
-   id = "awa_lines",
-   source = "maori_awa_data",
-   hover_column = "name_mi",
-   popup_column = "name",
+ set_bounds(bounds = seine_data) |>
+ add_circle_layer(
+   id = "seine_lines",
+   source = seine_data,
+   hover_column = "name",
    paint = get_paint_options(
-     "line",
-     options = list(
-       colour = get_column_group(
-         "type",
-         c("river" = "#014f86", "stream" = "#61a5c2"),
-         "#a9d6e5"
-       ),
-       line_width = get_column_group("type", c("river" = 3), 1),
-       opacity = 0.8
-     )
+     "circle",
+     options = list(colour = get_column("colour"))
    )
  )
 }

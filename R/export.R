@@ -2,7 +2,7 @@
 
 #' Export map as an image (non-Shiny context).
 #'
-#' This function exports a map widget as an image file using webshot2 or mapshot.
+#' This function exports a map widget as an image file using webshot2 or mapview.
 #' Works in non-Shiny contexts like RMarkdown, scripts, or interactive sessions.
 #'
 #' @param map      A map object created by `map()`.
@@ -11,9 +11,10 @@
 #' @param height   The height of the image in pixels. Default is 600.
 #' @param delay    The delay in seconds before capturing. Default is 2.
 #' @param zoom     The zoom factor for the capture. Default is 1.
-#' @param ...      Additional arguments passed to webshot2::webshot() or mapshot().
+#' @param ...      Additional arguments passed to webshot2::webshot() or mapview::mapshot().
 #' @return         The file path of the saved image (invisibly).
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Create and export a map
@@ -37,17 +38,17 @@ export_map_image <- function(
     stop("htmlwidgets package is required for export_map_image()")
   }
 
-  # Try webshot2 first, then mapshot, then webshot
+  # Try webshot2 first, then mapview, then webshot
   webshot_pkg <- NULL
   if (requireNamespace("webshot2", quietly = TRUE)) {
     webshot_pkg <- "webshot2"
-  } else if (requireNamespace("mapshot", quietly = TRUE)) {
-    webshot_pkg <- "mapshot"
+  } else if (requireNamespace("mapview", quietly = TRUE)) {
+    webshot_pkg <- "mapview"
   } else if (requireNamespace("webshot", quietly = TRUE)) {
     webshot_pkg <- "webshot"
   } else {
     stop(
-      "Please install one of: webshot2, mapshot, or webshot packages for non-Shiny image export"
+      "Please install one of: webshot2, mapview, or webshot packages for non-Shiny image export"
     )
   }
 
@@ -69,8 +70,8 @@ export_map_image <- function(
       zoom = zoom,
       ...
     )
-  } else if (webshot_pkg == "mapshot") {
-    mapshot::mapshot(
+  } else if (webshot_pkg == "mapview") {
+    mapview::mapshot(
       x = map,
       file = filepath,
       vwidth = width,
@@ -107,6 +108,7 @@ export_map_image <- function(
 #' @param ...      Additional arguments passed to htmlwidgets::saveWidget().
 #' @return         The file path of the saved HTML file (invisibly).
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Create and save a map as HTML

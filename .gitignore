@@ -1,5 +1,5 @@
 *.toml
-examples/app.R
+inst/examples/app.R
 
 renv
 .Rprofile

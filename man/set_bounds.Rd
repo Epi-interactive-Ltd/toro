@@ -25,3 +25,20 @@ The map or map proxy object for chaining.
 \description{
 Set the map bounds.
 }
+\examples{
+\dontrun{
+# Load libraries
+library(toro)
+library(spData)
+library(sf)
+
+nz_data <- spData::nz_height |>
+  sf::st_transform(4326)
+
+map() |>
+  set_bounds(list(list(-79, 43), list(-73, 45)))
+
+map() |>
+ set_bounds(bounds = nz_data)
+}
+}

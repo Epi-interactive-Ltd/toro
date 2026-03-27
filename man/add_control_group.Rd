@@ -27,14 +27,13 @@ add_control_group(
 \item{collapsed}{Initial collapsed state. Default is FALSE.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Creates a collapsible group within a control panel that can contain multiple controls.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 map() |>
  add_control_panel(panel_id = "my_panel", direction = "row") |>
  add_control_group(

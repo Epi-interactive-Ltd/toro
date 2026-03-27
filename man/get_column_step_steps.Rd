@@ -14,13 +14,11 @@ get_column_step_steps(column_name, breaks, values)
 \item{values}{Vector of values, length = length(breaks) + 1.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{          List containing the paint or layout option to be set.
-}\if{html}{\out{</div>}}
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the data to be styled by the step breaks in the column.
 }
 \examples{
 get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
-
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_panel.R
 \name{add_control_to_panel}
 \alias{add_control_to_panel}
-\title{Add a control to an existing control panel}
+\title{Add a control to an existing control panel.}
 \usage{
 add_control_to_panel(
   map,
@@ -27,9 +27,9 @@ add_control_to_panel(
 \item{group_id}{Optional ID of the group to add the control to.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{         The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Add a control to an existing control panel
+Used by other toro control functions to add controls to a panel.
 }
+\keyword{internal}

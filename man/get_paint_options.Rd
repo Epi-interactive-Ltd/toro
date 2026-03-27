@@ -9,28 +9,65 @@ get_paint_options(layer_type, options = list())
 \arguments{
 \item{layer_type}{A string indicating the type of layer (e.g., "fill", "circle", "line").}
 
-\item{options}{A list of additional options to customize the paint properties.}
+\item{options}{A list of additional options to customize the paint properties.
+See Maplibre docs for full options.
+\itemize{
+\item colour: The color to use for the layer. Default is "grey". \code{color} is also accepted as
+an alias for \code{colour}.
+\item opacity: The opacity to use for the layer. Default is 1 (fully opaque).
+\item line_width: The width of lines in line layers or the outline width for circle layers.
+Default is 1.
+\item line_dash: The dash pattern for line layers. Default is no dash (solid line).
+You can provide a vector of numbers to specify the dash pattern (e.g., c(2, 4) for a
+pattern of 2 units on, 4 units off).
+\item outline_colour: The color to use for the outline of circle or fill layers.
+Default is the same as \code{colour}. \code{outline_color} is also accepted as an alias for
+\code{outline_colour}.
+\item outline_opacity: The opacity to use for the outline of circle or fill layers.
+Default is the same as \code{opacity}.
+You can also provide any other paint options found in the Maplibre docs for the specific
+layer type, and they will be included in the returned list.
+}}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      A list of paint options suitable for the specified layer type.
-}\if{html}{\out{</div>}}
+A list of paint options suitable for the specified layer type.
 }
 \description{
 This function returns a list of paint options based on the layer type and any
 additional options provided.
 }
+\note{
+You can provide any paint options found in the
+\href{https://maplibre.org/maplibre-style-spec/layers/}{Maplibre Layers docs} in the \code{options}
+argument, and they will be included in the returned list.
+The default options are just a starting point and can be overridden by providing them in the
+\code{options} argument.
+}
 \examples{
 get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
+
+
 get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
+
+
 # Use with get_column for data-driven styling:
 get_paint_options("fill", list(colour = get_column("color"), opacity = get_column("opacity")))
+
+
 get_paint_options("fill", list(
    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 ))
+
+
 get_paint_options("fill", list(
    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 ))
 
+# Provide options outside of the defaults
+get_paint_options("circle", list("circle-blur" = 0.5))
+
+# Provide options outside of the defaults
+get_paint_options("circle", list("circle-blur" = 0.5))
 }
 \seealso{
 \code{\link{get_column}}, \code{\link{get_column_group}},

@@ -2,7 +2,8 @@
 % Please edit documentation in R/views.R
 \name{set_zoom}
 \alias{set_zoom}
-\title{Utilites for the map related to the view.}
+\title{Utilites for the map related to the view.
+Set the map zoom level.}
 \usage{
 set_zoom(map, zoom)
 }
@@ -12,14 +13,18 @@ set_zoom(map, zoom)
 \item{zoom}{The zoom level to set. Default is 2.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item \code{set_zoom}: Set the map zoom level.
-\item \code{set_bounds}: Set the map bounds.
+Utilites for the map related to the view.
 Set the map zoom level.
+}
+\examples{
+\dontrun{
+ map() |>
+  set_zoom(5)
+
+ mapProxy("map") |>
+   set_zoom(5)
 }
 }

@@ -9,13 +9,38 @@ remove_draw_control(proxy, panel_id = NULL)
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{Optional. If provided, removes the draw control from the specified control panel.
-If NULL, removes the standalone draw control.}
+\item{panel_id}{Optional. If provided, removes the draw control from the specified control
+panel. If NULL, removes the standalone draw control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove the draw control from the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("remove_draw_control", "Remove draw control")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+    add_draw_control()
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     remove_draw_control()
+ }) |>
+   bindEvent(input$remove_draw_control)
+}
+}
 }
