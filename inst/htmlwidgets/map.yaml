@@ -1,9 +1,4 @@
 dependencies:
-  - name: html2canvas
-    version: 1.4.1
-    src:
-      file: htmlwidgets/lib/html2canvas
-    script: html2canvas.min.js
   - name: mapbox-gl-draw
     version: 1.5.0
     src:

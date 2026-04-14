@@ -8,6 +8,15 @@ This package is proudly brought to you by:
 
 - **Jocelyn Qian**. Contributor.
 
+- **MapLibre contributors**. Copyright holder.\
+  MapLibre GL JS library
+
+- **Turf contributors**. Copyright holder.\
+  turf plugin
+
+- **Mapbox contributors**. Copyright holder.\
+  mapbox-gl-draw plugin
+
 - **[![Epi
   Group](https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true)](https://epi.group/)**.
   Copyright holder, funder.

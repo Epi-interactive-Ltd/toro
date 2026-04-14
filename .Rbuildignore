@@ -8,4 +8,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-pkgdown/
+^\.lintr$
+^\.prettierrc$
+^\.github$

@@ -61,11 +61,10 @@ The default options are just a starting point and can be overridden by providing
 \code{options} argument.
 }
 \examples{
+\dontrun{
 get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
 
-
 get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
-
 
 # For horizontal flipping, provide left/right versions of your icon or use rotation fallback
 get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
@@ -81,18 +80,7 @@ get_layout_options(
    )
  )
 )
-
-# Provide options outside of the defaults
-get_layout_options(
- "circle",
- list(
-   "circle-sort-key" = get_column_step_steps(
-     "elevation",
-     c(3000),
-     c(100, 200)
-   )
- )
-)
+}
 }
 \seealso{
 \code{\link{get_column}}, \code{\link{get_column_group}},

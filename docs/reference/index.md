@@ -232,7 +232,6 @@ Functions to get information from map interaction
 Additional functions
 
 - [`export_map_image()`](https://epi-interactive-ltd.github.io/toro/reference/export_map_image.md)
-  : Utilities for the map related to exports. Export map as an image
-  (non-Shiny context).
+  : Export map as an image (non-Shiny context).
 - [`save_map_html()`](https://epi-interactive-ltd.github.io/toro/reference/save_map_html.md)
   : Save map as standalone HTML file.

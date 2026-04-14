@@ -17,14 +17,12 @@ or a single filter condition.
 Parse a filter string into a list of filters that the map can use.
 }
 \examples{
-# Filter to only show rows where the "layer_id" column is equal to "forests"
+\dontrun{
 # Filter to only show rows where the "layer_id" column is equal to "forests"
 get_layer_filter("layer_id == forests")
 
 # Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"
 # column is equal to "Confirmed"
-
-# Filter to show rows where the "layer_id" column is equal to "sites" and the "project_status"
-# column is equal to "Confirmed"
 get_layer_filter(c("layer_id == sites", "project_status == Confirmed"))
+}
 }

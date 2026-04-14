@@ -2,8 +2,7 @@
 % Please edit documentation in R/export.R
 \name{export_map_image}
 \alias{export_map_image}
-\title{Utilities for the map related to exports.
-Export map as an image (non-Shiny context).}
+\title{Export map as an image (non-Shiny context).}
 \usage{
 export_map_image(
   map,

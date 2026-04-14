@@ -3,7 +3,9 @@
 ## Preparing the data
 
 ``` r
+
 library(sf)
+#> Warning: package 'sf' was built under R version 4.5.2
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
 
 data(quakes)
@@ -29,6 +31,7 @@ You can pass either a `map`or `mapProxy` object to
 [`add_source()`](https://epi-interactive-ltd.github.io/toro/reference/add_source.md).
 
 ``` r
+
 library(toro)
 
 map() |>
@@ -53,6 +56,7 @@ the source and layer in a single step, without needing to call
 separately.
 
 ``` r
+
 library(toro)
 
 map() |>

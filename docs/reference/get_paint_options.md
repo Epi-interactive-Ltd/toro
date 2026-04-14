@@ -65,225 +65,23 @@ them in the `options` argument.
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
-#> $`line-color`
-#> [1] "blue"
-#> 
-#> $`line-opacity`
-#> [1] 0.8
-#> 
-#> $`line-width`
-#> [1] 2
-#> 
-#> $`line-dasharray`
-#> $`line-dasharray`[[1]]
-#> [1] 1
-#> 
-#> $`line-dasharray`[[2]]
-#> [1] 0
-#> 
-#> 
-
 
 get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
-#> $`circle-color`
-#> [1] "red"
-#> 
-#> $`circle-opacity`
-#> [1] 1
-#> 
-#> $`circle-radius`
-#> [1] 10
-#> 
-#> $`circle-stroke-color`
-#> [1] "black"
-#> 
-#> $`circle-stroke-opacity`
-#> [1] 1
-#> 
-#> $`circle-stroke-width`
-#> [1] 1
-#> 
-#> $outline_colour
-#> [1] "black"
-#> 
-
 
 # Use with get_column for data-driven styling:
 get_paint_options("fill", list(colour = get_column("color"), opacity = get_column("opacity")))
-#> $`fill-color`
-#> $`fill-color`[[1]]
-#> [1] "get"
-#> 
-#> $`fill-color`[[2]]
-#> [1] "color"
-#> 
-#> 
-#> $`fill-opacity`
-#> $`fill-opacity`[[1]]
-#> [1] "get"
-#> 
-#> $`fill-opacity`[[2]]
-#> [1] "opacity"
-#> 
-#> 
-#> $`fill-outline-color`
-#> $`fill-outline-color`[[1]]
-#> [1] "get"
-#> 
-#> $`fill-outline-color`[[2]]
-#> [1] "color"
-#> 
-#> 
-
 
 get_paint_options("fill", list(
    colour = get_column_group("group", c("A" = "green", "B" = "blue"))
 ))
-#> $`fill-color`
-#> $`fill-color`[[1]]
-#> [1] "match"
-#> 
-#> $`fill-color`[[2]]
-#> $`fill-color`[[2]][[1]]
-#> [1] "get"
-#> 
-#> $`fill-color`[[2]][[2]]
-#> [1] "group"
-#> 
-#> 
-#> $`fill-color`[[3]]
-#> [1] "A"
-#> 
-#> $`fill-color`[[4]]
-#> [1] "green"
-#> 
-#> $`fill-color`[[5]]
-#> [1] "B"
-#> 
-#> $`fill-color`[[6]]
-#> [1] "blue"
-#> 
-#> $`fill-color`[[7]]
-#> [1] "#cccccc"
-#> 
-#> 
-#> $`fill-opacity`
-#> [1] 1
-#> 
-#> $`fill-outline-color`
-#> $`fill-outline-color`[[1]]
-#> [1] "match"
-#> 
-#> $`fill-outline-color`[[2]]
-#> $`fill-outline-color`[[2]][[1]]
-#> [1] "get"
-#> 
-#> $`fill-outline-color`[[2]][[2]]
-#> [1] "group"
-#> 
-#> 
-#> $`fill-outline-color`[[3]]
-#> [1] "A"
-#> 
-#> $`fill-outline-color`[[4]]
-#> [1] "green"
-#> 
-#> $`fill-outline-color`[[5]]
-#> [1] "B"
-#> 
-#> $`fill-outline-color`[[6]]
-#> [1] "blue"
-#> 
-#> $`fill-outline-color`[[7]]
-#> [1] "#cccccc"
-#> 
-#> 
-
 
 get_paint_options("fill", list(
    opacity = get_column_step_steps("percent", c(25, 75), c("red", "orange", "yellow"))
 ))
-#> $`fill-color`
-#> [1] "grey"
-#> 
-#> $`fill-opacity`
-#> $`fill-opacity`[[1]]
-#> [1] "step"
-#> 
-#> $`fill-opacity`[[2]]
-#> $`fill-opacity`[[2]][[1]]
-#> [1] "get"
-#> 
-#> $`fill-opacity`[[2]][[2]]
-#> [1] "percent"
-#> 
-#> 
-#> $`fill-opacity`[[3]]
-#> [1] "red"
-#> 
-#> $`fill-opacity`[[4]]
-#> [1] 25
-#> 
-#> $`fill-opacity`[[5]]
-#> [1] "orange"
-#> 
-#> $`fill-opacity`[[6]]
-#> [1] 75
-#> 
-#> $`fill-opacity`[[7]]
-#> [1] "yellow"
-#> 
-#> 
-#> $`fill-outline-color`
-#> [1] "grey"
-#> 
 
 # Provide options outside of the defaults
 get_paint_options("circle", list("circle-blur" = 0.5))
-#> $`circle-color`
-#> [1] "grey"
-#> 
-#> $`circle-opacity`
-#> [1] 1
-#> 
-#> $`circle-radius`
-#> [1] 5
-#> 
-#> $`circle-stroke-color`
-#> [1] "grey"
-#> 
-#> $`circle-stroke-opacity`
-#> [1] 1
-#> 
-#> $`circle-stroke-width`
-#> [1] 1
-#> 
-#> $`circle-blur`
-#> [1] 0.5
-#> 
-
-# Provide options outside of the defaults
-get_paint_options("circle", list("circle-blur" = 0.5))
-#> $`circle-color`
-#> [1] "grey"
-#> 
-#> $`circle-opacity`
-#> [1] 1
-#> 
-#> $`circle-radius`
-#> [1] 5
-#> 
-#> $`circle-stroke-color`
-#> [1] "grey"
-#> 
-#> $`circle-stroke-opacity`
-#> [1] 1
-#> 
-#> $`circle-stroke-width`
-#> [1] 1
-#> 
-#> $`circle-blur`
-#> [1] 0.5
-#> 
+} # }
 ```

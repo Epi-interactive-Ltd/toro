@@ -17,7 +17,7 @@ additional options provided."></head><body>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fa-home fa-lg"></span></a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html" aria-label="Home"><span class="fa fa-home fa-lg"></span></a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -116,227 +116,25 @@ The default options are just a starting point and can be overridden by providing
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"line"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"blue"</span>, opacity <span class="op">=</span> <span class="fl">0.8</span>, line_width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`line-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "blue"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`line-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`line-width`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`line-dasharray`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`line-dasharray`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`line-dasharray`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"line"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"blue"</span>, opacity <span class="op">=</span> <span class="fl">0.8</span>, line_width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"circle"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"red"</span>, circle_radius <span class="op">=</span> <span class="fl">10</span>, outline_colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "red"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-radius`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "black"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-width`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $outline_colour</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "black"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use with get_column for data-driven styling:</span></span></span>
 <span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"fill"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="get_column.html">get_column</a></span><span class="op">(</span><span class="st">"color"</span><span class="op">)</span>, opacity <span class="op">=</span> <span class="fu"><a href="get_column.html">get_column</a></span><span class="op">(</span><span class="st">"opacity"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "color"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "opacity"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "color"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"fill"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>   colour <span class="op">=</span> <span class="fu"><a href="get_column_group.html">get_column_group</a></span><span class="op">(</span><span class="st">"group"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span> <span class="op">=</span> <span class="st">"green"</span>, <span class="st">"B"</span> <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "match"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[2]][[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[2]][[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "A"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "green"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "B"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "blue"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`[[7]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#cccccc"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "match"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[2]][[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[2]][[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "A"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "green"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "B"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "blue"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`[[7]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#cccccc"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"fill"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>   opacity <span class="op">=</span> <span class="fu"><a href="get_column_step_steps.html">get_column_step_steps</a></span><span class="op">(</span><span class="st">"percent"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">75</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "step"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[2]][[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "get"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[2]][[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "percent"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "red"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "orange"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-opacity`[[7]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "yellow"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`fill-outline-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Provide options outside of the defaults</span></span></span>
 <span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"circle"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"circle-blur"</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-radius`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-width`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-blur`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Provide options outside of the defaults</span></span></span>
-<span class="r-in"><span><span class="fu">get_paint_options</span><span class="op">(</span><span class="st">"circle"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"circle-blur"</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-radius`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-color`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-opacity`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-stroke-width`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`circle-blur`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
