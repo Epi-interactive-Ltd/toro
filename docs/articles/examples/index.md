@@ -1,4 +1,4 @@
-# Examples
+# All Examples
 
 Welcome to the toro examples gallery! These interactive examples
 demonstrate how to create powerful map visualizations using toro.

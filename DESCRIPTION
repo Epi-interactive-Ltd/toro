@@ -35,5 +35,7 @@ Suggests:
     webshot2,
     mapview,
     webshot,
-    devtools
+    devtools,
+    spData
 VignetteBuilder: knitr
+Config/Needs/website: rmarkdown

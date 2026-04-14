@@ -1,4 +1,4 @@
-# view-controls
+# View Controls
 
 ``` r
 
