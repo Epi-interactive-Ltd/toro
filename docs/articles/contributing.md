@@ -1,4 +1,4 @@
-# contributing
+# Contributing to toro
 
 ## Contributing to {toro}
 

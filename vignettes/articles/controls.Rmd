@@ -1,0 +1,23 @@
+---
+title: "Map Controls"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+
+Various controls can be added to the map
+
+
+```{r setup}
+library(toro)
+
+map() |>
+  add_cursor_coords_control() |>
+  add_zoom_control()
+```

@@ -7,14 +7,13 @@ template:
 
 assets:
   - pkgdown/assets
-  - vignettes/images
 
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
   epi:
     href: https://epi.group/
-    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
+    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/man/figures/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
   footer:
     roles: [fnd]
     text: 'Funded by'
@@ -39,46 +38,14 @@ navbar:
   components:
     home:
       icon: fa-home fa-lg
-      aria-label: "Home"
+      aria-label: 'Home'
       href: index.html
     reference:
       text: Reference
       href: reference/index.html
-    articles:
-      text: Articles
-      menu:
-        - text: Getting started with toro
-          href: articles/getting-started.html
-        - text: Integration with Shiny
-          href: articles/shiny-integration.html
-        - text: '---'
-        - text: Layers
-        - text: Modifying map tiles
-          href: articles/map-tiles.html
-        - text: Customising layers
-          href: articles/layers.html
-        - text: Popups/Hovers
-          href: articles/popups.html
-        - text: Clusters/Spiderfying
-          href: articles/map-clusters.html
-        - text: '---'
-        - text: Controls
-        - text: Adding controls to your map
-          href: articles/controls.html
-        - text: Draw controls
-          href: articles/draw-controls.html
-        - text: View controls
-          href: articles/view-controls.html
-        - text: '---'
-        - text: Advanced features
-        - text: Animations
-          href: articles/animations.html
-        - text: '---'
-        - text: 'Contributing to toro'
-          href: articles/contributing.html
     examples:
       text: 'Examples'
-      href: 'articles/examples/index.html'
+      href: articles/examples/index.html
 
 reference:
   - title: 'Map Creation'
@@ -207,36 +174,36 @@ reference:
 articles:
   - title: 'Getting Started'
     contents:
-      - getting-started
+      - articles/getting-started
   - title: 'Integration'
     contents:
-      - shiny-integration
+      - articles/shiny-integration
   - title: 'Layers'
     contents:
-      - layers
-      - map-tiles
-      - popups
-      - map-clusters
+      - articles/layers
+      - articles/map-tiles
+      - articles/popups
+      - articles/map-clusters
   - title: 'Controls'
     contents:
-      - controls
-      - draw-controls
-      - view-controls
+      - articles/controls
+      - articles/draw-controls
+      - articles/view-controls
   - title: 'Advanced Features'
     contents:
-      - animations
+      - articles/animations
   - title: 'Contributing'
     contents:
-      - contributing
+      - articles/contributing
   - title: 'Examples'
     contents:
-      - examples/index
-      - examples/layers/add-fill-layer
-      - examples/layers/add-line-layer
-      - examples/layers/add-circle-layer
-      - examples/layers/add-symbol-layer
-      - examples/layers/add-text-layer
-      - examples/sources/add-feature-service-source
-      - examples/sources/add-geojson-source
-      - examples/sources/add-image-source
-      - examples/layers/lat-lng-grid
+      - articles/examples/index
+      - articles/examples/sources/add-feature-service-source
+      - articles/examples/sources/add-geojson-source
+      - articles/examples/sources/add-image-source
+      - articles/examples/layers/add-fill-layer
+      - articles/examples/layers/add-line-layer
+      - articles/examples/layers/add-circle-layer
+      - articles/examples/layers/add-symbol-layer
+      - articles/examples/layers/add-text-layer
+      - articles/examples/layers/lat-lng-grid

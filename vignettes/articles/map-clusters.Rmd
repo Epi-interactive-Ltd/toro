@@ -1,0 +1,388 @@
+---
+title: 'Clusters/Spiderfying'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+library(dplyr)
+library(sf)
+
+data(quakes)
+quakes_data <- quakes |>
+  st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+duplicated_row1 <- slice(quakes_data, 1) |> slice(rep(1, 100))
+duplicated_row2 <- slice(quakes_data, 2) |> slice(rep(1, 500))
+
+duplicated_data <- quakes_data |>
+  head(10) |>
+  rbind(duplicated_row1) |>
+  rbind(duplicated_row2) |>
+  mutate(row_num = row_number()) |>
+  mutate(popup = paste("Point number:", row_num))
+
+quakes_data <- quakes_data |>
+  head(100) |>
+  mutate(row_num = row_number()) |>
+  mutate(popup = paste("Point number:", row_num))
+```
+
+```{r setup}
+library(toro)
+
+base_map <- map(
+  imageSources = list(
+    list(
+      id = "map_pin",
+      url = "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png"
+    )
+  )
+)
+```
+
+## Adding clusters
+
+> **Note:** Clusters currently only work with symbol(icon/pin) layers.
+
+Clusters are disabled by default, but symbols with the same coordinates will **always** produce a cluster (even if `can_cluster` is set to false).
+
+Clicking on a cluster will do one of two things:
+
+- Zoom into that clusters pins
+
+- Spiderfy the pins in that cluster so that they all become visible
+
+```{r default-map, results='asis'}
+base_map  |>
+  add_symbol_layer(
+    id = "earthquakes",
+    source = quakes_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup"
+  )
+```
+
+## Enabling clusters
+
+```{r default-clusters-map, results='asis'}
+base_map  |>
+  add_symbol_layer(
+    id = "earthquakes",
+    source = quakes_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = TRUE
+  )
+```
+
+## Cluster customisation
+
+You can customise the cluster appearance using `clusterOptions`.
+This can be set globally when creating the `map` or for specific layers when adding the layer.
+
+
+
+### Cluster circles
+
+`clusterOptions.circleOptions` changes the apperance of the clusters circle.
+
+Available circle (paint/layout) properties can be found [here](https://maplibre.org/maplibre-style-spec/layers/#circle).
+
+```{r cluster-circle-customisation, results='asis'}
+map(
+  imageSources = list(
+    list(
+      id = "map_pin",
+      url = "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png"
+    )
+  ),
+  # Setting the appearance globally for all clusters in the map
+  clusterOptions = list(
+    circleOptions = list(
+      paint = list(
+        "circle-color" = "#ebc642",
+        "circle-stroke-color" = "#fc038c",
+        "circle-radius" = 50
+      )
+    )
+  )
+) |>
+  add_symbol_layer(
+    id = "earthquakes",
+    source = quakes_data |> head(nrow(quakes_data) / 2),
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = TRUE
+  ) |>
+  add_symbol_layer(
+    id = "earthquakes_two",
+    source = quakes_data |> tail(nrow(quakes_data) / 2),
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = TRUE,
+    # Override the global cluster appearance for this layer only
+    clusterOptions = list(
+      circleOptions = list(
+        paint = list(
+          "circle-color" = "green",
+          "circle-stroke-color" = "orange",
+          "circle-radius" = 20
+        )
+      )
+    )
+  )
+```
+
+### Cluster text
+
+`clusterOptions.textOptions` changes the apperance of the clusters text.
+
+Available text(symbol) (paint/layout) properties can be found [here](https://maplibre.org/maplibre-style-spec/layers/#symbol).
+
+```{r cluster-text-customisation, results='asis'}
+base_map  |>
+  add_symbol_layer(
+    id = "earthquakes",
+    source = quakes_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = TRUE,
+    clusterOptions = list(
+      textOptions = list(
+        paint = list(
+          "text-color" = "red"
+        )
+      )
+    )
+  )
+```
+
+### Advanced cluster customisation
+
+An example of some more advanced customising (see [this example](https://maplibre.org/maplibre-gl-js/docs/examples/create-and-style-clusters/)).
+
+```{r advanced-cluster-customisation, results='asis'}
+base_map |>
+  add_symbol_layer(
+    id = "earthquakes",
+    source = quakes_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = TRUE,
+    clusterOptions = list(
+      circleOptions = list(
+        paint = list(
+          "circle-color" = get_column_step_steps(
+            "point_count",
+            c(2, 5, 10),
+            c("red", "orange", "yellow", "green")
+          ),
+          "circle-stroke-color" = get_column_step_steps(
+            "point_count",
+            c(2, 5, 10),
+            c("red", "orange", "yellow", "green")
+          ),
+          "circle-radius" = get_column_step_steps(
+            "point_count",
+            c(2, 5, 10),
+            c(10, 20, 30, 40)
+          )
+        ),
+        layout = list(
+          "circle-sort-key" = get_column_step_steps(
+            "point_count",
+            c(2, 5, 10),
+            c(4, 3, 2, 1)
+          )
+        )
+      )
+    )
+  )
+```
+
+## Cluster Spiderfying
+
+Spiderfying handles viewing multiple pins in a cluster (pins in close proximity).
+When the map is zoomed in to the max zoom level and cluster that still appear will spiderfy when clicked on.
+This is so that the user is able to view all pins even if they appear in the same cluster.
+
+There are two reasons why a cluster would need to spiderfy:
+
+- At the maps max zoom there are still pins with close enough coordinates that they are in a cluster (layer clustering is enabled)
+
+- A group of pins share the same coordinates. In this case, regardless of whether or not the layer has clustering enabled a cluster will **always** appear. This is due to the fact that without this there would be no way for the user to know that there are multiple pins there as they would all be stacked on top of each other and look like a single pin.
+
+### Spiderfying on max zoom
+
+By setting a low max zoom we can see that points that there are clusters for points we know are not at the same coordinates (from above examples) but are in close enough proximity at max zoom to still be in a cluster.
+
+```{r spiderfy-max-zoom, results='asis'}
+map(
+  maxZoom = 5,
+  imageSources = list(
+    list(
+      id = "map_pin",
+      url = "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png"
+    )
+  )
+) |>
+  add_symbol_layer(
+    id = "earthquakes",
+    source = quakes_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = TRUE
+  )
+```
+
+### Spiderfy with same coordinates
+
+When pins have the same coordinates they will **always appear in a cluster**, even if the layer has set `can_cluster` to false.
+
+```{r spiderfy-same-coords, results='asis'}
+base_map |>
+  add_symbol_layer(
+    id = "duplicated_pins",
+    source = duplicated_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = FALSE
+  )
+```
+
+### Spiderfy customisation
+
+There are 2 aspects of the spiderfying that are customisable:
+
+#### Customise max pins shown in spiderfy
+
+By default the spiderfying only shows 100 pins.
+You can see this in the example above where one of the clusters says it has 501 points in it but you can only see 100 pins when spiderfying.
+
+This can be changed by setting `clusterOptions.spiderfyOptions.maxSpiderfyPins` when creating the map.
+Or, if you want to override the global setting for a specific layer, you can set `clusterOptions.spiderfyOptions.maxSpiderfyPins` when adding the layer.
+
+```{r spiderfy-max-pins, results='asis'}
+map(
+  imageSources = list(
+    list(
+      id = "map_pin",
+      url = "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png"
+    )
+  ),
+  clusterOptions = list(
+    spiderfyOptions = list(
+      maxSpiderfyPins = 500
+    )
+  )
+) |>
+  add_symbol_layer(
+    id = "duplicated_pins",
+    source = duplicated_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = FALSE,
+    clusterOptions = list(
+      spiderfyOptions = list(
+        # maxSpiderfyPins = 5 # This would override the global setting for this layer only
+      )
+    )
+  )
+```
+
+#### Customise spiderfy appearance
+
+Like with clusters you can customise the spiderfys appearance by changing `clusterOptions.spiderfyOptions.maxSpiderfyPins`.
+**Spiderfying appearance can only be set globally, not per layer.**
+
+Available line (paint/layout) properties can be found [here](https://maplibre.org/maplibre-style-spec/layers/#line).
+
+```{r spiderfy-appearnce, results='asis'}
+map(
+  imageSources = list(
+    list(
+      id = "map_pin",
+      url = "https://upload.wikimedia.org/wikipedia/commons/f/f2/678111-map-marker-512.png"
+    )
+  ),
+  clusterOptions = list(
+    spiderfyOptions = list(
+      paint = list(
+        "line-color" = "purple",
+        "line-width" = 2
+      )
+    )
+  )
+) |>
+  add_symbol_layer(
+    id = "duplicated_pins",
+    source = duplicated_data,
+    layout = toro::get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = "map_pin",
+        icon_size = 0.05
+      )
+    ),
+    popup_column = "popup",
+    can_cluster = FALSE
+  )
+```

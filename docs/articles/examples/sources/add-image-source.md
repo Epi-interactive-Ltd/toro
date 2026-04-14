@@ -30,7 +30,7 @@ epi_location <- data.frame(
 map() |>
   add_image(
     image_id = "epi_logo",
-    image_url = "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/vignettes/images/epi-logo.png"
+    image_url = "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/man/figures/epi-logo.png"
   ) |>
   add_symbol_layer(
     id = "epi",

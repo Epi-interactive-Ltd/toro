@@ -2,28 +2,28 @@ pandoc: 3.9.0.2
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  examples/layers/add-circle-layer: examples/layers/add-circle-layer.html
-  examples/sources/add-feature-service-source: examples/sources/add-feature-service-source.html
-  examples/layers/add-fill-layer: examples/layers/add-fill-layer.html
-  examples/sources/add-geojson-source: examples/sources/add-geojson-source.html
-  examples/sources/add-image-source: examples/sources/add-image-source.html
-  examples/layers/add-line-layer: examples/layers/add-line-layer.html
-  examples/layers/add-symbol-layer: examples/layers/add-symbol-layer.html
-  examples/layers/add-text-layer: examples/layers/add-text-layer.html
-  animations: animations.html
-  contributing: contributing.html
-  controls: controls.html
-  draw-controls: draw-controls.html
-  getting-started: getting-started.html
-  examples/index: examples/index.html
-  examples/layers/lat-lng-grid: examples/layers/lat-lng-grid.html
-  layers: layers.html
-  map-clusters: map-clusters.html
-  map-tiles: map-tiles.html
-  popups: popups.html
-  shiny-integration: shiny-integration.html
-  view-controls: view-controls.html
-last_built: 2026-04-14T00:49Z
+  articles/examples/layers/add-circle-layer: examples/layers/add-circle-layer.html
+  articles/examples/sources/add-feature-service-source: examples/sources/add-feature-service-source.html
+  articles/examples/layers/add-fill-layer: examples/layers/add-fill-layer.html
+  articles/examples/sources/add-geojson-source: examples/sources/add-geojson-source.html
+  articles/examples/sources/add-image-source: examples/sources/add-image-source.html
+  articles/examples/layers/add-line-layer: examples/layers/add-line-layer.html
+  articles/examples/layers/add-symbol-layer: examples/layers/add-symbol-layer.html
+  articles/examples/layers/add-text-layer: examples/layers/add-text-layer.html
+  articles/animations: animations.html
+  articles/contributing: contributing.html
+  articles/controls: controls.html
+  articles/draw-controls: draw-controls.html
+  articles/getting-started: getting-started.html
+  articles/examples/index: examples/index.html
+  articles/examples/layers/lat-lng-grid: examples/layers/lat-lng-grid.html
+  articles/layers: layers.html
+  articles/map-clusters: map-clusters.html
+  articles/map-tiles: map-tiles.html
+  articles/popups: popups.html
+  articles/shiny-integration: shiny-integration.html
+  articles/view-controls: view-controls.html
+last_built: 2026-04-14T03:55Z
 urls:
   reference: https://epi-interactive-ltd.github.io/toro/reference
   article: https://epi-interactive-ltd.github.io/toro/articles
