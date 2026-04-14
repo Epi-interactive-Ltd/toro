@@ -39,6 +39,7 @@ navbar:
   components:
     home:
       icon: fa-home fa-lg
+      aria-label: "Home"
       href: index.html
     reference:
       text: Reference

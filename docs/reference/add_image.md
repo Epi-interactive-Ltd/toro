@@ -30,7 +30,6 @@ The map or map proxy object for chaining.
 
 ``` r
 if (FALSE) { # \dontrun{
-
 image_url <- paste0(
  "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/",
  "Leaf_icon.png/600px-Leaf_icon.png"

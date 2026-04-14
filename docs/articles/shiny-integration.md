@@ -4,7 +4,9 @@
 > more](https://shiny.posit.co/)
 
 ``` r
+
 library(shiny)
+#> Warning: package 'shiny' was built under R version 4.5.2
 library(toro)
 
 ui <- fluidPage(
@@ -31,6 +33,7 @@ Typically you use `map` to create the initial static map widget, and
 then use `mapProxy` to update more dynamic aspects of the map.
 
 ``` r
+
 library(shiny)
 library(toro)
 
@@ -217,6 +220,7 @@ The Shiny input value is available as `input$<mapId>_loaded`, where
 `<mapId>` is the output ID of the map.
 
 ``` r
+
 # In UI
 mapOutput("my_map")
 
@@ -238,6 +242,7 @@ append `_feature_click` to the map ID to get the input ID
 (`input$<mapId>_feature_click`).
 
 ``` r
+
 # In UI
 mapOutput("my_map")
 
@@ -255,6 +260,7 @@ app. Just append `_bounds` / `_zoom` to the map ID to get the input ID
 (`input$<mapId>_bounds` / `input$<mapId>_zoom`).
 
 ``` r
+
 # In UI
 mapOutput("my_map")
 

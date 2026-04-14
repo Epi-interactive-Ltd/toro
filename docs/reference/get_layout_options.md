@@ -90,85 +90,13 @@ them in the `options` argument.
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 get_layout_options("line", list(line_cap = "butt", line_join = "bevel"))
-#> $`line-cap`
-#> [1] "butt"
-#> 
-#> $`line-join`
-#> [1] "bevel"
-#> 
-
 
 get_layout_options("symbol", list(icon_image = "yellow_pin", icon_size = 1.5))
-#> $`icon-allow-overlap`
-#> [1] TRUE
-#> 
-#> $`icon-image`
-#> [1] "yellow_pin"
-#> 
-#> $`icon-size`
-#> [1] 1.5
-#> 
-#> $`icon-anchor`
-#> [1] "bottom"
-#> 
-#> $`icon-offset`
-#> $`icon-offset`[[1]]
-#> [1] 0
-#> 
-#> $`icon-offset`[[2]]
-#> [1] 0
-#> 
-#> 
-#> $`icon-rotate`
-#> [1] 0
-#> 
-#> $`text-font`
-#> $`text-font`[[1]]
-#> [1] "Open Sans Regular"
-#> 
-#> 
-#> $`text-size`
-#> [1] 12
-#> 
-
 
 # For horizontal flipping, provide left/right versions of your icon or use rotation fallback
 get_layout_options("symbol", list(icon_image = "arrow", icon_flip_horizontal = TRUE))
-#> $`icon-allow-overlap`
-#> [1] TRUE
-#> 
-#> $`icon-image`
-#> [1] "arrow"
-#> 
-#> $`icon-size`
-#> [1] 1
-#> 
-#> $`icon-anchor`
-#> [1] "bottom"
-#> 
-#> $`icon-offset`
-#> $`icon-offset`[[1]]
-#> [1] 0
-#> 
-#> $`icon-offset`[[2]]
-#> [1] 0
-#> 
-#> 
-#> $`icon-rotate`
-#> [1] 0
-#> 
-#> $`text-font`
-#> $`text-font`[[1]]
-#> [1] "Open Sans Regular"
-#> 
-#> 
-#> $`text-size`
-#> [1] 12
-#> 
-#> $`icon-flip-horizontal`
-#> [1] TRUE
-#> 
 
 # Provide options outside of the defaults
 get_layout_options(
@@ -181,60 +109,5 @@ get_layout_options(
    )
  )
 )
-#> $`circle-sort-key`
-#> $`circle-sort-key`[[1]]
-#> [1] "step"
-#> 
-#> $`circle-sort-key`[[2]]
-#> $`circle-sort-key`[[2]][[1]]
-#> [1] "get"
-#> 
-#> $`circle-sort-key`[[2]][[2]]
-#> [1] "elevation"
-#> 
-#> 
-#> $`circle-sort-key`[[3]]
-#> [1] 100
-#> 
-#> $`circle-sort-key`[[4]]
-#> [1] 3000
-#> 
-#> $`circle-sort-key`[[5]]
-#> [1] 200
-#> 
-#> 
-
-# Provide options outside of the defaults
-get_layout_options(
- "circle",
- list(
-   "circle-sort-key" = get_column_step_steps(
-     "elevation",
-     c(3000),
-     c(100, 200)
-   )
- )
-)
-#> $`circle-sort-key`
-#> $`circle-sort-key`[[1]]
-#> [1] "step"
-#> 
-#> $`circle-sort-key`[[2]]
-#> $`circle-sort-key`[[2]][[1]]
-#> [1] "get"
-#> 
-#> $`circle-sort-key`[[2]][[2]]
-#> [1] "elevation"
-#> 
-#> 
-#> $`circle-sort-key`[[3]]
-#> [1] 100
-#> 
-#> $`circle-sort-key`[[4]]
-#> [1] 3000
-#> 
-#> $`circle-sort-key`[[5]]
-#> [1] 200
-#> 
-#> 
+} # }
 ```

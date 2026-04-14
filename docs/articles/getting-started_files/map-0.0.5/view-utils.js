@@ -16,7 +16,12 @@
 function disable3DView(map) {
   map.dragRotate.disable();
   map.keyboard.disable();
-  map.touchZoomRotate.disable();
+  map.touchZoomRotate.enable();
+  map.touchZoomRotate.disableRotation(); // Only allow zooming, not rotation, on touch devices
+  // Disables 2-finger swipe-up/down pitch gestures
+  map.setPitch(0);
+  map.on('pitchstart', () => map.setPitch(0));
+  map.on('pitch', () => map.setPitch(0));
 }
 
 /**
