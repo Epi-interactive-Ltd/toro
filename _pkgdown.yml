@@ -7,14 +7,13 @@ template:
 
 assets:
   - pkgdown/assets
-  - vignettes/images
 
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
   epi:
     href: https://epi.group/
-    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
+    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/man/figures/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
   footer:
     roles: [fnd]
     text: 'Funded by'
