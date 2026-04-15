@@ -187,8 +187,6 @@ articles:
   - title: 'Controls'
     contents:
       - articles/controls
-      - articles/draw-controls
-      - articles/view-controls
   - title: 'Advanced Features'
     contents:
       - articles/animations
@@ -207,3 +205,4 @@ articles:
       - articles/examples/layers/add-symbol-layer
       - articles/examples/layers/add-text-layer
       - articles/examples/layers/lat-lng-grid
+      - articles/examples/controls/draw-control

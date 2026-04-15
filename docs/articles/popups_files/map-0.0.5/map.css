@@ -58,6 +58,8 @@
   border: none;
   color: black;
   min-width: fit-content;
+  width: fit-content;
+  min-width: 25px;
 }
 
 .draw-control-panel.mapboxgl-ctrl-group {
@@ -71,6 +73,10 @@
 .draw-control-panel .mapbox-gl-draw_ctrl-draw-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
+.draw-control-panel .mapbox-gl-draw_ctrl-draw-btn.active,
+.mapboxgl-ctrl .mapbox-gl-draw_ctrl-draw-btn.active,
+.draw-control .mapbox-gl-draw_ctrl-draw-btn.active,
+.draw-control .mapbox-gl-draw_ctrl-draw-btn:active,
 .draw-control-panel .mapbox-gl-draw_ctrl-draw-btn.active {
   background-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.9);

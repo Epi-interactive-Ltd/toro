@@ -56,4 +56,10 @@ Description goes here
 
 Description goes here
 
-------------------------------------------------------------------------
+## Controls
+
+#### [Draw Control](https://epi-interactive-ltd.github.io/toro/articles/examples/controls/draw-control.md)
+
+![Description goes here](../../reference/figures/draw-control.png)
+
+Description goes here

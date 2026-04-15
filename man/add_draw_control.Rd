@@ -9,9 +9,9 @@ add_draw_control(
   map,
   id = "draw_control",
   position = "top-right",
-  modes = c("polygon", "trash"),
-  active_colour = "#0FB3CE",
-  inactive_colour = "#0FB3CE",
+  modes = c("polygon"),
+  active_colour = "#04AAC1",
+  inactive_colour = "#04AAC1",
   mode_labels = list(),
   panel_id = NULL,
   section_title = NULL,
@@ -26,15 +26,15 @@ add_draw_control(
 \item{position}{The position of the draw control on the map. Default is \code{"top-right"}.
 Options are "top-left", "top-right", "bottom-left", "bottom-right".}
 
-\item{modes}{A vector of modes to enable in the draw control. Default is \code{c("polygon", "trash")}.
-Options include "polygon", "trash", "line".}
+\item{modes}{A vector of modes to enable in the draw control. Default is \code{c("polygon")}.
+Options include "polygon", "delete", "line", and "point".}
 
-\item{active_colour}{The colour for the drawn shapes. Default is \code{"#0FB3CE"}.}
+\item{active_colour}{The colour for the drawn shapes. Default is \code{"#04AAC1"}.}
 
-\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#0FB3CE"}.}
+\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#04AAC1"}.}
 
 \item{mode_labels}{A named list of labels for each mode.
-For example, \code{list(polygon = "Draw Polygon", trash = "Delete Shape")}.}
+For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}.}
 
 \item{panel_id}{ID of control panel to add to (optional).}
 
