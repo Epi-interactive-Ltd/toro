@@ -200,15 +200,7 @@ function addLayerOnFeatureClick(el, layerId) {
   if (HTMLWidgets.shinyMode) {
     el.mapInstance.on('click', layerId, (e) => {
       const feature = e.features[0];
-      if (feature) {
-        // Trigger a Shiny input event with the clicked feature's properties
-        Shiny.setInputValue(`${el.id}_feature_click`, {
-          layerId: layerId,
-          properties: feature.properties,
-          geometry: feature.geometry,
-          time: new Date().toISOString(), // For multiple clicks on the same feature
-        });
-      }
+      setShinyClickedFeature(el.id, layerId, feature);
     });
   }
 }

@@ -23,10 +23,6 @@
 
 - [Map
   Controls](https://epi-interactive-ltd.github.io/toro/articles/controls.md):
-- [Draw
-  Controls](https://epi-interactive-ltd.github.io/toro/articles/draw-controls.md):
-- [View
-  Controls](https://epi-interactive-ltd.github.io/toro/articles/view-controls.md):
 
 ### Advanced Features
 
@@ -59,3 +55,5 @@
   layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/add-text-layer.md):
 - [Latitude and longitude grid
   layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/lat-lng-grid.md):
+- [Draw
+  Controls](https://epi-interactive-ltd.github.io/toro/articles/examples/controls/draw-control.md):

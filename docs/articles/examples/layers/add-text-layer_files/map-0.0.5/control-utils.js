@@ -1,26 +1,11 @@
 /**
  * @file control-utils.js
  *
- * Utility functions for managing map controls in Maplibre GL JS.
- *
- * Current controls include:
- * - Draw control
- *
- * Functions:
- * - addDrawControl: Adds a draw control to the map instance.
- * - deleteDrawnShape: Deletes a drawn shape from the map.
- * - hideDrawControls: Hides the draw controls on the map.
- * - showDrawControls: Shows the draw controls on the map.
- * - _getDrawnStyle: Returns the style configuration for drawn shapes.
- * - addCursorCoordinateControl: Adds a control to display cursor coordinates on the map.
- * - addCustomControl: Adds a custom control to the map with specified HTML content.
- * - addZoomControl: Adds a zoom control to the map.
- *
  * @note Draw controls are based on Mapbox GL Draw, which is compatible with Maplibre GL JS.
  *       For more information: `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
  */
 
-const validDrawModes = ['polygon', 'trash', 'line', 'point']; // Accepted draw modes
+const validDrawModes = ['polygon', 'delete', 'line', 'point']; // Accepted draw modes
 
 /**
  * Add a draw control to the map instance.
@@ -28,17 +13,17 @@ const validDrawModes = ['polygon', 'trash', 'line', 'point']; // Accepted draw m
  * For the `MapboxDraw` documentation, see:
  *    `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
  *
- * @note Draw mode `trash` currently does nothing as the shapes are all set to
- *       static after being made.
+ * @note When delete mode is included in modes, shapes remain editable after creation.
+ *       When delete mode is not included, shapes are automatically made static.
  *
- * @param {object} el             Widget element containing the map instance.
- * @param {string} position       Position of the control on the map (e.g., "top-right", "bottom-left").
- * @param {string[]} modes        Draw modes to enable in the control.
- * @param {string} activeColour   Colour for the shape currently being drawn.
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} position Position of the control on the map (e.g., "top-right", "bottom-left").
+ * @param {string[]} modes Draw modes to enable in the control.
+ * @param {string} activeColour Colour for the shape currently being drawn.
  * @param {string} inactiveColour Colour for shapes that are not currently being drawn.
- * @param {object} modeLabels     A named list of labels for each mode.
- *                                For example, `{ polygon: "Draw Polygon", trash: "Delete Shape" }
- * @param {string} controlId      Optional custom control ID. If not provided, uses default pattern.
+ * @param {object} modeLabels A named list of labels for each mode.
+ *     For example, `{ polygon: "Draw Polygon", delete: "Delete Shape" }
+ * @param {string} controlId Optional custom control ID. If not provided, uses default pattern.
  * @returns {void}
  */
 function addDrawControl(
@@ -72,7 +57,7 @@ function addDrawControl(
     displayControlsDefault: false,
     controls: {
       polygon: modes.includes('polygon'),
-      trash: modes.includes('trash'),
+      trash: modes.includes('delete'),
       line_string: modes.includes('line'),
       point: modes.includes('point'),
     },
@@ -103,9 +88,9 @@ function addDrawControl(
   }, 0);
   // Set the buttons to be clickable
   modes.forEach((mode) => {
+    const modeIdentifier = mode === 'delete' ? 'trash' : mode;
     setTimeout(function () {
-      var controlBtn = el.querySelector('.mapbox-gl-draw_' + mode);
-
+      var controlBtn = el.querySelector('.mapbox-gl-draw_' + modeIdentifier);
       if (controlBtn) {
         controlBtn.style.pointerEvents = 'auto';
 
@@ -129,10 +114,11 @@ function addDrawControl(
       });
       /**
        * Change mode to static after a short delay to avoid recursion.
-       * Stops shapes from being editable after creation.
+       * Stops shapes from being editable after creation, but only if
+       * delete mode is not available (allowing editing when delete is enabled).
        */
       setTimeout(function () {
-        if (el.draw.getMode && el.draw.getMode() !== 'static') {
+        if (el.draw.getMode && el.draw.getMode() !== 'static' && !modes.includes('delete')) {
           el.draw.changeMode('static');
         }
       }, 50);
@@ -143,6 +129,48 @@ function addDrawControl(
       Shiny.setInputValue(el.id + '_shape_deleted', e.features.id, {
         priority: 'event',
       });
+    });
+
+    // Store updated features to send to Shiny when selection changes
+    let pendingUpdatedFeatures = [];
+
+    el.mapInstance.on('draw.selectionchange', function (e) {
+      // Trigger Shiny input for any pending updated features when selection changes
+      if (pendingUpdatedFeatures.length > 0) {
+        pendingUpdatedFeatures.forEach((feature) => {
+          const geojson = JSON.stringify(feature);
+          Shiny.setInputValue(el.id + '_shape_updated', geojson, {
+            priority: 'event',
+          });
+        });
+        pendingUpdatedFeatures = []; // Clear pending updates
+      }
+    });
+
+    // Store updated features when they are modified, but don't trigger Shiny immediately
+    el.mapInstance.on('draw.update', function (e) {
+      // Store the updated feature(s) to be sent when selection changes
+      e.features.forEach((feature) => {
+        pendingUpdatedFeatures.push(feature);
+      });
+    });
+
+    el.mapInstance.on('click', function (e) {
+      // All layers apart of the draw control shapes
+      // .cold to ensure this is not triggered when drawing shapes
+      const drawLayers = el.mapInstance
+        .getLayersOrder()
+        .filter((layerId) => layerId.startsWith('gl-draw-') && layerId.endsWith('.cold'));
+
+      const features = el.mapInstance.queryRenderedFeatures(e.point, {
+        layers: drawLayers,
+      });
+
+      if (features.length > 0) {
+        const feature = features[0];
+        // Handle clicked shape here (feature.properties.id, etc)
+        setShinyClickedFeature(el.id, 'test', feature);
+      }
     });
   }
 }
