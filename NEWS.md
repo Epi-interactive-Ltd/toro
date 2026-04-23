@@ -1,3 +1,18 @@
+# toro 0.0.6 (2026-04-24)
+
+## New Features
+
+- Adding some image/html export options (`export_map_image()` and `save_map_html()`)
+
+## Bug Fixes and Improvements
+
+- More documentation coverage/clean up
+- Fixing general route animation bugs + adding documentation
+- Fixing general draw control bugs + adding documentation
+- Allow for pinch-to-zoom on mobile
+- Split symbol and text layers into two separate functions (`add_symbol_layer()` and `add_text_layer()`)
+- Adding different class names to popups (`popup-ovelay`) and hovers (`hover-ovelay`) for customised styling
+
 # toro 0.0.5 (2026-03-05)
 
 ## New Features
@@ -6,7 +21,7 @@
 - `loadedTiles` now allows you to supply tile options for each tile set (see the [Map Tiles vignette](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.html) for more details).
 - Added route animations and timeline controls (see the [Route Animations vignette](https://epi-interactive-ltd.github.io/toro/articles/route-animations.html) for more details **Documentation to come**).
 
-## Bug Fixes and improvements
+## Bug Fixes and Improvements
 
 - Fxied clusters not showing up
 - Better clustering around the antimerdian line
