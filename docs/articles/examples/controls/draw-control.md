@@ -48,7 +48,6 @@ mode).
 ``` r
 
 library(shiny)
-#> Warning: package 'shiny' was built under R version 4.5.2
 library(toro)
 
 ui <- fluidPage(

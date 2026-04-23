@@ -144,6 +144,7 @@ reference:
       - remove_timeline_control
       - add_speed_control
       - remove_speed_control
+      - add_animation_controls
   - title: 'Controls — Misc'
     desc: 'Additional interactive controls'
     contents:

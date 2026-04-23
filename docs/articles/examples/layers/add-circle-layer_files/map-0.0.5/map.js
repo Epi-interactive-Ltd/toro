@@ -123,6 +123,9 @@ HTMLWidgets.widget({
           if (x.layers) {
             x.layers.forEach((layer) => addLayerToMap(el, layer));
           }
+          if (x.routes) {
+            x.routes.forEach((layer) => addRoute(el, layer));
+          }
 
           if (!x.options.enable3D) {
             disable3DView(el.mapInstance);
@@ -186,6 +189,8 @@ HTMLWidgets.widget({
                   control.modeLabels,
                   control.controlId
                 );
+              } else if (control.type === 'animation') {
+                addAnimationControlButton(el.widgetInstance, control);
               }
             });
           }
@@ -876,7 +881,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('addRoute', function (message) {
     withMapInstance(message.id, function (el) {
-      addRoute(el.widgetInstance, message.options);
+      addRoute(el, message.options);
     });
   });
 
@@ -895,6 +900,12 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('removeRoute', function (message) {
     withMapInstance(message.id, function (el) {
       removeRoute(el.widgetInstance, message.options);
+    });
+  });
+
+  Shiny.addCustomMessageHandler('addAnimationControls', function (message) {
+    withMapInstance(message.id, function (el) {
+      addAnimationControlButton(el.widgetInstance, message.options);
     });
   });
 
