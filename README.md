@@ -1,4 +1,4 @@
-# toro <img src="man/figures/toro-logo.png" align="right" height="100" style="max-height: 100px;" alt="toro logo" />
+# toro <a href="https://epi-interactive-ltd.github.io/toro/"><img src="man/figures/logo.png" align="right" height="136" alt="toro website" /></a>
 
 <!-- badges: start -->
 
