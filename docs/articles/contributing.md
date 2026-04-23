@@ -1,11 +1,9 @@
 # Contributing to toro
 
-## Contributing to {toro}
-
 All types of contributions are encouraged and appreciated. See the
 [Table of Contents](#table-of-contents) for more details.
 
-### Table of Contents
+## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
 - [I Have a Question](#i-have-a-question)
@@ -16,7 +14,7 @@ All types of contributions are encouraged and appreciated. See the
 - [Improving The Documentation](#improving-the-documentation)
 - [Join The Project Team](#join-the-project-team)
 
-### Code of Conduct
+## Code of Conduct
 
 This project and everyone participating in it is governed by the
 [CONTRIBUTING.md Code of
@@ -24,7 +22,7 @@ Conduct](https://epi-interactive-ltd.github.io/toro/articles/blob/main/CODE_OF_C
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to .
 
-### I Have a Question
+## I Have a Question
 
 > If you want to ask a question, we assume that you have read the
 > available
@@ -46,18 +44,18 @@ clarification, we recommend the following:
 
 We will then take care of the issue as soon as possible.
 
-### I Want To Contribute
+## I Want To Contribute
 
-> #### Legal Notice
+> ### Legal Notice
 >
 > When contributing to this project, you must agree that you have
 > authored 100% of the content, that you have the necessary rights to
 > the content and that the content you contribute may be provided under
 > the project license.
 
-#### Reporting Bugs
+### Reporting Bugs
 
-##### Before Submitting a Bug Report
+#### Before Submitting a Bug Report
 
 A good bug report shouldn’t leave others needing to chase you up for
 more information. Therefore, we ask you to investigate carefully,
@@ -85,7 +83,7 @@ potential bug as fast as possible.
 - Can you reliably reproduce the issue? And can you also reproduce it
   with older versions?
 
-##### How Do I Submit a Good Bug Report?
+#### How Do I Submit a Good Bug Report?
 
 > You must never report security related issues, vulnerabilities or bugs
 > including sensitive information to the issue tracker, or elsewhere in
@@ -117,7 +115,7 @@ Once it’s filed:
   the issue will be left to be [implemented by
   someone](#your-first-code-contribution).
 
-#### Suggesting Enhancements
+### Suggesting Enhancements
 
 This section guides you through submitting an enhancement suggestion for
 CONTRIBUTING.md, **including completely new features and minor
@@ -125,7 +123,7 @@ improvements to existing functionality**. Following these guidelines
 will help maintainers and the community to understand your suggestion
 and find related suggestions.
 
-##### Before Submitting an Enhancement
+#### Before Submitting an Enhancement
 
 - Make sure that you are using the latest version.
 - Read the
@@ -143,7 +141,7 @@ and find related suggestions.
   not just a small subset. If you’re just targeting a minority of users,
   consider writing an add-on/plugin library.
 
-##### How Do I Submit a Good Enhancement Suggestion?
+#### How Do I Submit a Good Enhancement Suggestion?
 
 Enhancement suggestions are tracked as [GitHub
 issues](https://epi-interactive-ltd.github.io/issues).
@@ -164,14 +162,14 @@ issues](https://epi-interactive-ltd.github.io/issues).
   CONTRIBUTING.md users. You may also want to point out the other
   projects that solved it better and which could serve as inspiration.
 
-#### Your First Code Contribution
+### Your First Code Contribution
 
-##### Fork the repository
+#### Fork the repository
 
 First, create a fork of the repository on GitHub. This will create a
 copy of the repository under your own GitHub account.
 
-##### Install Dependencies
+#### Install Dependencies
 
 Make sure that you have all the necessary dependencies installed to run
 the project locally. This may include R, Positron, and any required
@@ -189,7 +187,7 @@ install.packages("remotes")
 remotes::install_deps(dependencies = TRUE)
 ```
 
-##### Create an app.R file for testing
+#### Create an app.R file for testing
 
 Inside `inst/examples/`, create a new file named `app.R` and add the
 following code to it:
@@ -224,7 +222,7 @@ To test outside of a Shiny app simply run:
 - [`map()`](https://epi-interactive-ltd.github.io/toro/reference/map.md)
   to test the map function.
 
-##### Making a pull request
+#### Making a pull request
 
 Once you have made your changes and are ready to submit them, you can
 create a pull request on GitHub. The pull request template will guide
@@ -232,11 +230,11 @@ you through the process of making a PR and ensuring that you have done
 all the necessary steps (like adding tests and documentation) to make it
 easier for the maintainers to review and merge your changes.
 
-#### Improving The Documentation
+### Improving The Documentation
 
 TODO
 
-### Attribution
+## Attribution
 
 This guide is based on the **contributing.md**. [Make your
 own](https://contributing.md/)!
