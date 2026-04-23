@@ -5,76 +5,67 @@
 First, set up the base map with our data.
 
 ``` r
+
 library(toro)
+library(spData)
+#> To access larger datasets in this package, install the spDataLarge
+#> package with: `install.packages('spDataLarge',
+#> repos='https://nowosad.github.io/drat/', type='source')`
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
 
-base_map <- map() |>
-  add_feature_server_source(
-    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/3/query?where=1=1&outFields=*&f=geojson",
-    "maori_moana_data",
-    append_query_url = ""
-  ) |>
-  add_feature_server_source(
-    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/1/query?where=1=1&outFields=*&f=geojson",
-    "maori_region_data",
-    append_query_url = ""
+
+region_data <- spData::nz |>
+  dplyr::rename(geometry = geom) |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    popup = paste("Population:", format(Population, big.mark = ","))
   )
 ```
 
 ### Basic example
 
 ``` r
-base_map |>
+
+map() |>
+  set_bounds(region_data, padding = 100) |>
   add_fill_layer(
-    id = "moana_polygons",
-    source = "maori_moana_data",
-    hover_column = "name_mi",
-    popup_column = "name"
+    id = "regions",
+    source = region_data,
+    hover_column = "Name",
+    popup_column = "popup"
   )
 ```
 
 ### Advanced example
 
 ``` r
-base_map |>
+
+map() |>
+  set_bounds(region_data, padding = 100) |>
   add_fill_layer(
-    id = "region_polygons",
-    source = "maori_region_data",
-    hover_column = "name_mi",
-    popup_column = "name",
+    id = "regions",
+    source = region_data,
+    hover_column = "Name",
+    popup_column = "popup",
     paint = get_paint_options(
       "fill",
       options = list(
-        colour = "#a3b18a",
-        opacity = 0.3,
-        outline_colour = "#588157"
-      )
-    )
-  ) |>
-  add_fill_layer(
-    id = "moana_polygons",
-    source = "maori_moana_data",
-    hover_column = "name_mi",
-    popup_column = "name",
-    paint = get_paint_options(
-      "fill",
-      options = list(
-        colour = get_column_group(
-          "type",
-          c(
-            "lake" = "#a9d6e5",
-            "reservoir" = "#89c2d9",
-            "river" = "#61a5c2",
-            "bay" = "#468faf",
-            "sea" = "#2c7da0",
-            "ocean" = "#2a6f97",
-            "glacier" = "#014f86",
-            "swamp" = "#01497c",
-            "lagoon" = "#013a63"
-          ),
-          "#012a4a"
-        )
+        colour = get_column_step_steps(
+          "Population",
+          c(50000, 500000, 1000000),
+          c("#093d4a", "#11a366", "#20de60", "#dbe811")
+        ),
+        opacity = 0.7
       )
     )
   )

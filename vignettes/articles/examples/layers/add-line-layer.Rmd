@@ -1,0 +1,59 @@
+---
+title: 'Add a line layer'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+## Adding line layers
+
+First, set up the base map with our data.
+
+```{r base-map}
+library(toro)
+library(spData)
+library(sf)
+
+seine_data <- spData::seine |>
+  sf::st_transform(4326)
+```
+
+### Basic example
+
+```{r basic-line, results='asis'}
+map() |>
+  set_bounds(seine_data, padding = 100) |>
+  add_line_layer(
+    id = "seine",
+    source = seine_data,
+    hover_column = "name"
+  )
+```
+
+### Advanced example
+
+```{r advanced-line, results='asis'}
+map() |>
+  set_bounds(seine_data, padding = 100) |>
+  add_line_layer(
+    id = "seine",
+    source = seine_data,
+    hover_column = "name",
+    paint = get_paint_options(
+      "line",
+      options = list(
+        colour = get_column_group(
+          "name",
+          c("Marne" = "#014f86", "Seine" = "#61a5c2"),
+          "#a9d6e5"
+        ),
+        line_width = get_column_group("name", c("Seine" = 3), 1)
+      )
+    )
+  )
+```

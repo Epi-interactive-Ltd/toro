@@ -1,0 +1,82 @@
+---
+title: 'Add a text layer'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+## Adding text layers
+
+First, set up the base map with our data.
+
+```{r base-map}
+library(toro)
+library(sf)
+library(dplyr)
+library(spData)
+
+elevation_data <- spData::nz_height |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    info = paste("Elevation:", format(elevation, big.mark = ","))
+  )
+```
+
+### Basic example
+
+```{r basic-text, results='asis'}
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
+  add_text_layer(
+    id = "elevation",
+    source = elevation_data,
+    layout = get_layout_options(
+      "text",
+      options = list(
+        text_field = toro::get_column("elevation")
+      )
+    )
+  )
+```
+
+### Advanced example
+
+```{r advanced-text, results='asis'}
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
+  add_text_layer(
+    id = "elevation",
+    source = elevation_data,
+    layout = get_layout_options(
+      "text",
+      options = list(
+        text_field = toro::get_column("elevation"),
+        text_size = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(14, 20, 26)
+        ),
+        "symbol-sort-key" = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(1, 2, 3)
+        )
+      )
+    ),
+    paint = get_paint_options(
+      "text",
+      options = list(
+        colour = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c("#093d4a", "#11a366", "#04aac1")
+        )
+      )
+    )
+  )
+```

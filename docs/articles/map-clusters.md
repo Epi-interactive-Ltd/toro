@@ -1,6 +1,7 @@
 # Clusters/Spiderfying
 
 ``` r
+
 library(toro)
 
 base_map <- map(
@@ -28,6 +29,7 @@ Clicking on a cluster will do one of two things:
 - Spiderfy the pins in that cluster so that they all become visible
 
 ``` r
+
 base_map  |>
   add_symbol_layer(
     id = "earthquakes",
@@ -46,6 +48,7 @@ base_map  |>
 ## Enabling clusters
 
 ``` r
+
 base_map  |>
   add_symbol_layer(
     id = "earthquakes",
@@ -77,6 +80,7 @@ Available circle (paint/layout) properties can be found
 [here](https://maplibre.org/maplibre-style-spec/layers/#circle).
 
 ``` r
+
 map(
   imageSources = list(
     list(
@@ -141,6 +145,7 @@ Available text(symbol) (paint/layout) properties can be found
 [here](https://maplibre.org/maplibre-style-spec/layers/#symbol).
 
 ``` r
+
 base_map  |>
   add_symbol_layer(
     id = "earthquakes",
@@ -170,6 +175,7 @@ An example of some more advanced customising (see [this
 example](https://maplibre.org/maplibre-gl-js/docs/examples/create-and-style-clusters/)).
 
 ``` r
+
 base_map |>
   add_symbol_layer(
     id = "earthquakes",
@@ -240,6 +246,7 @@ for points we know are not at the same coordinates (from above examples)
 but are in close enough proximity at max zoom to still be in a cluster.
 
 ``` r
+
 map(
   maxZoom = 5,
   imageSources = list(
@@ -270,6 +277,7 @@ When pins have the same coordinates they will **always appear in a
 cluster**, even if the layer has set `can_cluster` to false.
 
 ``` r
+
 base_map |>
   add_symbol_layer(
     id = "duplicated_pins",
@@ -303,6 +311,7 @@ can set `clusterOptions.spiderfyOptions.maxSpiderfyPins` when adding the
 layer.
 
 ``` r
+
 map(
   imageSources = list(
     list(
@@ -346,6 +355,7 @@ Available line (paint/layout) properties can be found
 [here](https://maplibre.org/maplibre-style-spec/layers/#line).
 
 ``` r
+
 map(
   imageSources = list(
     list(

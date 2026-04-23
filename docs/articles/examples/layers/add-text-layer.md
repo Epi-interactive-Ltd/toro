@@ -5,30 +5,44 @@
 First, set up the base map with our data.
 
 ``` r
+
 library(toro)
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+library(spData)
+#> To access larger datasets in this package, install the spDataLarge
+#> package with: `install.packages('spDataLarge',
+#> repos='https://nowosad.github.io/drat/', type='source')`
 
-base_map <- map() |>
-  add_feature_server_source(
-    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/0/query?where=1=1&outFields=*&f=geojson",
-    "maori_places_data",
-    append_query_url = ""
+elevation_data <- spData::nz_height |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    info = paste("Elevation:", format(elevation, big.mark = ","))
   )
 ```
 
 ### Basic example
 
 ``` r
-base_map |>
+
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
   add_text_layer(
-    id = "places_text",
-    source = "maori_places_data",
-    hover_column = "name",
-    layout = toro::get_layout_options(
+    id = "elevation",
+    source = elevation_data,
+    layout = get_layout_options(
       "text",
       options = list(
-        text_field = toro::get_column("name_mi")
+        text_field = toro::get_column("elevation")
       )
     )
   )
@@ -37,42 +51,35 @@ base_map |>
 ### Advanced example
 
 ``` r
-base_map |>
+
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
   add_text_layer(
-    id = "places_texts",
-    source = "maori_places_data",
-    hover_column = "name",
+    id = "elevation",
+    source = elevation_data,
     layout = get_layout_options(
       "text",
       options = list(
-        text_field = toro::get_column("name_mi"),
-        text_size = get_column_group("type", c("river" = 18), 12),
-        "symbol-sort-key" = get_column_group(
-          "type",
-          c(
-            "city" = 6,
-            "town" = 5,
-            "village" = 4,
-            "suburb" = 3,
-            "locality" = 2
-          ),
-          1
+        text_field = toro::get_column("elevation"),
+        text_size = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(14, 20, 26)
+        ),
+        "symbol-sort-key" = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(1, 2, 3)
         )
       )
     ),
     paint = get_paint_options(
       "text",
       options = list(
-        colour = get_column_group(
-          "type",
-          c(
-            "city" = "#014f86",
-            "town" = "#0177CB",
-            "village" = "#0195FE",
-            "suburb" = "#34AAFE",
-            "locality" = "#67BFFE"
-          ),
-          "#9AD4FE"
+        colour = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c("#093d4a", "#11a366", "#04aac1")
         )
       )
     )

@@ -1,0 +1,42 @@
+---
+title: 'Add a symbol layer'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+## Adding symbol layers
+
+First, set up the base map with our data.
+
+```{r base-map}
+library(toro)
+library(sf)
+library(dplyr)
+library(spData)
+
+elevation_data <- spData::nz_height |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    info = paste("Elevation:", format(elevation, big.mark = ","))
+  )
+```
+
+### Basic example
+
+```{r basic-symbol, results='asis'}
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
+  add_symbol_layer(
+    id = "elevation",
+    source = elevation_data,
+    hover_column = "info",
+    can_cluster = FALSE
+  )
+```
+

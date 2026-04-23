@@ -1,4 +1,4 @@
-# Examples
+# All Examples
 
 Welcome to the toro examples gallery! These interactive examples
 demonstrate how to create powerful map visualizations using toro.
@@ -12,9 +12,21 @@ Sources are required to add data to your map.
 
 ### [Add a GeoJSON source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-geojson-source.md)
 
+![Description goes here](../../reference/figures/add-geojson-source.png)
+
+Description goes here
+
 ### [Add a feature service source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-feature-service-source.md)
 
+![Description goes here](../../reference/figures/add-feature-source.png)
+
+Description goes here
+
 ### [Add an image source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-image-source.md)
+
+![Description goes here](../../reference/figures/add-image-source.png)
+
+Description goes here
 
 ------------------------------------------------------------------------
 
@@ -56,4 +68,10 @@ Description goes here
 
 Description goes here
 
-------------------------------------------------------------------------
+## Controls
+
+#### [Draw Control](https://epi-interactive-ltd.github.io/toro/articles/examples/controls/draw-control.md)
+
+![Description goes here](../../reference/figures/draw-control.png)
+
+Description goes here

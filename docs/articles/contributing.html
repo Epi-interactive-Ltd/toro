@@ -5,13 +5,18 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>contributing • toro</title>
+<title>Contributing to toro • toro</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="contributing">
+<meta property="og:title" content="Contributing to toro">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -21,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,31 +35,9 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="../index.html" aria-label="Home"><span class="fa fa-home fa-lg"></span></a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/getting-started.html">Getting started with toro</a></li>
-    <li><a class="dropdown-item" href="../articles/shiny-integration.html">Integration with Shiny</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Layers</h6></li>
-    <li><a class="dropdown-item" href="../articles/map-tiles.html">Modifying map tiles</a></li>
-    <li><a class="dropdown-item" href="../articles/layers.html">Customising layers</a></li>
-    <li><a class="dropdown-item" href="../articles/popups.html">Popups/Hovers</a></li>
-    <li><a class="dropdown-item" href="../articles/map-clusters.html">Clusters/Spiderfying</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Controls</h6></li>
-    <li><a class="dropdown-item" href="../articles/controls.html">Adding controls to your map</a></li>
-    <li><a class="dropdown-item" href="../articles/draw-controls.html">Draw controls</a></li>
-    <li><a class="dropdown-item" href="../articles/view-controls.html">View controls</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Advanced features</h6></li>
-    <li><a class="dropdown-item" href="../articles/animations.html">Animations</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="../articles/contributing.html">Contributing to toro</a></li>
-  </ul>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/examples/index.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
@@ -75,23 +58,19 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>contributing</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Contributing to toro</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/contributing.Rmd" class="external-link"><code>vignettes/contributing.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/articles/contributing.Rmd" class="external-link"><code>vignettes/articles/contributing.Rmd</code></a></small>
       <div class="d-none name"><code>contributing.Rmd</code></div>
     </div>
 
     
     
-<div class="section level2">
-<h2 id="contributing-to-toro">Contributing to {toro}<a class="anchor" aria-label="anchor" href="#contributing-to-toro"></a>
-</h2>
 <p>All types of contributions are encouraged and appreciated. See the <a href="#table-of-contents">Table of Contents</a> for more details.</p>
-<div class="section level3">
-<h3 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
-</h3>
+<div class="section level2">
+<h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
+</h2>
 <ul>
 <li><a href="#code-of-conduct">Code of Conduct</a></li>
 <li><a href="#i-have-a-question">I Have a Question</a></li>
@@ -105,16 +84,16 @@ Documentation</a></li>
 <li><a href="#join-the-project-team">Join The Project Team</a></li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
-</h3>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
 <p>This project and everyone participating in it is governed by the <a href="blob/main/CODE_OF_CONDUCT.html">CONTRIBUTING.md Code of Conduct</a>.
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to <todo>.</todo></p>
 </div>
-<div class="section level3">
-<h3 id="i-have-a-question">I Have a Question<a class="anchor" aria-label="anchor" href="#i-have-a-question"></a>
-</h3>
+<div class="section level2">
+<h2 id="i-have-a-question">I Have a Question<a class="anchor" aria-label="anchor" href="#i-have-a-question"></a>
+</h2>
 <blockquote>
 <p>If you want to ask a question, we assume that you have read the
 available <a href="">Documentation</a>.</p>
@@ -134,22 +113,22 @@ depending on what seems relevant.</li>
 </ul>
 <p>We will then take care of the issue as soon as possible.</p>
 </div>
-<div class="section level3">
-<h3 id="i-want-to-contribute">I Want To Contribute<a class="anchor" aria-label="anchor" href="#i-want-to-contribute"></a>
-</h3>
+<div class="section level2">
+<h2 id="i-want-to-contribute">I Want To Contribute<a class="anchor" aria-label="anchor" href="#i-want-to-contribute"></a>
+</h2>
 <blockquote>
-<h4 id="legal-notice">Legal Notice</h4>
+<h3 id="legal-notice">Legal Notice</h3>
 <p>When contributing to this project, you must agree that you have
 authored 100% of the content, that you have the necessary rights to the
 content and that the content you contribute may be provided under the
 project license.</p>
 </blockquote>
+<div class="section level3">
+<h3 id="reporting-bugs">Reporting Bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a>
+</h3>
 <div class="section level4">
-<h4 id="reporting-bugs">Reporting Bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a>
+<h4 id="before-submitting-a-bug-report">Before Submitting a Bug Report<a class="anchor" aria-label="anchor" href="#before-submitting-a-bug-report"></a>
 </h4>
-<div class="section level5">
-<h5 id="before-submitting-a-bug-report">Before Submitting a Bug Report<a class="anchor" aria-label="anchor" href="#before-submitting-a-bug-report"></a>
-</h5>
 <p>A good bug report shouldn’t leave others needing to chase you up for
 more information. Therefore, we ask you to investigate carefully,
 collect information and describe the issue in detail in your report.
@@ -177,9 +156,9 @@ package manager, depending on what seems relevant.</li>
 with older versions?</li>
 </ul>
 </div>
-<div class="section level5">
-<h5 id="how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-bug-report"></a>
-</h5>
+<div class="section level4">
+<h4 id="how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-bug-report"></a>
+</h4>
 <blockquote>
 <p>You must never report security related issues, vulnerabilities or
 bugs including sensitive information to the issue tracker, or elsewhere
@@ -213,17 +192,17 @@ will not be addressed until they are reproduced.</li>
 </ul>
 </div>
 </div>
-<div class="section level4">
-<h4 id="suggesting-enhancements">Suggesting Enhancements<a class="anchor" aria-label="anchor" href="#suggesting-enhancements"></a>
-</h4>
+<div class="section level3">
+<h3 id="suggesting-enhancements">Suggesting Enhancements<a class="anchor" aria-label="anchor" href="#suggesting-enhancements"></a>
+</h3>
 <p>This section guides you through submitting an enhancement suggestion
 for CONTRIBUTING.md, <strong>including completely new features and minor
 improvements to existing functionality</strong>. Following these
 guidelines will help maintainers and the community to understand your
 suggestion and find related suggestions.</p>
-<div class="section level5">
-<h5 id="before-submitting-an-enhancement">Before Submitting an Enhancement<a class="anchor" aria-label="anchor" href="#before-submitting-an-enhancement"></a>
-</h5>
+<div class="section level4">
+<h4 id="before-submitting-an-enhancement">Before Submitting an Enhancement<a class="anchor" aria-label="anchor" href="#before-submitting-an-enhancement"></a>
+</h4>
 <ul>
 <li>Make sure that you are using the latest version.</li>
 <li>Read the <a href="">documentation</a> carefully and find out if the
@@ -241,9 +220,9 @@ small subset. If you’re just targeting a minority of users, consider
 writing an add-on/plugin library.</li>
 </ul>
 </div>
-<div class="section level5">
-<h5 id="how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-enhancement-suggestion"></a>
-</h5>
+<div class="section level4">
+<h4 id="how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-enhancement-suggestion"></a>
+</h4>
 <p>Enhancement suggestions are tracked as <a href="/issues">GitHub
 issues</a>.</p>
 <ul>
@@ -267,18 +246,18 @@ inspiration.</li>
 </ul>
 </div>
 </div>
+<div class="section level3">
+<h3 id="your-first-code-contribution">Your First Code Contribution<a class="anchor" aria-label="anchor" href="#your-first-code-contribution"></a>
+</h3>
 <div class="section level4">
-<h4 id="your-first-code-contribution">Your First Code Contribution<a class="anchor" aria-label="anchor" href="#your-first-code-contribution"></a>
+<h4 id="fork-the-repository">Fork the repository<a class="anchor" aria-label="anchor" href="#fork-the-repository"></a>
 </h4>
-<div class="section level5">
-<h5 id="fork-the-repository">Fork the repository<a class="anchor" aria-label="anchor" href="#fork-the-repository"></a>
-</h5>
 <p>First, create a fork of the repository on GitHub. This will create a
 copy of the repository under your own GitHub account.</p>
 </div>
-<div class="section level5">
-<h5 id="install-dependencies">Install Dependencies<a class="anchor" aria-label="anchor" href="#install-dependencies"></a>
-</h5>
+<div class="section level4">
+<h4 id="install-dependencies">Install Dependencies<a class="anchor" aria-label="anchor" href="#install-dependencies"></a>
+</h4>
 <p>Make sure that you have all the necessary dependencies installed to
 run the project locally. This may include R, Positron, and any required
 packages. Check the <a href="DESCRIPTION">Description</a> file for a
@@ -290,9 +269,9 @@ following code to install the dependencies:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_deps.html" class="external-link">install_deps</a></span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="create-an-app-r-file-for-testing">Create an app.R file for testing<a class="anchor" aria-label="anchor" href="#create-an-app-r-file-for-testing"></a>
-</h5>
+<div class="section level4">
+<h4 id="create-an-app-r-file-for-testing">Create an app.R file for testing<a class="anchor" aria-label="anchor" href="#create-an-app-r-file-for-testing"></a>
+</h4>
 <p>Inside <code>inst/examples/</code>, create a new file named
 <code>app.R</code> and add the following code to it:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -323,9 +302,9 @@ from the local repository.</li>
 <code><a href="../reference/map.html">map()</a></code> to test the map function.</li>
 </ul>
 </div>
-<div class="section level5">
-<h5 id="making-a-pull-request">Making a pull request<a class="anchor" aria-label="anchor" href="#making-a-pull-request"></a>
-</h5>
+<div class="section level4">
+<h4 id="making-a-pull-request">Making a pull request<a class="anchor" aria-label="anchor" href="#making-a-pull-request"></a>
+</h4>
 <p>Once you have made your changes and are ready to submit them, you can
 create a pull request on GitHub. The pull request template will guide
 you through the process of making a PR and ensuring that you have done
@@ -333,17 +312,16 @@ all the necessary steps (like adding tests and documentation) to make it
 easier for the maintainers to review and merge your changes.</p>
 </div>
 </div>
-<div class="section level4">
-<h4 id="improving-the-documentation">Improving The Documentation<a class="anchor" aria-label="anchor" href="#improving-the-documentation"></a>
-</h4>
+<div class="section level3">
+<h3 id="improving-the-documentation">Improving The Documentation<a class="anchor" aria-label="anchor" href="#improving-the-documentation"></a>
+</h3>
 <p>TODO</p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a>
-</h3>
+<div class="section level2">
+<h2 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a>
+</h2>
 <p>This guide is based on the <strong>contributing.md</strong>. <a href="https://contributing.md/" class="external-link">Make your own</a>!</p>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -352,7 +330,7 @@ easier for the maintainers to review and merge your changes.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Funded by <a href="https://epi.group/" class="external-link"><img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/vignettes/images/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;"></a>.</p>
+  <p>Funded by <a href="https://epi.group/" class="external-link"><img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/man/figures/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

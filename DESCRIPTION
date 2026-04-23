@@ -1,11 +1,14 @@
 Package: toro
 Title: Interactive and Customisable Maps using the Maplibre GL JS Library
-Version: 0.0.5
+Version: 0.0.6
 Date: 2026-03-27
 Authors@R: c(
     person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
     person(given = "Jocelyn", family = "Qian", email = "jocelyn@epi.group", role = c("ctb")),
-    person(given = "epi", family = "", email = "", role = c("cph", "fnd")))
+    person("MapLibre contributors", role = "cph", comment = "MapLibre GL JS library"),
+    person("Turf contributors", role = "cph", comment = "turf plugin"),
+    person("Mapbox contributors", role = "cph", comment = "mapbox-gl-draw plugin"),
+    person("epi", role = c("cph", "fnd")))
 Description: Highly customisabled and interactive maps for R TODO.
 URL: https://epi-interactive-ltd.github.io/toro, https://github.com/Epi-interactive-Ltd/toro
 BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
@@ -32,5 +35,7 @@ Suggests:
     webshot2,
     mapview,
     webshot,
-    devtools
+    devtools,
+    spData
 VignetteBuilder: knitr
+Config/Needs/website: rmarkdown

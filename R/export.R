@@ -1,5 +1,59 @@
 #' Utilities for the map related to exports.
 
+#' Check if Chrome/Chromium is available for webshot operations
+#'
+#' @return TRUE if Chrome is available, FALSE otherwise
+#' @keywords internal
+check_chrome_available <- function() {
+  # Check if CHROMOTE_CHROME environment variable is set
+  chrome_env <- Sys.getenv("CHROMOTE_CHROME", unset = "")
+  if (chrome_env != "" && file.exists(chrome_env)) {
+    return(TRUE)
+  }
+
+  # Common Chrome paths on different systems
+  chrome_paths <- c(
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", # macOS
+    "/Applications/Chromium.app/Contents/MacOS/Chromium", # macOS Chromium
+    "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser", # macOS Brave
+    "/usr/bin/google-chrome", # Linux
+    "/usr/bin/chromium-browser", # Linux
+    "/usr/bin/brave-browser" # Linux Brave
+  )
+
+  # Check if any of the common paths exist
+  any(file.exists(chrome_paths))
+}
+
+#' Provide helpful error message for missing Chrome
+#' @keywords internal
+chrome_error_message <- function() {
+  os_type <- Sys.info()[["sysname"]]
+
+  if (os_type == "Darwin") {
+    # macOS
+    paste0(
+      "Google Chrome (or a Chromium-based browser) is required for map image export.\n\n",
+      "Solutions:\n",
+      "1. Install Google Chrome from: https://www.google.com/chrome/\n",
+      "2. Or install Brave from: https://brave.com/\n",
+      "3. Or set the CHROMOTE_CHROME environment variable:\n",
+      "   Sys.setenv(CHROMOTE_CHROME = \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\")\n\n",
+      "Then try your export_map_image() call again."
+    )
+  } else {
+    # Linux/Windows
+    paste0(
+      "Google Chrome (or a Chromium-based browser) is required for map image export.\n\n",
+      "Solutions:\n",
+      "1. Install Google Chrome or Chromium browser\n",
+      "2. Set the CHROMOTE_CHROME environment variable to your browser executable:\n",
+      "   Sys.setenv(CHROMOTE_CHROME = \"/path/to/your/browser\")\n\n",
+      "Then try your export_map_image() call again."
+    )
+  }
+}
+
 #' Export map as an image (non-Shiny context).
 #'
 #' This function exports a map widget as an image file using webshot2 or mapview.
@@ -50,6 +104,11 @@ export_map_image <- function(
     stop(
       "Please install one of: webshot2, mapview, or webshot packages for non-Shiny image export"
     )
+  }
+
+  # Check if Chrome is available (required by webshot packages)
+  if (!check_chrome_available()) {
+    stop(chrome_error_message(), call. = FALSE)
   }
 
   # Create temporary HTML file

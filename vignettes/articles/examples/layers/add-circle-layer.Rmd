@@ -1,0 +1,77 @@
+---
+title: 'Add a circle layer'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+## Adding circle layers
+
+First, set up the base map with our data.
+
+```{r base-map}
+library(toro)
+library(sf)
+library(dplyr)
+library(spData)
+
+elevation_data <- spData::nz_height |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    info = paste("Elevation:", format(elevation, big.mark = ","))
+  )
+```
+
+### Basic example
+
+```{r basic-circle, results='asis'}
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
+  add_circle_layer(
+    id = "elevation",
+    source = elevation_data,
+    hover_column = "info"
+  )
+```
+
+### Advanced example
+
+```{r advanced-circle, results='asis'}
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
+  add_circle_layer(
+    id = "elevation",
+    source = elevation_data,
+    hover_column = "info",
+    paint = get_paint_options(
+      "circle",
+      options = list(
+        colour = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c("#093d4a", "#11a366", "#dbe811")
+        ),
+        circle_radius = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(2, 3, 4)
+        )
+      )
+    ),
+    layout = get_layout_options(
+      "circle",
+      options = list(
+        "circle-sort-key" = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(1, 2, 3)
+        )
+      )
+    )
+  )
+```

@@ -6,12 +6,12 @@
 #' @param id The ID for the draw control.
 #' @param position The position of the draw control on the map. Default is `"top-right"`.
 #'    Options are "top-left", "top-right", "bottom-left", "bottom-right".
-#' @param modes A vector of modes to enable in the draw control. Default is `c("polygon", "trash")`.
-#'    Options include "polygon", "trash", "line".
-#' @param active_colour The colour for the drawn shapes. Default is `"#0FB3CE"`.
-#' @param inactive_colour The colour for the inactive shapes. Default is `"#0FB3CE"`.
+#' @param modes A vector of modes to enable in the draw control. Default is `c("polygon")`.
+#'    Options include "polygon", "delete", "line", and "point".
+#' @param active_colour The colour for the drawn shapes. Default is `"#04AAC1"`.
+#' @param inactive_colour The colour for the inactive shapes. Default is `"#04AAC1"`.
 #' @param mode_labels A named list of labels for each mode.
-#'    For example, `list(polygon = "Draw Polygon", trash = "Delete Shape")`.
+#'    For example, `list(polygon = "Draw Polygon", delete = "Delete Shape")`.
 #' @param panel_id ID of control panel to add to (optional).
 #' @param section_title Section title when added to a control panel.
 #' @param group_id Optional group ID for grouping controls within a panel.
@@ -27,9 +27,9 @@ add_draw_control <- function(
   map,
   id = "draw_control",
   position = "top-right",
-  modes = c("polygon", "trash"),
-  active_colour = "#0FB3CE",
-  inactive_colour = "#0FB3CE",
+  modes = c("polygon"),
+  active_colour = "#04AAC1",
+  inactive_colour = "#04AAC1",
   mode_labels = list(),
   panel_id = NULL,
   section_title = NULL,

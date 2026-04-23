@@ -23,6 +23,7 @@ and toro will handle the rest. The default query parameters will be
 appended to the URL to retrieve the data in GeoJSON format.
 
 ``` r
+
 library(toro)
 
 service_url <- paste0(
@@ -47,6 +48,7 @@ full query URL directly in the `source_url` argument and set
 query parameters.
 
 ``` r
+
 library(toro)
 
 # We supply the full query URL here, so we set append_query_url to an empty string to

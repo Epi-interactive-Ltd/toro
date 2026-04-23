@@ -187,6 +187,8 @@ Controls for performing map animations
   : Add a speed control to the map or control panel
 - [`remove_speed_control()`](https://epi-interactive-ltd.github.io/toro/reference/remove_speed_control.md)
   : Remove the speed control from the map.
+- [`add_animation_controls()`](https://epi-interactive-ltd.github.io/toro/reference/add_animation_controls.md)
+  : Add animation controls to a toro map.
 
 ## Controls — Misc
 
@@ -232,7 +234,6 @@ Functions to get information from map interaction
 Additional functions
 
 - [`export_map_image()`](https://epi-interactive-ltd.github.io/toro/reference/export_map_image.md)
-  : Utilities for the map related to exports. Export map as an image
-  (non-Shiny context).
+  : Export map as an image (non-Shiny context).
 - [`save_map_html()`](https://epi-interactive-ltd.github.io/toro/reference/save_map_html.md)
   : Save map as standalone HTML file.

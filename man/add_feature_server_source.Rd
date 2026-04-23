@@ -35,7 +35,6 @@ to an empty string to prevent appending the default query parameters.
 }
 \examples{
 \dontrun{
-
 service_url <- paste0(
  "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/",
  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"

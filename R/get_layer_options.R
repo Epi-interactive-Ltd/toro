@@ -241,7 +241,9 @@ get_paint_options <- function(layer_type, options = list()) {
     c(
       names(default_options),
       "color",
+      "colour",
       "outline_color",
+      "outline_colour",
       "outline_opacity",
       "circle_radius"
     )

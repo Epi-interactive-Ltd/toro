@@ -5,51 +5,77 @@
 First, set up the base map with our data.
 
 ``` r
+
 library(toro)
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+library(spData)
+#> To access larger datasets in this package, install the spDataLarge
+#> package with: `install.packages('spDataLarge',
+#> repos='https://nowosad.github.io/drat/', type='source')`
 
-base_map <- map() |>
-  add_feature_server_source(
-    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/2/query?where=1=1&outFields=*&f=geojson",
-    "maori_maunga_data",
-    append_query_url = ""
+elevation_data <- spData::nz_height |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    info = paste("Elevation:", format(elevation, big.mark = ","))
   )
 ```
 
 ### Basic example
 
 ``` r
-base_map |>
+
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
   add_circle_layer(
-    id = "maunga_circles",
-    source = "maori_moana_data",
-    hover_column = "name_mi",
-    popup_column = "name"
+    id = "elevation",
+    source = elevation_data,
+    hover_column = "info"
   )
 ```
 
 ### Advanced example
 
 ``` r
-base_map |>
+
+map() |>
+  set_bounds(elevation_data, padding = 100) |>
   add_circle_layer(
-    id = "maunga_peaks",
-    source = "maori_maunga_data",
-    hover_column = "name_mi",
-    popup_column = "name",
+    id = "elevation",
+    source = elevation_data,
+    hover_column = "info",
     paint = get_paint_options(
       "circle",
       options = list(
-        colour = get_column_group("type", c("volcano" = "#9d0208"), "#a3b18a"),
-        opacity = get_column_group("type", c("volcano" = 1), 0.8),
-        circle_radius = get_column_group("type", c("volcano" = 7), 4)
+        colour = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c("#093d4a", "#11a366", "#dbe811")
+        ),
+        circle_radius = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(2, 3, 4)
+        )
       )
     ),
     layout = get_layout_options(
       "circle",
       options = list(
-        "circle-sort-key" = get_column_group("type", c("volcano" = 2), 1)
+        "circle-sort-key" = get_column_step_steps(
+          "elevation",
+          c(3000, 3500),
+          c(1, 2, 3)
+        )
       )
     )
   )

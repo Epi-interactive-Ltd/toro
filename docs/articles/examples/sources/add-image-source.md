@@ -15,6 +15,7 @@ You can pass either a `map`or `mapProxy` object to
 [`add_image()`](https://epi-interactive-ltd.github.io/toro/reference/add_image.md).
 
 ``` r
+
 library(toro)
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
@@ -28,7 +29,7 @@ epi_location <- data.frame(
 map() |>
   add_image(
     image_id = "epi_logo",
-    image_url = "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/vignettes/images/epi-logo.png"
+    image_url = "https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/man/figures/epi-logo.png"
   ) |>
   add_symbol_layer(
     id = "epi",
