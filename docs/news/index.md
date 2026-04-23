@@ -1,5 +1,27 @@
 # Changelog
 
+## toro 0.0.6 (2026-04-24)
+
+### New Features
+
+- Adding some image/html export options
+  ([`export_map_image()`](https://epi-interactive-ltd.github.io/toro/reference/export_map_image.md)
+  and
+  [`save_map_html()`](https://epi-interactive-ltd.github.io/toro/reference/save_map_html.md))
+
+### Bug Fixes and Improvements
+
+- More documentation coverage/clean up
+- Fixing general route animation bugs + adding documentation
+- Fixing general draw control bugs + adding documentation
+- Allow for pinch-to-zoom on mobile
+- Split symbol and text layers into two separate functions
+  ([`add_symbol_layer()`](https://epi-interactive-ltd.github.io/toro/reference/add_symbol_layer.md)
+  and
+  [`add_text_layer()`](https://epi-interactive-ltd.github.io/toro/reference/add_text_layer.md))
+- Adding different class names to popups (`popup-ovelay`) and hovers
+  (`hover-ovelay`) for customised styling
+
 ## toro 0.0.5 (2026-03-05)
 
 ### New Features
@@ -16,7 +38,7 @@
   vignette](https://epi-interactive-ltd.github.io/toro/articles/route-animations.html)
   for more details **Documentation to come**).
 
-### Bug Fixes and improvements
+### Bug Fixes and Improvements
 
 - Fxied clusters not showing up
 - Better clustering around the antimerdian line
