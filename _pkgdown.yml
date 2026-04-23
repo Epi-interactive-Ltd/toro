@@ -1,58 +1,51 @@
 url: https://epi-interactive-ltd.github.io/toro/
+
 template:
   bootstrap: 5
+  css:
+    - extras.css
+
+assets:
+  - pkgdown/assets
 
 authors:
   Poppy Pakinui:
     href: https://github.com/pakinui
+  epi:
+    href: https://epi.group/
+    html: '<img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/man/figures/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;">'
+  footer:
+    roles: [fnd]
+    text: 'Funded by'
+  sidebar:
+    roles: [aut, ctb]
+    before: 'So *who* does the work?'
+  before: 'This package is proudly brought to you by:'
+  after: 'See the [changelog](news/index.html) for other contributors.'
+
+home:
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+  links:
+    - text: 'Roadmap coming soon! :soon:'
+      href: '#'
 
 navbar:
   structure:
-    left:
-      - home
-      - reference
-      - articles
-      - news
+    left: [home, reference, articles, examples, news]
+    right: [search, github]
 
   components:
     home:
       icon: fa-home fa-lg
+      aria-label: 'Home'
       href: index.html
     reference:
       text: Reference
       href: reference/index.html
-    articles:
-      text: Articles
-      menu:
-        - text: Getting started with toro
-          href: articles/getting-started.html
-        - text: Integration with Shiny
-          href: articles/shiny-integration.html
-        - text: '---'
-        - text: Layers
-        - text: Modifying map tiles
-          href: articles/map-tiles.html
-        - text: Customising layers
-          href: articles/layers.html
-        - text: Popups/Hovers
-          href: articles/popups.html
-        - text: Clusters/Spiderfying
-          href: articles/map-clusters.html
-        - text: '---'
-        - text: Controls
-        - text: Adding controls to your map
-          href: articles/controls.html
-        - text: Draw controls
-          href: articles/draw-controls.html
-        - text: View controls
-          href: articles/view-controls.html
-        - text: '---'
-        - text: Advanced features
-        - text: Animations
-          href: articles/animations.html
-        - text: '---'
-        - text: 'Contributing to toro'
-          href: articles/contributing.html
+    examples:
+      text: 'Examples'
+      href: articles/examples/index.html
 
 reference:
   - title: 'Map Creation'
@@ -65,7 +58,6 @@ reference:
       - add_source
       - set_source_data
       - add_feature_server_source
-      - add_tiles_from_map_server
       - add_image
   - title: 'Adding Layers'
     desc: 'Functions to add map layers'
@@ -75,6 +67,7 @@ reference:
       - add_circle_layer
       - add_line_layer
       - add_symbol_layer
+      - add_text_layer
       - add_lat_lng_grid
   - title: 'Updating Layers'
     desc: 'Functions to update map layers'
@@ -151,6 +144,7 @@ reference:
       - remove_timeline_control
       - add_speed_control
       - remove_speed_control
+      - add_animation_controls
   - title: 'Controls — Misc'
     desc: 'Additional interactive controls'
     contents:
@@ -165,7 +159,6 @@ reference:
       - add_control_panel
       - add_control_group
       - remove_control_group
-      - add_control_to_panel
       - remove_control_from_panel
   - title: 'Shiny Integration'
     desc: 'Functions to get information from map interaction'
@@ -173,3 +166,44 @@ reference:
       - mapOutput
       - renderMap
       - mapProxy
+  - title: 'Extra features'
+    desc: 'Additional functions'
+    contents:
+      - export_map_image
+      - save_map_html
+
+articles:
+  - title: 'Getting Started'
+    contents:
+      - articles/getting-started
+  - title: 'Integration'
+    contents:
+      - articles/shiny-integration
+  - title: 'Layers'
+    contents:
+      - articles/layers
+      - articles/map-tiles
+      - articles/popups
+      - articles/map-clusters
+  - title: 'Controls'
+    contents:
+      - articles/controls
+  - title: 'Advanced Features'
+    contents:
+      - articles/animations
+  - title: 'Contributing'
+    contents:
+      - articles/contributing
+  - title: 'Examples'
+    contents:
+      - articles/examples/index
+      - articles/examples/sources/add-feature-service-source
+      - articles/examples/sources/add-geojson-source
+      - articles/examples/sources/add-image-source
+      - articles/examples/layers/add-fill-layer
+      - articles/examples/layers/add-line-layer
+      - articles/examples/layers/add-circle-layer
+      - articles/examples/layers/add-symbol-layer
+      - articles/examples/layers/add-text-layer
+      - articles/examples/layers/lat-lng-grid
+      - articles/examples/controls/draw-control

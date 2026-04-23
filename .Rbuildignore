@@ -1,6 +1,8 @@
 ^renv\.lock$
 ^toro\.Rproj$
 ^\.Rproj\.user$
+^.Rprofile$
+^\.Rproj\.user$
 ^LICENSE\.md$
 ^renv$
 ^doc$
@@ -8,3 +10,9 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^\.lintr$
+^\.prettierrc$
+^\.github$
+^inst/examples
+^man/figures$
+^vignettes/articles$

@@ -1,16 +1,48 @@
-# toro
+# toro <img src="man/figures/toro-logo.png" align="right" height="100" style="max-height: 100px;" alt="toro logo" />
 
-**toro** is a package that provides [Maplibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
+<!-- badges: start -->
 
+[![R-CMD-check](https://github.com/Epi-interactive-Ltd/toro/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Epi-interactive-Ltd/toro/actions)
 
-See these vignettes for learning how to use the package:
+<!-- badges: end -->
 
-- [Getting started with **toro**](https://epi-interactive-ltd.github.io/toro/articles/getting-started.html)
+toro is a package that provides [Maplibre GL
+JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
 
-- [Integrating with Shiny](https://epi-interactive-ltd.github.io/toro/articles/shiny-integration.html)
+The goal of toro is to …
 
-- [Adding controls to your map](https://epi-interactive-ltd.github.io/toro/articles/controls.html)
+## Installation
 
-Examples can be found in the `examples` directory.
+You can install the development version of toro from
+[GitHub](https://github.com/Epi-interactive-Ltd/toro) with:
 
-If you would like to contribute to {toro} see: [Contributing to {toro}](https://epi-interactive-ltd.github.io/toro/articles/contributing.html)
+```r
+# install.packages("remotes")
+remotes::install_github("Epi-interactive-Ltd/toro")
+```
+
+## Documentation
+
+You can find extensive documentation, guides, and examples at:
+<https://epi-interactive-ltd.github.io/toro/>
+
+## Example
+
+The most basic use case is as follows:
+
+```r
+library(toro)
+map()
+```
+
+More specific in-depth examples can be found
+[here](https://epi-interactive-ltd.github.io/toro/articles/examples/index.html).
+
+## Contributing
+
+If you would like to contribute to toro see: [Contributing to
+toro](https://epi-interactive-ltd.github.io/toro/articles/contributing.html)
+
+## Licensing
+
+This package is licensed under TODO

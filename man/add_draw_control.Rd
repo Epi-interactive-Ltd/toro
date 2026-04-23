@@ -2,15 +2,16 @@
 % Please edit documentation in R/draw_control.R
 \name{add_draw_control}
 \alias{add_draw_control}
-\title{Functions related to the draw control.}
+\title{Functions related to the draw control.
+Add a draw control to the map}
 \usage{
 add_draw_control(
   map,
   id = "draw_control",
   position = "top-right",
-  modes = c("polygon", "trash"),
-  active_colour = "#0FB3CE",
-  inactive_colour = "#0FB3CE",
+  modes = c("polygon"),
+  active_colour = "#04AAC1",
+  inactive_colour = "#04AAC1",
   mode_labels = list(),
   panel_id = NULL,
   section_title = NULL,
@@ -25,31 +26,32 @@ add_draw_control(
 \item{position}{The position of the draw control on the map. Default is \code{"top-right"}.
 Options are "top-left", "top-right", "bottom-left", "bottom-right".}
 
-\item{modes}{A vector of modes to enable in the draw control.
-Default is \code{c("polygon", "trash")}.
-Options include "polygon", "trash", "line".}
+\item{modes}{A vector of modes to enable in the draw control. Default is \code{c("polygon")}.
+Options include "polygon", "delete", "line", and "point".}
 
-\item{active_colour}{The colour for the drawn shapes. Default is \code{"#0FB3CE"}.}
+\item{active_colour}{The colour for the drawn shapes. Default is \code{"#04AAC1"}.}
 
-\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#0FB3CE"}.}
+\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#04AAC1"}.}
 
 \item{mode_labels}{A named list of labels for each mode.
-For example, \code{list(polygon = "Draw Polygon", trash = "Delete Shape")}.}
+For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}.}
 
 \item{panel_id}{ID of control panel to add to (optional).}
 
 \item{section_title}{Section title when added to a control panel.}
+
+\item{group_id}{Optional group ID for grouping controls within a panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{           The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
-Functions:
-\itemize{
-\item add_draw_control:    Add a draw control to the map.
-\item remove_draw_control: Remove the draw control from the map.
-\item delete_drawn_shape:  Delete a drawn shape from the map.
+Functions related to the draw control.
 Add a draw control to the map
+}
+\examples{
+\dontrun{
+map() |>
+ add_draw_control()
 }
 }

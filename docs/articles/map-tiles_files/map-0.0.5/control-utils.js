@@ -1,26 +1,11 @@
 /**
  * @file control-utils.js
  *
- * Utility functions for managing map controls in Maplibre GL JS.
- *
- * Current controls include:
- * - Draw control
- *
- * Functions:
- * - addDrawControl: Adds a draw control to the map instance.
- * - deleteDrawnShape: Deletes a drawn shape from the map.
- * - hideDrawControls: Hides the draw controls on the map.
- * - showDrawControls: Shows the draw controls on the map.
- * - _getDrawnStyle: Returns the style configuration for drawn shapes.
- * - addCursorCoordinateControl: Adds a control to display cursor coordinates on the map.
- * - addCustomControl: Adds a custom control to the map with specified HTML content.
- * - addZoomControl: Adds a zoom control to the map.
- *
  * @note Draw controls are based on Mapbox GL Draw, which is compatible with Maplibre GL JS.
  *       For more information: `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
  */
 
-const validDrawModes = ['polygon', 'trash', 'line', 'point']; // Accepted draw modes
+const validDrawModes = ['polygon', 'delete', 'line', 'point']; // Accepted draw modes
 
 /**
  * Add a draw control to the map instance.
@@ -28,17 +13,17 @@ const validDrawModes = ['polygon', 'trash', 'line', 'point']; // Accepted draw m
  * For the `MapboxDraw` documentation, see:
  *    `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
  *
- * @note Draw mode `trash` currently does nothing as the shapes are all set to
- *       static after being made.
+ * @note When delete mode is included in modes, shapes remain editable after creation.
+ *       When delete mode is not included, shapes are automatically made static.
  *
- * @param {object} el             Widget element containing the map instance.
- * @param {string} position       Position of the control on the map (e.g., "top-right", "bottom-left").
- * @param {string[]} modes        Draw modes to enable in the control.
- * @param {string} activeColour   Colour for the shape currently being drawn.
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} position Position of the control on the map (e.g., "top-right", "bottom-left").
+ * @param {string[]} modes Draw modes to enable in the control.
+ * @param {string} activeColour Colour for the shape currently being drawn.
  * @param {string} inactiveColour Colour for shapes that are not currently being drawn.
- * @param {object} modeLabels     A named list of labels for each mode.
- *                                For example, `{ polygon: "Draw Polygon", trash: "Delete Shape" }
- * @param {string} controlId      Optional custom control ID. If not provided, uses default pattern.
+ * @param {object} modeLabels A named list of labels for each mode.
+ *     For example, `{ polygon: "Draw Polygon", delete: "Delete Shape" }
+ * @param {string} controlId Optional custom control ID. If not provided, uses default pattern.
  * @returns {void}
  */
 function addDrawControl(
@@ -72,7 +57,7 @@ function addDrawControl(
     displayControlsDefault: false,
     controls: {
       polygon: modes.includes('polygon'),
-      trash: modes.includes('trash'),
+      trash: modes.includes('delete'),
       line_string: modes.includes('line'),
       point: modes.includes('point'),
     },
@@ -103,9 +88,9 @@ function addDrawControl(
   }, 0);
   // Set the buttons to be clickable
   modes.forEach((mode) => {
+    const modeIdentifier = mode === 'delete' ? 'trash' : mode;
     setTimeout(function () {
-      var controlBtn = el.querySelector('.mapbox-gl-draw_' + mode);
-
+      var controlBtn = el.querySelector('.mapbox-gl-draw_' + modeIdentifier);
       if (controlBtn) {
         controlBtn.style.pointerEvents = 'auto';
 
@@ -129,10 +114,11 @@ function addDrawControl(
       });
       /**
        * Change mode to static after a short delay to avoid recursion.
-       * Stops shapes from being editable after creation.
+       * Stops shapes from being editable after creation, but only if
+       * delete mode is not available (allowing editing when delete is enabled).
        */
       setTimeout(function () {
-        if (el.draw.getMode && el.draw.getMode() !== 'static') {
+        if (el.draw.getMode && el.draw.getMode() !== 'static' && !modes.includes('delete')) {
           el.draw.changeMode('static');
         }
       }, 50);
@@ -143,6 +129,48 @@ function addDrawControl(
       Shiny.setInputValue(el.id + '_shape_deleted', e.features.id, {
         priority: 'event',
       });
+    });
+
+    // Store updated features to send to Shiny when selection changes
+    let pendingUpdatedFeatures = [];
+
+    el.mapInstance.on('draw.selectionchange', function (e) {
+      // Trigger Shiny input for any pending updated features when selection changes
+      if (pendingUpdatedFeatures.length > 0) {
+        pendingUpdatedFeatures.forEach((feature) => {
+          const geojson = JSON.stringify(feature);
+          Shiny.setInputValue(el.id + '_shape_updated', geojson, {
+            priority: 'event',
+          });
+        });
+        pendingUpdatedFeatures = []; // Clear pending updates
+      }
+    });
+
+    // Store updated features when they are modified, but don't trigger Shiny immediately
+    el.mapInstance.on('draw.update', function (e) {
+      // Store the updated feature(s) to be sent when selection changes
+      e.features.forEach((feature) => {
+        pendingUpdatedFeatures.push(feature);
+      });
+    });
+
+    el.mapInstance.on('click', function (e) {
+      // All layers apart of the draw control shapes
+      // .cold to ensure this is not triggered when drawing shapes
+      const drawLayers = el.mapInstance
+        .getLayersOrder()
+        .filter((layerId) => layerId.startsWith('gl-draw-') && layerId.endsWith('.cold'));
+
+      const features = el.mapInstance.queryRenderedFeatures(e.point, {
+        layers: drawLayers,
+      });
+
+      if (features.length > 0) {
+        const feature = features[0];
+        // Handle clicked shape here (feature.properties.id, etc)
+        setShinyClickedFeature(el.id, 'test', feature);
+      }
     });
   }
 }
@@ -2242,7 +2270,7 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
     addHtmlToPanel(widgetInstance, panelId, html, options.panelTitle, null, groupId);
   } else {
     // Add as standalone control
-    addCustomControl(widgetInstance, selectControlId, html, options.position || 'top-right');
+    addCustomControl(map, selectControlId, html, options.position || 'top-right');
   }
 
   // Ensure the control is clickable by setting pointer events
@@ -2616,7 +2644,21 @@ function addVisibilityToggleControl(
         const newState = this._checkbox.checked;
 
         // Toggle layer visibility
-        if (newState) {
+        if (layerId === 'lat_lng_grid') {
+          // For the lat-lng grid, we may have multiple layers (e.g., different zoom levels), so we need to toggle all of them
+          const gridLayerIds =
+            widgetInstance
+              ?.getMap()
+              .getLayersOrder()
+              ?.filter((id) => id.startsWith('lat-lng-grid')) || [];
+          gridLayerIds.forEach((id) => {
+            if (newState) {
+              showLayer(mapInstance, id);
+            } else {
+              hideLayer(mapInstance, id);
+            }
+          });
+        } else if (newState) {
           showLayer(mapInstance, layerId);
         } else {
           hideLayer(mapInstance, layerId);
@@ -3208,4 +3250,374 @@ function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectio
 
   // Add the layer selector control
   addLayerSelectorControl(widgetInstance, layerChangeCallback, layerSelectorOptions);
+}
+
+/**
+ * Add comprehensive animation control buttons (play, pause, stop) to a map.
+ *
+ * @param {object} widgetInstance   Toro widget object.
+ * @param {object} options          Options for the animation controls.
+ *                                  Can include:
+ *                                    - routeId: string - Route ID to control (optional)
+ *                                    - position: string (default "top-right")
+ *                                    - panelId: string - Panel ID if using control panel
+ *                                    - buttons: array - Buttons to include ["play", "pause", "stop"]
+ *                                    - settings: object - Additional settings
+ * @returns {void}
+ */
+function addAnimationControlButton(widgetInstance, options = {}) {
+  const map = widgetInstance.getMap();
+  const el = widgetInstance.getElement();
+
+  // Set default options
+  const routeId = options.routeId || null;
+  const position = options.position || 'top-right';
+  const panelId = options.panelId || null;
+  const buttons = options.buttons || ['play', 'pause'];
+  const includeSpeedControl = options.includeSpeedControl || false;
+  const speedValues = options.speedValues || [0.5, 1, 2];
+  const speedLabels = options.speedLabels || ['Slow', 'Normal', 'Fast'];
+  const settings = options.settings || {};
+
+  // Generate unique IDs
+  const controlGroupId = `animation-controls-${widgetInstance.getId()}`;
+
+  // Create button configurations with play/pause toggle support
+  const buttonConfigs = {
+    play: {
+      id: `play-pause-button-${widgetInstance.getId()}`,
+      text: 'Play',
+      icon: '▶',
+      action: 'play',
+      color: '#007cba',
+      isPlaying: false,
+    },
+    pause: {
+      id: `play-pause-button-${widgetInstance.getId()}`,
+      text: 'Play', // Will be handled by toggle logic
+      icon: '▶',
+      action: 'play',
+      color: '#007cba',
+      isPlaying: false,
+    },
+    'play-pause': {
+      id: `play-pause-button-${widgetInstance.getId()}`,
+      text: 'Play',
+      icon: '▶',
+      action: 'play',
+      color: '#007cba',
+      isPlaying: false,
+    },
+    stop: {
+      id: `stop-button-${widgetInstance.getId()}`,
+      text: 'Stop',
+      icon: '⏹',
+      action: 'stop',
+      color: '#e74c3c',
+    },
+    speed: {
+      id: `speed-button-${widgetInstance.getId()}`,
+      text: 'Speed',
+      icon: '⚡',
+      action: 'speed',
+      color: '#f39c12',
+    },
+  };
+
+  // Track which buttons need play/pause toggle behavior
+  const needsToggle = buttons.includes('play') && buttons.includes('pause');
+  const hasPlayPause = buttons.includes('play-pause');
+
+  let effectiveButtons = buttons;
+  if (needsToggle) {
+    // Replace separate play and pause with combined play-pause
+    effectiveButtons = buttons.filter((b) => b !== 'play' && b !== 'pause');
+    effectiveButtons.push('play-pause');
+  } else if (hasPlayPause) {
+    // Already has play-pause, use as-is
+    effectiveButtons = buttons;
+  }
+
+  // Generate HTML for requested buttons
+  const buttonHtml = effectiveButtons
+    .map((buttonType) => {
+      const config = buttonConfigs[buttonType];
+      if (!config) return '';
+
+      return `
+      <button id="${config.id}" 
+              class="toro-ctrl animation-control-button" 
+              data-action="${config.action}"
+              data-route-id="${routeId || ''}"
+              data-is-playing="false"
+              style="background-color: ${config.color};">
+        <span class="button-icon">${config.icon}</span>
+        <span class="button-text">${config.text}</span>
+      </button>
+    `;
+    })
+    .join('');
+
+  // Complete HTML with styling
+  const html = `
+    <div id="${controlGroupId}" class="animation-controls-group">
+      <div class="animation-buttons-row">
+        ${buttonHtml}
+      </div>
+    </div>
+  `;
+
+  // Add control to map or panel
+  if (panelId && map._controlPanels && map._controlPanels[panelId]) {
+    // Add to existing control panel
+    const panel = map._controlPanels[panelId];
+    panel.addControl(html, controlGroupId, 'Animation', 'animation-controls-panel');
+  } else {
+    // Add as standalone control
+    addCustomControl(map, controlGroupId, html, position);
+  }
+
+  // Setup event handlers
+  function setupAnimationEventHandlers() {
+    const controlGroup = document.getElementById(controlGroupId);
+    if (!controlGroup) {
+      console.warn('Animation controls not found, retrying...');
+      setTimeout(setupAnimationEventHandlers, 50);
+      return;
+    }
+
+    // Setup speed control if included
+    if (includeSpeedControl) {
+      setupAnimationSpeedControl(widgetInstance, routeId, speedValues, speedLabels, panelId);
+    }
+
+    // Add click handlers to all buttons
+    effectiveButtons.forEach((buttonType) => {
+      const config = buttonConfigs[buttonType];
+      const button = document.getElementById(config.id);
+
+      if (button) {
+        button.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          let action = this.getAttribute('data-action');
+          const targetRouteId = this.getAttribute('data-route-id') || routeId;
+          const isPlaying = this.getAttribute('data-is-playing') === 'true';
+
+          // Handle play/pause toggle
+          if (
+            buttonType === 'play-pause' ||
+            (needsToggle && (buttonType === 'play' || buttonType === 'pause'))
+          ) {
+            if (isPlaying) {
+              action = 'pause';
+              // Update button to show play state
+              this.querySelector('.button-icon').textContent = '▶';
+              this.querySelector('.button-text').textContent = 'Play';
+              this.setAttribute('data-action', 'play');
+              this.setAttribute('data-is-playing', 'false');
+            } else {
+              action = 'play';
+              // Update button to show pause state
+              this.querySelector('.button-icon').textContent = '⏸';
+              this.querySelector('.button-text').textContent = 'Pause';
+              this.setAttribute('data-action', 'pause');
+              this.setAttribute('data-is-playing', 'true');
+            }
+          }
+
+          // Execute the appropriate animation action
+          switch (action) {
+            case 'play':
+              if (typeof animateRoute === 'function') {
+                const animationOptions = { routeId: targetRouteId, ...settings };
+                animateRoute(widgetInstance, animationOptions);
+              }
+              break;
+
+            case 'pause':
+              if (typeof pauseAnimation === 'function') {
+                const pauseOptions = { routeId: targetRouteId, ...settings };
+                pauseAnimation(widgetInstance, pauseOptions);
+              }
+              break;
+
+            case 'stop':
+              if (typeof stopAnimation === 'function') {
+                const stopOptions = { routeId: targetRouteId, ...settings };
+                stopAnimation(widgetInstance, stopOptions);
+              } else if (typeof pauseAnimation === 'function') {
+                // Fallback to pause if stop doesn't exist
+                const stopOptions = { routeId: targetRouteId, reset: true, ...settings };
+                pauseAnimation(widgetInstance, stopOptions);
+              }
+              break;
+
+            case 'speed':
+              if (typeof adjustSpeed === 'function') {
+                const speedOptions = { routeId: targetRouteId, ...settings };
+                adjustSpeed(widgetInstance, speedOptions);
+              }
+              break;
+
+            default:
+              console.warn('Unknown animation action:', action);
+          }
+
+          // Trigger Shiny event if in Shiny mode
+          if (HTMLWidgets.shinyMode) {
+            Shiny.setInputValue(
+              el.id + '_animation_control',
+              {
+                action: action,
+                routeId: targetRouteId,
+                timestamp: new Date().getTime(),
+              },
+              {
+                priority: 'event',
+              }
+            );
+          }
+        });
+
+        button.addEventListener('mousedown', function (e) {
+          e.stopPropagation();
+        });
+      }
+    });
+  }
+
+  setupAnimationEventHandlers();
+
+  // Store reference for external access
+  map._animationControls = map._animationControls || {};
+  map._animationControls[controlGroupId] = {
+    routeId: routeId,
+    buttons: effectiveButtons,
+    originalButtons: buttons,
+    includeSpeedControl: includeSpeedControl,
+    controlGroupId: controlGroupId,
+    enable: function () {
+      effectiveButtons.forEach((buttonType) => {
+        const config = buttonConfigs[buttonType];
+        const button = document.getElementById(config.id);
+        if (button) button.disabled = false;
+      });
+
+      // Enable speed control if present
+      if (includeSpeedControl && map._speedControl) {
+        map._speedControl.enable();
+      }
+    },
+    disable: function () {
+      effectiveButtons.forEach((buttonType) => {
+        const config = buttonConfigs[buttonType];
+        const button = document.getElementById(config.id);
+        if (button) button.disabled = true;
+      });
+
+      // Disable speed control if present
+      if (includeSpeedControl && map._speedControl) {
+        map._speedControl.disable();
+      }
+    },
+    setPlaying: function (isPlaying) {
+      // Update play/pause button state externally
+      const playPauseButton = document.getElementById(
+        `play-pause-button-${widgetInstance.getId()}`
+      );
+      if (playPauseButton) {
+        if (isPlaying) {
+          playPauseButton.querySelector('.button-icon').textContent = '⏸';
+          playPauseButton.querySelector('.button-text').textContent = 'Pause';
+          playPauseButton.setAttribute('data-action', 'pause');
+          playPauseButton.setAttribute('data-is-playing', 'true');
+          playPauseButton.style.backgroundColor = '#f39c12';
+        } else {
+          playPauseButton.querySelector('.button-icon').textContent = '▶';
+          playPauseButton.querySelector('.button-text').textContent = 'Play';
+          playPauseButton.setAttribute('data-action', 'play');
+          playPauseButton.setAttribute('data-is-playing', 'false');
+          playPauseButton.style.backgroundColor = '#007cba';
+        }
+      }
+    },
+    setSpeed: function (speed) {
+      // Update speed control to specific speed using existing speed control API
+      if (includeSpeedControl && widgetInstance.getMap()._speedControl) {
+        widgetInstance.getMap()._speedControl.setSpeed(speed);
+      }
+    },
+    remove: function () {
+      const controlGroup = document.getElementById(controlGroupId);
+      if (controlGroup) {
+        controlGroup.remove();
+      }
+      delete map._animationControls[controlGroupId];
+    },
+  };
+}
+
+/**
+ * Setup speed control functionality for animation controls
+ * @param {Object} widgetInstance - Map widget instance
+ * @param {string} routeId - Route identifier
+ * @param {Array} speedValues - Array of speed values
+ * @param {Array} speedLabels - Array of speed labels
+ * @param {string} panelId - Control panel ID (optional)
+ */
+function setupAnimationSpeedControl(widgetInstance, routeId, speedValues, speedLabels, panelId) {
+  // Create speed change callback that updates animation speeds
+  const speedChangeCallback = (speed) => {
+    // Update animation speed if route exists
+    if (routeId) {
+      const route = widgetInstance.getAnimations()[routeId];
+      if (route) {
+        route.animationSpeed = speed;
+      }
+    } else {
+      // Update all animation speeds if no specific route
+      const animations = widgetInstance.getAnimations();
+      Object.keys(animations).forEach((id) => {
+        if (animations[id]) {
+          animations[id].animationSpeed = speed;
+        }
+      });
+    }
+
+    // Trigger Shiny event if in Shiny mode
+    if (HTMLWidgets.shinyMode) {
+      const el = widgetInstance.getElement();
+      Shiny.setInputValue(
+        el.id + '_animation_speed_changed',
+        {
+          speed: speed,
+          routeId: routeId,
+          timestamp: new Date().getTime(),
+        },
+        {
+          priority: 'event',
+        }
+      );
+    }
+  };
+
+  // Set up options for the existing addSpeedControl function
+  const speedControlOptions = {
+    values: speedValues,
+    labels: speedLabels,
+    defaultIndex: speedValues.indexOf(1.0) !== -1 ? speedValues.indexOf(1.0) : 1,
+    position: 'top-right',
+  };
+
+  // If using control panel, configure for panel integration
+  if (panelId) {
+    speedControlOptions.useControlPanel = true;
+    speedControlOptions.panelId = panelId;
+    speedControlOptions.panelTitle = 'Speed';
+  }
+
+  // Use the existing addSpeedControl function
+  addSpeedControl(widgetInstance, speedChangeCallback, speedControlOptions);
 }

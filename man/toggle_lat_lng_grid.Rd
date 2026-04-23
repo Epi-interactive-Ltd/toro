@@ -12,9 +12,41 @@ toggle_lat_lng_grid(proxy, show = TRUE)
 \item{show}{Logical indicating whether to show or hide the grid. Default is \code{TRUE}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Show/hide the latitude and longitude grid on the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("show_grid", "Show Grid"),
+   actionButton("hide_grid", "Hide Grid")
+ )
+)
+server <- function(input, output, session) {
+
+ output$map <- renderMap({
+   map() |>
+     add_lat_lng_grid()
+  })
+
+  observe({
+    mapProxy("map") |>
+      toggle_lat_lng_grid(show = TRUE)
+  }) |>
+    bindEvent(input$show_grid)
+
+  observe({
+    mapProxy("map") |>
+      toggle_lat_lng_grid(show = FALSE)
+   }) |>
+     bindEvent(input$hide_grid)
+}
+}
 }

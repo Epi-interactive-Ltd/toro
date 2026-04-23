@@ -14,13 +14,11 @@ get_column_boolean(column_name, true_value, false_value)
 \item{false_value}{Value to use when the column value is \code{FALSE}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      List containing the paint or layout option to be set.
-}\if{html}{\out{</div>}}
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the data to be styled by the group option in the column.
 }
 \examples{
 get_column_boolean("group", "red", "grey")
-
 }

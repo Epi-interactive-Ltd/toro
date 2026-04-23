@@ -1,0 +1,67 @@
+---
+title: 'Add a fill layer'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+## Adding fill layers
+
+First, set up the base map with our data.
+
+```{r base-map}
+library(toro)
+library(spData)
+library(dplyr)
+library(sf)
+
+
+region_data <- spData::nz |>
+  dplyr::rename(geometry = geom) |>
+  sf::st_transform(4326) |>
+  dplyr::mutate(
+    popup = paste("Population:", format(Population, big.mark = ","))
+  )
+```
+
+### Basic example
+
+```{r basic-fill, results='asis'}
+map() |>
+  set_bounds(region_data, padding = 100) |>
+  add_fill_layer(
+    id = "regions",
+    source = region_data,
+    hover_column = "Name",
+    popup_column = "popup"
+  )
+```
+
+### Advanced example
+
+```{r advanced-fill, results='asis'}
+map() |>
+  set_bounds(region_data, padding = 100) |>
+  add_fill_layer(
+    id = "regions",
+    source = region_data,
+    hover_column = "Name",
+    popup_column = "popup",
+    paint = get_paint_options(
+      "fill",
+      options = list(
+        colour = get_column_step_steps(
+          "Population",
+          c(50000, 500000, 1000000),
+          c("#093d4a", "#11a366", "#20de60", "#dbe811")
+        ),
+        opacity = 0.7
+      )
+    )
+  )
+```

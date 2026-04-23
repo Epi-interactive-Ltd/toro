@@ -39,6 +39,7 @@ function addImagesToMap(map, imageSources) {
  * @returns {void}
  */
 async function _addImageToMapSource(map, imageId, imageUrl) {
+  if (!map || !imageId || !imageUrl) return;
   const response = await map.loadImage(imageUrl);
   // Add the loaded image to the style's sprite with the ID 'photo'.
   map.addImage(imageId, response.data);
@@ -224,4 +225,24 @@ function getTileIds(tilesItem) {
     return Object.keys(tilesItem);
   }
   return [];
+}
+
+/**
+ * Update Shiny with the clicked feature on the map.
+ * The ID it updates is the map ID with "_feature_click" appended to it (i.e., `<mapId>_feature_click`).
+ * 
+ * @param {string} mapId ID of the map to set the Shiny feature click for
+ * @param {string} layerId ID of the layer that was clicked
+ * @param {object} feature The clicked feature object
+ * @returns {void}
+ */
+function setShinyClickedFeature(mapId, layerId, feature) {
+  if (!mapId || !layerId || !feature) return;
+  // Trigger a Shiny input event with the clicked feature's properties
+  Shiny.setInputValue(`${mapId}_feature_click`, {
+    layerId: layerId,
+    properties: feature.properties,
+    geometry: feature.geometry,
+    time: new Date().toISOString(), // For multiple clicks on the same feature
+  });
 }

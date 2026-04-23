@@ -10,10 +10,41 @@ get_drawn_shape(create_input_string)
 \item{create_input_string}{A JSON string representing the drawn shape.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{               A `sf` object representing the drawn shape, or `NULL`.
-}\if{html}{\out{</div>}}
+A \code{sf} object representing the drawn shape, or \code{NULL}.
 }
 \description{
 Parses the JSON string returned by the map widget when a shape is drawn.
 Ensures that the ID of the shape is included in the resulting \code{sf} object.
+}
+\details{
+To get the drawn shape, use \code{input$map_shape_created} in a Shiny app, where \code{map} is the ID of
+your map output. This input will contain a JSON string representing the drawn shape whenever a
+new shape is created using the draw control on the map. Pass this input to \code{get_drawn_shape()}
+to convert it into an \code{sf} object for easier manipulation in R.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+    add_draw_control()
+ })
+
+ # Update the list of drawn shape IDs when a new shape is created
+ observe({
+   req(input$map_loaded, input$map_shape_created)
+   new_shape <- get_drawn_shape(input$map_shape_created)
+   print(new_shape)
+ }) |>
+   bindEvent(input$map_shape_created)
+}
+}
 }

@@ -11,18 +11,17 @@ remove_custom_control(proxy, control_id, panel_id = NULL)
 
 \item{control_id}{The ID of the custom control to remove.}
 
-\item{panel_id}{Optional. If provided, removes the custom control from the specified control panel.
+\item{panel_id}{Optional. If provided, removes the control from the specified control panel.
 If NULL, removes the standalone custom control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove a custom control from the map.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 # Add to a map
 map() |>
  add_custom_control(

@@ -1,0 +1,145 @@
+:root,
+[data-bs-theme='light'] {
+  --epi-brightest-green: #e9fcef;
+  --epi-brightest-green-rgb: 233, 252, 239;
+  --epi-bright-green: #20de60;
+  --epi-bright-green-rgb: 32, 222, 96;
+  --epi-dark-green: #11a366;
+  --epi-dark-green-rgb: 17, 163, 102;
+
+  --epi-bright-blue: #04aac1;
+  --epi-bright-blue-rgb: 4, 171, 193;
+  --epi-dark-blue: #093d4a;
+  --epi-dark-blue-rgb: 9, 61, 74;
+
+  --epi-bright-yellow: #dbe811;
+  --epi-bright-yellow-rgb: 219, 232, 17;
+
+  --epi-black: black;
+  --epi-black-rgb: 0, 0, 0;
+
+  --epi-white: white;
+  --epi-white-rgb: 255, 255, 255;
+
+  --epi-gradient-bg: linear-gradient(
+    90deg,
+    rgba(225, 247, 245, 1) 0%,
+    rgba(209, 240, 227, 1) 11%,
+    rgba(206, 237, 233, 1) 21%,
+    rgba(207, 242, 215, 1) 37%,
+    rgba(208, 245, 226, 1) 77%,
+    rgba(227, 245, 250, 1) 100%
+  );
+
+  --epi-dropdown-bg: linear-gradient(
+    125deg,
+    rgba(var(--epi-dark-blue-rgb), 0.7),
+    rgba(var(--epi-dark-blue-rgb), 0.6) 70%
+  );
+
+  --epi-navbar-bg: var(--epi-dark-blue);
+
+  --epi-text-opacity: 1;
+  --epi-text-muted-opacity: 0.6;
+
+  /** Overwrite bs defaults */
+  --bs-primary-rgb: var(--epi-dark-green-rgb) !important;
+  --bs-link-color-rgb: var(--epi-dark-green-rgb) !important;
+  --bs-link-hover-color-rgb: var(--epi-bright-green-rgb) !important;
+  --bs-border-color: rgba(var(--epi-dark-blue-rgb), 0.5) !important;
+  --bs-code-color: var(--epi-bright-blue) !important;
+  --bs-emphasis-color-rgb: var(--epi-dark-blue-rgb) !important;
+  --bs-dropdown-header: var(--epi-bright-green) !important;
+  --bs-dropdown-link-color: var(--epi-brightest-green) !important;
+  --bs-dropdown-link-hover-color: var(--epi-bright-green) !important;
+  --bs-dropdown-divider-bg: rgba(var(--epi-dark-blue-rgb), 0.45) !important;
+  --bs-dropdown-link-hover-bg: rgba(var(--epi-dark-blue-rgb), 0.35) !important;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--epi-dark-green);
+  --bs-btn-border-color: var(--epi-dark-green);
+  --bs-btn-hover-bg: var(--epi-dark-green);
+  --bs-btn-hover-border-color: var(--epi-dark-green);
+  --bs-btn-active-bg: var(--epi-dark-green);
+  --bs-btn-active-border-color: var(--epi-dark-green);
+  --bs-btn-disabled-bg: var(--epi-dark-green);
+  --bs-btn-disabled-border-color: var(--epi-dark-green);
+  --bs-btn-color: var(--epi-brightest-green);
+  --bs-btn-hover-color: var(--epi-brightest-green);
+  --bs-btn-active-color: var(--epi-brightest-green);
+  --bs-btn-disabled-color: var(--epi-brightest-green);
+}
+
+/** General */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-image: var(--epi-gradient-bg);
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(var(--epi-dark-green-rgb), 0.25);
+}
+
+blockquote {
+  background-color: rgba(var(--epi-dark-green-rgb), 0.1);
+  border-left: .25rem solid var(--epi-dark-green);
+}
+
+/** Navbar */
+body > nav.navbar {
+  background-color: var(--epi-dark-blue) !important;
+}
+
+body > nav.navbar > .container .navbar-brand,
+body > nav.navbar > .container .nav-link,
+body > nav.navbar > .container .nav-text,
+body > nav.navbar > .container input[type='search'] {
+  color: rgba(var(--epi-bright-green-rgb), var(--epi-text-opacity));
+}
+
+body > nav.navbar > .container input[type='search']::placeholder,
+body > nav.navbar > .container .text-muted {
+  color: rgba(var(--epi-bright-green-rgb), var(--epi-text-muted-opacity)) !important;
+}
+
+body > nav.navbar > .container input[type='search'] {
+  background: rgba(var(--epi-dark-green-rgb), 0.05);
+  border: 1px solid rgba(var(--epi-bright-green-rgb), var(--epi-text-opacity));
+}
+
+.dropdown-menu {
+  --bs-dropdown-header: var(--epi-bright-green) !important;
+  --bs-dropdown-link-color: var(--epi-brightest-green) !important;
+  --bs-dropdown-link-hover-color: var(--epi-bright-green) !important;
+  --bs-dropdown-divider-bg: rgba(var(--epi-dark-blue-rgb), 0.45) !important;
+  --bs-dropdown-link-hover-bg: rgba(var(--epi-dark-blue-rgb), 0.35) !important;
+
+  border: none;
+  box-shadow:
+    inset 1px 1px rgba(255, 255, 255, 0.2),
+    inset -1px -1px rgba(255, 255, 255, 0.1),
+    1px 3px 24px -1px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+  background-image: var(--epi-dropdown-bg);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+.dropdown-menu a {
+  color: var(--epi-brightest-green);
+}
+
+.dropdown-header {
+  font-size: 0.875rem;
+  color: var(--bs-dropdown-header);
+}
+
+/** Footer */
+footer {
+  border-top: 1px solid var(--epi-dark-blue);
+}

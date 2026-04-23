@@ -123,6 +123,9 @@ HTMLWidgets.widget({
           if (x.layers) {
             x.layers.forEach((layer) => addLayerToMap(el, layer));
           }
+          if (x.routes) {
+            x.routes.forEach((layer) => addRoute(el, layer));
+          }
 
           if (!x.options.enable3D) {
             disable3DView(el.mapInstance);
@@ -186,6 +189,8 @@ HTMLWidgets.widget({
                   control.modeLabels,
                   control.controlId
                 );
+              } else if (control.type === 'animation') {
+                addAnimationControlButton(el.widgetInstance, control);
               }
             });
           }
@@ -595,99 +600,7 @@ function withMapInstance(id, fn) {
   }
 }
 
-function saveElementAsPng(elementId, filename = 'capture.png') {
-  var el = document.getElementById(elementId);
-  html2canvas(el).then(function (canvas) {
-    var link = document.createElement('a');
-    link.download = filename;
-    link.href = canvas.toDataURL();
-    link.click();
-  });
-}
-
-async function exportElementBundled(elementId, filename = 'bundle.html') {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-
-  // Collect all CSS and JS URLs
-  const cssLinks = Array.from(document.head.querySelectorAll('link[rel="stylesheet"]')).map(
-    (l) => l.href
-  );
-  const jsLinks = Array.from(document.head.querySelectorAll('script[src]')).map((s) => s.src);
-
-  // Fetch and inline CSS
-  let cssContent = '';
-  for (const url of cssLinks) {
-    try {
-      const resp = await fetch(url);
-      cssContent += (await resp.text()) + '\n';
-    } catch (e) {}
-  }
-
-  // Fetch and inline JS
-  let jsContent = '';
-  for (const url of jsLinks) {
-    try {
-      const resp = await fetch(url);
-      jsContent += (await resp.text()) + '\n';
-    } catch (e) {}
-  }
-
-  // Build HTML
-  const html =
-    '<!DOCTYPE html>\n<html>\n<head>\n' +
-    `<style>\n${cssContent}\n</style>\n` +
-    `<script>\n${jsContent}\n</script>\n` +
-    '</head>\n<body>\n' +
-    el.outerHTML +
-    '\n</body>\n</html>';
-
-  // Download
-  const blob = new Blob([html], { type: 'text/html' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
-  URL.revokeObjectURL(link.href);
-}
-
-function saveElementAsHtml(elementId, filename = 'content.html') {
-  var el = document.getElementById(elementId);
-  if (el) {
-    var html = el.outerHTML;
-    var blob = new Blob([html], { type: 'text/html' });
-    var link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(link.href);
-  }
-}
-
 if (HTMLWidgets.shinyMode) {
-  Shiny.addCustomMessageHandler('downloadMapImage', function (message) {
-    withMapInstance(message.id, function (el) {
-      console.log(message);
-      console.log(el);
-      // saveElementAsPng(el.id);
-      // saveElementAsHtml(el.id);
-      // exportElementBundled(el.id);
-
-      // const element = document.querySelector("#" + el.id + ".html-widget"); // or any selector
-
-      // setTimeout(function () {
-      //   html2canvas(element).then((canvas) => {
-      //     const imgData = canvas.toDataURL("image/png");
-      //     // Create a download link:
-      //     const link = document.createElement("a");
-      //     link.href = imgData;
-      //     link.download = "export.png";
-      //     link.click();
-      //   });
-      // }, 1000);
-    });
-  });
-
   Shiny.addCustomMessageHandler('addCursorCoordsControl', function (message) {
     withMapInstance(message.id, function (el) {
       const control = message.control || message;
@@ -968,7 +881,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('addRoute', function (message) {
     withMapInstance(message.id, function (el) {
-      addRoute(el.widgetInstance, message.options);
+      addRoute(el, message.options);
     });
   });
 
@@ -987,6 +900,12 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('removeRoute', function (message) {
     withMapInstance(message.id, function (el) {
       removeRoute(el.widgetInstance, message.options);
+    });
+  });
+
+  Shiny.addCustomMessageHandler('addAnimationControls', function (message) {
+    withMapInstance(message.id, function (el) {
+      addAnimationControlButton(el.widgetInstance, message.options);
     });
   });
 

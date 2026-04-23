@@ -12,9 +12,14 @@ add_lat_lng_grid(map, grid_colour = "#000000")
 \item{grid_colour}{The colour of the grid lines. Default is \code{"#000000"}.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map or map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map or map proxy object for chaining.
 }
 \description{
 Add a grid of latitude and longitude lines to the map.
+}
+\examples{
+\dontrun{
+map() |>
+ add_lat_lng_grid()
+}
 }

@@ -14,9 +14,9 @@ remove_control_from_panel(proxy, panel_id, control_id)
 \item{control_id}{The ID of the control to remove from the panel.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
-Remove a control from a control panel.
+Used by other toro control functions to remove controls from a panel.
 }
+\keyword{internal}

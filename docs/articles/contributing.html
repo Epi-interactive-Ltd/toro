@@ -5,12 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>contributing • toro</title>
+<title>Contributing to toro • toro</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="contributing">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Contributing to toro">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -29,31 +30,10 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="../index.html" aria-label="Home"><span class="fa fa-home fa-lg"></span></a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/getting-started.html">Getting started with toro</a></li>
-    <li><a class="dropdown-item" href="../articles/shiny-integration.html">Integration with Shiny</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Layers</h6></li>
-    <li><a class="dropdown-item" href="../articles/map-tiles.html">Modifying map tiles</a></li>
-    <li><a class="dropdown-item" href="../articles/layers.html">Customising layers</a></li>
-    <li><a class="dropdown-item" href="../articles/popups.html">Popups/Hovers</a></li>
-    <li><a class="dropdown-item" href="../articles/map-clusters.html">Clusters/Spiderfying</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Controls</h6></li>
-    <li><a class="dropdown-item" href="../articles/controls.html">Adding controls to your map</a></li>
-    <li><a class="dropdown-item" href="../articles/draw-controls.html">Draw controls</a></li>
-    <li><a class="dropdown-item" href="../articles/view-controls.html">View controls</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Advanced features</h6></li>
-    <li><a class="dropdown-item" href="../articles/animations.html">Animations</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="../articles/contributing.html">Contributing to toro</a></li>
-  </ul>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/examples/index.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -74,30 +54,283 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>contributing</h1>
+      <h1>Contributing to toro</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/contributing.Rmd" class="external-link"><code>vignettes/contributing.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/articles/contributing.Rmd" class="external-link"><code>vignettes/articles/contributing.Rmd</code></a></small>
       <div class="d-none name"><code>contributing.Rmd</code></div>
     </div>
 
     
     
+<p>All types of contributions are encouraged and appreciated. See the <a href="#table-of-contents">Table of Contents</a> for more details.</p>
 <div class="section level2">
-<h2 id="contributing-to-toro">Contributing to {toro}<a class="anchor" aria-label="anchor" href="#contributing-to-toro"></a>
+<h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
 </h2>
+<ul>
+<li><a href="#code-of-conduct">Code of Conduct</a></li>
+<li><a href="#i-have-a-question">I Have a Question</a></li>
+<li><a href="#i-want-to-contribute">I Want To Contribute</a></li>
+<li><a href="#reporting-bugs">Reporting Bugs</a></li>
+<li><a href="#suggesting-enhancements">Suggesting Enhancements</a></li>
+<li><a href="#your-first-code-contribution">Your First Code
+Contribution</a></li>
+<li><a href="#improving-the-documentation">Improving The
+Documentation</a></li>
+<li><a href="#join-the-project-team">Join The Project Team</a></li>
+</ul>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>This project and everyone participating in it is governed by the <a href="blob/main/CODE_OF_CONDUCT.html">CONTRIBUTING.md Code of Conduct</a>.
+By participating, you are expected to uphold this code. Please report
+unacceptable behavior to <todo>.</todo></p>
+</div>
+<div class="section level2">
+<h2 id="i-have-a-question">I Have a Question<a class="anchor" aria-label="anchor" href="#i-have-a-question"></a>
+</h2>
+<blockquote>
+<p>If you want to ask a question, we assume that you have read the
+available <a href="">Documentation</a>.</p>
+</blockquote>
+<p>Before you ask a question, it is best to search for existing <a href="/issues">Issues</a> that might help you. In case you have found a
+suitable issue and still need clarification, you can write your question
+in this issue. It is also advisable to search the internet for answers
+first.</p>
+<p>If you then still feel the need to ask a question and need
+clarification, we recommend the following:</p>
+<ul>
+<li>Open an <a href="/issues/new">Issue</a>.</li>
+<li>Provide as much context as you can about what you’re running
+into.</li>
+<li>Provide package and platform versions (R, RStudio, Positron, etc),
+depending on what seems relevant.</li>
+</ul>
+<p>We will then take care of the issue as soon as possible.</p>
+</div>
+<div class="section level2">
+<h2 id="i-want-to-contribute">I Want To Contribute<a class="anchor" aria-label="anchor" href="#i-want-to-contribute"></a>
+</h2>
+<blockquote>
+<h3 id="legal-notice">Legal Notice</h3>
+<p>When contributing to this project, you must agree that you have
+authored 100% of the content, that you have the necessary rights to the
+content and that the content you contribute may be provided under the
+project license.</p>
+</blockquote>
+<div class="section level3">
+<h3 id="reporting-bugs">Reporting Bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a>
+</h3>
+<div class="section level4">
+<h4 id="before-submitting-a-bug-report">Before Submitting a Bug Report<a class="anchor" aria-label="anchor" href="#before-submitting-a-bug-report"></a>
+</h4>
+<p>A good bug report shouldn’t leave others needing to chase you up for
+more information. Therefore, we ask you to investigate carefully,
+collect information and describe the issue in detail in your report.
+Please complete the following steps in advance to help us fix any
+potential bug as fast as possible.</p>
+<ul>
+<li>Make sure that you are using the latest version.</li>
+<li>Determine if your bug is really a bug and not an error on your side
+e.g. using incompatible environment components/versions (Make sure that
+you have read the documentation. If you are looking for support, you
+might want to check <a href="#i-have-a-question">this section</a>).</li>
+<li>To see if other users have experienced (and potentially already
+solved) the same issue you are having, check if there is not already a
+bug report existing for your bug or error in the <a href="issues?q=label%3Abug">bug tracker</a>.</li>
+<li>Also make sure to search the internet (including Stack Overflow) to
+see if users outside of the GitHub community have discussed the
+issue.</li>
+<li>Collect information about the bug:</li>
+<li>Stack trace (Traceback)</li>
+<li>OS, Platform and Version (Windows, Linux, macOS, x86, ARM)</li>
+<li>Version of the interpreter, compiler, SDK, runtime environment,
+package manager, depending on what seems relevant.</li>
+<li>Possibly your input and the output</li>
+<li>Can you reliably reproduce the issue? And can you also reproduce it
+with older versions?</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-bug-report"></a>
+</h4>
+<blockquote>
+<p>You must never report security related issues, vulnerabilities or
+bugs including sensitive information to the issue tracker, or elsewhere
+in public. Instead sensitive bugs must be sent by email to &lt;&gt;.</p>
+</blockquote>
+<p>We use GitHub issues to track bugs and errors. If you run into an
+issue with the project:</p>
+<ul>
+<li>Open an <a href="/issues/new">Issue</a>. (Since we can’t be sure at
+this point whether it is a bug or not, we ask you not to talk about a
+bug yet and not to label the issue.)</li>
+<li>Explain the behavior you would expect and the actual behavior.</li>
+<li>Please provide as much context as possible and describe the
+<em>reproduction steps</em> that someone else can follow to recreate the
+issue on their own. This usually includes your code. For good bug
+reports you should isolate the problem and create a reduced test
+case.</li>
+<li>Provide the information you collected in the previous section.</li>
+</ul>
+<p>Once it’s filed:</p>
+<ul>
+<li>The project team will label the issue accordingly.</li>
+<li>A team member will try to reproduce the issue with your provided
+steps. If there are no reproduction steps or no obvious way to reproduce
+the issue, the team will ask you for those steps and mark the issue as
+<code>needs-repro</code>. Bugs with the <code>needs-repro</code> tag
+will not be addressed until they are reproduced.</li>
+<li>If the team is able to reproduce the issue, it will be marked
+<code>needs-fix</code>, as well as possibly other tags (such as
+<code>critical</code>), and the issue will be left to be <a href="#your-first-code-contribution">implemented by someone</a>.</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="suggesting-enhancements">Suggesting Enhancements<a class="anchor" aria-label="anchor" href="#suggesting-enhancements"></a>
+</h3>
+<p>This section guides you through submitting an enhancement suggestion
+for CONTRIBUTING.md, <strong>including completely new features and minor
+improvements to existing functionality</strong>. Following these
+guidelines will help maintainers and the community to understand your
+suggestion and find related suggestions.</p>
+<div class="section level4">
+<h4 id="before-submitting-an-enhancement">Before Submitting an Enhancement<a class="anchor" aria-label="anchor" href="#before-submitting-an-enhancement"></a>
+</h4>
+<ul>
+<li>Make sure that you are using the latest version.</li>
+<li>Read the <a href="">documentation</a> carefully and find out if the
+functionality is already covered, maybe by an individual
+configuration.</li>
+<li>Perform a <a href="/issues">search</a> to see if the enhancement has
+already been suggested (there is an <em>enhancement</em> label). If it
+has, add a comment to the existing issue instead of opening a new
+one.</li>
+<li>Find out whether your idea fits with the scope and aims of the
+project. It’s up to you to make a strong case to convince the project’s
+developers of the merits of this feature. Keep in mind that we want
+features that will be useful to the majority of our users and not just a
+small subset. If you’re just targeting a minority of users, consider
+writing an add-on/plugin library.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-enhancement-suggestion"></a>
+</h4>
+<p>Enhancement suggestions are tracked as <a href="/issues">GitHub
+issues</a>.</p>
+<ul>
+<li>Use a <strong>clear and descriptive title</strong> for the issue to
+identify the suggestion.</li>
+<li>Provide a <strong>step-by-step description of the suggested
+enhancement</strong> in as many details as possible.</li>
+<li>
+<strong>Describe the current behavior</strong> and <strong>explain
+which behavior you expected to see instead</strong> and why. At this
+point you can also tell which alternatives do not work for you.</li>
+<li>You may want to <strong>include screenshots and animated
+GIFs</strong> which help you demonstrate the steps or point out the part
+which the suggestion is related to. You can use <a href="https://www.cockos.com/licecap/" class="external-link">this tool</a> to record GIFs on
+macOS and Windows, and <a href="https://github.com/colinkeenan/silentcast" class="external-link">this tool</a>.</li>
+<li>
+<strong>Explain why this enhancement would be useful</strong> to
+most CONTRIBUTING.md users. You may also want to point out the other
+projects that solved it better and which could serve as
+inspiration.</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="your-first-code-contribution">Your First Code Contribution<a class="anchor" aria-label="anchor" href="#your-first-code-contribution"></a>
+</h3>
+<div class="section level4">
+<h4 id="fork-the-repository">Fork the repository<a class="anchor" aria-label="anchor" href="#fork-the-repository"></a>
+</h4>
+<p>First, create a fork of the repository on GitHub. This will create a
+copy of the repository under your own GitHub account.</p>
+</div>
+<div class="section level4">
+<h4 id="install-dependencies">Install Dependencies<a class="anchor" aria-label="anchor" href="#install-dependencies"></a>
+</h4>
+<p>Make sure that you have all the necessary dependencies installed to
+run the project locally. This may include R, Positron, and any required
+packages. Check the <a href="DESCRIPTION">Description</a> file for a
+list of dependencies and their versions.</p>
+<p>Once you have the correct R version instaled, you can use the
+following code to install the dependencies:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install dependencies from the DESCRIPTION file</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_deps.html" class="external-link">install_deps</a></span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="create-an-app-r-file-for-testing">Create an app.R file for testing<a class="anchor" aria-label="anchor" href="#create-an-app-r-file-for-testing"></a>
+</h4>
+<p>Inside <code>inst/examples/</code>, create a new file named
+<code>app.R</code> and add the following code to it:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="st">"../"</span><span class="op">)</span> <span class="co"># Load the most recent changes from the local repository</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map-shiny.html">mapOutput</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map-shiny.html">renderMap</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>This file is already included in the <code>.gitignore</code> and will
+allow you to test your changes in a Shiny app.</p>
+<p>To test outside of a Shiny app simply run:</p>
+<ul>
+<li>
+<code><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">devtools::load_all()</a></code> to load the most recent changes
+from the local repository.</li>
+<li>
+<code><a href="../reference/map.html">map()</a></code> to test the map function.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="making-a-pull-request">Making a pull request<a class="anchor" aria-label="anchor" href="#making-a-pull-request"></a>
+</h4>
+<p>Once you have made your changes and are ready to submit them, you can
+create a pull request on GitHub. The pull request template will guide
+you through the process of making a PR and ensuring that you have done
+all the necessary steps (like adding tests and documentation) to make it
+easier for the maintainers to review and merge your changes.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="improving-the-documentation">Improving The Documentation<a class="anchor" aria-label="anchor" href="#improving-the-documentation"></a>
+</h3>
+<p>TODO</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a>
+</h2>
+<p>This guide is based on the <strong>contributing.md</strong>. <a href="https://contributing.md/" class="external-link">Make your own</a>!</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/pakinui" class="external-link">Poppy Pakinui</a>.</p>
+  <p>Funded by <a href="https://epi.group/" class="external-link"><img src="https://github.com/Epi-interactive-Ltd/toro/blob/dev/man/figures/epi-logo.png?raw=true" alt="Epi Group" height="25" style="max-height: 25px;"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

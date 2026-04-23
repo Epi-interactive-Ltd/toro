@@ -13,8 +13,6 @@ add_tiles_from_wms(map, url, tile_id, as_image_layer = FALSE, ...)
 \item{url}{The URL of the ArcGIS Image Server.}
 
 \item{...}{Additional parameters for the Image Server source.}
-
-\item{source_id}{A unique identifier for the source.}
 }
 \value{
 The updated map object.

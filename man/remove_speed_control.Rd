@@ -9,18 +9,17 @@ remove_speed_control(proxy, panel_id = NULL)
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{Optional. If provided, removes the speed control from the specified control panel.
-If NULL, removes the standalone speed control.}
+\item{panel_id}{Optional. If provided, removes the speed control from the specified control
+panel. If NULL, removes the standalone speed control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove the speed control from the map.
 }
 \examples{
-if (interactive()) {
+\dontrun{
 # Add to a map
 map() |>
  add_speed_control()

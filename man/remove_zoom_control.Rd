@@ -13,9 +13,39 @@ remove_zoom_control(proxy, panel_id = NULL)
 If NULL, removes the standalone zoom control.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The map proxy object for chaining.
-}\if{html}{\out{</div>}}
+The map proxy object for chaining.
 }
 \description{
 Remove the zoom control from the map.
+}
+\examples{
+\dontrun{
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   checkboxInput("has_zoom_controls", "Remove Zoom Controls", value = TRUE)
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_zoom_control()
+ })
+
+ observe({
+   req(input$map_loaded)
+   if (input$has_zoom_controls == TRUE) {
+     mapProxy("map") |>
+       add_zoom_control()
+   } else {
+     mapProxy("map") |>
+       remove_zoom_control()
+   }
+ }) |>
+   bindEvent(input$has_zoom_controls)
+}
+}
 }
