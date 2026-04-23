@@ -18,7 +18,6 @@ You can pass either a `map`or `mapProxy` object to
 
 library(toro)
 library(sf)
-#> Warning: package 'sf' was built under R version 4.5.2
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
 
 epi_location <- data.frame(

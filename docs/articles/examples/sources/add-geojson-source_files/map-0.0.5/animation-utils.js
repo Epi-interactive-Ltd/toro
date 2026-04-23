@@ -1,91 +1,299 @@
-function interpolateLine(start, end, steps) {
-  const points = [];
-  for (let i = 0; i < steps; i++) {
-    const t = i / (steps - 1); // Fraction along the line
-    const lon = start[0] + t * (end[0] - start[0]);
-    const lat = start[1] + t * (end[1] - start[1]);
-    points.push({
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: [lon, lat] },
-      properties: {},
-    });
-  }
-  return points;
+// ===========================================
+// Utility Functions for Map Animations
+// ===========================================
+
+/**
+ * Create a GeoJSON FeatureCollection with a single point feature
+ * @param {Array} coordinates - [longitude, latitude]
+ * @param {Object} properties - Feature properties
+ * @returns {Object} GeoJSON FeatureCollection
+ */
+function createPointFeatureCollection(coordinates, properties = {}) {
+  return createFeatureCollection([createPointFeature(coordinates, properties)]);
 }
+
+/**
+ * Create a GeoJSON LineString feature
+ * @param {Array} coordinates - Array of [longitude, latitude] pairs
+ * @param {Object} properties - Feature properties
+ * @returns {Object} GeoJSON Feature
+ */
+function createLineFeature(coordinates, properties = {}) {
+  return {
+    type: 'Feature',
+    geometry: {
+      type: 'LineString',
+      coordinates: coordinates,
+    },
+    properties: properties,
+  };
+}
+
+/**
+ * Create a GeoJSON Point feature
+ * @param {Array} coordinates - [longitude, latitude] coordinate pair
+ * @param {Object} properties - Feature properties
+ * @returns {Object} GeoJSON Feature
+ */
+function createPointFeature(coordinates, properties = {}) {
+  return {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: coordinates,
+    },
+    properties: properties,
+  };
+}
+
+/**
+ * Create a GeoJSON FeatureCollection
+ * @param {Array} features - Array of GeoJSON features
+ * @returns {Object} GeoJSON FeatureCollection
+ */
+function createFeatureCollection(features) {
+  return {
+    type: 'FeatureCollection',
+    features: features,
+  };
+}
+
+/**
+ * Generate animation points using the exact coordinates from the route line geometry
+ * This ensures perfect alignment with the rendered route line
+ * @param {Array} flatCoords - Array of [lon,lat] coordinate pairs (fallback)
+ * @param {number} totalSteps - Total number of animation steps
+ * @param {Object} line - GeoJSON LineString feature to extract coordinates from
+ * @returns {Array} Array of point features for animation
+ */
+function generateLinePoints(flatCoords, totalSteps, line = null) {
+  const linePoints = [];
+
+  // Use the exact coordinates from the route line geometry if available
+  let routeCoords = flatCoords;
+  if (
+    line &&
+    line.geometry &&
+    line.geometry.coordinates &&
+    line.geometry.coordinates.length > flatCoords.length
+  ) {
+    routeCoords = line.geometry.coordinates;
+  }
+
+  // If we have many coordinates, use them directly with minimal additional interpolation
+  if (routeCoords.length >= totalSteps * 0.5) {
+    // Use the route coordinates directly, adding minimal interpolation if needed
+    const coordsPerStep = routeCoords.length / totalSteps;
+
+    for (let i = 0; i < totalSteps; i++) {
+      const coordIndex = Math.floor(i * coordsPerStep);
+      const actualIndex = Math.min(coordIndex, routeCoords.length - 1);
+      linePoints.push(createPointFeature(routeCoords[actualIndex]));
+    }
+  } else {
+    // Use distance-based sampling with minimal safe interpolation
+
+    // Calculate cumulative distances along all route coordinates
+    const distances = [0];
+    let totalDistance = 0;
+
+    for (let i = 1; i < routeCoords.length; i++) {
+      const segmentLine = createLineFeature([routeCoords[i - 1], routeCoords[i]]);
+      const segmentDistance = turf.length(segmentLine, { units: 'kilometers' });
+      totalDistance += segmentDistance;
+      distances.push(totalDistance);
+    }
+
+    // Sample points at equal distance intervals
+    const stepDistance = totalDistance / (totalSteps - 1);
+
+    for (let step = 0; step < totalSteps; step++) {
+      const targetDistance = step * stepDistance;
+
+      // Find which route segment this distance falls in
+      let segmentIndex = 0;
+      for (let i = 1; i < distances.length; i++) {
+        if (distances[i] >= targetDistance) {
+          segmentIndex = i - 1;
+          break;
+        }
+      }
+
+      // Handle final point
+      if (step === totalSteps - 1) {
+        linePoints.push(createPointFeature(routeCoords[routeCoords.length - 1]));
+        continue;
+      }
+
+      // Calculate position within the segment
+      const segmentStart = distances[segmentIndex];
+      const segmentEnd = distances[segmentIndex + 1];
+      const segmentLength = segmentEnd - segmentStart;
+
+      if (segmentLength === 0) {
+        linePoints.push(createPointFeature(routeCoords[segmentIndex]));
+      } else {
+        // Only do VERY simple linear interpolation between consecutive route coordinates
+        const t = (targetDistance - segmentStart) / segmentLength;
+        const coord1 = routeCoords[segmentIndex];
+        const coord2 = routeCoords[segmentIndex + 1];
+
+        // Simple linear interpolation - since route coordinates should be close together
+        let startLon = coord1[0];
+        let endLon = coord2[0];
+
+        // Handle antimeridian crossing
+        const lonDiff = endLon - startLon;
+        if (lonDiff > 180) {
+          startLon += 360;
+        } else if (lonDiff < -180) {
+          endLon += 360;
+        }
+
+        let lon = startLon + t * (endLon - startLon);
+        const lat = coord1[1] + t * (coord2[1] - coord1[1]);
+
+        // Normalize longitude
+        while (lon > 180) lon -= 360;
+        while (lon < -180) lon += 360;
+
+        linePoints.push(createPointFeature([lon, lat]));
+      }
+    }
+  }
+
+  return linePoints;
+}
+
+/**
+ * Normalize coordinates for LineString geometry
+ * @param {Array} rawCoords - Raw coordinate array that may be over-nested
+ * @returns {Array} Flat array of [lon,lat] coordinate pairs
+ */
+function normalizeCoordinatesForLineString(rawCoords) {
+  // If we have an array of individual point coordinates [[lon,lat], [lon,lat], ...]
+  if (
+    Array.isArray(rawCoords) &&
+    rawCoords.length > 0 &&
+    Array.isArray(rawCoords[0]) &&
+    typeof rawCoords[0][0] === 'number'
+  ) {
+    return rawCoords;
+  }
+
+  // If we have over-nested arrays, flatten them
+  let workingCoords = rawCoords;
+  let maxDepth = 5; // Prevent infinite loops
+
+  while (maxDepth-- > 0) {
+    // If we have a single array containing the actual coordinate array
+    if (
+      Array.isArray(workingCoords) &&
+      workingCoords.length === 1 &&
+      Array.isArray(workingCoords[0])
+    ) {
+      // Check if the inner array looks like coordinate pairs
+      const inner = workingCoords[0];
+      if (Array.isArray(inner) && inner.length > 0) {
+        // If inner[0] is a coordinate pair [lon, lat]
+        if (
+          Array.isArray(inner[0]) &&
+          inner[0].length === 2 &&
+          typeof inner[0][0] === 'number' &&
+          typeof inner[0][1] === 'number'
+        ) {
+          return inner;
+        }
+        // If inner itself contains more nesting, continue flattening
+        else if (Array.isArray(inner[0])) {
+          workingCoords = inner;
+          continue;
+        }
+      }
+      break;
+    } else {
+      break;
+    }
+  }
+
+  // If we couldn't normalize, throw an error with helpful info
+  console.error('Could not normalize coordinates. Raw structure:', rawCoords);
+  throw new Error(
+    'Invalid coordinate structure for LineString. Expected array of [lon,lat] pairs.'
+  );
+}
+
+/**
+ * Update point position in animation
+ * @param {Object} map - MapLibre map instance
+ * @param {string} layerId - Layer ID for the animated point
+ * @param {Array} coordinates - [longitude, latitude]
+ * @param {Object} properties - Feature properties
+ * @return {void}
+ */
+function updateAnimatedPointPosition(map, layerId, coordinates, properties = {}) {
+  const pointData = createPointFeatureCollection(coordinates, properties);
+  map.getSource(layerId).setData(pointData);
+}
+
+// ===========================================
+// Main Functions
+// ===========================================
 
 /**
  * Add a route to the map for animation.
  *
- * @param {object} widgetInstance The map widget instance.
+ * @param {object} el The HTML element containing the map widget.
  * @param {object} routeOptions   Options for the route to add.
  * @return {void}
  */
-function addRoute(widgetInstance, routeOptions) {
+function addRoute(el, routeOptions) {
+  const widgetInstance = el.widgetInstance;
   const map = widgetInstance.getMap();
   if (!map) return;
 
-  const points = routeOptions.points;
-  const options = routeOptions.options || {};
-  const routeId = routeOptions.routeId || 'route';
+  const { points, options = {}, routeId = 'route' } = routeOptions;
   const routeLineLayerId = `${routeId}_route_line`;
   const routePointLayerId = `${routeId}_route_point`;
   const routeVisitedPointsLayerId = `${routeId}_route_visited_point`;
 
+  // Check for existing route
   if (widgetInstance.getAnimations() && widgetInstance.getAnimations()[routeId]) {
-    // Route with this ID already exists
     console.error('Route with this ID already exists:', routeId);
     return;
   }
 
-  const coords = points.features.map((f) => f.geometry.coordinates);
+  // Extract and normalize coordinates
+  // Handle both individual points and linestring geometries
+  let flatCoords;
+  if (points.features.length === 1 && points.features[0].geometry.type === 'LineString') {
+    // Single linestring - use coordinates directly
+    flatCoords = points.features[0].geometry.coordinates;
+  } else {
+    // Multiple point features - extract coordinates from each
+    const rawCoords = points.features.map((f) => f.geometry.coordinates);
+    flatCoords = normalizeCoordinatesForLineString(rawCoords);
+  }
 
-  const line = {
-    type: 'Feature',
-    geometry: {
-      type: 'LineString',
-      coordinates: coords,
-    },
-    properties: {},
-  };
+  // Create geometric features
+  const line = createLineFeature(flatCoords);
+  const route = createFeatureCollection([line]);
+  const initialPoint = createPointFeatureCollection(
+    flatCoords[0],
+    points.features[0]?.properties || {}
+  );
+  // const point = createFeatureCollection([points.features[0]]);
 
-  const route = {
-    type: 'FeatureCollection',
-    features: [line],
-  };
-  // A single point that animates along the route.
-  // Coordinates are initially set to origin.
-  const point = {
-    type: 'FeatureCollection',
-    features: [points.features[0]],
-  };
-
+  // Calculate animation parameters
   const totalLength = turf.length(line, { units: 'kilometers' });
-
   // Number of steps to use in the arc and animation, more steps means
   // a smoother arc and animation, but too many steps will result in a
   // low frame rate
-  var steps = options.steps || 500;
+  const steps = options.steps || 500;
+  const linePoints = generateLinePoints(flatCoords, steps, line);
 
-  const linePoints = [];
-
-  for (let i = 0; i < coords.length - 1; i++) {
-    const lineSeg = {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: [coords[i], coords[i + 1]],
-      },
-      properties: {},
-    };
-
-    const lineLength = turf.length(lineSeg, { units: 'kilometers' });
-    const segmentSteps = steps * (lineLength / totalLength);
-    const linePoints1 = interpolateLine(coords[i], coords[i + 1], segmentSteps);
-    linePoints.push(...linePoints1);
-  }
-
-  // Get or initialize animations object
-  let animations = widgetInstance.getAnimations();
+  // Initialize animations object
+  const animations = widgetInstance.getAnimations();
   if (!animations) {
     console.warn('Animations object not initialized, this might indicate a setup issue');
     return;
@@ -109,63 +317,94 @@ function addRoute(widgetInstance, routeOptions) {
     dropVisited: options.dropVisited || false,
     line: line,
     linePoints: linePoints,
-    coords: coords,
+    coords: flatCoords,
     points: points,
-    point: point,
     map: map,
     routeLineLayerId: routeLineLayerId,
     routePointLayerId: routePointLayerId,
     visitedLayerId: routeVisitedPointsLayerId,
-    visitedPoints: {
-      type: 'FeatureCollection',
-      features: [],
-    },
+    visitedPoints: createFeatureCollection([]),
     options: options,
   };
 
+  // Add map layers
+  addRouteLineLayers(
+    map,
+    routeLineLayerId,
+    routeVisitedPointsLayerId,
+    route,
+    animations[routeId].visitedPoints,
+    options
+  );
+  addRoutePointLayer(map, routePointLayerId, initialPoint, options);
+
+  // Setup controls if needed
+  setupRouteControls(el, widgetInstance, routeOptions, routeId, animations[routeId]);
+}
+
+/**
+ * Add route line and visited points layers to the map
+ * @param {Object} map - MapLibre map instance
+ * @param {string} routeLineLayerId - Route line layer ID
+ * @param {string} visitedPointsLayerId - Visited points layer ID
+ * @param {Object} routeData - Route GeoJSON data
+ * @param {Object} visitedPointsData - Visited points GeoJSON data
+ * @param {Object} options - Layer styling options
+ */
+function addRouteLineLayers(
+  map,
+  routeLineLayerId,
+  visitedPointsLayerId,
+  routeData,
+  visitedPointsData,
+  options
+) {
+  // Add route line layer
   map.addLayer({
     id: routeLineLayerId,
     type: 'line',
-    source: {
-      type: 'geojson',
-      data: route,
-    },
-    layout: {
-      'line-join': 'round',
-      'line-cap': 'round',
-    },
+    source: { type: 'geojson', data: routeData },
+    layout: { 'line-join': 'round', 'line-cap': 'round' },
     paint: {
-      'line-color': options.routeLine?.['line-color'] ?? '#888',
-      'line-width': options.routeLine?.['line-width'] ?? 6,
+      'line-color': options.routeLine?.['line-color'] ?? '#01656c',
+      'line-width': options.routeLine?.['line-width'] ?? 3,
       'line-dasharray': options.routeLine?.['line-dasharray'] ?? [1, 0],
       'line-opacity': options.routeLine?.['line-opacity'] ?? 1.0,
     },
   });
 
+  // Add visited points layer
   map.addLayer({
-    id: routeVisitedPointsLayerId,
+    id: visitedPointsLayerId,
     type: 'circle',
-    source: {
-      type: 'geojson',
-      data: animations[routeId].visitedPoints,
-    },
+    source: { type: 'geojson', data: visitedPointsData },
     paint: {
-      'circle-color': options.visitedPoints?.['circle-color'] ?? '#0074D9',
-      'circle-radius': options.visitedPoints?.['circle-radius'] ?? 5,
+      'circle-color': options.visitedPoints?.['circle-color'] ?? '#01656c',
+      'circle-radius': options.visitedPoints?.['circle-radius'] ?? 4,
       'circle-opacity': options.visitedPoints?.['circle-opacity'] ?? 1.0,
       'circle-stroke-width': options.visitedPoints?.['circle-stroke-width'] ?? 2,
-      'circle-stroke-color': options.visitedPoints?.['circle-stroke-color'] ?? '#0074D9',
+      'circle-stroke-color':
+        options.visitedPoints?.['circle-stroke-color'] ??
+        options.visitedPoints?.['circle-color'] ??
+        '#01656c',
     },
   });
+}
 
+/**
+ * Add animated point layer (circle or symbol) to the map
+ * @param {Object} map - MapLibre map instance
+ * @param {string} layerId - Point layer ID
+ * @param {Object} pointData - Initial point GeoJSON data
+ * @param {Object} options - Layer styling options
+ */
+function addRoutePointLayer(map, layerId, pointData, options) {
   if (options.animatingIcon) {
+    // Add symbol layer for icon
     map.addLayer({
-      id: routePointLayerId,
+      id: layerId,
       type: 'symbol',
-      source: {
-        type: 'geojson',
-        data: point,
-      },
+      source: { type: 'geojson', data: pointData },
       paint: {
         'icon-opacity': options.animatingIcon?.['icon-opacity'] ?? 1.0,
         'text-color': options.animatingIcon?.['text-color'] ?? '#000000',
@@ -183,152 +422,232 @@ function addRoute(widgetInstance, routeOptions) {
       },
     });
   } else {
+    // Add circle layer
     map.addLayer({
-      id: routePointLayerId,
+      id: layerId,
       type: 'circle',
-      source: {
-        type: 'geojson',
-        data: point,
-      },
+      source: { type: 'geojson', data: pointData },
       paint: {
-        'circle-color': options.animatingPoint?.['circle-color'] ?? '#B42222',
-        'circle-radius': options.animatingPoint?.['circle-radius'] ?? 7,
+        'circle-color': options.animatingPoint?.['circle-color'] ?? '#01656c',
+        'circle-radius': options.animatingPoint?.['circle-radius'] ?? 6,
         'circle-opacity': options.animatingPoint?.['circle-opacity'] ?? 1.0,
         'circle-stroke-width': options.animatingPoint?.['circle-stroke-width'] ?? 2,
-        'circle-stroke-color': options.animatingPoint?.['circle-stroke-color'] ?? '#B42222',
+        'circle-stroke-color':
+          options.animatingPoint?.['circle-stroke-color'] ??
+          options.animatingPoint?.['circle-color'] ??
+          '#01656c',
       },
     });
   }
+}
 
-  // Add popups to the droped points if specified
+/**
+ * Setup route controls (timeline, speed, popups, panels)
+ * @param {Object} el - HTML element containing the map widget
+ * @param {Object} widgetInstance - Map widget instance
+ * @param {Object} routeOptions - Route options
+ * @param {string} routeId - Route identifier
+ * @param {Object} routeState - Animation state object
+ */
+function setupRouteControls(el, widgetInstance, routeOptions, routeId, routeState) {
+  const { options = {}, points } = routeOptions;
+  const { map } = routeState;
+
+  // Add popups if specified
   if (options.visitedPoints?.popupColumn) {
-    addLayerPopup(map, routeVisitedPointsLayerId, options.visitedPoints.popupColumn);
+    addLayerPopup(map, routeState.visitedLayerId, options.visitedPoints.popupColumn);
   }
 
-  // Create control panel if needed
-  const useControlPanel = options.useAnimationControlPanel || false;
-  if (useControlPanel) {
-    const panelOptions = options.animationControlPanelOptions || {};
-    const panelId = panelOptions.panelId || 'animation-controls';
-
-    // Only create if it doesn't already exist
-    if (!map._controlPanels || !map._controlPanels[panelId]) {
-      addControlPanel(el, panelId, {
-        title: panelOptions.title || 'Animation Controls',
-        position: panelOptions.position || 'bottom-left',
-        collapsible: panelOptions.collapsible !== false,
-        collapsed: panelOptions.collapsed || false,
-        showTitle: panelOptions.showTitle !== false,
-      });
-    }
+  // Setup control panel if needed
+  if (options.useAnimationControlPanel) {
+    setupAnimationControlPanel(el, map, options.animationControlPanelOptions || {});
   }
 
-  // Check for existing timeline controls in panels and connect them to animation
+  // Check for existing controls
   const existingTimelineControl = checkForExistingTimelineControl(widgetInstance);
   const existingSpeedControl = checkForExistingSpeedControl(widgetInstance);
 
-  if (showTimelineControls || existingTimelineControl) {
-    // If we found an existing timeline control, make sure the animation knows to update it
-    if (existingTimelineControl) {
-      animations[routeId].showTimelineControls = true;
+  // Setup timeline controls
+  if (routeState.showTimelineControls || existingTimelineControl) {
+    setupTimelineControls(widgetInstance, routeOptions, routeId, existingTimelineControl, points);
+  }
+
+  // Setup speed controls
+  if (routeState.showSpeedControl || existingSpeedControl) {
+    setupSpeedControls(widgetInstance, routeId, existingSpeedControl);
+  }
+}
+
+/**
+ * Setup animation control panel
+ * @param {Object} el - HTML element containing the map widget
+ * @param {Object} map - MapLibre map instance
+ * @param {Object} panelOptions - Panel configuration options
+ */
+function setupAnimationControlPanel(el, map, panelOptions) {
+  const panelId = panelOptions.panelId || 'animation-controls';
+
+  // Only create if it doesn't already exist
+  if (!map._controlPanels || !map._controlPanels[panelId]) {
+    addControlPanel(el, panelId, {
+      title: panelOptions.title || 'Animation Controls',
+      position: panelOptions.position || 'bottom-left',
+      collapsible: panelOptions.collapsible !== false,
+      collapsed: panelOptions.collapsed || false,
+      showTitle: panelOptions.showTitle !== false,
+    });
+  }
+}
+
+/**
+ * Setup timeline controls for route animation
+ * @param {Object} widgetInstance - Map widget instance
+ * @param {Object} routeOptions - Route configuration
+ * @param {string} routeId - Route identifier
+ * @param {Object} existingTimelineControl - Existing timeline control if any
+ * @param {Object} points - Route points data
+ */
+function setupTimelineControls(
+  widgetInstance,
+  routeOptions,
+  routeId,
+  existingTimelineControl,
+  points
+) {
+  const route = widgetInstance.getAnimations()[routeId];
+  if (existingTimelineControl) {
+    // animations[routeId].showTimelineControls = true;
+    route.showTimelineControls = true;
+  }
+
+  // Get date range from route points
+  const startDate = points.features[0]?.properties?.date || '2023-01-01';
+  const endDate = points.features[points.features.length - 1]?.properties?.date || '2023-12-31';
+
+  // Create animation callbacks
+  const playPauseCallback = (playing) => {
+    if (playing) {
+      animateRoute(widgetInstance, routeOptions);
+    } else {
+      pauseAnimation(widgetInstance, routeOptions);
+    }
+  };
+
+  const sliderCallback = (progress) => {
+    const route = widgetInstance.getAnimations()[routeId];
+    if (route && !route.isAnimating) {
+      const targetStep = Math.floor(progress * (route.linePoints.length - 1));
+      route.counter = targetStep;
+
+      // Update point position
+      const coordinates = route.linePoints[targetStep].geometry.coordinates;
+      const properties = route.points.features[0]?.properties || {};
+      updateAnimatedPointPosition(route.map, route.routePointLayerId, coordinates, properties);
+
+      // Update visited points if enabled
+      if (route.dropVisited) {
+        updateVisitedPoints(route, targetStep);
+      }
+    }
+  };
+
+  if (existingTimelineControl) {
+    connectTimelineControlToAnimation(
+      route.map,
+      existingTimelineControl,
+      playPauseCallback,
+      sliderCallback,
+      startDate,
+      endDate
+    );
+  } else {
+    addTimelineControl(
+      widgetInstance,
+      startDate,
+      endDate,
+      playPauseCallback,
+      sliderCallback,
+      routeOptions.options.timelineControlOptions || {}
+    );
+  }
+}
+
+/**
+ * Setup speed controls for route animation
+ * @param {Object} widgetInstance - Map widget instance
+ * @param {string} routeId - Route identifier
+ * @param {Object} existingSpeedControl - Existing speed control if any
+ */
+function setupSpeedControls(widgetInstance, routeId, existingSpeedControl) {
+  const speedChangeCallback = (speed) => {
+    const route = widgetInstance.getAnimations()[routeId];
+    if (route) {
+      route.animationSpeed = speed;
+    }
+  };
+
+  if (existingSpeedControl) {
+    connectSpeedControlToAnimation(
+      widgetInstance.getMap(),
+      existingSpeedControl,
+      speedChangeCallback
+    );
+  } else {
+    addSpeedControl(
+      widgetInstance,
+      speedChangeCallback,
+      widgetInstance.getAnimations()[routeId].options.speedControlOptions || {}
+    );
+  }
+}
+
+/**
+ * Update visited points data for timeline scrubbing
+ * @param {Object} route - Route animation state
+ * @param {number} targetStep - Target animation step
+ */
+function updateVisitedPoints(route, targetStep) {
+  route.visitedPoints.features = [];
+
+  // Calculate progress based on target step
+  const totalSteps = route.linePoints.length - 1;
+  const progressRatio = totalSteps > 0 ? targetStep / totalSteps : 0;
+
+  // Calculate cumulative distances to each original coordinate if not already done
+  if (!route.originalCoordDistances) {
+    route.originalCoordDistances = [0];
+    let totalDistance = 0;
+
+    for (let i = 1; i < route.coords.length; i++) {
+      const segmentLine = createLineFeature([route.coords[i - 1], route.coords[i]]);
+      const segmentDistance = turf.length(segmentLine, { units: 'kilometers' });
+      totalDistance += segmentDistance;
+      route.originalCoordDistances.push(totalDistance);
     }
 
-    // Get date range from the route points if available
-    const startDate = points.features[0]?.properties?.date || '2023-01-01';
-    const endDate = points.features[points.features.length - 1]?.properties?.date || '2023-12-31';
+    // Convert to ratios
+    route.originalCoordDistances = route.originalCoordDistances.map((d) =>
+      totalDistance > 0 ? d / totalDistance : 0
+    );
+  }
 
-    // Define animation callbacks
-    const playPauseCallback = function (playing) {
-      if (playing) {
-        // Start animation
-        animateRoute(widgetInstance, routeOptions);
-      } else {
-        // Pause animation
-        pauseAnimation(widgetInstance, routeOptions);
+  // Add all original coordinates that should be visited based on target progress
+  for (let i = 0; i < route.coords.length; i++) {
+    if (route.originalCoordDistances[i] <= progressRatio) {
+      // This original coordinate should be visited
+      const coord = route.coords[i];
+      const properties = route.points.features[0]?.properties || {}; // Use first point properties as fallback
+
+      // Try to find matching properties from original point features
+      if (route.points.features[i]) {
+        Object.assign(properties, route.points.features[i].properties || {});
       }
-    };
 
-    const sliderCallback = function (progress) {
-      // Handle slider change - jump to specific point in animation
-      const route = widgetInstance.getAnimations()[routeId];
-      if (route && !route.isAnimating) {
-        // Calculate the target step based on progress
-        const targetStep = Math.floor(progress * (route.linePoints.length - 1));
-        route.counter = targetStep;
-
-        // Update the animated point position
-        route.point.features[0].geometry.coordinates =
-          route.linePoints[targetStep].geometry.coordinates;
-        route.map.getSource(route.routePointLayerId).setData(route.point);
-
-        // Update visited points if dropping them
-        if (route.dropVisited) {
-          route.visitedPoints.features = [];
-
-          // Add all visited points up to current position
-          for (let i = 0; i <= targetStep; i++) {
-            const currentCoord = route.linePoints[i].geometry.coordinates;
-            const coordIndex = route.coords.findIndex(
-              (coord) => coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
-            );
-
-            if (coordIndex !== -1) {
-              route.visitedPoints.features.push({
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: currentCoord,
-                },
-                properties: route.points.features[coordIndex]?.properties ?? {},
-              });
-            }
-          }
-          route.map.getSource(route.visitedLayerId).setData(route.visitedPoints);
-        }
-      }
-    };
-
-    if (existingTimelineControl) {
-      // Connect existing timeline control to animation
-      connectTimelineControlToAnimation(
-        map,
-        existingTimelineControl,
-        playPauseCallback,
-        sliderCallback,
-        startDate,
-        endDate
-      );
-    } else {
-      // Add new timeline controls
-      addTimelineControl(
-        widgetInstance,
-        startDate,
-        endDate,
-        playPauseCallback,
-        sliderCallback,
-        options.timelineControlOptions || {}
-      );
+      route.visitedPoints.features.push(createPointFeature(coord, properties));
     }
   }
 
-  if (showSpeedControl || existingSpeedControl) {
-    // Define speed change callback
-    const speedChangeCallback = function (speed) {
-      // Update animation speed
-      const route = widgetInstance.getAnimations()[routeId];
-      if (route) {
-        route.animationSpeed = speed;
-      }
-    };
-
-    if (existingSpeedControl) {
-      // Connect existing speed control to animation
-      connectSpeedControlToAnimation(map, existingSpeedControl, speedChangeCallback);
-    } else {
-      // Add new speed control
-      addSpeedControl(widgetInstance, speedChangeCallback, options.speedControlOptions || {});
-    }
-  }
+  route.map.getSource(route.visitedLayerId).setData(route.visitedPoints);
 }
 
 /**
@@ -373,29 +692,22 @@ function animateRoute(widgetInstance, routeOptions) {
 
   // Ensure the point position matches the current counter position
   if (route.linePoints.length > 0) {
-    route.point.features[0].geometry.coordinates =
-      route.linePoints[route.counter].geometry.coordinates;
-    route.map.getSource(route.routePointLayerId).setData(route.point);
+    // Use the same fresh point approach as in animation
+    const initialPointData = createPointFeatureCollection(
+      route.linePoints[route.counter].geometry.coordinates,
+      route.points.features[0]?.properties || {}
+    );
+    route.map.getSource(route.routePointLayerId).setData(initialPointData);
   }
 
-  // Ensure starting visited point is added when animation begins (especially for counter = 0)
+  // Ensure starting visited point is added when animation begins (handled by progress-based logic)
   if (route.dropVisited && route.counter === 0 && route.coords.length > 0) {
-    const startCoord = route.coords[0];
-    const startPointExists = route.visitedPoints.features.some(
-      (feature) =>
-        feature.geometry.coordinates[0] === startCoord[0] &&
-        feature.geometry.coordinates[1] === startCoord[1]
-    );
-
-    if (!startPointExists) {
-      route.visitedPoints.features.push({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: startCoord,
-        },
-        properties: route.points.features[0]?.properties ?? {},
-      });
+    // Initialize the visited points with the first coordinate
+    if (route.visitedPoints.features.length === 0) {
+      const startCoord = route.coords[0];
+      route.visitedPoints.features.push(
+        createPointFeature(startCoord, route.points.features[0]?.properties ?? {})
+      );
       route.map.getSource(route.visitedLayerId).setData(route.visitedPoints);
     }
   }
@@ -423,31 +735,26 @@ function animateRoute(widgetInstance, routeOptions) {
 
       // Ensure the point is at the final position
       if (state.linePoints.length > 0) {
-        state.point.features[0].geometry.coordinates =
-          state.linePoints[state.linePoints.length - 1].geometry.coordinates;
-        state.map.getSource(state.routePointLayerId).setData(state.point);
+        const finalPointData = createPointFeatureCollection(
+          state.linePoints[state.linePoints.length - 1].geometry.coordinates,
+          state.points.features[0]?.properties || {}
+        );
+        state.map.getSource(state.routePointLayerId).setData(finalPointData);
       }
 
-      // Ensure the final visited point is added when animation completes
+      // Ensure the final visited point is added when animation completes (handled by progress-based logic)
       if (route.dropVisited && state.coords.length > 0) {
-        const finalCoord = state.coords[state.coords.length - 1];
-        const finalPointExists = state.visitedPoints.features.some(
-          (feature) =>
-            feature.geometry.coordinates[0] === finalCoord[0] &&
-            feature.geometry.coordinates[1] === finalCoord[1]
-        );
+        // Make sure all coordinates are marked as visited when animation is complete
+        const allCoords = state.coords.map((coord, index) => {
+          const properties = state.points.features[0]?.properties || {};
+          if (state.points.features[index]) {
+            Object.assign(properties, state.points.features[index].properties || {});
+          }
+          return createPointFeature(coord, properties);
+        });
 
-        if (!finalPointExists) {
-          state.visitedPoints.features.push({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: finalCoord,
-            },
-            properties: state.points.features[state.points.features.length - 1]?.properties ?? {},
-          });
-          state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
-        }
+        state.visitedPoints.features = allCoords;
+        state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
       }
 
       return;
@@ -525,43 +832,62 @@ function animateRoute(widgetInstance, routeOptions) {
         state.map.setLayoutProperty(state.routePointLayerId, 'icon-image', targetImage);
       }
 
-      // Move the animated point
-      state.point.features[0].geometry.coordinates =
-        state.linePoints[state.counter].geometry.coordinates;
-      state.map.getSource(state.routePointLayerId).setData(state.point);
+      // Move the animated point - Instead of modifying existing point, create a fresh one each frame
+      const newPointData = createPointFeatureCollection(
+        state.linePoints[state.counter].geometry.coordinates,
+        state.points.features[0]?.properties || {}
+      );
+      try {
+        state.map.getSource(state.routePointLayerId).setData(newPointData);
+      } catch (error) {
+        console.error('Error setting fresh point data:', error);
+      }
 
       if (route.dropVisited) {
-        // Check all positions between oldCounter and current counter for original coordinates
-        // This ensures we don't miss any original points when animating at high speeds
-        for (let i = oldCounter; i <= state.counter; i++) {
-          const currentCoord = state.linePoints[i].geometry.coordinates;
+        // Track visited points based on animation progress rather than coordinate matching
+        // Calculate which original coordinates should be visited based on current progress
+        const totalSteps = state.linePoints.length - 1;
+        const progressRatio = totalSteps > 0 ? state.counter / totalSteps : 0;
 
-          // Check if currentCoord matches any original coord
-          const coordIndex = state.coords.findIndex(
-            (coord) => coord[0] === currentCoord[0] && coord[1] === currentCoord[1]
-          );
+        // Calculate cumulative distances to each original coordinate
+        if (!state.originalCoordDistances) {
+          state.originalCoordDistances = [0];
+          let totalDistance = 0;
 
-          if (coordIndex !== -1) {
-            // Check if this point is already in visitedPoints to avoid duplicates
-            const pointExists = state.visitedPoints.features.some(
-              (feature) =>
-                feature.geometry.coordinates[0] === currentCoord[0] &&
-                feature.geometry.coordinates[1] === currentCoord[1]
-            );
-
-            if (!pointExists) {
-              state.visitedPoints.features.push({
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: currentCoord,
-                },
-                properties: state.points.features[coordIndex]?.properties ?? {},
-              });
-              // Update the source after adding the point
-              state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
-            }
+          for (let i = 1; i < state.coords.length; i++) {
+            const segmentLine = createLineFeature([state.coords[i - 1], state.coords[i]]);
+            const segmentDistance = turf.length(segmentLine, { units: 'kilometers' });
+            totalDistance += segmentDistance;
+            state.originalCoordDistances.push(totalDistance);
           }
+
+          // Convert to ratios
+          state.originalCoordDistances = state.originalCoordDistances.map((d) =>
+            totalDistance > 0 ? d / totalDistance : 0
+          );
+        }
+
+        // Add all original coordinates that should be visited based on current progress
+        const newVisitedPoints = [];
+        for (let i = 0; i < state.coords.length; i++) {
+          if (state.originalCoordDistances[i] <= progressRatio) {
+            // This original coordinate should be visited
+            const coord = state.coords[i];
+            const properties = state.points.features[0]?.properties || {}; // Use first point properties as fallback
+
+            // Try to find matching properties from original point features
+            if (state.points.features[i]) {
+              Object.assign(properties, state.points.features[i].properties || {});
+            }
+
+            newVisitedPoints.push(createPointFeature(coord, properties));
+          }
+        }
+
+        // Update visited points if there are changes
+        if (newVisitedPoints.length > state.visitedPoints.features.length) {
+          state.visitedPoints.features = newVisitedPoints;
+          state.map.getSource(state.visitedLayerId).setData(state.visitedPoints);
         }
       }
 

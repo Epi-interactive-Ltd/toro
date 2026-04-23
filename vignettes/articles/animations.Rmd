@@ -10,6 +10,129 @@ knitr::opts_chunk$set(
 )
 ```
 
+Toro provides the ability to animate certain aspects of the map.
+TODO...
+
+
+## Setup
+
+For the following examples we'll use a line representing a route around Aotearoa.
+
 ```{r setup}
+library(sf)
 library(toro)
+
+nz_line <- sf::st_sf(
+  id = 1,
+  geometry = sf::st_sfc(
+    sf::st_linestring(
+      cbind(
+        c(
+          172.2041,
+          182.2494,
+          168.1286,
+          163.9383,
+          171.7449
+        ),
+        c(
+          -32.56960,
+          -38.85522,
+          -48.49620,
+          -46.43999,
+          -34.62533
+        )
+      )
+    ),
+    crs = 4326
+  )
+)
 ```
+
+
+## Basic Example
+
+For the most basic example, add a route (line) and then use `add_animation_controls()` to
+add controls to the map for animating along the route.
+
+```{r basic-animation}
+map() |>
+  add_route(route_id = "nz_route", points = nz_line) |>
+  add_animation_controls(route_id = "nz_route")
+```
+
+
+## Advanced Examples
+
+### Speed control
+
+You can add a customisable speed control.
+By default, there are 3 speed options: 0.5x, 1x, and 2x.
+You can change the speed options by passing custom values and labels to the `add_animation_controls()` function.
+
+```{r speed-animation}
+map() |>
+  add_route(route_id = "nz_route", points = nz_line) |>
+  add_animation_controls(
+    route_id = "nz_route",
+    include_speed_control = TRUE,
+    speed_values = c(0.3, 0.5, 1, 2, 4),
+    speed_labels = c("Slower", "Slow", "Default", "Fast", "Faster")
+  )
+```
+
+### Animating Icon
+
+You can also supply an icon to be animated along the route.
+By default, toro has a built in image with the ID "toro-pin" that you can use for this purpose, or you can add your own custom image.
+To use a custom image, use `add_image()` to add the image and then pass the `settings.animatingIcon` parameter to `add_route()` to specify the icon you want to animate along the route.
+
+
+```{r icon-animation}
+map() |>
+  add_route(
+    route_id = "nz_route",
+    points = nz_line,
+    settings = c(list(
+      animatingIcon = get_layout_options(
+        "symbol",
+        list(icon_image = "toro-pin", icon_size = 0.5)
+      )
+    ))
+  ) |>
+  add_animation_controls(route_id = "nz_route")
+```
+
+### Other Customisations
+
+You can set `dropVisited` to `TRUE` in the animation settings to leave a marker on the map at each point that has been visited during the animation.
+
+You can also change the styles of the different parts of the route using the `animatedRouteStyle`, `unanimatedRouteStyle`, and `visitedRouteStyle` settings.
+
+
+```{r customisations-animation}
+map() |>
+  add_route(
+    route_id = "nz_route",
+    points = nz_line,
+    settings = c(list(
+      dropVisited = TRUE,
+      routeLine = list(
+        "line-color" = "#11a366",
+        "line-width" = 2,
+        "line-dasharray" = c(2, 4)
+      ),
+      visitedPoints = list(
+        "circle-color" = "#20de60",
+        "circle-radius" = 4
+      ),
+      animatingPoint = list(
+        "circle-color" = "#dbe811",
+        "circle-radius" = 8
+      )
+    ))
+  ) |>
+  add_animation_controls(route_id = "nz_route")
+```
+
+
+
