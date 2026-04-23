@@ -7,27 +7,27 @@ First, set up the base map with our data.
 ``` r
 
 library(toro)
+library(spData)
+#> To access larger datasets in this package, install the spDataLarge
+#> package with: `install.packages('spDataLarge',
+#> repos='https://nowosad.github.io/drat/', type='source')`
 library(sf)
 #> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
 
-base_map <- map() |>
-  add_feature_server_source(
-    "https://services8.arcgis.com/AYGZtmUtpARUKBlB/arcgis/rest/services/Te_Reo_M%C4%81ori_Place_Names/FeatureServer/4/query?where=1=1&outFields=*&f=geojson",
-    "maori_awa_data",
-    append_query_url = ""
-  )
+seine_data <- spData::seine |>
+  sf::st_transform(4326)
 ```
 
 ### Basic example
 
 ``` r
 
-base_map |>
+map() |>
+  set_bounds(seine_data, padding = 100) |>
   add_line_layer(
-    id = "awa_lines",
-    source = "maori_awa_data",
-    hover_column = "name_mi",
-    popup_column = "name"
+    id = "seine",
+    source = seine_data,
+    hover_column = "name"
   )
 ```
 
@@ -35,21 +35,21 @@ base_map |>
 
 ``` r
 
-base_map |>
+map() |>
+  set_bounds(seine_data, padding = 100) |>
   add_line_layer(
-    id = "awa_lines",
-    source = "maori_awa_data",
-    hover_column = "name_mi",
-    popup_column = "name",
+    id = "seine",
+    source = seine_data,
+    hover_column = "name",
     paint = get_paint_options(
       "line",
       options = list(
         colour = get_column_group(
-          "type",
-          c("river" = "#014f86", "stream" = "#61a5c2"),
+          "name",
+          c("Marne" = "#014f86", "Seine" = "#61a5c2"),
           "#a9d6e5"
         ),
-        line_width = get_column_group("type", c("river" = 3), 1)
+        line_width = get_column_group("name", c("Seine" = 3), 1)
       )
     )
   )
