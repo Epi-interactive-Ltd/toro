@@ -5,7 +5,7 @@
 Function to create maps
 
 - [`map()`](https://epi-interactive-ltd.github.io/toro/reference/map.md)
-  : Create a Maplibre map widget.
+  : Create a MapLibre map widget.
 
 ## Data Sources
 
@@ -101,7 +101,7 @@ Functions to update map tiles
 Functions to manipulate the map view
 
 - [`set_zoom()`](https://epi-interactive-ltd.github.io/toro/reference/set_zoom.md)
-  : Utilites for the map related to the view. Set the map zoom level.
+  : Utilities for the map related to the view. Set the map zoom level.
 - [`set_bounds()`](https://epi-interactive-ltd.github.io/toro/reference/set_bounds.md)
   : Set the map bounds.
 

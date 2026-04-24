@@ -177,7 +177,7 @@ packages. Check the
 [Description](https://epi-interactive-ltd.github.io/toro/articles/DESCRIPTION)
 file for a list of dependencies and their versions.
 
-Once you have the correct R version instaled, you can use the following
+Once you have the correct R version installed, you can use the following
 code to install the dependencies:
 
 ``` r

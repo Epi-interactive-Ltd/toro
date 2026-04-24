@@ -16,8 +16,7 @@ add_route(map, route_id, points, settings = list())
 \item{settings}{A list of settings for the route (e.g., color, weight).}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The updated map object.
-}\if{html}{\out{</div>}}
+The updated map object.
 }
 \description{
 Add a route to a toro map.

@@ -1,30 +1,16 @@
 /**
- * Map layer utilities for MapLibre maps.
+ * @file layer-utils.js
+ * @summary Layer utilities for MapLibre maps.
  *
- * - initiateTiles: Adds all necessary tiles to the map instance once it has loaded.
- * - addLayerToMap: Adds a layer to the map instance and handles popups, hovers, and clustering.
- * - addLayerOnFeatureClick: Adds a feature click event to a specific layer in a MapLibre map.
- * - setTileLayer: Sets the map tile layer based on the selected layer ID.
- * - hideLayer: Hides a specific layer in a MapLibre map.
- * - showLayer: Shows a specific layer in a MapLibre map.
- * - addNatGeoTiles: Adds the National Geographic World Map tiles to the MapLibre map.
- * - addTopoTiles: Adds the Topographic World Map tiles to the MapLibre map.
- * - addTerrainTiles: Adds the Terrain Map tiles to the MapLibre map.
- * - addStreetsTiles: Adds the Streets Map tiles to the MapLibre map.
- * - addShadedTiles: Adds the Shaded Map tiles to the MapLibre map.
- * - addSatelliteTiles: Adds the Satellite Imagery Map tiles to the MapLibre map.
- * - addFilterToLayer: Filters the data that appears in a specific layer of a MapLibre map.
- * - addLayerPopup: Adds a popup to a specific layer in a MapLibre map.
- * - addLayerHover: Adds a hover to a specific layer in a MapLibre map.
- * - addLayerCursor: Adds a cursor style to a specific layer on hover in a MapLibre map.
- * - copyLayerStyle: Copies the style from one layer to another in a MapLibre map.
+ * @description
+ * Utilities to assist with layer management, compatible with MapLibre GL JS.
  */
 
 /**
  *  Add all necessary tiles to the map instance once it has loaded.
  *
- * @param {object} el         HTML widget element containing the map instance.
- * @param {object} mapParams  Map options containing loaded tiles and initial tile layer.
+ * @param {object} el HTML widget element containing the map instance.
+ * @param {object} mapParams Map options containing loaded tiles and initial tile layer.
  * @returns {void}
  *
  * @see {@link hideLayer}
@@ -108,8 +94,8 @@ function initiateTiles(el, mapParams) {
  * Add a layer to the map instance.
  * Handle popups, hovers, and clustering for the layer.
  *
- * @param {object} el     Widget element containing the map instance.
- * @param {object} layer  Message containing layer options and other properties.
+ * @param {object} el Widget element containing the map instance.
+ * @param {object} layer Message containing layer options and other properties.
  * @returns {void}
  */
 function addLayerToMap(el, layer) {
@@ -154,7 +140,7 @@ function addLayerToMap(el, layer) {
     layerObj.source = layer.source;
   }
   if (layerObj.type === 'text') {
-    // Text is actually a symbol layer in Maplibre
+    // Text is actually a symbol layer in MapLibre
     layerObj.type = 'symbol';
   }
   map.addLayer(layerObj, layer.beforeId || 'spiderfy-lines');
@@ -192,8 +178,8 @@ function addLayerToMap(el, layer) {
 /**
  * Add a feature click event to a specific layer in a MapLibre map.
  *
- * @param {object} el       Widget element containing the map instance.
- * @param {string} layerId  Layer ID to add the feature click event to.
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} layerId Layer ID to add the feature click event to.
  * @returns {void}
  */
 function addLayerOnFeatureClick(el, layerId) {
@@ -208,8 +194,8 @@ function addLayerOnFeatureClick(el, layerId) {
 /**
  * Set the map tile layer.
  *
- * @param {object} el       Widget element containing the map instance.
- * @param {string} layerId  Selected tile layer ID to set.
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} layerId Selected tile layer ID to set.
  * @returns {void}
  */
 function setTileLayer(el, layerId) {
@@ -247,7 +233,7 @@ function setTileLayer(el, layerId) {
 /**
  * Hide a specific layer in a MapLibre map.
  *
- * @param {object} map Maplibre map instance.
+ * @param {object} map MapLibre map instance.
  * @param {string} layerId ID of the layer to hide.
  * @returns {void}
  */
@@ -261,7 +247,7 @@ function hideLayer(map, layerId) {
 /**
  * Show a specific layer in a MapLibre map.
  *
- * @param {object} map Maplibre map instance.
+ * @param {object} map MapLibre map instance.
  * @param {string} layerId ID of the layer to show.
  * @returns {void}
  */
@@ -336,6 +322,15 @@ function addLightGreyTiles(map, options) {
   });
 }
 
+/**
+ * Add tiles from a custom map server to the MapLibre map.
+ *
+ * @param {object} widgetInstance Map widget instance containing the map.
+ * @param {string} tileId ID to use for the tile layer source and layer.
+ * @param {string} mapServiceUrl URL template for the tile service, e.g., "https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer".
+ * @param {boolean} isImageTileset Whether this tileset should be treated as an image layer (to be kept under other layers) or a base tile layer.
+ * @param {object} options Options for the tile layer, such as maxZoom.
+ */
 function addTilesFromMapServer(
   widgetInstance,
   tileId,
@@ -442,8 +437,8 @@ function addLatLngGrid(el, gridColour = '#000000') {
  * Hide or show the lat/lng grid layers on the map.
  * Does nothing if the layers are not present.
  *
- * @param {object} el     Widget element containing the map instance.
- * @param {boolean} show  Hide or show the lat/lng grid layers.
+ * @param {object} el Widget element containing the map instance.
+ * @param {boolean} show Hide or show the lat/lng grid layers.
  * @returns {void}
  */
 function toggleLatLngGrid(el, show) {
@@ -631,8 +626,8 @@ function addSatelliteTiles(map, options) {
 /**
  * Filter the data that appears in a specific layer of a MapLibre map.
  *
- * @param {object} map      A MapLibre map instance.
- * @param {string} layerId  Layer ID to filter data for.
+ * @param {object} map A MapLibre map instance.
+ * @param {string} layerId Layer ID to filter data for.
  * @param {string[]} filter Filter to apply to the layer.
  * @returns {void}
  */
@@ -643,9 +638,9 @@ function addFilterToLayer(map, layerId, filter) {
 /**
  * Add a popup to a specific layer in a MapLibre map.
  *
- * @param {object} map          Maplibre map instance.
- * @param {string} layerId      ID of the layer to add a popup to.
- * @param {string} popupColumn  Column name in the layer's properties to use for the popup content.
+ * @param {object} map MapLibre map instance.
+ * @param {string} layerId ID of the layer to add a popup to.
+ * @param {string} popupColumn Column name in the layer's properties to use for the popup content.
  */
 function addLayerPopup(map, layerId, popupColumn) {
   map.on('click', layerId, (e) => {
@@ -690,9 +685,9 @@ function addLayerPopup(map, layerId, popupColumn) {
 /**
  * Add a hover to a specific layer in a MapLibre map.
  *
- * @param {object} map          Maplibre map instance.
- * @param {string} layerId      ID of the layer to add a hover to.
- * @param {string} hoverColumn  Column name in the layer's properties to use for the hover content.
+ * @param {object} map MapLibre map instance.
+ * @param {string} layerId ID of the layer to add a hover to.
+ * @param {string} hoverColumn Column name in the layer's properties to use for the hover content.
  */
 function addLayerHover(map, layerId, hoverColumn) {
   let popup;
@@ -731,9 +726,9 @@ function addLayerHover(map, layerId, hoverColumn) {
 /**
  * Add a cursor style to a specific layer on hover in a MapLibre map.
  *
- * @param {object} map                      Maplibre map instance.
- * @param {string[]} layerIds               Array of layer IDs to add the cursor style to.
- * @param {string} [cursorStyle="pointer"]  The cursor style to apply when hovering over the layer(s).
+ * @param {object} map MapLibre map instance.
+ * @param {string[]} layerIds Array of layer IDs to add the cursor style to.
+ * @param {string} [cursorStyle="pointer"] The cursor style to apply when hovering over the layer(s).
  * @returns {void}
  */
 function addLayerCursor(map, layerIds, cursorStyle = 'pointer') {
@@ -749,19 +744,11 @@ function addLayerCursor(map, layerIds, cursorStyle = 'pointer') {
 }
 
 /**
- * Copy the style from one layer to another in a MapLibre map.
- *
- * @param {object} map Maplibre map instance.
- * @param {string} fromLayerId ID of the layer to copy style from.
- * @param {string} toLayerId ID of the layer to copy style to.
- * @returns {void}
- */
-
-/**
  * Close all open popups on the map.
  * This function closes both click-based popups (stored in map._popup) and any other popups that may exist.
  *
- * @param {object} map - Maplibre map instance.
+ * @param {object} map MapLibre map instance.
+ * @returns {void}
  */
 function closeAllPopups(map) {
   // Close the main popup stored in map._popup (from addLayerPopup clicks)
@@ -789,7 +776,7 @@ function closeAllPopups(map) {
  *
  * Used in spiderfying to copy the style from the original layer to the spiderfy layers, so that they look the same.
  *
- * @param {object} map Maplibre map instance.
+ * @param {object} map MapLibre map instance.
  * @param {string} fromLayerId ID of the layer to copy style from.
  * @param {string} toLayerId ID of the layer to copy style to.
  * @returns {void}

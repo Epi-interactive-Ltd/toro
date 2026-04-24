@@ -39,8 +39,7 @@ Default is c("Slow", "Normal", "Fast").}
 \item{settings}{A list of additional settings for the controls.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{                 The updated map object.
-}\if{html}{\out{</div>}}
+The updated map object.
 }
 \description{
 Adds play/pause/stop buttons to control route animations on the map.

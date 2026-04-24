@@ -33,8 +33,8 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 
 - ...:
 
-  Additional arguments to in pass directly to the JS adSource function.
-  Documentation for this can be found on the [Maplibre GL JS
+  Additional arguments to in pass directly to the JS addSource function.
+  Documentation for this can be found on the [MapLibre GL JS
   docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
 
   - id: Alternative to `source_id` for backward compatibility. If both
@@ -47,7 +47,7 @@ The map or map proxy object for chaining.
 ## Note
 
 If you add a source directly in an add layer function, the source ID
-will be automatically generated as "source-".
+will be automatically generated as `source-{layer-id}`.
 
 ## Examples
 

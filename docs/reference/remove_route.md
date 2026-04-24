@@ -12,7 +12,7 @@ remove_route(map, route_id, settings = list())
 
 - map:
 
-  A toro map object or a map proxy object.
+  A toro map proxy object.
 
 - route_id:
 
@@ -24,4 +24,4 @@ remove_route(map, route_id, settings = list())
 
 ## Value
 
-         The updated map object.
+The updated map object.

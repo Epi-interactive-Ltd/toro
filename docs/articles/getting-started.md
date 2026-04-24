@@ -2,7 +2,7 @@
 
 ## Installation
 
-To install the development version from Github:
+To install the development version from GitHub:
 
 ``` r
 

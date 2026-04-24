@@ -42,7 +42,7 @@ add_layer_selector_control(
 The map or map proxy object for chaining.
 }
 \description{
-Creates a dropdown selector that allows switching between layers, showing only the
+Creates a drop-down selector that allows switching between layers, showing only the
 selected layer while hiding all others. This is useful for comparing different
 data layers or allowing users to choose between mutually exclusive visualizations.
 }

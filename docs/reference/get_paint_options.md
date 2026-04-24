@@ -19,7 +19,7 @@ get_paint_options(layer_type, options = list())
 - options:
 
   A list of additional options to customize the paint properties. See
-  Maplibre docs for full options.
+  MapLibre docs for full options.
 
   - colour: The color to use for the layer. Default is "grey". `color`
     is also accepted as an alias for `colour`.
@@ -41,7 +41,7 @@ get_paint_options(layer_type, options = list())
 
   - outline_opacity: The opacity to use for the outline of circle or
     fill layers. Default is the same as `opacity`. You can also provide
-    any other paint options found in the Maplibre docs for the specific
+    any other paint options found in the MapLibre docs for the specific
     layer type, and they will be included in the returned list.
 
 ## Value
@@ -50,7 +50,7 @@ A list of paint options suitable for the specified layer type.
 
 ## Note
 
-You can provide any paint options found in the [Maplibre Layers
+You can provide any paint options found in the [MapLibre Layers
 docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 argument, and they will be included in the returned list. The default
 options are just a starting point and can be overridden by providing
