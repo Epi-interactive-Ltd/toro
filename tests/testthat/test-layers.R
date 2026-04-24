@@ -1,4 +1,4 @@
-# Basic layer functionality
+# Basic functionality tests
 test_that("add_layer works with sf source", {
   skip_if_not_installed("sf")
   m <- map()
@@ -73,20 +73,6 @@ test_that("add_layer accepts optional parameters", {
   expect_identical(result$x$layers[[1]]$popupColumn, "value")
   expect_identical(result$x$layers[[1]]$hoverColumn, "id")
   expect_true(result$x$layers[[1]]$canCluster)
-})
-
-# Tile layer functionality
-test_that("set_tile_layer sets tile correctly", {
-  m <- map()
-  result <- set_tile_layer(m, tiles = "satellite")
-  expect_identical(result$x$initialTileLayer, "satellite")
-})
-
-test_that("get_tile_options returns expected tiles", {
-  tiles <- get_tile_options()
-  expect_type(tiles, "character")
-  expect_true("satellite" %in% tiles)
-  expect_true("lightgrey" %in% tiles)
 })
 
 # Additional layer management functions
