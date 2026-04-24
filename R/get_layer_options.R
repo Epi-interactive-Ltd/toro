@@ -4,14 +4,14 @@
 #' options provided.
 #'
 #' @note You can provide any layout options found in the
-#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
+#' [MapLibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 #' argument, and they will be included in the returned list.
 #' The default options are just a starting point and can be overridden by providing them in the
 #' `options` argument.
 #'
 #' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
 #' @param options A list of additional options to customize the layout properties.
-#'    See Maplibre docs for options.
+#'    See MapLibre docs for options.
 #'    \itemize{
 #'      \item line_cap: A list of options for the line cap, if `layer_type` is "line".
 #'        Default is "round".
@@ -35,7 +35,7 @@
 #'        "symbol". Default is 0.
 #'      \item icon_flip_horizontal: Whether to flip icons horizontally in symbol layers, if
 #'        `layer_type` is "symbol". Default is FALSE. Note that this uses the `icon-flip-horizontal`
-#'        property in Maplibre, which may not be supported by all icons.
+#'        property in MapLibre, which may not be supported by all icons.
 #'      \item text_font: The font for text in symbol layers, if `layer_type` is "symbol". Default is
 #'        "Open Sans Regular".
 #'      \item text_field: The text field for symbol layers, if `layer_type` is "symbol". Default is
@@ -43,7 +43,7 @@
 #'        `get_column` or other functions to show text from the data.
 #'      \item text_size: The size of the text in symbol layers, if `layer_type` is "symbol".
 #'        Default is 12.
-#'      You can also provide any other layout options found in the Maplibre docs for the specific
+#'      You can also provide any other layout options found in the MapLibre docs for the specific
 #'        layer type, and they will be included in the returned list.
 #'    }
 #' @return A list of layout options suitable for the specified layer type.
@@ -139,14 +139,14 @@ get_layout_options <- function(layer_type, options = list()) {
 #' additional options provided.
 #'
 #' @note You can provide any paint options found in the
-#' [Maplibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
+#' [MapLibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 #' argument, and they will be included in the returned list.
 #' The default options are just a starting point and can be overridden by providing them in the
 #' `options` argument.
 #'
 #' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
 #' @param options A list of additional options to customize the paint properties.
-#'    See Maplibre docs for full options.
+#'    See MapLibre docs for full options.
 #'    \itemize{
 #'      \item colour: The color to use for the layer. Default is "grey". `color` is also accepted as
 #'        an alias for `colour`.
@@ -161,7 +161,7 @@ get_layout_options <- function(layer_type, options = list()) {
 #'        `outline_colour`.
 #'      \item outline_opacity: The opacity to use for the outline of circle or fill layers.
 #'        Default is the same as `opacity`.
-#'      You can also provide any other paint options found in the Maplibre docs for the specific
+#'      You can also provide any other paint options found in the MapLibre docs for the specific
 #'      layer type, and they will be included in the returned list.
 #' }
 #' @return A list of paint options suitable for the specified layer type.

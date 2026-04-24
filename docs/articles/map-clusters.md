@@ -73,7 +73,7 @@ adding the layer.
 
 ### Cluster circles
 
-`clusterOptions.circleOptions` changes the apperance of the clusters
+`clusterOptions.circleOptions` changes the appearance of the clusters
 circle.
 
 Available circle (paint/layout) properties can be found
@@ -139,7 +139,8 @@ map(
 
 ### Cluster text
 
-`clusterOptions.textOptions` changes the apperance of the clusters text.
+`clusterOptions.textOptions` changes the appearance of the clusters
+text.
 
 Available text(symbol) (paint/layout) properties can be found
 [here](https://maplibre.org/maplibre-style-spec/layers/#symbol).

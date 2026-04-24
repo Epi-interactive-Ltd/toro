@@ -19,7 +19,7 @@ get_layout_options(layer_type, options = list())
 - options:
 
   A list of additional options to customize the layout properties. See
-  Maplibre docs for options.
+  MapLibre docs for options.
 
   - line_cap: A list of options for the line cap, if `layer_type` is
     "line". Default is "round".
@@ -53,7 +53,7 @@ get_layout_options(layer_type, options = list())
 
   - icon_flip_horizontal: Whether to flip icons horizontally in symbol
     layers, if `layer_type` is "symbol". Default is FALSE. Note that
-    this uses the `icon-flip-horizontal` property in Maplibre, which may
+    this uses the `icon-flip-horizontal` property in MapLibre, which may
     not be supported by all icons.
 
   - text_font: The font for text in symbol layers, if `layer_type` is
@@ -66,7 +66,7 @@ get_layout_options(layer_type, options = list())
 
   - text_size: The size of the text in symbol layers, if `layer_type` is
     "symbol". Default is 12. You can also provide any other layout
-    options found in the Maplibre docs for the specific layer type, and
+    options found in the MapLibre docs for the specific layer type, and
     they will be included in the returned list.
 
 ## Value
@@ -75,7 +75,7 @@ A list of layout options suitable for the specified layer type.
 
 ## Note
 
-You can provide any layout options found in the [Maplibre Layers
+You can provide any layout options found in the [MapLibre Layers
 docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 argument, and they will be included in the returned list. The default
 options are just a starting point and can be overridden by providing

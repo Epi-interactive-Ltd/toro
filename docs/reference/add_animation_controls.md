@@ -63,4 +63,4 @@ add_animation_controls(
 
 ## Value
 
-                     The updated map object.
+The updated map object.

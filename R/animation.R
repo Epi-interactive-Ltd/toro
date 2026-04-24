@@ -1,10 +1,10 @@
 #' Add a route to a toro map.
 #'
-#' @param map       A toro map object or a map proxy object.
-#' @param route_id  A unique identifier for the route.
-#' @param points    A sf object containing the points of the route.
-#' @param settings  A list of settings for the route (e.g., color, weight).
-#' @return          The updated map object.
+#' @param map A toro map object or a map proxy object.
+#' @param route_id A unique identifier for the route.
+#' @param points A sf object containing the points of the route.
+#' @param settings A list of settings for the route (e.g., color, weight).
+#' @return The updated map object.
 #' @export
 add_route <- function(map, route_id, points, settings = list()) {
   points_geojson <- geojsonsf::sf_geojson(points)
@@ -28,10 +28,10 @@ add_route <- function(map, route_id, points, settings = list()) {
 
 #' Play a route animation on a toro map.
 #'
-#' @param map       A toro map object or a map proxy object.
-#' @param route_id  A unique identifier for the route.
-#' @param settings  A list of settings for the animation (e.g., speed, loop).
-#' @return          The updated map object.
+#' @param map A toro map proxy object.
+#' @param route_id A unique identifier for the route.
+#' @param settings A list of settings for the animation (e.g., speed, loop).
+#' @return The updated map object.
 #' @export
 play_route <- function(map, route_id, settings = list()) {
   options <- list(routeId = route_id, options = settings)
@@ -42,17 +42,15 @@ play_route <- function(map, route_id, settings = list()) {
       list(id = map$id, options = options)
     )
   }
-  # TODO: Add to initial map ?
-  # map$x$setBounds <- options
   map
 }
 
 #' Pause a route animation on a toro map.
 #'
-#' @param map       A toro map object or a map proxy object.
-#' @param route_id  A unique identifier for the route.
-#' @param settings  A list of settings for pausing the animation.
-#' @return          The updated map object.
+#' @param map A toro map proxy object.
+#' @param route_id A unique identifier for the route.
+#' @param settings A list of settings for pausing the animation.
+#' @return The updated map object.
 #' @export
 pause_route <- function(map, route_id, settings = list()) {
   options <- list(routeId = route_id, options = settings)
@@ -63,17 +61,15 @@ pause_route <- function(map, route_id, settings = list()) {
       list(id = map$id, options = options)
     )
   }
-  # TODO: Add to initial map ?
-  # map$x$setBounds <- options
   map
 }
 
 #' Remove an animation route from a toro map.
 #'
-#' @param map       A toro map object or a map proxy object.
-#' @param route_id  A unique identifier for the route.
-#' @param settings  A list of settings for removing the route.
-#' @return          The updated map object.
+#' @param map A toro map proxy object.
+#' @param route_id A unique identifier for the route.
+#' @param settings A list of settings for removing the route.
+#' @return The updated map object.
 #' @export
 remove_route <- function(map, route_id, settings = list()) {
   options <- list(routeId = route_id, options = settings)
@@ -84,8 +80,6 @@ remove_route <- function(map, route_id, settings = list()) {
       list(id = map$id, options = options)
     )
   }
-  # TODO: Add to initial map ?
-  # map$x$setBounds <- options
   map
 }
 
@@ -94,19 +88,19 @@ remove_route <- function(map, route_id, settings = list()) {
 #' Adds play/pause/stop buttons to control route animations on the map.
 #' Optionally includes a speed control slider for adjusting animation speed.
 #'
-#' @param map                   A toro map object or a map proxy object.
-#' @param route_id              Optional route ID to control. If NULL, controls all routes.
-#' @param position              Position of the controls on the map. Default is "top-right".
-#' @param panel_id              Optional control panel ID to add controls to instead of map.
-#' @param buttons               Character vector of buttons to include.
-#'                              Options: "play", "pause", "stop". Default is c("play", "pause").
+#' @param map A toro map object or a map proxy object.
+#' @param route_id Optional route ID to control. If NULL, controls all routes.
+#' @param position Position of the controls on the map. Default is "top-right".
+#' @param panel_id Optional control panel ID to add controls to instead of map.
+#' @param buttons Character vector of buttons to include.
+#'   Options: "play", "pause", "stop". Default is c("play", "pause").
 #' @param include_speed_control Logical. Whether to include a speed control slider. Default is FALSE.
-#' @param speed_values          Numeric vector of speed values for the speed slider.
-#'                              Default is c(0.5, 1, 2) for slow, normal, and fast speeds.
-#' @param speed_labels          Character vector of labels for speed values.
-#'                              Default is c("Slow", "Normal", "Fast").
-#' @param settings              A list of additional settings for the controls.
-#' @return                      The updated map object.
+#' @param speed_values Numeric vector of speed values for the speed slider.
+#'   Default is c(0.5, 1, 2) for slow, normal, and fast speeds.
+#' @param speed_labels Character vector of labels for speed values.
+#'   Default is c("Slow", "Normal", "Fast").
+#' @param settings A list of additional settings for the controls.
+#' @return The updated map object.
 #' @export
 add_animation_controls <- function(
   map,

@@ -1,4 +1,4 @@
-# Create a Maplibre map widget.
+# Create a MapLibre map widget.
 
 This function creates a map htmlwidget for use in R and Shiny
 applications.

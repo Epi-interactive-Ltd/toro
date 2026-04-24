@@ -31,13 +31,13 @@ Source:
 [`DESCRIPTION`](https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/DESCRIPTION)
 
 Pakinui P (2026). *toro: Interactive and Customisable Maps using the
-Maplibre GL JS Library*. R package version 0.0.6,
-<https://epi-interactive-ltd.github.io/toro>.
+MapLibre GL JS Library*. R package version 0.0.6,
+<https://epi-interactive-ltd.github.io/toro/>.
 
     @Manual{,
-      title = {toro: Interactive and Customisable Maps using the Maplibre GL JS Library},
+      title = {toro: Interactive and Customisable Maps using the MapLibre GL JS Library},
       author = {Poppy Pakinui},
       year = {2026},
       note = {R package version 0.0.6},
-      url = {https://epi-interactive-ltd.github.io/toro},
+      url = {https://epi-interactive-ltd.github.io/toro/},
     }

@@ -1,23 +1,15 @@
 /**
- * General map utilities for MapLibre maps.
+ * @file map-utils.js
+ * @summary Map utilities for MapLibre maps.
  *
- * - addImagesToMap: Adds any images (for pin icons) to the map source.
- * - getPointFeaturesBounds: Gets the bounds of point features in a MapLibre map.
- * - addFeatureServerSource: Adds a FeatureServer layer to the map instance.
- * - disable3DView: Disables the 3D view (pitch rotation) on a MapLibre map.
- * - closeAttribution: Closes the attribution control on a MapLibre map once it has loaded.
- * - addMapLoader: Adds a loading overlay to the map element until the map loads initially.
- * - removeMapLoader: Removes the loading overlay from the map element.
- * - hexToRgbValues: Converts a hex colour string to RGB values.
- * - rgbToRgbValues: Converts a rgb colour string to RGB values.
- * - nameToRgbValues: Converts a css colour name string to RGB values.
- * - toRgbValues: Converts a css colour string to RGB values.
+ * @description
+ * Utilities to assist with general map management, compatible with MapLibre GL JS.
  */
 
 /**
  * Add any images (for pin icons) to the map source.
  *
- * @param {object} map           A MapLibre map instance.
+ * @param {object} map A MapLibre map instance.
  * @param {object[]} imageSources Array of image source objects with `id` and `url` properties.
  * @return {void}
  */
@@ -33,8 +25,8 @@ function addImagesToMap(map, imageSources) {
 /**
  * Add an image (for pin icons) to the map source.
  *
- * @param {object} map      A MapLibre map instance.
- * @param {string} imageId  ID of the image to add.
+ * @param {object} map A MapLibre map instance.
+ * @param {string} imageId ID of the image to add.
  * @param {string} imageUrl The local path to the image to add to the map.
  * @returns {void}
  */
@@ -70,8 +62,8 @@ function getPointFeaturesBounds(features) {
  * @note `url` should end with `/FeatureServer`,
  *        i.e., `"https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Latitude_and_Longitude_Grids/FeatureServer"`.
  *
- * @param {object} el       Widget element containing the map instance.
- * @param {string} url      URL of the ArcGIS FeatureServer layer to add.
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} url URL of the ArcGIS FeatureServer layer to add.
  * @param {string} sourceId ID of the source to add.
  * @returns {void}
  */
@@ -104,7 +96,7 @@ function closeAttribution(mapId, widgetInstance) {
  * Wait for the MapLibre map to fully load before executing a callback function.
  *
  * @param {object} widgetInstance Map widget instance containing the map.
- * @param {function} callback     Function to execute once the map has fully loaded.
+ * @param {function} callback Function to execute once the map has fully loaded.
  * @return {void}
  */
 function waitForFullLoad(widgetInstance, callback) {
@@ -119,9 +111,9 @@ function waitForFullLoad(widgetInstance, callback) {
 /**
  * Add a loading overlay to the map element until the map loads initially.
  *
- * @param {object} el                     Widget element containing the map instance.
- * @param {boolean} [changeLoader=false]  Whether to use the initial or busy loader style.
- * @param {string} [bgColour="white"]     Background colour of the loading overlay.
+ * @param {object} el Widget element containing the map instance.
+ * @param {boolean} [changeLoader=false] Whether to use the initial or busy loader style.
+ * @param {string} [bgColour="white"] Background colour of the loading overlay.
  * @param {string} [loaderColour="black"] Colour of the loader.
  * @returns {void}
  */
@@ -151,8 +143,8 @@ function removeMapLoader(el) {
 /**
  * Convert a hex colour string to RGB values.
  *
- * @param {string} hex  Hex colour string (e.g., "#000000").
- * @returns {string}    RGB values as a string (e.g., "0,0,0").
+ * @param {string} hex Hex colour string (e.g., "#000000").
+ * @returns {string} RGB values as a string (e.g., "0,0,0").
  */
 function hexToRgbValues(hex) {
   let c = hex.replace('#', '');
@@ -171,8 +163,8 @@ function hexToRgbValues(hex) {
 /**
  * Convert a rgb colour string to RGB values.
  *
- * @param {string} rgb  RGB colour string (e.g., "rgb(0,0,0)").
- * @returns {string}    RGB values as a string (e.g., "0,0,0").
+ * @param {string} rgb RGB colour string (e.g., "rgb(0,0,0)").
+ * @returns {string} RGB values as a string (e.g., "0,0,0").
  */
 function rgbToRgbValues(rgb) {
   return rgb.replace(/^rgb\((.*)\)$/i, '$1');
@@ -181,8 +173,8 @@ function rgbToRgbValues(rgb) {
 /**
  * Convert a css colour name string to RGB values.
  *
- * @param {string} name   Colour string name (e.g., "black").
- * @returns {string}      RGB values as a string (e.g., "0,0,0").
+ * @param {string} name Colour string name (e.g., "black").
+ * @returns {string} RGB values as a string (e.g., "0,0,0").
  */
 function nameToRgbValues(name) {
   const ctx = document.createElement('canvas').getContext('2d');
@@ -196,7 +188,7 @@ function nameToRgbValues(name) {
  * Can handle hex, rgb, rgba, and named colours.
  *
  * @param {string} colour  Colour string (e.g., "#000000", "rgb(0,0,0)", "black").
- * @returns {string}       RGB values as a string (e.g., "0,0,0").
+ * @returns {string} RGB values as a string (e.g., "0,0,0").
  */
 function toRgbValues(colour) {
   if (colour.startsWith('#')) {
@@ -214,7 +206,7 @@ function toRgbValues(colour) {
 /**
  * Get tile IDs from a tiles item, which can be an array, string, or object.
  *
- * @param {array|string|object} tilesItem  The tiles item to extract tile IDs from.
+ * @param {array|string|object} tilesItem The tiles item to extract tile IDs from.
  * @returns {array} Array of tile IDs.
  */
 function getTileIds(tilesItem) {
@@ -230,7 +222,7 @@ function getTileIds(tilesItem) {
 /**
  * Update Shiny with the clicked feature on the map.
  * The ID it updates is the map ID with "_feature_click" appended to it (i.e., `<mapId>_feature_click`).
- * 
+ *
  * @param {string} mapId ID of the map to set the Shiny feature click for
  * @param {string} layerId ID of the layer that was clicked
  * @param {object} feature The clicked feature object

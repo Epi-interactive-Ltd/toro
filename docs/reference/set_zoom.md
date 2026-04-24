@@ -1,6 +1,6 @@
-# Utilites for the map related to the view. Set the map zoom level.
+# Utilities for the map related to the view. Set the map zoom level.
 
-Utilites for the map related to the view. Set the map zoom level.
+Utilities for the map related to the view. Set the map zoom level.
 
 ## Usage
 

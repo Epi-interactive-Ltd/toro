@@ -1,11 +1,16 @@
-// ===========================================
-// Utility Functions for Map Animations
-// ===========================================
+/**
+ * @file animation-utils.js
+ * @summary Animation utilities for MapLibre maps.
+ *
+ * @description
+ * Utilities to assist with map animations, compatible with MapLibre GL JS.
+ */
 
 /**
  * Create a GeoJSON FeatureCollection with a single point feature
- * @param {Array} coordinates - [longitude, latitude]
- * @param {Object} properties - Feature properties
+ *
+ * @param {Array} coordinates [longitude, latitude] coordinate pair
+ * @param {Object} properties Feature properties
  * @returns {Object} GeoJSON FeatureCollection
  */
 function createPointFeatureCollection(coordinates, properties = {}) {
@@ -14,8 +19,9 @@ function createPointFeatureCollection(coordinates, properties = {}) {
 
 /**
  * Create a GeoJSON LineString feature
- * @param {Array} coordinates - Array of [longitude, latitude] pairs
- * @param {Object} properties - Feature properties
+ *
+ * @param {Array} coordinates Array of [longitude, latitude] pairs
+ * @param {Object} properties Feature properties
  * @returns {Object} GeoJSON Feature
  */
 function createLineFeature(coordinates, properties = {}) {
@@ -31,8 +37,9 @@ function createLineFeature(coordinates, properties = {}) {
 
 /**
  * Create a GeoJSON Point feature
- * @param {Array} coordinates - [longitude, latitude] coordinate pair
- * @param {Object} properties - Feature properties
+ *
+ * @param {Array} coordinates [longitude, latitude] coordinate pair
+ * @param {Object} properties Feature properties
  * @returns {Object} GeoJSON Feature
  */
 function createPointFeature(coordinates, properties = {}) {
@@ -48,7 +55,8 @@ function createPointFeature(coordinates, properties = {}) {
 
 /**
  * Create a GeoJSON FeatureCollection
- * @param {Array} features - Array of GeoJSON features
+ *
+ * @param {Array} features Array of GeoJSON features
  * @returns {Object} GeoJSON FeatureCollection
  */
 function createFeatureCollection(features) {
@@ -61,9 +69,10 @@ function createFeatureCollection(features) {
 /**
  * Generate animation points using the exact coordinates from the route line geometry
  * This ensures perfect alignment with the rendered route line
- * @param {Array} flatCoords - Array of [lon,lat] coordinate pairs (fallback)
- * @param {number} totalSteps - Total number of animation steps
- * @param {Object} line - GeoJSON LineString feature to extract coordinates from
+ *
+ * @param {Array} flatCoords Array of [lon,lat] coordinate pairs (fallback)
+ * @param {number} totalSteps Total number of animation steps
+ * @param {Object} line GeoJSON LineString feature to extract coordinates from
  * @returns {Array} Array of point features for animation
  */
 function generateLinePoints(flatCoords, totalSteps, line = null) {
@@ -167,7 +176,8 @@ function generateLinePoints(flatCoords, totalSteps, line = null) {
 
 /**
  * Normalize coordinates for LineString geometry
- * @param {Array} rawCoords - Raw coordinate array that may be over-nested
+ *
+ * @param {Array} rawCoords Raw coordinate array that may be over-nested
  * @returns {Array} Flat array of [lon,lat] coordinate pairs
  */
 function normalizeCoordinatesForLineString(rawCoords) {
@@ -225,10 +235,11 @@ function normalizeCoordinatesForLineString(rawCoords) {
 
 /**
  * Update point position in animation
- * @param {Object} map - MapLibre map instance
- * @param {string} layerId - Layer ID for the animated point
- * @param {Array} coordinates - [longitude, latitude]
- * @param {Object} properties - Feature properties
+ *
+ * @param {Object} map MapLibre map instance
+ * @param {string} layerId Layer ID for the animated point
+ * @param {Array} coordinates [longitude, latitude] coordinate pair for the new position
+ * @param {Object} properties Feature properties
  * @return {void}
  */
 function updateAnimatedPointPosition(map, layerId, coordinates, properties = {}) {
@@ -244,7 +255,7 @@ function updateAnimatedPointPosition(map, layerId, coordinates, properties = {})
  * Add a route to the map for animation.
  *
  * @param {object} el The HTML element containing the map widget.
- * @param {object} routeOptions   Options for the route to add.
+ * @param {object} routeOptions Options for the route to add.
  * @return {void}
  */
 function addRoute(el, routeOptions) {
@@ -344,12 +355,13 @@ function addRoute(el, routeOptions) {
 
 /**
  * Add route line and visited points layers to the map
- * @param {Object} map - MapLibre map instance
- * @param {string} routeLineLayerId - Route line layer ID
- * @param {string} visitedPointsLayerId - Visited points layer ID
- * @param {Object} routeData - Route GeoJSON data
- * @param {Object} visitedPointsData - Visited points GeoJSON data
- * @param {Object} options - Layer styling options
+ *
+ * @param {Object} map MapLibre map instance
+ * @param {string} routeLineLayerId Route line layer ID
+ * @param {string} visitedPointsLayerId Visited points layer ID
+ * @param {Object} routeData Route GeoJSON data
+ * @param {Object} visitedPointsData Visited points GeoJSON data
+ * @param {Object} options Layer styling options
  */
 function addRouteLineLayers(
   map,
@@ -393,10 +405,11 @@ function addRouteLineLayers(
 
 /**
  * Add animated point layer (circle or symbol) to the map
- * @param {Object} map - MapLibre map instance
- * @param {string} layerId - Point layer ID
- * @param {Object} pointData - Initial point GeoJSON data
- * @param {Object} options - Layer styling options
+ *
+ * @param {Object} map MapLibre map instance
+ * @param {string} layerId Point layer ID
+ * @param {Object} pointData Initial point GeoJSON data
+ * @param {Object} options Layer styling options
  */
 function addRoutePointLayer(map, layerId, pointData, options) {
   if (options.animatingIcon) {
@@ -443,11 +456,12 @@ function addRoutePointLayer(map, layerId, pointData, options) {
 
 /**
  * Setup route controls (timeline, speed, popups, panels)
- * @param {Object} el - HTML element containing the map widget
- * @param {Object} widgetInstance - Map widget instance
- * @param {Object} routeOptions - Route options
- * @param {string} routeId - Route identifier
- * @param {Object} routeState - Animation state object
+ *
+ * @param {Object} el HTML element containing the map widget
+ * @param {Object} widgetInstance Map widget instance
+ * @param {Object} routeOptions Route options
+ * @param {string} routeId Route identifier
+ * @param {Object} routeState Animation state object
  */
 function setupRouteControls(el, widgetInstance, routeOptions, routeId, routeState) {
   const { options = {}, points } = routeOptions;
@@ -480,9 +494,10 @@ function setupRouteControls(el, widgetInstance, routeOptions, routeId, routeStat
 
 /**
  * Setup animation control panel
- * @param {Object} el - HTML element containing the map widget
- * @param {Object} map - MapLibre map instance
- * @param {Object} panelOptions - Panel configuration options
+ *
+ * @param {Object} el HTML element containing the map widget
+ * @param {Object} map MapLibre map instance
+ * @param {Object} panelOptions Panel configuration options
  */
 function setupAnimationControlPanel(el, map, panelOptions) {
   const panelId = panelOptions.panelId || 'animation-controls';
@@ -501,11 +516,12 @@ function setupAnimationControlPanel(el, map, panelOptions) {
 
 /**
  * Setup timeline controls for route animation
- * @param {Object} widgetInstance - Map widget instance
- * @param {Object} routeOptions - Route configuration
- * @param {string} routeId - Route identifier
- * @param {Object} existingTimelineControl - Existing timeline control if any
- * @param {Object} points - Route points data
+ *
+ * @param {Object} widgetInstance Map widget instance
+ * @param {Object} routeOptions Route configuration
+ * @param {string} routeId Route identifier
+ * @param {Object} existingTimelineControl Existing timeline control if any
+ * @param {Object} points Route points data
  */
 function setupTimelineControls(
   widgetInstance,
@@ -574,9 +590,10 @@ function setupTimelineControls(
 
 /**
  * Setup speed controls for route animation
- * @param {Object} widgetInstance - Map widget instance
- * @param {string} routeId - Route identifier
- * @param {Object} existingSpeedControl - Existing speed control if any
+ *
+ * @param {Object} widgetInstance Map widget instance
+ * @param {string} routeId Route identifier
+ * @param {Object} existingSpeedControl Existing speed control if any
  */
 function setupSpeedControls(widgetInstance, routeId, existingSpeedControl) {
   const speedChangeCallback = (speed) => {
@@ -603,8 +620,9 @@ function setupSpeedControls(widgetInstance, routeId, existingSpeedControl) {
 
 /**
  * Update visited points data for timeline scrubbing
- * @param {Object} route - Route animation state
- * @param {number} targetStep - Target animation step
+ *
+ * @param {Object} route Route animation state
+ * @param {number} targetStep Target animation step
  */
 function updateVisitedPoints(route, targetStep) {
   route.visitedPoints.features = [];
@@ -654,7 +672,7 @@ function updateVisitedPoints(route, targetStep) {
  * Animate the route on the map.
  *
  * @param {object} widgetInstance The map widget instance.
- * @param {object} routeOptions   Options for the route to animate.
+ * @param {object} routeOptions Options for the route to animate.
  * @return {void}
  */
 function animateRoute(widgetInstance, routeOptions) {
@@ -714,6 +732,13 @@ function animateRoute(widgetInstance, routeOptions) {
 
   const startProgress = Math.round((route.counter / (route.linePoints.length - 1)) * 100);
 
+  /**
+   * Animation loop using requestAnimationFrame for smooth updates.
+   * Advances the animation based on elapsed time and speed settings.
+   *
+   * @param {number} currentTime Timestamp provided by requestAnimationFrame
+   * @return {void}
+   */
   function animate(currentTime) {
     const state = widgetInstance.getAnimations()[routeId];
     if (!state?.isAnimating) {
@@ -914,7 +939,7 @@ function animateRoute(widgetInstance, routeOptions) {
  * Pause the route animation on the map.
  *
  * @param {object} widgetInstance The map widget instance.
- * @param {object} routeOptions   Options for the route to pause.
+ * @param {object} routeOptions Options for the route to pause.
  * @return {void}
  */
 function pauseAnimation(widgetInstance, routeOptions) {
@@ -940,7 +965,7 @@ function pauseAnimation(widgetInstance, routeOptions) {
  * Remove the route animation from the map and clean up resources.
  *
  * @param {object} widgetInstance The map widget instance.
- * @param {object} routeOptions   Options for the route to remove.
+ * @param {object} routeOptions Options for the route to remove.
  * @return {void}
  */
 function removeRoute(widgetInstance, routeOptions) {

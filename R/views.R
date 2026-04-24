@@ -1,4 +1,4 @@
-#' Utilites for the map related to the view.
+#' Utilities for the map related to the view.
 
 #' Set the map zoom level.
 #'

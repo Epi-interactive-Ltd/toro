@@ -36,7 +36,7 @@ click the delete button. If not using the delete mode, drawn shapes will
 be static. This means that there will be not be editable and clicking on
 the shape will only trigger an event to update the maps clicked feature
 input. When using the delete mode, drawn shapes are editable when double
-clicked (and deleteable via the delete button). To keep track of shapes
+clicked (and deletable via the delete button). To keep track of shapes
 being updated via edits, you can watch the `<mapId>_shape_updated`
 input. This input ID behaves the same way as the create shape event
 except it is triggered when the user is finished editing an existing

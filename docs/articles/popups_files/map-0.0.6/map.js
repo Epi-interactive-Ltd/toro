@@ -1,3 +1,12 @@
+/**
+ * @file map.js
+ * @summary The toro map widget definition using MapLibre GL JS.
+ *
+ * @description
+ * The toro map widget provides an interface for creating and managing
+ * interactive maps using MapLibre GL JS.
+ */
+
 HTMLWidgets.widget({
   name: 'map',
   type: 'output',
@@ -8,7 +17,7 @@ HTMLWidgets.widget({
     return {
       renderValue: function (x) {
         if (typeof maplibregl === 'undefined') {
-          console.error('Maplibre GL JS not loaded.');
+          console.error('MapLibre GL JS not loaded.');
           return;
         }
         if (mapInstance) {
@@ -215,15 +224,8 @@ HTMLWidgets.widget({
                 options.panelControls.forEach(function (control) {
                   if (control.type === 'timeline') {
                     // Create dummy callback functions for initial rendering
-                    const dummyPlayPause = function (playing) {
-                      // console.log(
-                      //   "Timeline control:",
-                      //   playing ? "playing" : "paused"
-                      // );
-                    };
-                    const dummySliderChange = function (progress) {
-                      // console.log("Timeline progress:", progress);
-                    };
+                    const dummyPlayPause = function (playing) {};
+                    const dummySliderChange = function (progress) {};
 
                     const timelineElement = addTimelineControl(
                       el.widgetInstance,
@@ -436,6 +438,13 @@ HTMLWidgets.widget({
 
         // Idle event when sources and layers are loaded
         if (HTMLWidgets.shinyMode && !el.initiallyLoaded && x.options.initialLoadedLayers) {
+          /**
+           * Check if all the initial layers are loaded by comparing the current layers on the map with the list of initial loaded layers.
+           * Once all initial layers are loaded, remove the loading overlay and set initiallyLoaded to true to prevent this check from running again.
+           *
+           * @param {object} e The event object from the 'idle' event.
+           * @return {void}
+           */
           function initialMapLoaderHandler(e) {
             var currentLayers = el.mapInstance
               .getStyle()
@@ -456,6 +465,15 @@ HTMLWidgets.widget({
           el.mapInstance.off('idle', initialMapLoaderHandler);
         }
         if (HTMLWidgets.shinyMode && x.options.spinnerWhileBusy) {
+          /**
+           * Show a loading spinner overlay when Shiny is busy, and hide it when Shiny is idle. The spinner will only show if Shiny has been busy for more than 1 second to avoid flashing for quick operations.
+           *
+           * @note This implementation uses a timer to delay showing the spinner until Shiny has been busy for more than 1 second.
+           * If Shiny becomes idle before the timer completes, the spinner will not be shown.
+           *
+           * @param {object} e The event object from the 'shiny:busy' or 'shiny:idle' event.
+           * @return {void}
+           */
           function showSpinner() {
             addMapLoader(
               el,
@@ -464,6 +482,12 @@ HTMLWidgets.widget({
               x.options.busyLoaderColour
             );
           }
+          /**
+           * Hide the loading spinner overlay.
+           *
+           * @param {object} e The event object from the 'shiny:idle' event.
+           * @return {void}
+           */
           function hideSpinner() {
             removeMapLoader(el);
           }
@@ -499,52 +523,140 @@ HTMLWidgets.widget({
         }
       },
 
+      /**
+       * Resize the map when the widget size changes.
+       * This should be called whenever the container size changes to ensure the map resizes correctly.
+       *
+       * @param {number} width The new width of the widget container.
+       * @param {number} height The new height of the widget container.
+       * @return {void}
+       */
       resize: function (width, height) {
         if (mapInstance) {
           mapInstance.resize();
         }
       },
 
+      /**
+       * Get the MapLibre map instance associated with this widget.
+       * This allows external code to interact directly with the map instance for advanced use cases.
+       *
+       * @return {object} The MapLibre map instance.
+       */
       getMap: function () {
         return mapInstance;
       },
 
+      /**
+       * Get the ID of the map element.
+       * This can be useful for targeting the map element in custom code or for debugging purposes.
+       *
+       * @return {string} The ID of the map element.
+       */
       getId: function () {
         return el.id;
       },
 
+      /**
+       * Get the initial tiles specified for the map.
+       * This returns the list of tile layers that were defined as available for the map,
+       * which can be used to populate tile selector controls or for other purposes.
+       * Note that this is not necessarily the same as the currently active tile layer on the map,
+       * which can be obtained using the getCurrentTiles function.
+       *
+       * @returns {array} The list of initial tile layers specified for the map.
+       */
       getInitialTiles: function () {
         return el.initialTiles;
       },
 
+      /**
+       * Get the draw control instance for the map, if it has been added.
+       * This allows code to interact with the draw control directly, such as changing modes or accessing drawn features.
+       *
+       * @returns {object|null} The MapLibre Draw control instance, or null if it has not been added to the map.
+       */
       getDraw: function () {
         return el.draw;
       },
 
+      /**
+       * Get the ongoing animations for the map.
+       * This returns an object containing any animations that are currently active on the map, such as flyTo or custom animations.
+       * Each animation can be accessed by its unique ID, which can be used to manage the animation (e.g., stop it).
+       *
+       * @returns {object} An object containing ongoing animations for the map, keyed by their unique IDs.
+       */
       getAnimations: function () {
         return el.animations;
       },
 
+      /**
+       * Get the available tile layers for the map.
+       * This returns the list of tile layers that have been defined as available for the map,
+       * which can be used to populate tile selector controls or for other purposes.
+       *
+       * @returns {array} The list of available tile layers for the map.
+       */
       setAvailableTiles: function (tiles) {
         el.tileLayers = tiles;
       },
 
+      /**
+       * Get the available image tile layers for the map.
+       * This returns the list of image tile layers that have been defined as available for the map,
+       * which can be used to populate tile selector controls or for other purposes.
+       *
+       * @returns {array} The list of available image tile layers for the map.
+       */
       getAvailableImageLayerTiles: function () {
         return el.imageTileLayers;
       },
 
+      /**
+       * Set the available image tile layers for the map.
+       * This allows you to define which image tile layers are available for the map,
+       * which can be used to populate tile selector controls or for other purposes.
+       * Note that this does not automatically add the image tile layers to the map,
+       * they must be added separately using addTilesFromMapServer with the isImageLayer parameter set to true.
+       *
+       * @param {array} imageTileLayers The list of available image tile layers for the map.
+       * @returns {void}
+       */
       setAvailableImageLayerTiles: function (imageTileLayers) {
         el.imageTileLayers = imageTileLayers;
       },
 
+      /**
+       * Get the available tile layers for the map.
+       * This returns the list of tile layers that have been defined as available for the map,
+       * which can be used to populate tile selector controls or for other purposes.
+       *
+       * @returns {array} The list of available tile layers for the map.
+       */
       getAvailableTiles: function () {
         return el.tileLayers;
       },
 
+      /**
+       * Get the map element associated with this widget.
+       * This returns the DOM element that contains the map, which can be useful for direct manipulation or for debugging purposes.
+       *
+       * @returns {object} The DOM element containing the map.
+       */
       getElement: function () {
         return document.querySelector(`#${el.id}.map`);
       },
 
+      /**
+       * Get the currently active tile layer on the map.
+       * This checks the map's style layers to determine which tile layer is currently visible,
+       * excluding the satellite layer which is always visible as a base layer.
+       * If no specific tile layer is visible, it checks if the satellite layer is the only one
+       * visible and returns that. If no tile layers are visible, it returns null.
+       *
+       * @returns {string|null} The ID of the currently active tile layer, or null if none are active.
+       */
       getCurrentTiles: function () {
         if (!mapInstance || !mapInstance.getStyle) {
           return null;
@@ -994,8 +1106,20 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 }
-
+// ============================================================
 // Global handler functions for toggle controls in panels
+// ============================================================
+
+/**
+ * Global handler for cluster toggle controls in panels.
+ * This function is called when a cluster toggle control is interacted with,
+ * and it manages the clustering state of the specified layer on the map.
+ *
+ * @param {string} layerId The ID of the layer to toggle clustering for.
+ * @param {string} mapId The ID of the map element associated with this control.
+ * @param {object} toggleElement The DOM element of the toggle control that was interacted with.
+ * @return {void}
+ */
 window.handleClusterToggle = function (layerId, mapId, toggleElement) {
   const el = document.getElementById(mapId);
   if (el && el.widgetInstance) {
@@ -1083,6 +1207,16 @@ window.handleClusterToggle = function (layerId, mapId, toggleElement) {
   }
 };
 
+/**
+ * Global handler for visibility toggle controls in panels.
+ * This function is called when a visibility toggle control is interacted with,
+ * and it manages the visibility of the specified layer on the map.
+ *
+ * @param {string} layerId The ID of the layer to toggle visibility for.
+ * @param {string} mapId The ID of the map element associated with this control.
+ * @param {object} toggleElement The DOM element of the toggle control that was interacted with.
+ * @return {void}
+ */
 window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
   const el = document.getElementById(mapId);
   if (el && el.widgetInstance) {
@@ -1180,7 +1314,8 @@ window.handleVisibilityToggle = function (layerId, mapId, toggleElement) {
  * Set up event handlers to close popups on various map interactions.
  * This ensures that popups are closed when the user interacts with the map in other ways.
  *
- * @param {object} map - MapLibre map instance
+ * @param {object} map MapLibre map instance
+ * @return {void}
  */
 function setupPopupCloseHandlers(map) {
   // Close popups when the map is moved (dragged or panned)

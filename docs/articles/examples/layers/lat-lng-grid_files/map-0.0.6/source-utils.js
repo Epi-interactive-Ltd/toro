@@ -1,4 +1,12 @@
 /**
+ * @file source-utils.js
+ * @summary Source utilities for MapLibre maps.
+ *
+ * @description
+ * Utilities to assist with managing data sources in MapLibre GL JS.
+ */
+
+/**
  * Convert a longitude value to be within the range of -180 to 180 degrees.
  *
  * @param {number} longitude The longitude value to validate.
@@ -71,8 +79,8 @@ function addDataSourceToMap(mapInstance, sourceId, sourceOptions) {
  * normalized to handle antimeridian crossings.
  *
  * @param {object} mapInstance A MapLibre map instance.
- * @param {string} sourceId    ID of the source to update.
- * @param {object} data        Data to update the source with.
+ * @param {string} sourceId ID of the source to update.
+ * @param {object} data Data to update the source with.
  * @returns {void}
  */
 function updateSourceData(mapInstance, sourceId, data) {

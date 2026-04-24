@@ -7,15 +7,14 @@
 pause_route(map, route_id, settings = list())
 }
 \arguments{
-\item{map}{A toro map object or a map proxy object.}
+\item{map}{A toro map proxy object.}
 
 \item{route_id}{A unique identifier for the route.}
 
 \item{settings}{A list of settings for pausing the animation.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     The updated map object.
-}\if{html}{\out{</div>}}
+The updated map object.
 }
 \description{
 Pause a route animation on a toro map.

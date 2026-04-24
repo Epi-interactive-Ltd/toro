@@ -13,7 +13,7 @@ library(toro)
 
 ## Installation
 
-To install the development version from Github:
+To install the development version from GitHub:
 
 ```r
 remotes::install_github("Epi-interactive-Ltd/toro")
