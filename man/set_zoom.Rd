@@ -2,7 +2,7 @@
 % Please edit documentation in R/views.R
 \name{set_zoom}
 \alias{set_zoom}
-\title{Utilites for the map related to the view.
+\title{Utilities for the map related to the view.
 Set the map zoom level.}
 \usage{
 set_zoom(map, zoom)
@@ -16,7 +16,7 @@ set_zoom(map, zoom)
 The map or map proxy object for chaining.
 }
 \description{
-Utilites for the map related to the view.
+Utilities for the map related to the view.
 Set the map zoom level.
 }
 \examples{

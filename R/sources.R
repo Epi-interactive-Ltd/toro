@@ -3,7 +3,7 @@
 #' Add a source to the map.
 #'
 #' @note If you add a source directly in an add layer function, the source ID will
-#' be automatically generated as "source-<layer-id>".
+#' be automatically generated as `source-{layer-id}`.
 #'
 #' @param map The map or map proxy object.
 #' @param source_id The ID for the source.
@@ -11,9 +11,9 @@
 #' @param type The type of the source. Default is `"geojson"`.
 #'    Other options include `"vector"` or `"raster"`.
 #' @param cluster Whether to enable clustering for this source. Default is `FALSE`.
-#' @param ... Additional arguments to in pass directly to the JS adSource function. Documentation
+#' @param ... Additional arguments to in pass directly to the JS addSource function. Documentation
 #'  for this can be found on the
-#'  [Maplibre GL JS docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
+#'  [MapLibre GL JS docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
 #'  \itemize{
 #'    \item id: Alternative to `source_id` for backward compatibility. If both `source_id` and
 #'      `id` are provided, `source_id` will take precedence.

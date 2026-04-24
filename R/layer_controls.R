@@ -172,7 +172,7 @@ remove_tile_selector_control <- function(proxy, panel_id = NULL) {
 
 #' Add a layer selector control to the map or control panel
 #'
-#' Creates a dropdown selector that allows switching between layers, showing only the
+#' Creates a drop-down selector that allows switching between layers, showing only the
 #' selected layer while hiding all others. This is useful for comparing different
 #' data layers or allowing users to choose between mutually exclusive visualizations.
 #'

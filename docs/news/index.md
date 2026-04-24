@@ -33,15 +33,14 @@
   (see the [Map Tiles
   vignette](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.html)
   for more details).
-- Added route animations and timeline controls (see the [Route
-  Animations
-  vignette](https://epi-interactive-ltd.github.io/toro/articles/route-animations.html)
-  for more details **Documentation to come**).
+- Added route animations and timeline controls (see the [Animations
+  vignette](https://epi-interactive-ltd.github.io/toro/articles/animations.html)
+  for more details).
 
 ### Bug Fixes and Improvements
 
-- Fxied clusters not showing up
-- Better clustering around the antimerdian line
+- Fixed clusters not showing up
+- Better clustering around the antimeridian line
 - Fixed some issues around adding sources in the add layer functions
 - Updated
   [`add_feature_server_source()`](https://epi-interactive-ltd.github.io/toro/reference/add_feature_server_source.md)

@@ -47,7 +47,7 @@ The map proxy object for chaining.
 
 ## Note
 
-See [Maplibre NavigationControl
+See [MapLibre NavigationControl
 docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/)
 for more information on available options.
 

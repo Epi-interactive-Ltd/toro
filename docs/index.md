@@ -1,6 +1,6 @@
 # toro
 
-toro is a package that provides [Maplibre GL
+toro is a package that provides [MapLibre GL
 JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
 
 The goal of toro is to …

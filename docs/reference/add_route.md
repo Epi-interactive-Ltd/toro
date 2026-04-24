@@ -28,4 +28,4 @@ add_route(map, route_id, points, settings = list())
 
 ## Value
 
-         The updated map object.
+The updated map object.

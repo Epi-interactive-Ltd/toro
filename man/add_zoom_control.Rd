@@ -35,7 +35,7 @@ Functions related to zoom controls.
 Add a zoom control to the map.
 }
 \note{
-See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/}{Maplibre NavigationControl docs}
+See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/}{MapLibre NavigationControl docs}
 for more information on available options.
 }
 \examples{

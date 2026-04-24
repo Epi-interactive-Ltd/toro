@@ -10,7 +10,7 @@ get_paint_options(layer_type, options = list())
 \item{layer_type}{A string indicating the type of layer (e.g., "fill", "circle", "line").}
 
 \item{options}{A list of additional options to customize the paint properties.
-See Maplibre docs for full options.
+See MapLibre docs for full options.
 \itemize{
 \item colour: The color to use for the layer. Default is "grey". \code{color} is also accepted as
 an alias for \code{colour}.
@@ -25,7 +25,7 @@ Default is the same as \code{colour}. \code{outline_color} is also accepted as a
 \code{outline_colour}.
 \item outline_opacity: The opacity to use for the outline of circle or fill layers.
 Default is the same as \code{opacity}.
-You can also provide any other paint options found in the Maplibre docs for the specific
+You can also provide any other paint options found in the MapLibre docs for the specific
 layer type, and they will be included in the returned list.
 }}
 }
@@ -38,7 +38,7 @@ additional options provided.
 }
 \note{
 You can provide any paint options found in the
-\href{https://maplibre.org/maplibre-style-spec/layers/}{Maplibre Layers docs} in the \code{options}
+\href{https://maplibre.org/maplibre-style-spec/layers/}{MapLibre Layers docs} in the \code{options}
 argument, and they will be included in the returned list.
 The default options are just a starting point and can be overridden by providing them in the
 \code{options} argument.

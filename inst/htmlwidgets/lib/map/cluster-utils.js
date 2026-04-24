@@ -1,14 +1,9 @@
 /**
- * Clustering utilities for MapLibre maps.
+ * @file cluster-utils.js
+ * @summary Clustering utilities for MapLibre maps.
  *
- * - addClusterLayer: Adds a cluster layer to a MapLibre map with spiderfying functionality.
- * - addClusterSpiderfying: Initializes spiderfying functionality for clusters on a MapLibre map.
- * - addSpiderfyingLayers: Adds layers and sources for spiderfying clusters.
- * - getSpiderfiedFeatures: Updates cluster features to spiderfy them around a center point.
- * - getSpiderfyLines: Creates GeoJSON data for lines connecting the cluster center to spiderfied points.
- * - onClusterClick: Handles cluster click events to either spiderfy points or zoom in on the cluster.
- * - toggleLayerClustering: Turns clustering on or off for a specific layer in a MapLibre map.
- * - closeSpiderfy: Clears spiderfy layer data to close any open clusters.
+ * @description
+ * Utilities to assist with clustering, compatible with MapLibre GL JS.
  */
 
 /**
@@ -83,9 +78,9 @@ function getSpiderfyOptions(spiderfyOptions) {
 /**
  * Add layers needed for clustering a specific layer.
  *
- * @param {object} el         HTML widget element containing the map instance.
- * @param {string} layerId    ID of the layer to add clusters to.
- * @param {string} sourceId   ID of the source that contains the cluster data.
+ * @param {object} el HTML widget element containing the map instance.
+ * @param {string} layerId ID of the layer to add clusters to.
+ * @param {string} sourceId ID of the source that contains the cluster data.
  * @param {string} popupColumn Optional popup column for spiderfy pins.
  * @param {boolean} canCluster Optional flag to enable or disable clustering for the layer.
  * @param {object} clusterOptions Optional cluster options to configure clustering behavior.
@@ -142,9 +137,9 @@ function addClusterLayer(el, layerId, sourceId, popupColumn, canCluster, cluster
 /**
  * Add spiderfying to clusters.
  *
- * @param {object} el         HTML widget element containing the map instance.
- * @param {string} layerId    ID of the layer to add clusters to.
- * @param {string} sourceId   ID of the source that contains the cluster data.
+ * @param {object} el HTML widget element containing the map instance.
+ * @param {string} layerId ID of the layer to add clusters to.
+ * @param {string} sourceId ID of the source that contains the cluster data.
  * @param {string} popupColumn Optional popup column for spiderfy pins.
  * @param {object} clusterOptions Optional cluster options to configure clustering behavior.
  * @returns {void}
@@ -192,7 +187,7 @@ function addClusterSpiderfying(el, layerId, sourceId, popupColumn, clusterOption
 /**
  * Add the layers (and sources) required for spiderfying clusters on a MapLibre map.
  *
- * @param {object} el         HTML widget element containing the map instance.
+ * @param {object} el HTML widget element containing the map instance.
  * @returns {void}
  *
  * @see {@link addLayerPopup}
@@ -225,14 +220,14 @@ function addSpiderfyingLayers(el) {
 /**
  * Update the coordinates of cluster features to spiderfy them around a center point.
  *
- * @param {object} map                  Maplibre map instance.
- * @param {object[]} features           Cluster features to spiderfy.
- * @param {int[]} centerLngLat          Cluster center coordinates as [lng, lat].
- * @param {number} [maxCircleCount=50]  Initial radius in pixels for the spiderfy circles.
- * @param {number} [maxCircleCount=40]  Distance in pixels between points in the spiral.
- * @param {number} [maxCircleCount=10]  Max number of points to have in a circle before switching
- *                                      to a spiral pattern.
- * @returns {object[]}                  Cluster features with updated coordinates for spiderfying.
+ * @param {object} map MapLibre map instance.
+ * @param {object[]} features Cluster features to spiderfy.
+ * @param {number[]} centerLngLat Cluster center coordinates as [lng, lat].
+ * @param {number} [baseRadiusPx=50] Initial radius in pixels for the spiderfy circles.
+ * @param {number} [spacing=40] Distance in pixels between points in the spiral.
+ * @param {number} [maxCircleCount=10] Max number of points to have in a circle before switching
+ *   to a spiral pattern.
+ * @returns {object[]} Cluster features with updated coordinates for spiderfying.
  */
 function getSpiderfiedFeatures(
   map,
@@ -288,9 +283,9 @@ function getSpiderfiedFeatures(
 /**
  * Get the GeoJSON data for the lines used in the spiderfied cluster.
  *
- * @param {number[]} center   Cluster center coordinates as [lng, lat].
+ * @param {number[]} center Cluster center coordinates as [lng, lat].
  * @param {object[]} features Spiderfied cluster features.
- * @returns {object}          GeoJSON FeatureCollection with spiderfy lines.
+ * @returns {object} GeoJSON FeatureCollection with spiderfy lines.
  */
 function getSpiderfyLines(center, features) {
   return {
@@ -310,8 +305,8 @@ function getSpiderfyLines(center, features) {
  * If the cluster is clicked at max zoom, it will spiderfy the points.
  * Otherwise, it will zoom in on the cluster.
  *
- * @param {object} e        Map click event.
- * @param {object} el       HTML widget element containing the map instance.
+ * @param {object} e Map click event.
+ * @param {object} el HTML widget element containing the map instance.
  * @param {string} layerId  Layer ID that the clusters belong to.
  * @param {string} sourceId Source ID of the cluster.
  * @param {object} spiderfyOptions Spiderfy options to configure spiderfying behavior.
@@ -420,9 +415,9 @@ function getClusterOptions(clusterOptions, layerType) {
 /**
  * Turn clustering on/off for a specific layer in a MapLibre map.
  *
- * @param {object} map      A MapLibre map instance.
- * @param {string} layerId  Layer ID to toggle clustering for.
- * @param {boolean} enable  Enable or disable clustering for the layer.
+ * @param {object} map A MapLibre map instance.
+ * @param {string} layerId Layer ID to toggle clustering for.
+ * @param {boolean} enable Enable or disable clustering for the layer.
  * @returns {void}
  *
  * @see {@link addFilterToLayer}
@@ -450,7 +445,7 @@ function toggleLayerClustering(map, layerId, enable) {
 /**
  * Clear the spiderfy layer data to close any open spiderfy clusters.
  *
- * @param {object} map Maplibre map instance.
+ * @param {object} map MapLibre map instance.
  * @returns {void}
  */
 function closeSpiderfy(map) {

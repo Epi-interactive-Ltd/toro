@@ -2,7 +2,7 @@
 % Please edit documentation in R/map.R
 \name{map}
 \alias{map}
-\title{Create a Maplibre map widget.}
+\title{Create a MapLibre map widget.}
 \usage{
 map(
   style = "lightgrey",

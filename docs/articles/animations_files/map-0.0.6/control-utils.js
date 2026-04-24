@@ -1,8 +1,12 @@
 /**
  * @file control-utils.js
+ * @summary Draw control utilities for MapLibre maps.
  *
- * @note Draw controls are based on Mapbox GL Draw, which is compatible with Maplibre GL JS.
- *       For more information: `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
+ * @description
+ * Utilities to assist with draw controls, based on Mapbox GL Draw,
+ * compatible with MapLibre GL JS.
+ *
+ * Source: https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md
  */
 
 const validDrawModes = ['polygon', 'delete', 'line', 'point']; // Accepted draw modes
@@ -14,7 +18,7 @@ const validDrawModes = ['polygon', 'delete', 'line', 'point']; // Accepted draw 
  *    `https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md`.
  *
  * @note When delete mode is included in modes, shapes remain editable after creation.
- *       When delete mode is not included, shapes are automatically made static.
+ *   When delete mode is not included, shapes are automatically made static.
  *
  * @param {object} el Widget element containing the map instance.
  * @param {string} position Position of the control on the map (e.g., "top-right", "bottom-left").
@@ -22,7 +26,7 @@ const validDrawModes = ['polygon', 'delete', 'line', 'point']; // Accepted draw 
  * @param {string} activeColour Colour for the shape currently being drawn.
  * @param {string} inactiveColour Colour for shapes that are not currently being drawn.
  * @param {object} modeLabels A named list of labels for each mode.
- *     For example, `{ polygon: "Draw Polygon", delete: "Delete Shape" }
+ *   For example, `{ polygon: "Draw Polygon", delete: "Delete Shape" }
  * @param {string} controlId Optional custom control ID. If not provided, uses default pattern.
  * @returns {void}
  */
@@ -223,7 +227,7 @@ function showDrawControls(el) {
 /**
  * Get the style configuration for drawn shapes.
  *
- * @param {string} activeColour   Hex colour for the active shape.
+ * @param {string} activeColour Hex colour for the active shape.
  * @param {string} inactiveColour Hex colour for inactive shapes.
  * @returns {void}
  */
@@ -455,10 +459,10 @@ function _getDrawnStyle(activeColour, inactiveColour) {
 /**
  * Add a control to display cursor coordinates on the map.
  *
- * @param {object} map        Maplibre map instance.
- * @param {string} position   What position to place the control in the map.
- * @param {string} longLabel  Label for the longitude coordinate.
- * @param {string} latLabel   Label for the latitude coordinate.
+ * @param {object} map MapLibre map instance.
+ * @param {string} position What position to place the control in the map.
+ * @param {string} longLabel Label for the longitude coordinate.
+ * @param {string} latLabel Label for the latitude coordinate.
  * @param {object} widgetInstance Optional widget instance for ID generation.
  * @returns {void}
  */
@@ -497,11 +501,10 @@ function addCursorCoordinateControl(map, position, longLabel, latLabel, widgetIn
 /**
  * Add a custom control to the map with specified HTML content.
  *
- * @param {object} map        Maplibre map instance.
- * @param {string} controlId  ID for the custom control.
- * @param {string} html       HTML content for the custom control.
- * @param {string} position   Position to place the control in the map.
- *                            Default is "top-right".
+ * @param {object} map MapLibre map instance.
+ * @param {string} controlId ID for the custom control.
+ * @param {string} html HTML content for the custom control.
+ * @param {string} position Position to place the control in the map. Default is "top-right".
  * @returns {void}
  */
 function addCustomControl(map, controlId, html, position = 'top-right') {
@@ -523,15 +526,13 @@ function addCustomControl(map, controlId, html, position = 'top-right') {
 /**
  * Toggle visibility of a control element on the map.
  *
- * Controls can be identified as follows:
- * - `zoom_control`: Zoom control (including compass).
- * - `draw_control`: Draw control.
- * - `cursor_coords`: Cursor coordinates control.
- * -  Other controls can be identified by their ID created in `add_custom_control`.
- *
- * @param {object} el          Widget element containing the map instance.
- * @param {string} controlId   ID of the control to toggle.
- * @param {boolean} show       Whether to show or hide the control.
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} controlId ID of the control to toggle. Any of:
+ *   - `zoom_control`: Zoom control (including compass).
+ *   - `draw_control`: Draw control.
+ *   - `cursor_coords`: Cursor coordinates control.
+ *   -  Other controls can be identified by their ID created in `add_custom_control`.
+ * @param {boolean} show Whether to show or hide the control.
  * @return {void}
  */
 function toggleControl(el, controlId, show) {
@@ -569,17 +570,16 @@ function toggleControl(el, controlId, show) {
 /**
  * Add a zoom control to the map.
  *
- * See [Maplibre NavigationControl docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/) for more.
+ * See [MapLibre NavigationControl docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/) for more.
  *
- * @param {object} map      Maplibre map instance.
- * @param {string} position Position to place the control in the map.
- *                          Default is "top-right".
+ * @param {object} map MapLibre map instance.
+ * @param {string} position Position to place the control in the map. Default is "top-right".
  * @param {object} options  Options for the zoom control.
- *                          Can include:
- *                            - showZoom: boolean (default true)
- *                            - showCompass: boolean (default false)
- *                            - visualizePitch: boolean (default false)
- *                            - visualizeRoll: boolean (default false)
+ *   Can include:
+ *     - showZoom: boolean (default true)
+ *     - showCompass: boolean (default false)
+ *     - visualizePitch: boolean (default false)
+ *     - visualizeRoll: boolean (default false)
  * @param {object} widgetInstance Optional widget instance for ID generation
  * @return {void}
  */
@@ -625,7 +625,7 @@ function addZoomControl(map, position, options, widgetInstance = null) {
  * Remove a control from the map.
  *
  * @param {object} widgetInstance Toro widget object.
- * @param {string} controlId      ID of the control to remove.
+ * @param {string} controlId ID of the control to remove.
  * @returns {void}
  */
 function removeControl(widgetInstance, controlId) {
@@ -671,9 +671,9 @@ function removeControl(widgetInstance, controlId) {
 /**
  * Remove a control from a control panel.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {string} panelId          ID of the control panel.
- * @param {string} controlId        ID of the control to remove.
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the control panel.
+ * @param {string} controlId ID of the control to remove.
  * @return {void}
  */
 function removeControlFromPanel(widgetInstance, panelId, controlId) {
@@ -767,17 +767,17 @@ function removeControlFromPanel(widgetInstance, panelId, controlId) {
 /**
  * Add a control panel to the map that can contain multiple controls.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {string} panelId          Unique ID for the control panel.
- * @param {object} options          Options for the control panel.
- *                                  Can include:
- *                                    - position: string (default "bottom-left")
- *                                    - title: string - Panel title
- *                                    - showTitle: boolean (default true if title provided)
- *                                    - collapsible: boolean (default false) - Whether panel can be collapsed
- *                                    - collapsed: boolean (default false) - Initial collapsed state
- *                                    - controls: array - Array of control configurations to add
- *                                    - customControls: array - Array of custom HTML controls
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId Unique ID for the control panel.
+ * @param {object} options Options for the control panel.
+ *   Can include:
+ *     - position: string (default "bottom-left")
+ *     - title: string - Panel title
+ *     - showTitle: boolean (default true if title provided)
+ *     - collapsible: boolean (default false) - Whether panel can be collapsed
+ *     - collapsed: boolean (default false) - Initial collapsed state
+ *     - controls: array - Array of control configurations to add
+ *     - customControls: array - Array of custom HTML controls
  * @return {void}
  */
 function addControlPanel(el, panelId, options = {}) {
@@ -997,12 +997,12 @@ function addControlPanel(el, panelId, options = {}) {
 /**
  * Add HTML content directly to an existing control panel.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {string} panelId          ID of the target control panel.
- * @param {string} htmlContent      HTML content to add to the panel.
- * @param {string} sectionTitle     Optional section title for the control.
- * @param {string} controlId        Optional ID for the control element.
- * @param {string} groupId          Optional group ID to add the control to a specific group.
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the target control panel.
+ * @param {string} htmlContent HTML content to add to the panel.
+ * @param {string} sectionTitle Optional section title for the control.
+ * @param {string} controlId Optional ID for the control element.
+ * @param {string} groupId Optional group ID to add the control to a specific group.
  * @return {void}
  */
 function addHtmlToPanel(
@@ -1028,13 +1028,14 @@ function addHtmlToPanel(
 /**
  * Add a specific control to an existing control panel.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {string} panelId          ID of the target control panel.
- * @param {object} controlConfig    Configuration for the control to add.
- *                                  Should include:
- *                                    - type: string - Control type ("timeline", "speed", "custom")
- *                                    - options: object - Control-specific options
- *                                    - title: string - Section title for the control
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the target control panel.
+ * @param {object} controlConfig Configuration for the control to add.
+ *   Should include:
+ *     - type: string - Control type ("timeline", "speed", "custom")
+ *     - options: object - Control-specific options
+ *     - title: string - Section title for the control
+ *     - groupId: string - Optional group ID to add the control to a specific group
  * @return {void}
  */
 function addControlToPanel(el, panelId, controlConfig) {
@@ -1126,7 +1127,16 @@ function addControlToPanel(el, panelId, controlConfig) {
 }
 
 /**
- * Add cursor coordinates control to a control panel
+ * Add cursor coordinates control to a control panel.
+ *
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the target control panel.
+ * @param {object} options Options for the cursor coordinate control.
+ *   Can include:
+ *     - longLabel: string (default "Lng") - Label for longitude
+ *     - latLabel: string (default "Lat") - Label for latitude
+ * @param {string} sectionTitle Optional section title for the control in the panel.
+ * @return {void}
  */
 function addCursorCoordinateControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
@@ -1188,7 +1198,18 @@ function addCursorCoordinateControlToPanel(widgetInstance, panelId, options, sec
 }
 
 /**
- * Add zoom control to a control panel
+ * Add zoom control to a control panel.
+ *
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the target control panel.
+ * @param {object} options Options for the zoom control.
+ *   Can include:
+ *     - showZoom: boolean (default true)
+ *     - showCompass: boolean (default false)
+ *     - visualizePitch: boolean (default false)
+ *     - visualizeRoll: boolean (default false)
+ * @param {string} sectionTitle Optional section title for the control in the panel.
+ * @return {void}
  */
 function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
@@ -1261,7 +1282,18 @@ function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
 }
 
 /**
- * Add draw control to a control panel
+ * Add draw control to a control panel.
+ *
+ * @param {object} el Widget element containing the map instance.
+ * @param {string} panelId ID of the target control panel.
+ * @param {object} options Options for the draw control.
+ *   Can include:
+ *     - modes: array of strings (default ['polygon', 'trash']) - Draw modes to include
+ *     - activeColour: string (default '#007cbf') - Color for active features
+ *     - inactiveColour: string (default '#999999') - Color for inactive features
+ *     - modeLabels: object mapping mode names to labels for buttons
+ * @param {string} sectionTitle Optional section title for the control in the panel.
+ * @return {void}
  */
 function addDrawControlToPanel(el, panelId, options, sectionTitle) {
   const widgetInstance = el.widgetInstance;
@@ -1411,6 +1443,16 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
 
 /**
  * Add tile selector control to a control panel
+ *
+ * This control allows users to switch between different tile layers on the map.
+ *
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the target control panel.
+ * @param {object} options Options for the tile selector control.
+ *   Should include:
+ *     - tiles: array of tile layer configurations (id, name, urlTemplate)
+ * @param {string} sectionTitle Optional section title for the control.
+ * @return {void}
  */
 function addTileSelectorControlToPanel(widgetInstance, panelId, options, sectionTitle) {
   const map = widgetInstance.getMap();
@@ -1443,15 +1485,15 @@ function addTileSelectorControlToPanel(widgetInstance, panelId, options, section
 /**
  * Add a timeline control to the map for animating data over time.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {string} startDate        Start date for timeline.
- * @param {string} endDate          End date for timeline.
- * @param {function} onPlayPause    Callback for play/pause button.
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} startDate Start date for timeline.
+ * @param {string} endDate End date for timeline.
+ * @param {function} onPlayPause Callback for play/pause button.
  * @param {function} onSliderChange Callback for slider change.
- * @param {object} options          Options for the timeline control.
- *                                  Can include:
- *                                    - position: string (default "bottom-left")
- *                                    - maxTicks: number (default 3) - Maximum number of labeled ticks
+ * @param {object} options Options for the timeline control.
+ *   Can include:
+ *     - position: string (default "bottom-left")
+ *     - maxTicks: number (default 3) - Maximum number of labeled ticks
  * @return {void}
  */
 function addTimelineControl(
@@ -1685,6 +1727,9 @@ function addTimelineControl(
     }
   };
 
+  /**
+   * Set up event handlers for play/pause button and slider with a retry mechanism to ensure elements are available.
+   */
   function setupEventHandlers() {
     playPauseBtn = document.getElementById(playPauseId);
     timelineSlider = document.getElementById(sliderId);
@@ -1925,14 +1970,14 @@ function addTimelineControl(
 /**
  * Add a speed control to the map for controlling animation speed.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {function} onSpeedChange  Callback for speed change.
- * @param {object} options          Options for the speed control.
- *                                  Can include:
- *                                    - position: string (default "top-right")
- *                                    - values: array (default [0.5, 1, 2]) - Speed values
- *                                    - labels: array (default ["Slow", "Normal", "Fast"]) - Speed labels
- *                                    - defaultIndex: number (default 1) - Default speed index
+ * @param {object} widgetInstance Toro widget object.
+ * @param {function} onSpeedChange Callback for speed change.
+ * @param {object} options Options for the speed control.
+ *   Can include:
+ *     - position: string (default "top-right")
+ *     - values: array (default [0.5, 1, 2]) - Speed values
+ *     - labels: array (default ["Slow", "Normal", "Fast"]) - Speed labels
+ *     - defaultIndex: number (default 1) - Default speed index
  * @return {void}
  */
 function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
@@ -2037,6 +2082,9 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
     }
   };
 
+  /**
+   * Set up event handlers for the speed control slider with a retry mechanism to ensure the element is available.
+   */
   function setupEventHandlers() {
     const speedSlider = document.getElementById(speedSliderId);
 
@@ -2169,17 +2217,17 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
 /**
  * Add a tile selector control to the map for switching between tile layers.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {function} onTileChange   Callback for tile change.
- * @param {object} options          Options for the tile selector control.
- *                                  Can include:
- *                                    - availableTiles: array of tile IDs
- *                                    - labels: object mapping tile IDs to display labels
- *                                    - defaultTile: string default tile ID
- *                                    - position: string (default "top-right")
- *                                    - useControlPanel: boolean
- *                                    - panelId: string panel ID if using control panel
- *                                    - panelTitle: string section title for control panel
+ * @param {object} widgetInstance Toro widget object.
+ * @param {function} onTileChange Callback for tile change.
+ * @param {object} options Options for the tile selector control.
+ *   Can include:
+ *     - availableTiles: array of tile IDs
+ *     - labels: object mapping tile IDs to display labels
+ *     - defaultTile: string default tile ID
+ *     - position: string (default "top-right")
+ *     - useControlPanel: boolean
+ *     - panelId: string panel ID if using control panel
+ *     - panelTitle: string section title for control panel
  * @returns {void}
  */
 function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
@@ -2306,6 +2354,10 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
   };
 
   const tileSelector = document.getElementById(tileSelectorId);
+
+  /**
+   * Set up event handlers for the tile selector with a retry mechanism to ensure the element is available. Also checks if the control should be disabled based on the presence of the callback and updates the UI accordingly.
+   */
   function setupEventHandlers() {
     if (!tileSelector) {
       console.warn('Tile selector control not found, retrying...');
@@ -2414,12 +2466,12 @@ function addTileSelectorControl(widgetInstance, onTileChange, options = {}) {
 /**
  * Generate HTML content for a toggle control input.
  *
- * @param {string} type        Type of toggle ("cluster" or "visibility").
- * @param {string} layerId     ID of the layer to toggle.
- * @param {string} leftLabel       Label text for the left of the toggle.
- * @param {string} rightLabel      Label text for the right of the toggle.
+ * @param {string} type Type of toggle ("cluster" or "visibility").
+ * @param {string} layerId ID of the layer to toggle.
+ * @param {string} leftLabel Label text for the left of the toggle.
+ * @param {string} rightLabel Label text for the right of the toggle.
  * @param {boolean} initialState Initial state of the toggle.
- * @param {string} mapId       Map ID for unique event handling.
+ * @param {string} mapId Map ID for unique event handling.
  * @param {boolean} useInlineHandler Whether to use inline onclick handler (for panels) or return just HTML.
  * @param {boolean} includeWrapper Whether to include the control wrapper div (for panels).
  * @returns {string} HTML content for the toggle input.
@@ -2472,13 +2524,13 @@ function generateToggleInputHtml(
 /**
  * Add a cluster toggle control to the map.
  *
- * @param {object} map        Maplibre map instance.
- * @param {string} controlId  ID for the control.
- * @param {string} layerId    ID of the layer to toggle clustering for.
- * @param {string} leftLabel      Label text for the left side of the toggle. Default is "Toggle Clustering".
- * @param {string} rightLabel     Label text for the right side of the toggle. Default is null.
+ * @param {object} map MapLibre map instance.
+ * @param {string} controlId ID for the control.
+ * @param {string} layerId ID of the layer to toggle clustering for.
+ * @param {string} leftLabel Label text for the left side of the toggle. Default is "Toggle Clustering".
+ * @param {string} rightLabel Label text for the right side of the toggle. Default is null.
  * @param {boolean} initialState Initial clustering state. Default is false.
- * @param {string} position   Position to place the control. Default is "top-right".
+ * @param {string} position Position to place the control. Default is "top-right".
  * @param {object} widgetInstance Optional widget instance for ID generation.
  * @returns {void}
  */
@@ -2588,13 +2640,13 @@ function addClusterToggleControl(
 /**
  * Add a visibility toggle control to the map.
  *
- * @param {object} map        Maplibre map instance.
- * @param {string} controlId  ID for the control.
- * @param {string} layerId    ID of the layer to toggle visibility for.
- * @param {string} leftLabel      Label text for the left side of the toggle. Default is "Toggle Layer".
- * @param {string} rightLabel     Label text for the right side of the toggle. Default is null.
+ * @param {object} map MapLibre map instance.
+ * @param {string} controlId ID for the control.
+ * @param {string} layerId ID of the layer to toggle visibility for.
+ * @param {string} leftLabel Label text for the left side of the toggle. Default is "Toggle Layer".
+ * @param {string} rightLabel Label text for the right side of the toggle. Default is null.
  * @param {boolean} initialState Initial visibility state. Default is true.
- * @param {string} position   Position to place the control. Default is "top-right".
+ * @param {string} position Position to place the control. Default is "top-right".
  * @param {object} widgetInstance Optional widget instance for ID generation.
  * @returns {void}
  */
@@ -2719,9 +2771,9 @@ function addVisibilityToggleControl(
  * Add a cluster toggle control to a control panel.
  *
  * @param {object} widgetInstance Widget instance.
- * @param {string} panelId        ID of the control panel.
- * @param {object} options        Control options including layerId, leftLabel, rightLabel, initialState.
- * @param {string} sectionTitle   Section title for the control.
+ * @param {string} panelId ID of the control panel.
+ * @param {object} options Control options including layerId, leftLabel, rightLabel, initialState.
+ * @param {string} sectionTitle Section title for the control.
  * @returns {void}
  */
 function addClusterToggleControlToPanel(widgetInstance, panelId, options, sectionTitle) {
@@ -2765,9 +2817,9 @@ function addClusterToggleControlToPanel(widgetInstance, panelId, options, sectio
  * Add a visibility toggle control to a control panel.
  *
  * @param {object} widgetInstance Widget instance.
- * @param {string} panelId        ID of the control panel.
- * @param {object} options        Control options including layerId, leftLabel, rightLabel, initialState.
- * @param {string} sectionTitle   Section title for the control.
+ * @param {string} panelId ID of the control panel.
+ * @param {object} options Control options including layerId, leftLabel, rightLabel, initialState.
+ * @param {string} sectionTitle Section title for the control.
  * @returns {void}
  */
 function addVisibilityToggleControlToPanel(widgetInstance, panelId, options, sectionTitle) {
@@ -2805,9 +2857,9 @@ function addVisibilityToggleControlToPanel(widgetInstance, panelId, options, sec
  * Add a control group to a control panel.
  * Creates a collapsible section that can contain multiple controls.
  *
- * @param {HTMLElement} el - The widget element.
- * @param {string} panelId - ID of the control panel.
- * @param {object} groupConfig - Group configuration options.
+ * @param {HTMLElement} el The widget element.
+ * @param {string} panelId ID of the control panel.
+ * @param {object} groupConfig Group configuration options.
  * @returns {void}
  */
 function addControlGroup(el, panelId, groupConfig) {
@@ -2851,9 +2903,9 @@ function addControlGroup(el, panelId, groupConfig) {
 /**
  * Remove a control group from a control panel.
  *
- * @param {HTMLElement} el - The widget element.
- * @param {string} panelId - ID of the control panel.
- * @param {string} groupId - ID of the control group to remove.
+ * @param {HTMLElement} el The widget element.
+ * @param {string} panelId ID of the control panel.
+ * @param {string} groupId ID of the control group to remove.
  * @returns {void}
  */
 function removeControlGroup(el, panelId, groupId) {
@@ -2874,7 +2926,7 @@ function removeControlGroup(el, panelId, groupId) {
  * Toggle the collapsed state of a control group.
  * This function is called when the group header is clicked (if collapsible).
  *
- * @param {string} groupId - ID of the control group to toggle.
+ * @param {string} groupId ID of the control group to toggle.
  * @returns {void}
  */
 function toggleControlGroup(groupId) {
@@ -2902,21 +2954,21 @@ function toggleControlGroup(groupId) {
  * Add a layer selector control to manage layer visibility.
  * Only the selected layer is visible, all others are hidden.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {function} onLayerChange  Callback function called when layer selection changes.
- *                                  Receives the selected layer ID as parameter.
- * @param {object} options          Options for the layer selector control.
- *                                  Can include:
- *                                    - layerIds: array - Array of layer IDs to manage
- *                                    - labels: object - Custom labels for layers
- *                                    - defaultLayer: string - Default selected layer
- *                                    - noneOption: boolean - Whether to include "None" option
- *                                    - noneLabel: string - Label for "None" option
- *                                    - position: string (default "top-right")
- *                                    - useControlPanel: boolean
- *                                    - panelId: string - Panel ID if using control panel
- *                                    - panelTitle: string - Section title for control panel
- *                                    - groupId: string - Group ID if using control group
+ * @param {object} widgetInstance Toro widget object.
+ * @param {function} onLayerChange Callback function called when layer selection changes.
+ *   Receives the selected layer ID as parameter.
+ * @param {object} options Options for the layer selector control.
+ *   Can include:
+ *     - layerIds: array - Array of layer IDs to manage
+ *     - labels: object - Custom labels for layers
+ *     - defaultLayer: string - Default selected layer
+ *     - noneOption: boolean - Whether to include "None" option
+ *     - noneLabel: string - Label for "None" option
+ *     - position: string (default "top-right")
+ *     - useControlPanel: boolean
+ *     - panelId: string - Panel ID if using control panel
+ *     - panelTitle: string - Section title for control panel
+ *     - groupId: string - Group ID if using control group
  * @returns {void}
  */
 function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
@@ -3075,6 +3127,9 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
     }
   };
 
+  /**
+   * Set up event handlers for the layer selector with a retry mechanism to ensure the element is available.
+   */
   function setupEventHandlers() {
     const layerSelector = document.getElementById(layerSelectorId);
     if (!layerSelector) {
@@ -3217,10 +3272,10 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
 /**
  * Add layer selector control to a control panel
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {string} panelId          ID of the target control panel.
- * @param {object} options          Configuration for the layer selector control.
- * @param {string} sectionTitle     Optional section title for the control.
+ * @param {object} widgetInstance Toro widget object.
+ * @param {string} panelId ID of the target control panel.
+ * @param {object} options Configuration for the layer selector control.
+ * @param {string} sectionTitle Optional section title for the control.
  * @returns {void}
  */
 function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectionTitle) {
@@ -3241,11 +3296,6 @@ function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectio
   // Create the layer change callback
   const layerChangeCallback = function (selectedLayer, previousLayer) {
     // Layer visibility is already managed by the control itself
-    // console.log(
-    //   `Layer changed from "${previousLayer || "none"}" to "${
-    //     selectedLayer || "none"
-    //   }"`
-    // );
   };
 
   // Add the layer selector control
@@ -3255,14 +3305,14 @@ function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectio
 /**
  * Add comprehensive animation control buttons (play, pause, stop) to a map.
  *
- * @param {object} widgetInstance   Toro widget object.
- * @param {object} options          Options for the animation controls.
- *                                  Can include:
- *                                    - routeId: string - Route ID to control (optional)
- *                                    - position: string (default "top-right")
- *                                    - panelId: string - Panel ID if using control panel
- *                                    - buttons: array - Buttons to include ["play", "pause", "stop"]
- *                                    - settings: object - Additional settings
+ * @param {object} widgetInstance Toro widget object.
+ * @param {object} options Options for the animation controls.
+ *   Can include:
+ *     - routeId: string - Route ID to control (optional)
+ *     - position: string (default "top-right")
+ *     - panelId: string - Panel ID if using control panel
+ *     - buttons: array - Buttons to include ["play", "pause", "stop"]
+ *     - settings: object - Additional settings
  * @returns {void}
  */
 function addAnimationControlButton(widgetInstance, options = {}) {
@@ -3377,7 +3427,9 @@ function addAnimationControlButton(widgetInstance, options = {}) {
     addCustomControl(map, controlGroupId, html, position);
   }
 
-  // Setup event handlers
+  /**
+   * Set up event handlers for the animation control buttons with a retry mechanism to ensure elements are available.
+   */
   function setupAnimationEventHandlers() {
     const controlGroup = document.getElementById(controlGroupId);
     if (!controlGroup) {
@@ -3561,11 +3613,12 @@ function addAnimationControlButton(widgetInstance, options = {}) {
 
 /**
  * Setup speed control functionality for animation controls
- * @param {Object} widgetInstance - Map widget instance
- * @param {string} routeId - Route identifier
- * @param {Array} speedValues - Array of speed values
- * @param {Array} speedLabels - Array of speed labels
- * @param {string} panelId - Control panel ID (optional)
+ *
+ * @param {Object} widgetInstance Map widget instance
+ * @param {string} routeId Route identifier
+ * @param {Array} speedValues Array of speed values
+ * @param {Array} speedLabels Array of speed labels
+ * @param {string} panelId Control panel ID (optional)
  */
 function setupAnimationSpeedControl(widgetInstance, routeId, speedValues, speedLabels, panelId) {
   // Create speed change callback that updates animation speeds
