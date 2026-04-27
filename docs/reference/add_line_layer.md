@@ -1,6 +1,6 @@
-# Add a line layer to a map or map proxy.
+# Add a line layer to a map or map proxy
 
-Add a line layer to a map or map proxy.
+Add a line layer to a map or map proxy
 
 ## Usage
 
@@ -12,7 +12,7 @@ add_line_layer(map, ...)
 
 - map:
 
-  The map object or map proxy to which the layer will be added.
+  The map object or map proxy to which the layer will be added
 
 - ...:
 
@@ -21,11 +21,11 @@ add_line_layer(map, ...)
   - clusterOptions: A list of options for clustering, if `can_cluster`
     is `TRUE`. See the [cluster
     vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html)
-    for details on available options.
+    for details on available options
 
 ## Value
 
-The updated map object with the line layer added.
+The updated map object with the line layer added
 
 ## Examples
 

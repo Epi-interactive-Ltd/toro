@@ -2,15 +2,15 @@
 % Please edit documentation in R/get_map_items.R
 \name{get_drawn_shape}
 \alias{get_drawn_shape}
-\title{Get the drawn shape from the map widget.}
+\title{Get the drawn shape from the map widget}
 \usage{
 get_drawn_shape(create_input_string)
 }
 \arguments{
-\item{create_input_string}{A JSON string representing the drawn shape.}
+\item{create_input_string}{A JSON string representing the drawn shape}
 }
 \value{
-A \code{sf} object representing the drawn shape, or \code{NULL}.
+A \code{sf} object representing the drawn shape, or \code{NULL}
 }
 \description{
 Parses the JSON string returned by the map widget when a shape is drawn.

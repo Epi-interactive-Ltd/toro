@@ -1,5 +1,5 @@
 ---
-title: 'Draw Controls'
+title: 'Draw controls'
 ---
 
 ```{r, include = FALSE}
@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Draw controls can be added to a map to TODO
+Draw controls can be added to a map to draw shapes on the map and retrieve the geometrical shape drawn.
 
 ```{r basic-example}
 library(toro)

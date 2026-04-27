@@ -2,8 +2,7 @@
 % Please edit documentation in R/control_panel.R
 \name{add_control_panel}
 \alias{add_control_panel}
-\title{Functions to manage control panel elements in a map.
-Add a control panel to the map}
+\title{Add a control panel to the map}
 \usage{
 add_control_panel(
   map,
@@ -17,27 +16,27 @@ add_control_panel(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{panel_id}{Unique identifier for the control panel.}
+\item{panel_id}{Unique identifier for the control panel}
 
-\item{title}{Title for the control panel. If NULL, no title is shown.}
+\item{title}{Title for the control panel. If NULL, no title is shown}
 
 \item{position}{Position of the control panel on the map. Default is "bottom-left".
-Options include "top-left", "top-right", "bottom-left", "bottom-right".}
+Options include "top-left", "top-right", "bottom-left", "bottom-right"}
 
-\item{collapsible}{Whether the panel can be collapsed. Default is FALSE.}
+\item{collapsible}{Whether the panel can be collapsed. Default is FALSE}
 
-\item{collapsed}{Initial collapsed state. Default is FALSE.}
+\item{collapsed}{Initial collapsed state. Default is FALSE}
 
 \item{direction}{Layout direction for controls within the panel. Either "row" or "column".
-Default is "column".}
+Default is "column"}
 
 \item{custom_controls}{List of custom controls to add initially. Each should be a list with
-elements: html, id (optional), title (optional).}
+elements: html, id (optional), title (optional)}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
 Creates a flexible control panel that can contain multiple controls.

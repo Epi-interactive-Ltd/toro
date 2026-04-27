@@ -1,4 +1,4 @@
-# Get the value for a paint or layout option in a map layer based on a column boolean value.
+# Get the value for a paint or layout option in a map layer based on a column boolean value
 
 Allows the data to be styled by the group option in the column.
 
@@ -12,19 +12,19 @@ get_column_boolean(column_name, true_value, false_value)
 
 - column_name:
 
-  String representing the name of the column to be used.
+  String representing the name of the column to be used
 
 - true_value:
 
-  Value to use when the column value is `TRUE`.
+  Value to use when the column value is `TRUE`
 
 - false_value:
 
-  Value to use when the column value is `FALSE`.
+  Value to use when the column value is `FALSE`
 
 ## Value
 
-List containing the paint or layout option to be set.
+List containing the paint or layout option to be set
 
 ## Examples
 

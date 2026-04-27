@@ -2,26 +2,24 @@
 % Please edit documentation in R/layers.R
 \name{add_symbol_layer}
 \alias{add_symbol_layer}
-\title{Add a symbol layer to a map or map proxy.
-This layer is typically used for icons or pins.}
+\title{Add a symbol layer to a map or map proxy}
 \usage{
 add_symbol_layer(map, ...)
 }
 \arguments{
-\item{map}{The map object or map proxy to which the layer will be added.}
+\item{map}{The map object or map proxy to which the layer will be added}
 
 \item{...}{Additional arguments to include in the layer definition.
 \itemize{
 \item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
 See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
-for details on available options.
+for details on available options
 }}
 }
 \value{
-The updated map object with the symbol layer added.
+The updated map object with the symbol layer added
 }
 \description{
-Add a symbol layer to a map or map proxy.
 This layer is typically used for icons or pins.
 }
 \examples{

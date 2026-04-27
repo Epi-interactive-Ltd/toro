@@ -9,7 +9,7 @@ options provided."><meta property="og:image" content="https://epi-interactive-lt
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,49 +52,49 @@ options provided.</p>
 
 
 <dl><dt id="arg-layer-type">layer_type<a class="anchor" aria-label="anchor" href="#arg-layer-type"></a></dt>
-<dd><p>A string indicating the type of layer (e.g., "fill", "circle", "line").</p></dd>
+<dd><p>A string indicating the type of layer (e.g., "fill", "circle", "line")</p></dd>
 
 
 <dt id="arg-options">options<a class="anchor" aria-label="anchor" href="#arg-options"></a></dt>
-<dd><p>A list of additional options to customize the layout properties.
+<dd><p>A list of additional options to customize the layout properties
 See MapLibre docs for options.</p><ul><li><p>line_cap: A list of options for the line cap, if <code>layer_type</code> is "line".
-Default is "round".</p></li>
+Default is "round"</p></li>
 <li><p>line_join: A list of options for the line join, if <code>layer_type</code> is "line".
-Default is "round".</p></li>
+Default is "round"</p></li>
 <li><p>icon_image: The name of the icon image to use for symbol layers, if <code>layer_type</code> is
-"symbol". Default is "toro-pin".</p></li>
+"symbol". Default is "toro-pin"</p></li>
 <li><p>icon_size: The size of the icon for symbol layers, if <code>layer_type</code> is "symbol".
-Default is 1.</p></li>
+Default is 1</p></li>
 <li><p>icon_anchor: The anchor point for the icon in symbol layers, if <code>layer_type</code> is
-"symbol". Default is "bottom".</p></li>
+"symbol". Default is "bottom"</p></li>
 <li><p>text_anchor: The anchor point for the text in symbol layers, if <code>layer_type</code> is
-"symbol". Default is "center".</p></li>
+"symbol". Default is "center"</p></li>
 <li><p>icon_offset: The offset for the icon in symbol layers, if <code>layer_type</code> is "symbol".
-Default is list(0, 0).</p></li>
+Default is list(0, 0)</p></li>
 <li><p>icon_allow_overlap: Whether to allow icons to overlap in symbol layers, if
-<code>layer_type</code> is "symbol". Default is TRUE.</p></li>
+<code>layer_type</code> is "symbol". Default is TRUE</p></li>
 <li><p>text_allow_overlap: Whether to allow text to overlap in symbol layers, if <code>layer_type</code>
-is "symbol". Default is TRUE.</p></li>
+is "symbol". Default is TRUE</p></li>
 <li><p>icon_rotate: The rotation angle for icons in symbol layers, if <code>layer_type</code> is
-"symbol". Default is 0.</p></li>
+"symbol". Default is 0</p></li>
 <li><p>icon_flip_horizontal: Whether to flip icons horizontally in symbol layers, if
 <code>layer_type</code> is "symbol". Default is FALSE. Note that this uses the <code>icon-flip-horizontal</code>
-property in MapLibre, which may not be supported by all icons.</p></li>
+property in MapLibre, which may not be supported by all icons</p></li>
 <li><p>text_font: The font for text in symbol layers, if <code>layer_type</code> is "symbol". Default is
-"Open Sans Regular".</p></li>
+"Open Sans Regular"</p></li>
 <li><p>text_field: The text field for symbol layers, if <code>layer_type</code> is "symbol". Default is
 NULL, which means no text will be shown. This can be set to a column value using
-<code>get_column</code> or other functions to show text from the data.</p></li>
+<code>get_column</code> or other functions to show text from the data</p></li>
 <li><p>text_size: The size of the text in symbol layers, if <code>layer_type</code> is "symbol".
-Default is 12.
+Default is 12
 You can also provide any other layout options found in the MapLibre docs for the specific
-layer type, and they will be included in the returned list.</p></li>
+layer type, and they will be included in the returned list</p></li>
 </ul></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of layout options suitable for the specified layer type.</p>
+    <p>A list of layout options suitable for the specified layer type</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -102,7 +102,7 @@ layer type, and they will be included in the returned list.</p></li>
 <a href="https://maplibre.org/maplibre-style-spec/layers/" class="external-link">MapLibre Layers docs</a> in the <code>options</code>
 argument, and they will be included in the returned list.
 The default options are just a starting point and can be overridden by providing them in the
-<code>options</code> argument.</p>
+<code>options</code> argument</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -1,5 +1,5 @@
 ---
-title: "Map Controls"
+title: "Map controls"
 ---
 
 ```{r, include = FALSE}
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 ```
 
 
-Various controls can be added to the map TODO (link to control examples)
+Various controls can be added to the map.
 
 
 ```{r setup}

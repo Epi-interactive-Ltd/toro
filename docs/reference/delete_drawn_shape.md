@@ -1,4 +1,4 @@
-# Delete a drawn shape from the map.
+# Delete a drawn shape from the map
 
 The ID of the shape is provided by the draw control when a shape is
 created.
@@ -14,15 +14,15 @@ delete_drawn_shape(proxy, shape_id)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 
 - shape_id:
 
-  The ID of the shape to delete.
+  The ID of the shape to delete
 
 ## Value
 
-The map proxy object for chaining.
+The map proxy object for chaining
 
 ## Examples
 

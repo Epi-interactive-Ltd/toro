@@ -1,7 +1,6 @@
-# Utilities for the map related to controls. Toggle the visibility of a control on the map.
+# Toggle the visibility of a control on the map
 
-Utilities for the map related to controls. Toggle the visibility of a
-control on the map.
+Toggle the visibility of a control on the map
 
 ## Usage
 
@@ -14,20 +13,20 @@ toggle_control(proxy, control_id, show = TRUE)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 
 - control_id:
 
-  The ID of the control to toggle.
+  The ID of the control to toggle
 
 - show:
 
   Logical indicating whether to show or hide the control. Default is
-  `TRUE`.
+  `TRUE`
 
 ## Value
 
-The map proxy object for chaining.
+The map proxy object for chaining
 
 ## Examples
 

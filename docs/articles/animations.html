@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,8 +57,8 @@
 
 <script src="animations_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="animations_files/mapbox-gl-draw-1.5.0/mapbox-gl-draw.min.css" rel="stylesheet">
 <script src="animations_files/mapbox-gl-draw-1.5.0/mapbox-gl-draw.min.js"></script><link href="animations_files/maplibre-gl-5.6.1/maplibre-gl.min.css" rel="stylesheet">
-<script src="animations_files/maplibre-gl-5.6.1/maplibre-gl.min.js"></script><script src="animations_files/turf-7.2.0/turf.min.js"></script><link href="animations_files/map-0.0.6/map.css" rel="stylesheet">
-<script src="animations_files/map-0.0.6/map.js"></script><script src="animations_files/map-0.0.6/source-utils.js"></script><script src="animations_files/map-0.0.6/map-utils.js"></script><script src="animations_files/map-0.0.6/control-utils.js"></script><script src="animations_files/map-0.0.6/layer-utils.js"></script><script src="animations_files/map-0.0.6/cluster-utils.js"></script><script src="animations_files/map-0.0.6/view-utils.js"></script><script src="animations_files/map-0.0.6/animation-utils.js"></script><div class="row">
+<script src="animations_files/maplibre-gl-5.6.1/maplibre-gl.min.js"></script><script src="animations_files/turf-7.2.0/turf.min.js"></script><link href="animations_files/map-0.0.7/map.css" rel="stylesheet">
+<script src="animations_files/map-0.0.7/map.js"></script><script src="animations_files/map-0.0.7/source-utils.js"></script><script src="animations_files/map-0.0.7/map-utils.js"></script><script src="animations_files/map-0.0.7/control-utils.js"></script><script src="animations_files/map-0.0.7/layer-utils.js"></script><script src="animations_files/map-0.0.7/cluster-utils.js"></script><script src="animations_files/map-0.0.7/view-utils.js"></script><script src="animations_files/map-0.0.7/animation-utils.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Animations</h1>
             
@@ -69,8 +69,7 @@
 
     
     
-<p>Toro provides the ability to animate certain aspects of the map.
-TODO…</p>
+<p>toro provides the ability to animate certain aspects of the map.</p>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
@@ -107,7 +106,7 @@ around Aotearoa.</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="basic-example">Basic Example<a class="anchor" aria-label="anchor" href="#basic-example"></a>
+<h2 id="basic-example">Basic example<a class="anchor" aria-label="anchor" href="#basic-example"></a>
 </h2>
 <p>For the most basic example, add a route (line) and then use
 <code><a href="../reference/add_animation_controls.html">add_animation_controls()</a></code> to add controls to the map for
@@ -120,7 +119,7 @@ animating along the route.</p>
 <script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"routes":[{"routeId":"nz_route","points":{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"id":1.0},"geometry":{"type":"LineString","coordinates":[[172.2041,-32.5696],[182.2494,-38.85522],[168.1286,-48.4962],[163.9383,-46.43999],[171.7449,-34.62533]]}}]},"options":[]}],"animationControls":[{"type":"animation","routeId":"nz_route","position":"top-right","panelId":null,"buttons":["play","pause"],"includeSpeedControl":false,"speedValues":[0.5,1,2],"speedLabels":["Slow","Normal","Fast"],"settings":[]}],"controls":[{"type":"animation","routeId":"nz_route","position":"top-right","panelId":null,"buttons":["play","pause"],"includeSpeedControl":false,"speedValues":[0.5,1,2],"speedLabels":["Slow","Normal","Fast"],"settings":[]}]},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level2">
-<h2 id="advanced-examples">Advanced Examples<a class="anchor" aria-label="anchor" href="#advanced-examples"></a>
+<h2 id="advanced-examples">Advanced examples<a class="anchor" aria-label="anchor" href="#advanced-examples"></a>
 </h2>
 <div class="section level3">
 <h3 id="speed-control">Speed control<a class="anchor" aria-label="anchor" href="#speed-control"></a>
@@ -142,7 +141,7 @@ passing custom values and labels to the
 <script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"routes":[{"routeId":"nz_route","points":{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"id":1.0},"geometry":{"type":"LineString","coordinates":[[172.2041,-32.5696],[182.2494,-38.85522],[168.1286,-48.4962],[163.9383,-46.43999],[171.7449,-34.62533]]}}]},"options":[]}],"animationControls":[{"type":"animation","routeId":"nz_route","position":"top-right","panelId":null,"buttons":["play","pause"],"includeSpeedControl":true,"speedValues":[0.3,0.5,1,2,4],"speedLabels":["Slower","Slow","Default","Fast","Faster"],"settings":[]}],"controls":[{"type":"animation","routeId":"nz_route","position":"top-right","panelId":null,"buttons":["play","pause"],"includeSpeedControl":true,"speedValues":[0.3,0.5,1,2,4],"speedLabels":["Slower","Slow","Default","Fast","Faster"],"settings":[]}]},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
-<h3 id="animating-icon">Animating Icon<a class="anchor" aria-label="anchor" href="#animating-icon"></a>
+<h3 id="animating-icon">Animating icon<a class="anchor" aria-label="anchor" href="#animating-icon"></a>
 </h3>
 <p>You can also supply an icon to be animated along the route. By
 default, toro has a built in image with the ID “toro-pin” that you can
@@ -168,7 +167,7 @@ the route.</p>
 <script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"routes":[{"routeId":"nz_route","points":{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"id":1.0},"geometry":{"type":"LineString","coordinates":[[172.2041,-32.5696],[182.2494,-38.85522],[168.1286,-48.4962],[163.9383,-46.43999],[171.7449,-34.62533]]}}]},"options":{"animatingIcon":{"icon-allow-overlap":true,"icon-image":"toro-pin","icon-size":0.5,"icon-anchor":"bottom","icon-offset":[0,0],"icon-rotate":0,"text-font":["Open Sans Regular"],"text-size":12}}}],"animationControls":[{"type":"animation","routeId":"nz_route","position":"top-right","panelId":null,"buttons":["play","pause"],"includeSpeedControl":false,"speedValues":[0.5,1,2],"speedLabels":["Slow","Normal","Fast"],"settings":[]}],"controls":[{"type":"animation","routeId":"nz_route","position":"top-right","panelId":null,"buttons":["play","pause"],"includeSpeedControl":false,"speedValues":[0.5,1,2],"speedLabels":["Slow","Normal","Fast"],"settings":[]}]},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
-<h3 id="other-customisations">Other Customisations<a class="anchor" aria-label="anchor" href="#other-customisations"></a>
+<h3 id="other-customisations">Other customisations<a class="anchor" aria-label="anchor" href="#other-customisations"></a>
 </h3>
 <p>You can set <code>dropVisited</code> to <code>TRUE</code> in the
 animation settings to leave a marker on the map at each point that has

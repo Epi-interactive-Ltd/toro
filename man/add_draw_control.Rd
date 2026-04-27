@@ -2,8 +2,7 @@
 % Please edit documentation in R/draw_control.R
 \name{add_draw_control}
 \alias{add_draw_control}
-\title{Functions related to the draw control.
-Add a draw control to the map}
+\title{Add a draw control to the map}
 \usage{
 add_draw_control(
   map,
@@ -19,34 +18,33 @@ add_draw_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{id}{The ID for the draw control.}
+\item{id}{The ID for the draw control}
 
 \item{position}{The position of the draw control on the map. Default is \code{"top-right"}.
-Options are "top-left", "top-right", "bottom-left", "bottom-right".}
+Options are "top-left", "top-right", "bottom-left", "bottom-right"}
 
 \item{modes}{A vector of modes to enable in the draw control. Default is \code{c("polygon")}.
-Options include "polygon", "delete", "line", and "point".}
+Options include "polygon", "delete", "line", and "point"}
 
-\item{active_colour}{The colour for the drawn shapes. Default is \code{"#04AAC1"}.}
+\item{active_colour}{The colour for the drawn shapes. Default is \code{"#04AAC1"}}
 
-\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#04AAC1"}.}
+\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#04AAC1"}}
 
 \item{mode_labels}{A named list of labels for each mode.
-For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}.}
+For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}}
 
-\item{panel_id}{ID of control panel to add to (optional).}
+\item{panel_id}{ID of control panel to add to (optional)}
 
-\item{section_title}{Section title when added to a control panel.}
+\item{section_title}{Section title when added to a control panel}
 
-\item{group_id}{Optional group ID for grouping controls within a panel.}
+\item{group_id}{Optional group ID for grouping controls within a panel}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Functions related to the draw control.
 Add a draw control to the map
 }
 \examples{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sources.R
 \name{add_feature_server_source}
 \alias{add_feature_server_source}
-\title{Add a FeatureService source to the map.}
+\title{Add a FeatureService source to the map}
 \usage{
 add_feature_server_source(
   map,
@@ -12,20 +12,20 @@ add_feature_server_source(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{source_url}{The URL of the FeatureService source.}
+\item{source_url}{The URL of the FeatureService source}
 
-\item{source_id}{The ID for the source.}
+\item{source_id}{The ID for the source}
 
 \item{append_query_url}{The query URL to append to the source URL. Default is
-\code{"/0/query?where=1=1&outFields=*&f=geojson"}.}
+\code{"/0/query?where=1=1&outFields=*&f=geojson"}}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Add a FeatureService source to the map.
+Add a FeatureService source to the map
 }
 \note{
 By default the function appends a query URL to the provided \code{source_url} to retrieve all

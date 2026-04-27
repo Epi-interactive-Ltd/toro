@@ -1,7 +1,7 @@
 # Add a control group to a control panel
 
 Creates a collapsible group within a control panel that can contain
-multiple controls.
+multiple controls
 
 ## Usage
 
@@ -20,31 +20,31 @@ add_control_group(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - panel_id:
 
-  ID of the target control panel.
+  ID of the target control panel
 
 - group_id:
 
-  Unique identifier for the control group.
+  Unique identifier for the control group
 
 - group_title:
 
-  Title for the control group (optional).
+  Title for the control group (optional)
 
 - collapsible:
 
-  Whether the group can be collapsed. Default is FALSE.
+  Whether the group can be collapsed. Default is FALSE
 
 - collapsed:
 
-  Initial collapsed state. Default is FALSE.
+  Initial collapsed state. Default is FALSE
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

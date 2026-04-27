@@ -1,4 +1,4 @@
-# Get the properties for a column in a map layer based on step breaks.
+# Get the properties for a column in a map layer based on step breaks
 
 Allows the data to be styled by the step breaks in the column.
 
@@ -12,19 +12,19 @@ get_column_step_steps(column_name, breaks, values)
 
 - column_name:
 
-  String representing the name of the column to be used.
+  String representing the name of the column to be used
 
 - breaks:
 
-  Numeric vector of thresholds (must be sorted ascending).
+  Numeric vector of thresholds (must be sorted ascending)
 
 - values:
 
-  Vector of values, length = length(breaks) + 1.
+  Vector of values, length = length(breaks) + 1
 
 ## Value
 
-List containing the paint or layout option to be set.
+List containing the paint or layout option to be set
 
 ## Examples
 

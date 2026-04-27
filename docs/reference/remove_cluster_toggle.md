@@ -13,20 +13,20 @@ remove_cluster_toggle(proxy, layer_id, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 
 - layer_id:
 
-  The ID of the layer whose cluster toggle control to remove.
+  The ID of the layer whose cluster toggle control to remove
 
 - panel_id:
 
   Optional. If provided, removes the control from the specified control
-  panel.
+  panel
 
 ## Value
 
-The map proxy object for chaining.
+The map proxy object for chaining
 
 ## Examples
 

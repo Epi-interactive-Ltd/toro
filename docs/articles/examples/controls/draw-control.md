@@ -1,6 +1,7 @@
-# Draw Controls
+# Draw controls
 
-Draw controls can be added to a map to TODO
+Draw controls can be added to a map to draw shapes on the map and
+retrieve the geometrical shape drawn.
 
 ``` r
 

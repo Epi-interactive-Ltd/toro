@@ -7,46 +7,46 @@
 #' [MapLibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 #' argument, and they will be included in the returned list.
 #' The default options are just a starting point and can be overridden by providing them in the
-#' `options` argument.
+#' `options` argument
 #'
-#' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
-#' @param options A list of additional options to customize the layout properties.
+#' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line")
+#' @param options A list of additional options to customize the layout properties
 #'    See MapLibre docs for options.
 #'    \itemize{
 #'      \item line_cap: A list of options for the line cap, if `layer_type` is "line".
-#'        Default is "round".
+#'        Default is "round"
 #'      \item line_join: A list of options for the line join, if `layer_type` is "line".
-#'        Default is "round".
+#'        Default is "round"
 #'      \item icon_image: The name of the icon image to use for symbol layers, if `layer_type` is
-#'        "symbol". Default is "toro-pin".
+#'        "symbol". Default is "toro-pin"
 #'      \item icon_size: The size of the icon for symbol layers, if `layer_type` is "symbol".
-#'        Default is 1.
+#'        Default is 1
 #'      \item icon_anchor: The anchor point for the icon in symbol layers, if `layer_type` is
-#'        "symbol". Default is "bottom".
+#'        "symbol". Default is "bottom"
 #'      \item text_anchor: The anchor point for the text in symbol layers, if `layer_type` is
-#'        "symbol". Default is "center".
+#'        "symbol". Default is "center"
 #'      \item icon_offset: The offset for the icon in symbol layers, if `layer_type` is "symbol".
-#'        Default is list(0, 0).
+#'        Default is list(0, 0)
 #'      \item icon_allow_overlap: Whether to allow icons to overlap in symbol layers, if
-#'        `layer_type` is "symbol". Default is TRUE.
+#'        `layer_type` is "symbol". Default is TRUE
 #'      \item text_allow_overlap: Whether to allow text to overlap in symbol layers, if `layer_type`
-#'        is "symbol". Default is TRUE.
+#'        is "symbol". Default is TRUE
 #'      \item icon_rotate: The rotation angle for icons in symbol layers, if `layer_type` is
-#'        "symbol". Default is 0.
+#'        "symbol". Default is 0
 #'      \item icon_flip_horizontal: Whether to flip icons horizontally in symbol layers, if
 #'        `layer_type` is "symbol". Default is FALSE. Note that this uses the `icon-flip-horizontal`
-#'        property in MapLibre, which may not be supported by all icons.
+#'        property in MapLibre, which may not be supported by all icons
 #'      \item text_font: The font for text in symbol layers, if `layer_type` is "symbol". Default is
-#'        "Open Sans Regular".
+#'        "Open Sans Regular"
 #'      \item text_field: The text field for symbol layers, if `layer_type` is "symbol". Default is
 #'        NULL, which means no text will be shown. This can be set to a column value using
-#'        `get_column` or other functions to show text from the data.
+#'        `get_column` or other functions to show text from the data
 #'      \item text_size: The size of the text in symbol layers, if `layer_type` is "symbol".
-#'        Default is 12.
+#'        Default is 12
 #'      You can also provide any other layout options found in the MapLibre docs for the specific
-#'        layer type, and they will be included in the returned list.
+#'        layer type, and they will be included in the returned list
 #'    }
-#' @return A list of layout options suitable for the specified layer type.
+#' @return A list of layout options suitable for the specified layer type
 #' @export
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
@@ -142,29 +142,29 @@ get_layout_options <- function(layer_type, options = list()) {
 #' [MapLibre Layers docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 #' argument, and they will be included in the returned list.
 #' The default options are just a starting point and can be overridden by providing them in the
-#' `options` argument.
+#' `options` argument
 #'
-#' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line").
+#' @param layer_type A string indicating the type of layer (e.g., "fill", "circle", "line")
 #' @param options A list of additional options to customize the paint properties.
 #'    See MapLibre docs for full options.
 #'    \itemize{
 #'      \item colour: The color to use for the layer. Default is "grey". `color` is also accepted as
-#'        an alias for `colour`.
-#'      \item opacity: The opacity to use for the layer. Default is 1 (fully opaque).
+#'        an alias for `colour`
+#'      \item opacity: The opacity to use for the layer. Default is 1 (fully opaque)
 #'      \item line_width: The width of lines in line layers or the outline width for circle layers.
-#'        Default is 1.
+#'        Default is 1
 #'      \item line_dash: The dash pattern for line layers. Default is no dash (solid line).
 #'        You can provide a vector of numbers to specify the dash pattern (e.g., c(2, 4) for a
-#'        pattern of 2 units on, 4 units off).
+#'        pattern of 2 units on, 4 units off)
 #'      \item outline_colour: The color to use for the outline of circle or fill layers.
 #'        Default is the same as `colour`. `outline_color` is also accepted as an alias for
-#'        `outline_colour`.
+#'        `outline_colour`
 #'      \item outline_opacity: The opacity to use for the outline of circle or fill layers.
-#'        Default is the same as `opacity`.
+#'        Default is the same as `opacity`
 #'      You can also provide any other paint options found in the MapLibre docs for the specific
-#'      layer type, and they will be included in the returned list.
+#'      layer type, and they will be included in the returned list
 #' }
-#' @return A list of paint options suitable for the specified layer type.
+#' @return A list of paint options suitable for the specified layer type
 #' @export
 #' @seealso \code{\link{get_column}}, \code{\link{get_column_group}},
 #'          \code{\link{get_column_step_steps}}
@@ -258,9 +258,9 @@ get_paint_options <- function(layer_type, options = list()) {
 #'
 #' Parse a filter string into a list of filters that the map can use.
 #'
-#' @param filter_str A string or vector of strings representing the filter conditions.
+#' @param filter_str A string or vector of strings representing the filter conditions
 #' @return A list where the first element is "all" if multiple filters are provided,
-#'    or a single filter condition.
+#'    or a single filter condition
 #' @export
 #'
 #' @examples

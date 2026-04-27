@@ -1,6 +1,6 @@
-# Add a custom HTML control to the map.
+# Add a custom HTML control to the map
 
-Add a custom HTML control to the map.
+Add a custom HTML control to the map
 
 ## Usage
 
@@ -20,37 +20,36 @@ add_custom_control(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - id:
 
-  The ID for the custom control.
+  The ID for the custom control
 
 - html:
 
-  The HTML content to add as a control.
+  The HTML content to add as a control
 
 - position:
 
   The position of the control on the map. Default is `"top-right"`.
-  Options include "top-left", "top-right", "bottom-left",
-  "bottom-right".
+  Options include "top-left", "top-right", "bottom-left", "bottom-right"
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  ID of control group to add to (optional).
+  ID of control group to add to (optional)
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

@@ -2,15 +2,15 @@
 % Please edit documentation in R/layers.R
 \name{get_tile_options}
 \alias{get_tile_options}
-\title{Get available tile layer options.}
+\title{Get available tile layer options}
 \usage{
 get_tile_options()
 }
 \value{
-A character vector of available tile layer options.
+A character vector of available tile layer options
 }
 \description{
-Get available tile layer options.
+Get available tile layer options
 }
 \examples{
 all_tiles <- get_tile_options()

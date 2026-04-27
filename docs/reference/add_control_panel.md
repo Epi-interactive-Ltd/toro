@@ -1,4 +1,4 @@
-# Functions to manage control panel elements in a map. Add a control panel to the map
+# Add a control panel to the map
 
 Creates a flexible control panel that can contain multiple controls.
 
@@ -21,43 +21,42 @@ add_control_panel(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - panel_id:
 
-  Unique identifier for the control panel.
+  Unique identifier for the control panel
 
 - title:
 
-  Title for the control panel. If NULL, no title is shown.
+  Title for the control panel. If NULL, no title is shown
 
 - position:
 
   Position of the control panel on the map. Default is "bottom-left".
-  Options include "top-left", "top-right", "bottom-left",
-  "bottom-right".
+  Options include "top-left", "top-right", "bottom-left", "bottom-right"
 
 - collapsible:
 
-  Whether the panel can be collapsed. Default is FALSE.
+  Whether the panel can be collapsed. Default is FALSE
 
 - collapsed:
 
-  Initial collapsed state. Default is FALSE.
+  Initial collapsed state. Default is FALSE
 
 - direction:
 
   Layout direction for controls within the panel. Either "row" or
-  "column". Default is "column".
+  "column". Default is "column"
 
 - custom_controls:
 
   List of custom controls to add initially. Each should be a list with
-  elements: html, id (optional), title (optional).
+  elements: html, id (optional), title (optional)
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

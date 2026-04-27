@@ -2,23 +2,23 @@
 % Please edit documentation in R/layers.R
 \name{hide_layer}
 \alias{hide_layer}
-\title{Hide a layer from the map.}
+\title{Hide a layer from the map}
 \usage{
 hide_layer(proxy, layer_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{layer_id}{The ID of the layer to hide.}
+\item{layer_id}{The ID of the layer to hide}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Hide a layer from the map.
+Hide a layer from the map
 }
 \note{
-This does not remove the layer, it only hides it from view.
+This does not remove the layer, it only hides it from view
 }
 \examples{
 \dontrun{

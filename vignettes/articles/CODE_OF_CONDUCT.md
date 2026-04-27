@@ -1,6 +1,6 @@
-# Code of Conduct - toro
+# Code of conduct - toro
 
-## Our Pledge
+## Our pledge
 
 In the interest of fostering an open and welcoming environment, we as
 contributors and maintainers pledge to make participation in our project and
@@ -9,7 +9,7 @@ size, disability, ethnicity, sex characteristics, gender identity and expression
 level of experience, education, socio-economic status, nationality, personal
 appearance, race, religion, or sexual identity and orientation.
 
-## Our Standards
+## Our standards
 
 Examples of behaviour that contributes to a positive environment for our
 community include:
@@ -32,7 +32,7 @@ Examples of unacceptable behaviour include:
 * Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
-## Our Responsibilities
+## Our responsibilities
 
 Project maintainers are responsible for clarifying and enforcing our standards of
 acceptable behaviour and will take appropriate and fair corrective action in

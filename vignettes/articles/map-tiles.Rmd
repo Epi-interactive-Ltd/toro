@@ -1,5 +1,5 @@
 ---
-title: "Map Tiles"
+title: "Map tiles"
 ---
 
 ```{r, include = FALSE}
@@ -60,7 +60,7 @@ map(
 )
 ```
 
-## Changing Tiles
+## Changing tiles
 
 ### set_tile_layer()
 
@@ -99,7 +99,7 @@ if (interactive()) {
 }
 ```
 
-### Tile Controllers
+### Tile controllers
 
 You can also change a maps tiles via a tile controller.
 A tile controller must be placed inside a control panel.

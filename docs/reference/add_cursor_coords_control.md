@@ -1,6 +1,6 @@
-# Add a cursor coordinates control to the map.
+# Add a cursor coordinates control to the map
 
-Add a cursor coordinates control to the map.
+Add a cursor coordinates control to the map
 
 ## Usage
 
@@ -20,37 +20,37 @@ add_cursor_coords_control(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - position:
 
   The position of the cursor coordinates control on the map. Default is
   `"bottom-left"`. Options include "top-left", "top-right",
-  "bottom-left", "bottom-right".
+  "bottom-left", "bottom-right"
 
 - long_label:
 
-  The label for the longitude coordinate. Default is `"Lng"`.
+  The label for the longitude coordinate. Default is `"Lng"`
 
 - lat_label:
 
-  The label for the latitude coordinate. Default is `"Lat"`.
+  The label for the latitude coordinate. Default is `"Lat"`
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  ID of control group to add to (optional).
+  ID of control group to add to (optional)
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

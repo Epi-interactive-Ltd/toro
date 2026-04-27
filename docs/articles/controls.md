@@ -1,6 +1,6 @@
-# Map Controls
+# Map controls
 
-Various controls can be added to the map TODO (link to control examples)
+Various controls can be added to the map.
 
 ``` r
 

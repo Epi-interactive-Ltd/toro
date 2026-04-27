@@ -8,6 +8,8 @@ This package is proudly brought to you by:
 
 - **Jocelyn Qian**. Contributor.
 
+- **Nick Snellgrove**. Contributor.
+
 - **MapLibre contributors**. Copyright holder.\
   MapLibre GL JS library
 
@@ -31,13 +33,13 @@ Source:
 [`DESCRIPTION`](https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/DESCRIPTION)
 
 Pakinui P (2026). *toro: Interactive and Customisable Maps using the
-MapLibre GL JS Library*. R package version 0.0.6,
+MapLibre GL JS Library*. R package version 0.0.7,
 <https://epi-interactive-ltd.github.io/toro/>.
 
     @Manual{,
       title = {toro: Interactive and Customisable Maps using the MapLibre GL JS Library},
       author = {Poppy Pakinui},
       year = {2026},
-      note = {R package version 0.0.6},
+      note = {R package version 0.0.7},
       url = {https://epi-interactive-ltd.github.io/toro/},
     }

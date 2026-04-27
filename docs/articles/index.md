@@ -1,6 +1,6 @@
 # Articles
 
-### Getting Started
+### Getting started
 
 - [Getting started with
   toro](https://epi-interactive-ltd.github.io/toro/articles/getting-started.md):
@@ -13,18 +13,18 @@
 ### Layers
 
 - [Map
-  Layers](https://epi-interactive-ltd.github.io/toro/articles/layers.md):
+  layers](https://epi-interactive-ltd.github.io/toro/articles/layers.md):
 - [Map
-  Tiles](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.md):
+  tiles](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.md):
 - [Popups](https://epi-interactive-ltd.github.io/toro/articles/popups.md):
 - [Clusters/Spiderfying](https://epi-interactive-ltd.github.io/toro/articles/map-clusters.md):
 
 ### Controls
 
 - [Map
-  Controls](https://epi-interactive-ltd.github.io/toro/articles/controls.md):
+  controls](https://epi-interactive-ltd.github.io/toro/articles/controls.md):
 
-### Advanced Features
+### Advanced features
 
 - [Animations](https://epi-interactive-ltd.github.io/toro/articles/animations.md):
 
@@ -36,10 +36,10 @@
 ### Examples
 
 - [All
-  Examples](https://epi-interactive-ltd.github.io/toro/articles/examples/index.md):
+  examples](https://epi-interactive-ltd.github.io/toro/articles/examples/index.md):
 - [Add a feature service
   source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-feature-service-source.md):
-- [Add a GeoJSON
+- [Add a GeoJSON/sf
   source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-geojson-source.md):
 - [Add an image
   source](https://epi-interactive-ltd.github.io/toro/articles/examples/sources/add-image-source.md):
@@ -56,4 +56,4 @@
 - [Latitude and longitude grid
   layer](https://epi-interactive-ltd.github.io/toro/articles/examples/layers/lat-lng-grid.md):
 - [Draw
-  Controls](https://epi-interactive-ltd.github.io/toro/articles/examples/controls/draw-control.md):
+  controls](https://epi-interactive-ltd.github.io/toro/articles/examples/controls/draw-control.md):

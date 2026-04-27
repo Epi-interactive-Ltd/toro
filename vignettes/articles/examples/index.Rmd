@@ -1,5 +1,5 @@
 ---
-title: 'All Examples'
+title: 'All examples'
 ---
 
 ```{r, echo = FALSE}
@@ -14,7 +14,7 @@ Use the navigation menu on the left to explore all available examples, or click 
 
 Sources are required to add data to your map.
 
-### [Add a GeoJSON source](sources/add-geojson-source.html)
+### [Add a GeoJSON/sf source](sources/add-geojson-source.html)
 
 ![Add a data source from a GeoJSON file (sf object or GeoJSON string)](../../man/figures/add-geojson-source.png)
 
@@ -50,12 +50,12 @@ Sources are required to add data to your map.
 
 ![Adding descriptive text or data attributes to the map, based on coordinates](../../man/figures/add-text-layer.png)
 
-#### [Latitude and Longitude Grid](layers/lat-lng-grid.html)
+#### [Latitude and longitude grid](layers/lat-lng-grid.html)
 
 ![Showing a reference grid of latitude & longitude on the map, overlaying other features](../../man/figures/add-lat-lng-grid.png)
 
 ## Controls
 
-#### [Draw Control](controls/draw-control.html)
+#### [Draw control](controls/draw-control.html)
 
 ![Enabling functionality to create new shapes / lines on your map](../../man/figures/draw-control.png)

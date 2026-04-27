@@ -1,6 +1,6 @@
 # Animations
 
-Toro provides the ability to animate certain aspects of the map. TODO…
+toro provides the ability to animate certain aspects of the map.
 
 ## Setup
 
@@ -39,7 +39,7 @@ nz_line <- sf::st_sf(
 )
 ```
 
-## Basic Example
+## Basic example
 
 For the most basic example, add a route (line) and then use
 [`add_animation_controls()`](https://epi-interactive-ltd.github.io/toro/reference/add_animation_controls.md)
@@ -52,7 +52,7 @@ map() |>
   add_animation_controls(route_id = "nz_route")
 ```
 
-## Advanced Examples
+## Advanced examples
 
 ### Speed control
 
@@ -74,7 +74,7 @@ map() |>
   )
 ```
 
-### Animating Icon
+### Animating icon
 
 You can also supply an icon to be animated along the route. By default,
 toro has a built in image with the ID “toro-pin” that you can use for
@@ -101,7 +101,7 @@ map() |>
   add_animation_controls(route_id = "nz_route")
 ```
 
-### Other Customisations
+### Other customisations
 
 You can set `dropVisited` to `TRUE` in the animation settings to leave a
 marker on the map at each point that has been visited during the

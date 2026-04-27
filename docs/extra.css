@@ -44,8 +44,8 @@
 
   /** Overwrite bs defaults */
   --bs-primary-rgb: var(--epi-dark-green-rgb) !important;
-  --bs-link-color-rgb: var(--epi-dark-green-rgb) !important;
-  --bs-link-hover-color-rgb: var(--epi-bright-green-rgb) !important;
+  --bs-link-color-rgb: var(--epi-dark-blue-rgb) !important;
+  --bs-link-hover-color-rgb: var(--epi-bright-blue-rgb) !important;
   --bs-border-color: rgba(var(--epi-dark-blue-rgb), 0.5) !important;
   --bs-code-color: var(--epi-bright-blue) !important;
   --bs-emphasis-color-rgb: var(--epi-dark-blue-rgb) !important;
@@ -89,6 +89,14 @@ body {
 blockquote {
   background-color: rgba(var(--epi-dark-green-rgb), 0.1);
   border-left: .25rem solid var(--epi-dark-green);
+}
+
+h2 {
+  margin-top: 2rem;
+}
+
+h3 {
+  margin-top: 1.5rem;
 }
 
 /** Navbar */

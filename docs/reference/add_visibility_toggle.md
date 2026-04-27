@@ -23,50 +23,50 @@ add_visibility_toggle(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - layer_id:
 
-  ID of the layer to toggle visibility for.
+  ID of the layer to toggle visibility for
 
 - control_id:
 
   ID for the control. If NULL, defaults to
-  "visibility-toggle-\<layer_id\>".
+  "visibility-toggle-\<layer_id\>"
 
 - left_label:
 
-  Label text for the toggle button. Default is "Toggle Layer".
+  Label text for the toggle button. Default is "Toggle Layer"
 
 - right_label:
 
   Label text for the toggle button when layer is hidden. Default is
-  "Layer Hidden".
+  "Layer Hidden"
 
 - initial_state:
 
-  Initial visibility state. Default is TRUE.
+  Initial visibility state. Default is TRUE
 
 - position:
 
   Position on the map if not using a control panel. Default is
-  "top-right".
+  "top-right"
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  ID of control group to add to (optional).
+  ID of control group to add to (optional)
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

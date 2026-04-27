@@ -18,29 +18,29 @@ add_cluster_toggle(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{layer_id}{ID of the layer to toggle clustering for.}
+\item{layer_id}{ID of the layer to toggle clustering for}
 
-\item{control_id}{ID for the control. If NULL, defaults to "cluster-toggle-<layer_id>".}
+\item{control_id}{ID for the control. If NULL, defaults to "cluster-toggle-<layer_id>"}
 
-\item{left_label}{Label text for the toggle button. Default is "Toggle Clustering".}
+\item{left_label}{Label text for the toggle button. Default is "Toggle Clustering"}
 
 \item{right_label}{Label text for the toggle button when clustering is off.
-Default is "Clustering Off".}
+Default is "Clustering Off"}
 
-\item{initial_state}{Initial clustering state. Default is FALSE.}
+\item{initial_state}{Initial clustering state. Default is FALSE}
 
-\item{position}{Position on the map if not using a control panel. Default is "top-right".}
+\item{position}{Position on the map if not using a control panel. Default is "top-right"}
 
-\item{panel_id}{ID of control panel to add to (optional).}
+\item{panel_id}{ID of control panel to add to (optional)}
 
-\item{section_title}{Section title when added to a control panel.}
+\item{section_title}{Section title when added to a control panel}
 
-\item{group_id}{ID of control group to add to (optional).}
+\item{group_id}{ID of control group to add to (optional)}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
 Creates a toggle button that can enable/disable clustering for a specific layer.

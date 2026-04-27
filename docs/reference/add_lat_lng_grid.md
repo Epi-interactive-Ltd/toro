@@ -1,6 +1,6 @@
-# Add a grid of latitude and longitude lines to the map.
+# Add a grid of latitude and longitude lines to the map
 
-Add a grid of latitude and longitude lines to the map.
+Add a grid of latitude and longitude lines to the map
 
 ## Usage
 
@@ -12,15 +12,15 @@ add_lat_lng_grid(map, grid_colour = "#000000")
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - grid_colour:
 
-  The colour of the grid lines. Default is `"#000000"`.
+  The colour of the grid lines. Default is `"#000000"`
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 
