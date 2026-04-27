@@ -2,24 +2,24 @@
 % Please edit documentation in R/sources.R
 \name{set_source_data}
 \alias{set_source_data}
-\title{Set data for a source on the map.}
+\title{Set data for a source on the map}
 \usage{
 set_source_data(proxy, source_id, data, type = "geojson")
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{source_id}{The ID of the source to update.}
+\item{source_id}{The ID of the source to update}
 
-\item{data}{The data for the source, typically in GeoJSON format.}
+\item{data}{The data for the source, typically in GeoJSON format}
 
-\item{type}{The type of the source. Default is \code{"geojson"}. Other options include \code{"vector"} or \code{"raster"}.}
+\item{type}{The type of the source. Default is \code{"geojson"}. Other options include \code{"vector"} or \code{"raster"}}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Set data for a source on the map.
+Set data for a source on the map
 }
 \examples{
 \dontrun{

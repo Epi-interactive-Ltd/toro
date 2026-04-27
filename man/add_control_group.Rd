@@ -14,23 +14,23 @@ add_control_group(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{panel_id}{ID of the target control panel.}
+\item{panel_id}{ID of the target control panel}
 
-\item{group_id}{Unique identifier for the control group.}
+\item{group_id}{Unique identifier for the control group}
 
-\item{group_title}{Title for the control group (optional).}
+\item{group_title}{Title for the control group (optional)}
 
-\item{collapsible}{Whether the group can be collapsed. Default is FALSE.}
+\item{collapsible}{Whether the group can be collapsed. Default is FALSE}
 
-\item{collapsed}{Initial collapsed state. Default is FALSE.}
+\item{collapsed}{Initial collapsed state. Default is FALSE}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Creates a collapsible group within a control panel that can contain multiple controls.
+Creates a collapsible group within a control panel that can contain multiple controls
 }
 \examples{
 \dontrun{

@@ -1,6 +1,6 @@
-# Create a proxy object for updating the map.
+# Create a proxy object for updating the map
 
-Create a proxy object for updating the map.
+Create a proxy object for updating the map
 
 ## Usage
 
@@ -12,15 +12,15 @@ mapProxy(outputId, session = shiny::getDefaultReactiveDomain())
 
 - outputId:
 
-  The ID of the output element.
+  The ID of the output element
 
 - session:
 
-  The Shiny session object (default is the current session).
+  The Shiny session object (default is the current session)
 
 ## Value
 
-         A proxy object for the map.
+A proxy object for the map
 
 ## Examples
 

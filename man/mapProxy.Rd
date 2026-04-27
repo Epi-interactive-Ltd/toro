@@ -2,21 +2,20 @@
 % Please edit documentation in R/map.R
 \name{mapProxy}
 \alias{mapProxy}
-\title{Create a proxy object for updating the map.}
+\title{Create a proxy object for updating the map}
 \usage{
 mapProxy(outputId, session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
-\item{outputId}{The ID of the output element.}
+\item{outputId}{The ID of the output element}
 
-\item{session}{The Shiny session object (default is the current session).}
+\item{session}{The Shiny session object (default is the current session)}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     A proxy object for the map.
-}\if{html}{\out{</div>}}
+A proxy object for the map
 }
 \description{
-Create a proxy object for updating the map.
+Create a proxy object for updating the map
 }
 \examples{
 \dontrun{

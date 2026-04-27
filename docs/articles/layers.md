@@ -1,4 +1,4 @@
-# Map Layers
+# Map layers
 
 There are several types of layers in toro:
 
@@ -8,7 +8,5 @@ There are several types of layers in toro:
 - Symbol
 - Text
 
-For more in depth examples see the layers portion of the Examples
-section.
-
-These layers all use GeoJSON data sources to display TODO
+For more in depth examples see the [layers portion of the Examples
+section](https://epi-interactive-ltd.github.io/toro/articles/examples/index.html#layers).

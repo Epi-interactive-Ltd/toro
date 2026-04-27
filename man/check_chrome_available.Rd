@@ -2,8 +2,7 @@
 % Please edit documentation in R/export.R
 \name{check_chrome_available}
 \alias{check_chrome_available}
-\title{Utilities for the map related to exports.
-Check if Chrome/Chromium is available for webshot operations}
+\title{Check if Chrome/Chromium is available for webshot operations}
 \usage{
 check_chrome_available()
 }
@@ -11,7 +10,6 @@ check_chrome_available()
 TRUE if Chrome is available, FALSE otherwise
 }
 \description{
-Utilities for the map related to exports.
 Check if Chrome/Chromium is available for webshot operations
 }
 \keyword{internal}

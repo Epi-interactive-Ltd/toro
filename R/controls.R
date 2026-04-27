@@ -1,11 +1,9 @@
-#' Utilities for the map related to controls.
-
-#' Toggle the visibility of a control on the map.
+#' Toggle the visibility of a control on the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param control_id The ID of the control to toggle.
-#' @param show Logical indicating whether to show or hide the control. Default is `TRUE`.
-#' @return The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param control_id The ID of the control to toggle
+#' @param show Logical indicating whether to show or hide the control. Default is `TRUE`
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -37,11 +35,11 @@ toggle_control <- function(proxy, control_id, show = TRUE) {
   proxy
 }
 
-#' Remove a control from the map.
+#' Remove a control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param control_id The ID of the control to remove.
-#' @return The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param control_id The ID of the control to remove
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -73,17 +71,17 @@ remove_control <- function(proxy, control_id) {
 }
 
 
-#' Add a custom HTML control to the map.
+#' Add a custom HTML control to the map
 #'
-#' @param map The map or map proxy object.
-#' @param id The ID for the custom control.
-#' @param html The HTML content to add as a control.
+#' @param map The map or map proxy object
+#' @param id The ID for the custom control
+#' @param html The HTML content to add as a control
 #' @param position The position of the control on the map. Default is `"top-right"`.
-#'                 Options include "top-left", "top-right", "bottom-left", "bottom-right".
-#' @param panel_id ID of control panel to add to (optional).
-#' @param section_title Section title when added to a control panel.
-#' @param group_id ID of control group to add to (optional).
-#' @return The map or map proxy object for chaining.
+#'                 Options include "top-left", "top-right", "bottom-left", "bottom-right"
+#' @param panel_id ID of control panel to add to (optional)
+#' @param section_title Section title when added to a control panel
+#' @param group_id ID of control group to add to (optional)
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -142,7 +140,14 @@ add_custom_control <- function(
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "custom", control, section_title, group_id)
+      add_control_to_panel(
+        map,
+        panel_id,
+        "custom",
+        control,
+        section_title,
+        group_id
+      )
     } else {
       # Add as standalone control
       map$session$sendCustomMessage(
@@ -157,13 +162,13 @@ add_custom_control <- function(
   map
 }
 
-#' Remove a custom control from the map.
+#' Remove a custom control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param control_id The ID of the custom control to remove.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param control_id The ID of the custom control to remove
 #' @param panel_id Optional. If provided, removes the control from the specified control panel.
-#'    If NULL, removes the standalone custom control.
-#' @return The map proxy object for chaining.
+#'    If NULL, removes the standalone custom control
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -201,18 +206,18 @@ remove_custom_control <- function(proxy, control_id, panel_id = NULL) {
 }
 
 
-#' Add a cursor coordinates control to the map.
+#' Add a cursor coordinates control to the map
 #'
-#' @param map The map or map proxy object.
+#' @param map The map or map proxy object
 #' @param position The position of the cursor coordinates control on the map.
 #'                 Default is `"bottom-left"`.
-#'                 Options include "top-left", "top-right", "bottom-left", "bottom-right".
-#' @param long_label The label for the longitude coordinate. Default is `"Lng"`.
-#' @param lat_label The label for the latitude coordinate. Default is `"Lat"`.
-#' @param panel_id ID of control panel to add to (optional).
-#' @param section_title Section title when added to a control panel.
-#' @param group_id ID of control group to add to (optional).
-#' @return The map or map proxy object for chaining.
+#'                 Options include "top-left", "top-right", "bottom-left", "bottom-right"
+#' @param long_label The label for the longitude coordinate. Default is `"Lng"`
+#' @param lat_label The label for the latitude coordinate. Default is `"Lat"`
+#' @param panel_id ID of control panel to add to (optional)
+#' @param section_title Section title when added to a control panel
+#' @param group_id ID of control group to add to (optional)
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -266,10 +271,20 @@ add_cursor_coords_control <- function(
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(map, panel_id, "cursor", control, section_title, group_id)
+      add_control_to_panel(
+        map,
+        panel_id,
+        "cursor",
+        control,
+        section_title,
+        group_id
+      )
     } else {
       # Add as standalone control
-      map$session$sendCustomMessage("addCursorCoordsControl", list(id = map$id, control = control))
+      map$session$sendCustomMessage(
+        "addCursorCoordsControl",
+        list(id = map$id, control = control)
+      )
     }
   } else {
     if (is.null(map$x$cursorControls)) {
@@ -281,12 +296,12 @@ add_cursor_coords_control <- function(
 }
 
 
-#' Remove the cursor coordinates control from the map.
+#' Remove the cursor coordinates control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param proxy The map proxy object created by `mapProxy()`
 #' @param panel_id Optional. If provided, removes the cursor coordinates control from the specified
-#'  control panel. If NULL, removes the standalone cursor coordinates control.
-#' @return The map proxy object for chaining.
+#'  control panel. If NULL, removes the standalone cursor coordinates control
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples

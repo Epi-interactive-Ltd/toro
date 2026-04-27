@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,7 +127,7 @@ aspects of the map.</p>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="modifying-the-map-using-ids">Modifying the Map using IDs<a class="anchor" aria-label="anchor" href="#modifying-the-map-using-ids"></a>
+<h2 id="modifying-the-map-using-ids">Modifying the map using IDs<a class="anchor" aria-label="anchor" href="#modifying-the-map-using-ids"></a>
 </h2>
 <p>In Shiny to modify parts of a map you need to provide the ID of the
 aspect you want to update.</p>
@@ -249,10 +249,10 @@ that can be used to delete the shape with
 </div>
 </div>
 <div class="section level2">
-<h2 id="inputs-events">Inputs &amp; Events<a class="anchor" aria-label="anchor" href="#inputs-events"></a>
+<h2 id="inputs-events">Inputs &amp; events<a class="anchor" aria-label="anchor" href="#inputs-events"></a>
 </h2>
 <div class="section level3">
-<h3 id="map-loaded-event">Map Loaded Event<a class="anchor" aria-label="anchor" href="#map-loaded-event"></a>
+<h3 id="map-loaded-event">Map loaded event<a class="anchor" aria-label="anchor" href="#map-loaded-event"></a>
 </h3>
 <p>By default when the map initially loads it will trigger a
 <em>loaded</em> event in Shiny.</p>
@@ -273,7 +273,7 @@ app.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/bindEvent.html" class="external-link">bindEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">my_map_loaded</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="feature-click-events">Feature Click Events<a class="anchor" aria-label="anchor" href="#feature-click-events"></a>
+<h3 id="feature-click-events">Feature click events<a class="anchor" aria-label="anchor" href="#feature-click-events"></a>
 </h3>
 <p>Anytime a feature (polygon, line, point) is clicked on the map, a
 <em>feature_click</em> event is fired.</p>
@@ -290,7 +290,7 @@ ID (<code>input$&lt;mapId&gt;_feature_click</code>).</p>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="map-view-status">Map View Status<a class="anchor" aria-label="anchor" href="#map-view-status"></a>
+<h3 id="map-view-status">Map view status<a class="anchor" aria-label="anchor" href="#map-view-status"></a>
 </h3>
 <p>Whenever the map view changes (zoom/bounds) a <em>bounds</em> /
 <em>zoom</em> event is fired. You can listen for this event using an

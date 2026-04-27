@@ -2,24 +2,24 @@
 % Please edit documentation in R/layers.R
 \name{set_paint_property}
 \alias{set_paint_property}
-\title{Set a paint property for a layer on the map.}
+\title{Set a paint property for a layer on the map}
 \usage{
 set_paint_property(proxy, layer_id, property_name, value)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{layer_id}{The ID of the layer to update.}
+\item{layer_id}{The ID of the layer to update}
 
-\item{property_name}{The name of the paint property to set.}
+\item{property_name}{The name of the paint property to set}
 
-\item{value}{The value to set for the paint property.}
+\item{value}{The value to set for the paint property}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Set a paint property for a layer on the map.
+Set a paint property for a layer on the map
 }
 \examples{
 \dontrun{

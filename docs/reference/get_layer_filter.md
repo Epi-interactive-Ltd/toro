@@ -12,12 +12,12 @@ get_layer_filter(filter_str)
 
 - filter_str:
 
-  A string or vector of strings representing the filter conditions.
+  A string or vector of strings representing the filter conditions
 
 ## Value
 
 A list where the first element is "all" if multiple filters are
-provided, or a single filter condition.
+provided, or a single filter condition
 
 ## Examples
 

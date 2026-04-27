@@ -2,21 +2,21 @@
 % Please edit documentation in R/animation_controls.R
 \name{remove_timeline_control}
 \alias{remove_timeline_control}
-\title{Remove the timeline control from the map.}
+\title{Remove the timeline control from the map}
 \usage{
 remove_timeline_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
 \item{panel_id}{Optional. If provided, removes the timeline control from the specified control
-panel. If NULL, removes the standalone timeline control.}
+panel. If NULL, removes the standalone timeline control}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove the timeline control from the map.
+Remove the timeline control from the map
 }
 \examples{
 \dontrun{

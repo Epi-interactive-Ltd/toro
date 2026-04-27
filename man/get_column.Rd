@@ -2,15 +2,15 @@
 % Please edit documentation in R/get_column_values.R
 \name{get_column}
 \alias{get_column}
-\title{Get a column from a dataset to use as a paint or layout option in a map layer.}
+\title{Get a column from a dataset to use as a paint or layout option in a map layer}
 \usage{
 get_column(column_name)
 }
 \arguments{
-\item{column_name}{String representing the name of the column to be used.}
+\item{column_name}{String representing the name of the column to be used}
 }
 \value{
-List containing the paint or layout option to be set.
+List containing the paint or layout option to be set
 }
 \description{
 Allows the column value to be used for styling features in a map layer.

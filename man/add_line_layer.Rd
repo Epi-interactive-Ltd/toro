@@ -2,25 +2,25 @@
 % Please edit documentation in R/layers.R
 \name{add_line_layer}
 \alias{add_line_layer}
-\title{Add a line layer to a map or map proxy.}
+\title{Add a line layer to a map or map proxy}
 \usage{
 add_line_layer(map, ...)
 }
 \arguments{
-\item{map}{The map object or map proxy to which the layer will be added.}
+\item{map}{The map object or map proxy to which the layer will be added}
 
 \item{...}{Additional arguments to include in the layer definition.
 \itemize{
 \item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
 See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
-for details on available options.
+for details on available options
 }}
 }
 \value{
-The updated map object with the line layer added.
+The updated map object with the line layer added
 }
 \description{
-Add a line layer to a map or map proxy.
+Add a line layer to a map or map proxy
 }
 \examples{
 \dontrun{

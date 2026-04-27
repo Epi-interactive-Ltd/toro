@@ -2,21 +2,21 @@
 % Please edit documentation in R/animation_controls.R
 \name{remove_speed_control}
 \alias{remove_speed_control}
-\title{Remove the speed control from the map.}
+\title{Remove the speed control from the map}
 \usage{
 remove_speed_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
 \item{panel_id}{Optional. If provided, removes the speed control from the specified control
-panel. If NULL, removes the standalone speed control.}
+panel. If NULL, removes the standalone speed control}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove the speed control from the map.
+Remove the speed control from the map
 }
 \examples{
 \dontrun{

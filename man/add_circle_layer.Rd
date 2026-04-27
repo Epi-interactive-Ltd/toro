@@ -2,25 +2,25 @@
 % Please edit documentation in R/layers.R
 \name{add_circle_layer}
 \alias{add_circle_layer}
-\title{Add a circle layer to a map or map proxy.}
+\title{Add a circle layer to a map or map proxy}
 \usage{
 add_circle_layer(map, ...)
 }
 \arguments{
-\item{map}{The map object or map proxy to which the layer will be added.}
+\item{map}{The map object or map proxy to which the layer will be added}
 
 \item{...}{Additional arguments to include in the layer definition.
 \itemize{
 \item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
 See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
-for details on available options.
+for details on available options
 }}
 }
 \value{
-The updated map object with the circle layer added.
+The updated map object with the circle layer added
 }
 \description{
-Add a circle layer to a map or map proxy.
+Add a circle layer to a map or map proxy
 }
 \examples{
 \dontrun{

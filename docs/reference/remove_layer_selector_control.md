@@ -1,6 +1,6 @@
-# Remove the layer selector control from the map.
+# Remove the layer selector control from the map
 
-Remove the layer selector control from the map.
+Remove the layer selector control from the map
 
 ## Usage
 
@@ -13,17 +13,17 @@ remove_layer_selector_control(proxy, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 
 - panel_id:
 
   Optional. If provided, removes the layer selector control from the
   specified control panel. If NULL, removes the standalone layer
-  selector control.
+  selector control
 
 ## Value
 
-The map proxy object for chaining.
+The map proxy object for chaining
 
 ## Examples
 

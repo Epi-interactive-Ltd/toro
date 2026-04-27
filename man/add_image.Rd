@@ -2,22 +2,22 @@
 % Please edit documentation in R/sources.R
 \name{add_image}
 \alias{add_image}
-\title{Add an image source to the map.}
+\title{Add an image source to the map}
 \usage{
 add_image(map, image_id, image_url)
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{image_id}{The ID of the image source.}
+\item{image_id}{The ID of the image source}
 
-\item{image_url}{The URL of the image to add.}
+\item{image_url}{The URL of the image to add}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Add an image source to the map.
+Add an image source to the map
 }
 \examples{
 \dontrun{

@@ -2,20 +2,20 @@
 % Please edit documentation in R/controls.R
 \name{remove_control}
 \alias{remove_control}
-\title{Remove a control from the map.}
+\title{Remove a control from the map}
 \usage{
 remove_control(proxy, control_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{control_id}{The ID of the control to remove.}
+\item{control_id}{The ID of the control to remove}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove a control from the map.
+Remove a control from the map
 }
 \examples{
 \dontrun{

@@ -1,21 +1,19 @@
-#' Functions related to the draw control.
-
 #' Add a draw control to the map
 #'
-#' @param map The map or map proxy object.
-#' @param id The ID for the draw control.
+#' @param map The map or map proxy object
+#' @param id The ID for the draw control
 #' @param position The position of the draw control on the map. Default is `"top-right"`.
-#'    Options are "top-left", "top-right", "bottom-left", "bottom-right".
+#'    Options are "top-left", "top-right", "bottom-left", "bottom-right"
 #' @param modes A vector of modes to enable in the draw control. Default is `c("polygon")`.
-#'    Options include "polygon", "delete", "line", and "point".
-#' @param active_colour The colour for the drawn shapes. Default is `"#04AAC1"`.
-#' @param inactive_colour The colour for the inactive shapes. Default is `"#04AAC1"`.
+#'    Options include "polygon", "delete", "line", and "point"
+#' @param active_colour The colour for the drawn shapes. Default is `"#04AAC1"`
+#' @param inactive_colour The colour for the inactive shapes. Default is `"#04AAC1"`
 #' @param mode_labels A named list of labels for each mode.
-#'    For example, `list(polygon = "Draw Polygon", delete = "Delete Shape")`.
-#' @param panel_id ID of control panel to add to (optional).
-#' @param section_title Section title when added to a control panel.
-#' @param group_id Optional group ID for grouping controls within a panel.
-#' @return The map or map proxy object for chaining.
+#'    For example, `list(polygon = "Draw Polygon", delete = "Delete Shape")`
+#' @param panel_id ID of control panel to add to (optional)
+#' @param section_title Section title when added to a control panel
+#' @param group_id Optional group ID for grouping controls within a panel
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -75,12 +73,12 @@ add_draw_control <- function(
   map
 }
 
-#' Remove the draw control from the map.
+#' Remove the draw control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param proxy The map proxy object created by `mapProxy()`
 #' @param panel_id  Optional. If provided, removes the draw control from the specified control
-#'    panel. If NULL, removes the standalone draw control.
-#' @return The map proxy object for chaining.
+#'    panel. If NULL, removes the standalone draw control
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -122,13 +120,13 @@ remove_draw_control <- function(proxy, panel_id = NULL) {
   proxy
 }
 
-#' Delete a drawn shape from the map.
+#' Delete a drawn shape from the map
 #'
 #' The ID of the shape is provided by the draw control when a shape is created.
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param shape_id The ID of the shape to delete.
-#' @return The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param shape_id The ID of the shape to delete
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples

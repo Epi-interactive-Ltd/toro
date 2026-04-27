@@ -1,4 +1,4 @@
-# Get a column from a dataset to use as a paint or layout option in a map layer.
+# Get a column from a dataset to use as a paint or layout option in a map layer
 
 Allows the column value to be used for styling features in a map layer.
 
@@ -12,11 +12,11 @@ get_column(column_name)
 
 - column_name:
 
-  String representing the name of the column to be used.
+  String representing the name of the column to be used
 
 ## Value
 
-List containing the paint or layout option to be set.
+List containing the paint or layout option to be set
 
 ## Examples
 
