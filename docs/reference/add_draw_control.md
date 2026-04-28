@@ -1,6 +1,6 @@
-# Functions related to the draw control. Add a draw control to the map
+# Add a draw control to the map
 
-Functions related to the draw control. Add a draw control to the map
+Add a draw control to the map
 
 ## Usage
 
@@ -23,51 +23,51 @@ add_draw_control(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - id:
 
-  The ID for the draw control.
+  The ID for the draw control
 
 - position:
 
   The position of the draw control on the map. Default is `"top-right"`.
-  Options are "top-left", "top-right", "bottom-left", "bottom-right".
+  Options are "top-left", "top-right", "bottom-left", "bottom-right"
 
 - modes:
 
   A vector of modes to enable in the draw control. Default is
   `c("polygon")`. Options include "polygon", "delete", "line", and
-  "point".
+  "point"
 
 - active_colour:
 
-  The colour for the drawn shapes. Default is `"#04AAC1"`.
+  The colour for the drawn shapes. Default is `"#04AAC1"`
 
 - inactive_colour:
 
-  The colour for the inactive shapes. Default is `"#04AAC1"`.
+  The colour for the inactive shapes. Default is `"#04AAC1"`
 
 - mode_labels:
 
   A named list of labels for each mode. For example,
-  `list(polygon = "Draw Polygon", delete = "Delete Shape")`.
+  `list(polygon = "Draw Polygon", delete = "Delete Shape")`
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  Optional group ID for grouping controls within a panel.
+  Optional group ID for grouping controls within a panel
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

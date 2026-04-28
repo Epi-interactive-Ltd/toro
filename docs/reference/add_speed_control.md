@@ -21,41 +21,41 @@ add_speed_control(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - values:
 
-  Vector of speed multiplier values. Default is c(0.5, 1, 2).
+  Vector of speed multiplier values. Default is c(0.5, 1, 2)
 
 - labels:
 
   Vector of labels for each speed value. Default is c("Slow", "Normal",
-  "Fast").
+  "Fast")
 
 - default_index:
 
-  Index of the default speed (1-based). Default is 2.
+  Index of the default speed (1-based). Default is 2
 
 - position:
 
   Position on the map if not using a control panel. Default is
-  "top-right".
+  "top-right"
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  Optional ID of the group to add the control to within a panel.
+  Optional ID of the group to add the control to within a panel
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

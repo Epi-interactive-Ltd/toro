@@ -48,18 +48,18 @@ navbar:
       href: articles/examples/index.html
 
 reference:
-  - title: 'Map Creation'
+  - title: 'Map creation'
     desc: 'Function to create maps'
     contents:
       - map
-  - title: 'Data Sources'
+  - title: 'Data sources'
     desc: 'Functions to interact with map data sources'
     contents:
       - add_source
       - set_source_data
       - add_feature_server_source
       - add_image
-  - title: 'Adding Layers'
+  - title: 'Adding layers'
     desc: 'Functions to add map layers'
     contents:
       - add_layer
@@ -69,19 +69,19 @@ reference:
       - add_symbol_layer
       - add_text_layer
       - add_lat_lng_grid
-  - title: 'Updating Layers'
+  - title: 'Updating layers'
     desc: 'Functions to update map layers'
     contents:
       - show_layer
       - hide_layer
       - toggle_clustering
       - toggle_lat_lng_grid
-  - title: 'Layer Styling'
+  - title: 'Layer styling'
     desc: 'Functions to update map layer styling'
     contents:
       - set_paint_property
       - set_layout_property
-  - title: 'Styling Helpers'
+  - title: 'Styling helpers'
     desc: 'Functions to help with map/layer styling'
     contents:
       - get_layout_options
@@ -91,7 +91,7 @@ reference:
       - get_column_boolean
       - get_column_group
       - get_column_step_steps
-  - title: 'Map Tiles'
+  - title: 'Map tiles'
     desc: 'Functions to update map tiles'
     contents:
       - set_tile_layer
@@ -101,7 +101,7 @@ reference:
     contents:
       - set_zoom
       - set_bounds
-  - title: 'Map Interaction'
+  - title: 'Map interaction'
     desc: 'Functions to get information from map interaction'
     contents:
       - get_clicked_feature
@@ -111,18 +111,18 @@ reference:
     contents:
       - toggle_control
       - remove_control
-  - title: 'Controls - Drawing Tools'
+  - title: 'Controls - Drawing tools'
     desc: 'Controls for draw/edit workflows'
     contents:
       - add_draw_control
       - remove_draw_control
       - delete_drawn_shape
-  - title: 'Controls - View Tools'
+  - title: 'Controls - View tools'
     desc: 'Controls for map view manipulation'
     contents:
       - add_zoom_control
       - remove_zoom_control
-  - title: 'Controls - Layer Tools'
+  - title: 'Controls - Layer tools'
     desc: 'Controls for updating map layers'
     contents:
       - add_tile_selector_control
@@ -133,7 +133,7 @@ reference:
       - remove_cluster_toggle
       - add_visibility_toggle
       - remove_visibility_toggle
-  - title: 'Controls - Animation Tools'
+  - title: 'Controls - Animation tools'
     desc: 'Controls for performing map animations'
     contents:
       - add_route
@@ -153,14 +153,14 @@ reference:
       - add_custom_control
       - remove_custom_control
       - add_cluster_toggle
-  - title: 'Control Panels'
+  - title: 'Control panels'
     desc: 'Functions to add/edit control panels for map interaction'
     contents:
       - add_control_panel
       - add_control_group
       - remove_control_group
       - remove_control_from_panel
-  - title: 'Shiny Integration'
+  - title: 'Shiny integration'
     desc: 'Functions to get information from map interaction'
     contents:
       - mapOutput
@@ -173,7 +173,7 @@ reference:
       - save_map_html
 
 articles:
-  - title: 'Getting Started'
+  - title: 'Getting started'
     contents:
       - articles/getting-started
   - title: 'Integration'
@@ -188,7 +188,7 @@ articles:
   - title: 'Controls'
     contents:
       - articles/controls
-  - title: 'Advanced Features'
+  - title: 'Advanced features'
     contents:
       - articles/animations
   - title: 'Contributing'

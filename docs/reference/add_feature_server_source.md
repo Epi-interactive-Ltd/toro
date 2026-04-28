@@ -1,6 +1,6 @@
-# Add a FeatureService source to the map.
+# Add a FeatureService source to the map
 
-Add a FeatureService source to the map.
+Add a FeatureService source to the map
 
 ## Usage
 
@@ -17,24 +17,24 @@ add_feature_server_source(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - source_url:
 
-  The URL of the FeatureService source.
+  The URL of the FeatureService source
 
 - source_id:
 
-  The ID for the source.
+  The ID for the source
 
 - append_query_url:
 
   The query URL to append to the source URL. Default is
-  `"/0/query?where=1=1&outFields=*&f=geojson"`.
+  `"/0/query?where=1=1&outFields=*&f=geojson"`
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Note
 

@@ -5,13 +5,18 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>All Examples • toro</title>
+<title>All examples • toro</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../../favicon.ico">
+<link rel="manifest" href="../../site.webmanifest">
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../../deps/headroom-0.11.0/headroom.min.js"></script><script src="../../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../../deps/search-1.0.0/fuse.min.js"></script><script src="../../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../../pkgdown.js"></script><link href="../../extra.css" rel="stylesheet">
-<meta property="og:title" content="All Examples">
+<meta property="og:title" content="All examples">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -21,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,8 +58,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>All Examples</h1>
+      <img src="../../logo.png" class="logo" alt=""><h1>All examples</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/articles/examples/index.Rmd" class="external-link"><code>vignettes/articles/examples/index.Rmd</code></a></small>
@@ -72,12 +76,13 @@ examples, or click the links below to jump to specific examples:</p>
 </h2>
 <p>Sources are required to add data to your map.</p>
 <div class="section level3">
-<h3 id="add-a-geojson-source">
-<a href="sources/add-geojson-source.html">Add a GeoJSON
-source</a><a class="anchor" aria-label="anchor" href="#add-a-geojson-source"></a>
+<h3 id="add-a-geojsonsf-source">
+<a href="sources/add-geojson-source.html">Add a GeoJSON/sf
+source</a><a class="anchor" aria-label="anchor" href="#add-a-geojsonsf-source"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-geojson-source.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-geojson-source.png" alt="Add a data source from a GeoJSON file (sf object or GeoJSON string)"><div class="figcaption">Add a data source from a GeoJSON file (sf object
+or GeoJSON string)</div>
 </div>
 </div>
 <div class="section level3">
@@ -86,7 +91,8 @@ source</a><a class="anchor" aria-label="anchor" href="#add-a-geojson-source"></a
 service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-service-source"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-feature-source.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-feature-source.png" alt="Add web based features (e.g. ArcGIS data layers) to your map as a source for additional layers"><div class="figcaption">Add web based features (e.g. ArcGIS data layers)
+to your map as a source for additional layers</div>
 </div>
 </div>
 <div class="section level3">
@@ -94,7 +100,8 @@ service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-ser
 <a href="sources/add-image-source.html">Add an image source</a><a class="anchor" aria-label="anchor" href="#add-an-image-source"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-image-source.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-image-source.png" alt="Add static images (png, svg, gif, jpg) to your map from a local file or web URL"><div class="figcaption">Add static images (png, svg, gif, jpg) to your
+map from a local file or web URL</div>
 </div>
 <hr>
 </div>
@@ -107,7 +114,9 @@ service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-ser
 <a href="layers/add-fill-layer.html">Add a fill layer</a><a class="anchor" aria-label="anchor" href="#add-a-fill-layer"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-fill-layer.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-fill-layer.png" alt="Adding shapes / complex geometry to your map and rendering the shapes based on attributes in the data (e.g. colour by population)"><div class="figcaption">Adding shapes / complex geometry to your map and
+rendering the shapes based on attributes in the data (e.g. colour by
+population)</div>
 </div>
 </div>
 <div class="section level3">
@@ -115,7 +124,8 @@ service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-ser
 <a href="layers/add-line-layer.html">Add a line layer</a><a class="anchor" aria-label="anchor" href="#add-a-line-layer"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-line-layer.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-line-layer.png" alt="Adding lines (collection of points) to your map and customising their appearance"><div class="figcaption">Adding lines (collection of points) to your map
+and customising their appearance</div>
 </div>
 </div>
 <div class="section level3">
@@ -123,7 +133,8 @@ service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-ser
 <a href="layers/add-circle-layer.html">Add a circle layer</a><a class="anchor" aria-label="anchor" href="#add-a-circle-layer"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-circle-layer.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-circle-layer.png" alt="Adding circles to your map and customising their appearance"><div class="figcaption">Adding circles to your map and customising their
+appearance</div>
 </div>
 </div>
 <div class="section level3">
@@ -131,7 +142,8 @@ service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-ser
 <a href="layers/add-symbol-layer.html">Add a symbol layer</a><a class="anchor" aria-label="anchor" href="#add-a-symbol-layer"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-symbol-layer.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-symbol-layer.png" alt="Adding customised image based markers (from image source) to your maps"><div class="figcaption">Adding customised image based markers (from
+image source) to your maps</div>
 </div>
 </div>
 <div class="section level3">
@@ -139,15 +151,17 @@ service source</a><a class="anchor" aria-label="anchor" href="#add-a-feature-ser
 <a href="layers/add-text-layer.html">Add a text layer</a><a class="anchor" aria-label="anchor" href="#add-a-text-layer"></a>
 </h3>
 <div class="float">
-<img src="../../reference/figures/add-text-layer.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-text-layer.png" alt="Adding descriptive text or data attributes to the map, based on coordinates"><div class="figcaption">Adding descriptive text or data attributes to
+the map, based on coordinates</div>
 </div>
 <div class="section level4">
 <h4 id="latitude-and-longitude-grid">
-<a href="layers/lat-lng-grid.html">Latitude and Longitude
-Grid</a><a class="anchor" aria-label="anchor" href="#latitude-and-longitude-grid"></a>
+<a href="layers/lat-lng-grid.html">Latitude and longitude
+grid</a><a class="anchor" aria-label="anchor" href="#latitude-and-longitude-grid"></a>
 </h4>
 <div class="float">
-<img src="../../reference/figures/add-lat-lng-grid.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/add-lat-lng-grid.png" alt="Showing a reference grid of latitude &amp; longitude on the map, overlaying other features"><div class="figcaption">Showing a reference grid of latitude &amp;
+longitude on the map, overlaying other features</div>
 </div>
 </div>
 </div>
@@ -157,10 +171,11 @@ Grid</a><a class="anchor" aria-label="anchor" href="#latitude-and-longitude-grid
 </h2>
 <div class="section level4">
 <h4 id="draw-control">
-<a href="controls/draw-control.html">Draw Control</a><a class="anchor" aria-label="anchor" href="#draw-control"></a>
+<a href="controls/draw-control.html">Draw control</a><a class="anchor" aria-label="anchor" href="#draw-control"></a>
 </h4>
 <div class="float">
-<img src="../../reference/figures/draw-control.png" alt="Description goes here"><div class="figcaption">Description goes here</div>
+<img src="../../reference/figures/draw-control.png" alt="Enabling functionality to create new shapes / lines on your map"><div class="figcaption">Enabling functionality to create new shapes /
+lines on your map</div>
 </div>
 </div>
 </div>

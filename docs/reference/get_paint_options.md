@@ -13,48 +13,47 @@ get_paint_options(layer_type, options = list())
 
 - layer_type:
 
-  A string indicating the type of layer (e.g., "fill", "circle",
-  "line").
+  A string indicating the type of layer (e.g., "fill", "circle", "line")
 
 - options:
 
   A list of additional options to customize the paint properties. See
-  Maplibre docs for full options.
+  MapLibre docs for full options.
 
   - colour: The color to use for the layer. Default is "grey". `color`
-    is also accepted as an alias for `colour`.
+    is also accepted as an alias for `colour`
 
   - opacity: The opacity to use for the layer. Default is 1 (fully
-    opaque).
+    opaque)
 
   - line_width: The width of lines in line layers or the outline width
-    for circle layers. Default is 1.
+    for circle layers. Default is 1
 
   - line_dash: The dash pattern for line layers. Default is no dash
     (solid line). You can provide a vector of numbers to specify the
     dash pattern (e.g., c(2, 4) for a pattern of 2 units on, 4 units
-    off).
+    off)
 
   - outline_colour: The color to use for the outline of circle or fill
     layers. Default is the same as `colour`. `outline_color` is also
-    accepted as an alias for `outline_colour`.
+    accepted as an alias for `outline_colour`
 
   - outline_opacity: The opacity to use for the outline of circle or
-    fill layers. Default is the same as `opacity`. You can also provide
-    any other paint options found in the Maplibre docs for the specific
-    layer type, and they will be included in the returned list.
+    fill layers. Default is the same as `opacity` You can also provide
+    any other paint options found in the MapLibre docs for the specific
+    layer type, and they will be included in the returned list
 
 ## Value
 
-A list of paint options suitable for the specified layer type.
+A list of paint options suitable for the specified layer type
 
 ## Note
 
-You can provide any paint options found in the [Maplibre Layers
+You can provide any paint options found in the [MapLibre Layers
 docs](https://maplibre.org/maplibre-style-spec/layers/) in the `options`
 argument, and they will be included in the returned list. The default
 options are just a starting point and can be overridden by providing
-them in the `options` argument.
+them in the `options` argument
 
 ## See also
 

@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Clusters/Spiderfying • toro</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -21,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,11 +57,10 @@
 
 <script src="map-clusters_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="map-clusters_files/mapbox-gl-draw-1.5.0/mapbox-gl-draw.min.css" rel="stylesheet">
 <script src="map-clusters_files/mapbox-gl-draw-1.5.0/mapbox-gl-draw.min.js"></script><link href="map-clusters_files/maplibre-gl-5.6.1/maplibre-gl.min.css" rel="stylesheet">
-<script src="map-clusters_files/maplibre-gl-5.6.1/maplibre-gl.min.js"></script><script src="map-clusters_files/turf-7.2.0/turf.min.js"></script><link href="map-clusters_files/map-0.0.6/map.css" rel="stylesheet">
-<script src="map-clusters_files/map-0.0.6/map.js"></script><script src="map-clusters_files/map-0.0.6/source-utils.js"></script><script src="map-clusters_files/map-0.0.6/map-utils.js"></script><script src="map-clusters_files/map-0.0.6/control-utils.js"></script><script src="map-clusters_files/map-0.0.6/layer-utils.js"></script><script src="map-clusters_files/map-0.0.6/cluster-utils.js"></script><script src="map-clusters_files/map-0.0.6/view-utils.js"></script><script src="map-clusters_files/map-0.0.6/animation-utils.js"></script><div class="row">
+<script src="map-clusters_files/maplibre-gl-5.6.1/maplibre-gl.min.js"></script><script src="map-clusters_files/turf-7.2.0/turf.min.js"></script><link href="map-clusters_files/map-0.1.0/map.css" rel="stylesheet">
+<script src="map-clusters_files/map-0.1.0/map.js"></script><script src="map-clusters_files/map-0.1.0/source-utils.js"></script><script src="map-clusters_files/map-0.1.0/map-utils.js"></script><script src="map-clusters_files/map-0.1.0/control-utils.js"></script><script src="map-clusters_files/map-0.1.0/layer-utils.js"></script><script src="map-clusters_files/map-0.1.0/cluster-utils.js"></script><script src="map-clusters_files/map-0.1.0/view-utils.js"></script><script src="map-clusters_files/map-0.1.0/animation-utils.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Clusters/Spiderfying</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Clusters/Spiderfying</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/articles/map-clusters.Rmd" class="external-link"><code>vignettes/articles/map-clusters.Rmd</code></a></small>
@@ -66,7 +70,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://epi-interactive-ltd.github.io/toro">toro</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://epi-interactive-ltd.github.io/toro/">toro</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">base_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span></span>
 <span>  imageSources <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -139,7 +143,7 @@ visible</p></li>
 <div class="section level3">
 <h3 id="cluster-circles">Cluster circles<a class="anchor" aria-label="anchor" href="#cluster-circles"></a>
 </h3>
-<p><code>clusterOptions.circleOptions</code> changes the apperance of
+<p><code>clusterOptions.circleOptions</code> changes the appearance of
 the clusters circle.</p>
 <p>Available circle (paint/layout) properties can be found <a href="https://maplibre.org/maplibre-style-spec/layers/#circle" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -203,7 +207,7 @@ the clusters circle.</p>
 <div class="section level3">
 <h3 id="cluster-text">Cluster text<a class="anchor" aria-label="anchor" href="#cluster-text"></a>
 </h3>
-<p><code>clusterOptions.textOptions</code> changes the apperance of the
+<p><code>clusterOptions.textOptions</code> changes the appearance of the
 clusters text.</p>
 <p>Available text(symbol) (paint/layout) properties can be found <a href="https://maplibre.org/maplibre-style-spec/layers/#symbol" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -284,7 +288,7 @@ example</a>).</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="cluster-spiderfying">Cluster Spiderfying<a class="anchor" aria-label="anchor" href="#cluster-spiderfying"></a>
+<h2 id="cluster-spiderfying">Cluster spiderfying<a class="anchor" aria-label="anchor" href="#cluster-spiderfying"></a>
 </h2>
 <p>Spiderfying handles viewing multiple pins in a cluster (pins in close
 proximity). When the map is zoomed in to the max zoom level and cluster
@@ -301,7 +305,7 @@ regardless of whether or not the layer has clustering enabled a cluster
 will <strong>always</strong> appear. This is due to the fact that
 without this there would be no way for the user to know that there are
 multiple pins there as they would all be stacked on top of each other
-and look like a single pin.</p></li>
+and look like a single pin</p></li>
 </ul>
 <div class="section level3">
 <h3 id="spiderfying-on-max-zoom">Spiderfying on max zoom<a class="anchor" aria-label="anchor" href="#spiderfying-on-max-zoom"></a>

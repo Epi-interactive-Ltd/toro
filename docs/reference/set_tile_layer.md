@@ -1,6 +1,6 @@
-# Set the tile layer for the map.
+# Set the tile layer for the map
 
-Set the tile layer for the map.
+Set the tile layer for the map
 
 ## Usage
 
@@ -12,16 +12,16 @@ set_tile_layer(map, tiles)
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - tiles:
 
-  A character vector of tile layer names. Options include values
-  returned from get_tile_options().
+  A character vector of tile layer names Options include values returned
+  from get_tile_options()
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## See also
 

@@ -1,6 +1,6 @@
-# Remove a custom control from the map.
+# Remove a custom control from the map
 
-Remove a custom control from the map.
+Remove a custom control from the map
 
 ## Usage
 
@@ -13,20 +13,20 @@ remove_custom_control(proxy, control_id, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 
 - control_id:
 
-  The ID of the custom control to remove.
+  The ID of the custom control to remove
 
 - panel_id:
 
   Optional. If provided, removes the control from the specified control
-  panel. If NULL, removes the standalone custom control.
+  panel. If NULL, removes the standalone custom control
 
 ## Value
 
-The map proxy object for chaining.
+The map proxy object for chaining
 
 ## Examples
 

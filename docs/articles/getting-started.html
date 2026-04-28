@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting started with toro • toro</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -21,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,11 +57,10 @@
 
 <script src="getting-started_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="getting-started_files/mapbox-gl-draw-1.5.0/mapbox-gl-draw.min.css" rel="stylesheet">
 <script src="getting-started_files/mapbox-gl-draw-1.5.0/mapbox-gl-draw.min.js"></script><link href="getting-started_files/maplibre-gl-5.6.1/maplibre-gl.min.css" rel="stylesheet">
-<script src="getting-started_files/maplibre-gl-5.6.1/maplibre-gl.min.js"></script><script src="getting-started_files/turf-7.2.0/turf.min.js"></script><link href="getting-started_files/map-0.0.6/map.css" rel="stylesheet">
-<script src="getting-started_files/map-0.0.6/map.js"></script><script src="getting-started_files/map-0.0.6/source-utils.js"></script><script src="getting-started_files/map-0.0.6/map-utils.js"></script><script src="getting-started_files/map-0.0.6/control-utils.js"></script><script src="getting-started_files/map-0.0.6/layer-utils.js"></script><script src="getting-started_files/map-0.0.6/cluster-utils.js"></script><script src="getting-started_files/map-0.0.6/view-utils.js"></script><script src="getting-started_files/map-0.0.6/animation-utils.js"></script><div class="row">
+<script src="getting-started_files/maplibre-gl-5.6.1/maplibre-gl.min.js"></script><script src="getting-started_files/turf-7.2.0/turf.min.js"></script><link href="getting-started_files/map-0.1.0/map.css" rel="stylesheet">
+<script src="getting-started_files/map-0.1.0/map.js"></script><script src="getting-started_files/map-0.1.0/source-utils.js"></script><script src="getting-started_files/map-0.1.0/map-utils.js"></script><script src="getting-started_files/map-0.1.0/control-utils.js"></script><script src="getting-started_files/map-0.1.0/layer-utils.js"></script><script src="getting-started_files/map-0.1.0/cluster-utils.js"></script><script src="getting-started_files/map-0.1.0/view-utils.js"></script><script src="getting-started_files/map-0.1.0/animation-utils.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Getting started with toro</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Getting started with toro</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/articles/getting-started.Rmd" class="external-link"><code>vignettes/articles/getting-started.Rmd</code></a></small>
@@ -68,17 +72,17 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install the development version from Github:</p>
+<p>To install the development version from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Epi-interactive-Ltd/toro"</span><span class="op">)</span></span></code></pre></div>
 <p>Once installed, this package can be used in the R console and within
 <a href="https://shiny.posit.co/" class="external-link">Shiny</a> applications.</p>
 </div>
 <div class="section level2">
-<h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+<h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h2>
 <div class="section level3">
-<h3 id="default-map">Default Map<a class="anchor" aria-label="anchor" href="#default-map"></a>
+<h3 id="default-map">Default map<a class="anchor" aria-label="anchor" href="#default-map"></a>
 </h3>
 <p>To create the default map widget just call the <code>map</code>
 function.</p>
@@ -88,7 +92,7 @@ function.</p>
 <script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
-<h3 id="customise-with-map-options">Customise With Map Options<a class="anchor" aria-label="anchor" href="#customise-with-map-options"></a>
+<h3 id="customise-with-map-options">Customise with map options<a class="anchor" aria-label="anchor" href="#customise-with-map-options"></a>
 </h3>
 <p>By passing parameters to the <code>map</code> function you can
 customise several features of the map.</p>
@@ -102,7 +106,7 @@ customise several features of the map.</p>
 <script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"style":"natgeo","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite","natgeo"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
-<h3 id="adding-layers">Adding Layers<a class="anchor" aria-label="anchor" href="#adding-layers"></a>
+<h3 id="adding-layers">Adding layers<a class="anchor" aria-label="anchor" href="#adding-layers"></a>
 </h3>
 <p>You can add layers to the map using layer functions like
 <code>add_symbol_layer</code>, <code>add_fill_layer</code>, etc.</p>
@@ -123,7 +127,7 @@ vignette</a></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="where-to-next">Where to Next?<a class="anchor" aria-label="anchor" href="#where-to-next"></a>
+<h2 id="where-to-next">Where to next?<a class="anchor" aria-label="anchor" href="#where-to-next"></a>
 </h2>
 <p>It is highly recommended that you read through the <a href="https://epi-interactive-ltd.github.io/toro/articles/layers.html">layers
 vignette</a> next.</p>

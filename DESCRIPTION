@@ -1,23 +1,30 @@
+Type: Package
 Package: toro
-Title: Interactive and Customisable Maps using the Maplibre GL JS Library
-Version: 0.0.6
-Date: 2026-03-27
+Title: Interactive & Customisable Maps using the 'MapLibre GL JS' Library
+Version: 0.1.0
 Authors@R: c(
     person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
     person(given = "Jocelyn", family = "Qian", email = "jocelyn@epi.group", role = c("ctb")),
+    person(given = "Nick", family = "Snellgrove", email = "nick@epi.group", role = c("ctb")),
     person("MapLibre contributors", role = "cph", comment = "MapLibre GL JS library"),
     person("Turf contributors", role = "cph", comment = "turf plugin"),
     person("Mapbox contributors", role = "cph", comment = "mapbox-gl-draw plugin"),
     person("epi", role = c("cph", "fnd")))
-Description: Highly customisabled and interactive maps for R TODO.
-URL: https://epi-interactive-ltd.github.io/toro, https://github.com/Epi-interactive-Ltd/toro
+Description: Create interactive maps that can keep up with complex visualisations and large datasets,
+    with this useful interface to the 'MapLibre GL JS' (<https://maplibre.org/maplibre-gl-js/docs/>)
+    library. Users can create maps directly in the console, or as an HTML widget within 'Shiny' web
+    applications, and rendering of spatial data quickly with many customisable options (clusters,
+    custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret
+    and explore large spatial datasets within the context of a 'Shiny' dashboard, without having long
+    loading times waiting for a map to update with new data.
+URL: https://epi-interactive-ltd.github.io/toro/, https://github.com/Epi-interactive-Ltd/toro/
 BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
-License: MIT + file LICENSE
+License: AGPL (>= 3) + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends:
-  R (>= 4.5.0)
+    R (>= 4.5.0)
 Imports:
     htmlwidgets,
     shiny,
@@ -36,6 +43,7 @@ Suggests:
     mapview,
     webshot,
     devtools,
-    spData
-VignetteBuilder: knitr
+    spData,
+    testthat (>= 3.0.0)
 Config/Needs/website: rmarkdown
+Config/testthat/edition: 3

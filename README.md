@@ -1,4 +1,4 @@
-# toro <img src="man/figures/toro-logo.png" align="right" height="100" style="max-height: 100px;" alt="toro logo" />
+# toro <a href="https://epi-interactive-ltd.github.io/toro/"><img src="man/figures/logo.png" align="right" height="136" alt="toro website" /></a>
 
 <!-- badges: start -->
 
@@ -6,15 +6,24 @@
 
 <!-- badges: end -->
 
-toro is a package that provides [Maplibre GL
-JS](https://maplibre.org/maplibre-gl-js/docs/) integration for R.
-
-The goal of toro is to …
+toro is an R package that provides a useful interface to the
+[MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) library, allowing these
+maps to be embedded directly into a Shiny web application, and rendering of spatial
+data quickly with many customisable options (clusters, custom icons, map layers and
+backgrounds). The goal of the package is to make it easier to interpret and explore
+large spatial datasets within the context of a Shiny dashboard, without having long
+loading times waiting for a map to update with new data.
 
 ## Installation
 
-You can install the development version of toro from
-[GitHub](https://github.com/Epi-interactive-Ltd/toro) with:
+Install from CRAN:
+
+```r
+install.packages("toro")
+```
+
+Or,  install the development version from
+[GitHub](https://github.com/Epi-interactive-Ltd/toro):
 
 ```r
 # install.packages("remotes")
@@ -24,7 +33,7 @@ remotes::install_github("Epi-interactive-Ltd/toro")
 ## Documentation
 
 You can find extensive documentation, guides, and examples at:
-<https://epi-interactive-ltd.github.io/toro/>
+<https://epi-interactive-ltd.github.io/toro/>.
 
 ## Example
 
@@ -41,8 +50,8 @@ More specific in-depth examples can be found
 ## Contributing
 
 If you would like to contribute to toro see: [Contributing to
-toro](https://epi-interactive-ltd.github.io/toro/articles/contributing.html)
+toro](https://epi-interactive-ltd.github.io/toro/articles/contributing.html).
 
 ## Licensing
 
-This package is licensed under TODO
+This package is licensed under AGPL-3.

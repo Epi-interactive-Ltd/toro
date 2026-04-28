@@ -1,6 +1,6 @@
 # Add a layer selector control to the map or control panel
 
-Creates a dropdown selector that allows switching between layers,
+Creates a drop-down selector that allows switching between layers,
 showing only the selected layer while hiding all others. This is useful
 for comparing different data layers or allowing users to choose between
 mutually exclusive visualizations.
@@ -26,49 +26,49 @@ add_layer_selector_control(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - layer_ids:
 
-  Vector of layer IDs to include in the selector.
+  Vector of layer IDs to include in the selector
 
 - labels:
 
-  Named vector of labels for layers. If NULL, uses layer IDs directly.
+  Named vector of labels for layers. If NULL, uses layer IDs directly
 
 - default_layer:
 
-  Default layer to select. If NULL, uses the first layer.
+  Default layer to select. If NULL, uses the first layer
 
 - none_option:
 
   Whether to include a "None" option that hides all layers. Default is
-  FALSE.
+  FALSE
 
 - none_label:
 
-  Label for the "None" option. Default is "None".
+  Label for the "None" option. Default is "None"
 
 - position:
 
   Position on the map if not using a control panel. Default is
-  "top-right".
+  "top-right"
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  ID of control group to add to (optional).
+  ID of control group to add to (optional)
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

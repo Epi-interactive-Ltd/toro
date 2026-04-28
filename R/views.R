@@ -1,10 +1,8 @@
-#' Utilites for the map related to the view.
-
-#' Set the map zoom level.
+#' Set the map zoom level
 #'
-#' @param map The map or map proxy object.
-#' @param zoom The zoom level to set. Default is 2.
-#' @return The map or map proxy object for chaining.
+#' @param map The map or map proxy object
+#' @param zoom The zoom level to set. Default is 2
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -25,15 +23,15 @@ set_zoom <- function(map, zoom) {
   map
 }
 
-#' Set the map bounds.
+#' Set the map bounds
 #'
-#' @param map The map or map proxy object.
+#' @param map The map or map proxy object
 #' @param bounds One of two formats:
-#' - A list of two coordinate pairs: `list(list(lon1, lat1), list(lon2, lat2))`.
-#' - An `sf` object, which will be converted to a bounding box.
-#' @param padding The padding around the bounds in pixels. Default is 50.
-#' @param max_zoom The maximum zoom level to set. Default is the object's `maxZoom`.
-#' @return The map or map proxy object for chaining.
+#' - A list of two coordinate pairs: `list(list(lon1, lat1), list(lon2, lat2))`
+#' - An `sf` object, which will be converted to a bounding box
+#' @param padding The padding around the bounds in pixels. Default is 50
+#' @param max_zoom The maximum zoom level to set. Default is the object's `maxZoom`
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples

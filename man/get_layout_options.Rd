@@ -7,47 +7,47 @@
 get_layout_options(layer_type, options = list())
 }
 \arguments{
-\item{layer_type}{A string indicating the type of layer (e.g., "fill", "circle", "line").}
+\item{layer_type}{A string indicating the type of layer (e.g., "fill", "circle", "line")}
 
-\item{options}{A list of additional options to customize the layout properties.
-See Maplibre docs for options.
+\item{options}{A list of additional options to customize the layout properties
+See MapLibre docs for options.
 \itemize{
 \item line_cap: A list of options for the line cap, if \code{layer_type} is "line".
-Default is "round".
+Default is "round"
 \item line_join: A list of options for the line join, if \code{layer_type} is "line".
-Default is "round".
+Default is "round"
 \item icon_image: The name of the icon image to use for symbol layers, if \code{layer_type} is
-"symbol". Default is "toro-pin".
+"symbol". Default is "toro-pin"
 \item icon_size: The size of the icon for symbol layers, if \code{layer_type} is "symbol".
-Default is 1.
+Default is 1
 \item icon_anchor: The anchor point for the icon in symbol layers, if \code{layer_type} is
-"symbol". Default is "bottom".
+"symbol". Default is "bottom"
 \item text_anchor: The anchor point for the text in symbol layers, if \code{layer_type} is
-"symbol". Default is "center".
+"symbol". Default is "center"
 \item icon_offset: The offset for the icon in symbol layers, if \code{layer_type} is "symbol".
-Default is list(0, 0).
+Default is list(0, 0)
 \item icon_allow_overlap: Whether to allow icons to overlap in symbol layers, if
-\code{layer_type} is "symbol". Default is TRUE.
+\code{layer_type} is "symbol". Default is TRUE
 \item text_allow_overlap: Whether to allow text to overlap in symbol layers, if \code{layer_type}
-is "symbol". Default is TRUE.
+is "symbol". Default is TRUE
 \item icon_rotate: The rotation angle for icons in symbol layers, if \code{layer_type} is
-"symbol". Default is 0.
+"symbol". Default is 0
 \item icon_flip_horizontal: Whether to flip icons horizontally in symbol layers, if
 \code{layer_type} is "symbol". Default is FALSE. Note that this uses the \code{icon-flip-horizontal}
-property in Maplibre, which may not be supported by all icons.
+property in MapLibre, which may not be supported by all icons
 \item text_font: The font for text in symbol layers, if \code{layer_type} is "symbol". Default is
-"Open Sans Regular".
+"Open Sans Regular"
 \item text_field: The text field for symbol layers, if \code{layer_type} is "symbol". Default is
 NULL, which means no text will be shown. This can be set to a column value using
-\code{get_column} or other functions to show text from the data.
+\code{get_column} or other functions to show text from the data
 \item text_size: The size of the text in symbol layers, if \code{layer_type} is "symbol".
-Default is 12.
-You can also provide any other layout options found in the Maplibre docs for the specific
-layer type, and they will be included in the returned list.
+Default is 12
+You can also provide any other layout options found in the MapLibre docs for the specific
+layer type, and they will be included in the returned list
 }}
 }
 \value{
-A list of layout options suitable for the specified layer type.
+A list of layout options suitable for the specified layer type
 }
 \description{
 This function returns a list of layout options based on the layer type and any additional
@@ -55,10 +55,10 @@ options provided.
 }
 \note{
 You can provide any layout options found in the
-\href{https://maplibre.org/maplibre-style-spec/layers/}{Maplibre Layers docs} in the \code{options}
+\href{https://maplibre.org/maplibre-style-spec/layers/}{MapLibre Layers docs} in the \code{options}
 argument, and they will be included in the returned list.
 The default options are just a starting point and can be overridden by providing them in the
-\code{options} argument.
+\code{options} argument
 }
 \examples{
 \dontrun{

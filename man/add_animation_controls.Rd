@@ -2,7 +2,7 @@
 % Please edit documentation in R/animation.R
 \name{add_animation_controls}
 \alias{add_animation_controls}
-\title{Add animation controls to a toro map.}
+\title{Add animation controls to a toro map}
 \usage{
 add_animation_controls(
   map,
@@ -17,32 +17,51 @@ add_animation_controls(
 )
 }
 \arguments{
-\item{map}{A toro map object or a map proxy object.}
+\item{map}{A toro map object or a map proxy object}
 
-\item{route_id}{Optional route ID to control. If NULL, controls all routes.}
+\item{route_id}{Optional route ID to control. If NULL, controls all routes}
 
-\item{position}{Position of the controls on the map. Default is "top-right".}
+\item{position}{Position of the controls on the map. Default is "top-right"}
 
-\item{panel_id}{Optional control panel ID to add controls to instead of map.}
+\item{panel_id}{Optional control panel ID to add controls to instead of map}
 
 \item{buttons}{Character vector of buttons to include.
-Options: "play", "pause", "stop". Default is c("play", "pause").}
+Options: "play", "pause", "stop". Default is c("play", "pause")}
 
-\item{include_speed_control}{Logical. Whether to include a speed control slider. Default is FALSE.}
+\item{include_speed_control}{Logical. Whether to include a speed control slider. Default is FALSE}
 
 \item{speed_values}{Numeric vector of speed values for the speed slider.
-Default is c(0.5, 1, 2) for slow, normal, and fast speeds.}
+Default is c(0.5, 1, 2) for slow, normal, and fast speeds}
 
 \item{speed_labels}{Character vector of labels for speed values.
-Default is c("Slow", "Normal", "Fast").}
+Default is c("Slow", "Normal", "Fast")}
 
-\item{settings}{A list of additional settings for the controls.}
+\item{settings}{A list of additional settings for the controls}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{                 The updated map object.
-}\if{html}{\out{</div>}}
+The updated map object
 }
 \description{
 Adds play/pause/stop buttons to control route animations on the map.
 Optionally includes a speed control slider for adjusting animation speed.
+}
+\examples{
+\dontrun{
+library(toro)
+library(sf)
+
+line_data <- sf::st_sf(
+  id = 1,
+  geometry = sf::st_sfc(
+    sf::st_linestring(
+      cbind(c(172.2041, 163.9383), c(-32.56960, -46.43999))
+    ),
+    crs = 4326
+  )
+)
+
+map() |>
+  add_route(route_id = "route_line", points = line_data) |>
+  add_animation_controls(route_id = "route_line", include_speed_control = TRUE)
+}
 }

@@ -1,4 +1,4 @@
-#' Get the sf data frame of a clicked feature from the map widget.
+#' Get the sf data frame of a clicked feature from the map widget
 #'
 #' The click input is a list containing the `layerId`, `properties`, `geometry`, and
 #' `time`. Turn this into an `sf` object.
@@ -10,10 +10,10 @@
 #'
 #' @note `time` is not used in this function, but it is included in the input so that
 #' the same feature can be clicked multiple times and the changed time means that the
-#' input will be updated.
+#' input will be updated
 #'
-#' @param clicked_feature_input A list representing the clicked feature.
-#' @return A `sf` object representing the clicked feature, or `NULL`.
+#' @param clicked_feature_input A list representing the clicked feature
+#' @return A `sf` object representing the clicked feature, or `NULL`
 #' @export
 #'
 #' @examples
@@ -68,7 +68,7 @@ get_clicked_feature <- function(clicked_feature_input) {
   geojsonsf::geojson_sf(jsonlite::toJSON(geojson, auto_unbox = TRUE))
 }
 
-#' Get the drawn shape from the map widget.
+#' Get the drawn shape from the map widget
 #'
 #' Parses the JSON string returned by the map widget when a shape is drawn.
 #' Ensures that the ID of the shape is included in the resulting `sf` object.
@@ -78,8 +78,8 @@ get_clicked_feature <- function(clicked_feature_input) {
 #' new shape is created using the draw control on the map. Pass this input to `get_drawn_shape()`
 #' to convert it into an `sf` object for easier manipulation in R.
 #'
-#' @param create_input_string A JSON string representing the drawn shape.
-#' @return A `sf` object representing the drawn shape, or `NULL`.
+#' @param create_input_string A JSON string representing the drawn shape
+#' @return A `sf` object representing the drawn shape, or `NULL`
 #' @export
 #'
 #' @examples

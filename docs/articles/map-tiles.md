@@ -1,4 +1,4 @@
-# Map Tiles
+# Map tiles
 
 You can find the tile options by using
 [`get_tile_options()`](https://epi-interactive-ltd.github.io/toro/reference/get_tile_options.md).
@@ -60,7 +60,7 @@ map(
 )
 ```
 
-## Changing Tiles
+## Changing tiles
 
 ### set_tile_layer()
 
@@ -102,7 +102,7 @@ if (interactive()) {
 }
 ```
 
-### Tile Controllers
+### Tile controllers
 
 You can also change a maps tiles via a tile controller. A tile
 controller must be placed inside a control panel.

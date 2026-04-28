@@ -1,6 +1,6 @@
-# Add an image source to the map.
+# Add an image source to the map
 
-Add an image source to the map.
+Add an image source to the map
 
 ## Usage
 
@@ -12,19 +12,19 @@ add_image(map, image_id, image_url)
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - image_id:
 
-  The ID of the image source.
+  The ID of the image source
 
 - image_url:
 
-  The URL of the image to add.
+  The URL of the image to add
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

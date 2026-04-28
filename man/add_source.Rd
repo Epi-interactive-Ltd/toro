@@ -2,41 +2,39 @@
 % Please edit documentation in R/sources.R
 \name{add_source}
 \alias{add_source}
-\title{Utilities for the map related to map sources.
-Add a source to the map.}
+\title{Add a source to the map}
 \usage{
 add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{source_id}{The ID for the source.}
+\item{source_id}{The ID for the source}
 
-\item{data}{The data for the source, typically in GeoJSON format.}
+\item{data}{The data for the source, typically in GeoJSON format}
 
 \item{type}{The type of the source. Default is \code{"geojson"}.
-Other options include \code{"vector"} or \code{"raster"}.}
+Other options include \code{"vector"} or \code{"raster"}}
 
-\item{cluster}{Whether to enable clustering for this source. Default is \code{FALSE}.}
+\item{cluster}{Whether to enable clustering for this source. Default is \code{FALSE}}
 
-\item{...}{Additional arguments to in pass directly to the JS adSource function. Documentation
+\item{...}{Additional arguments to in pass directly to the JS addSource function. Documentation
 for this can be found on the
-\href{https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource}{Maplibre GL JS docs}.
+\href{https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource}{MapLibre GL JS docs}.
 \itemize{
 \item id: Alternative to \code{source_id} for backward compatibility. If both \code{source_id} and
-\code{id} are provided, \code{source_id} will take precedence.
+\code{id} are provided, \code{source_id} will take precedence
 }}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Utilities for the map related to map sources.
-Add a source to the map.
+Add a source to the map
 }
 \note{
 If you add a source directly in an add layer function, the source ID will
-be automatically generated as "source-\if{html}{\out{<layer-id>}}".
+be automatically generated as \code{source-{layer-id}}.
 }
 \examples{
 \dontrun{

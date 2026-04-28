@@ -2,21 +2,21 @@
 % Please edit documentation in R/layer_controls.R
 \name{remove_layer_selector_control}
 \alias{remove_layer_selector_control}
-\title{Remove the layer selector control from the map.}
+\title{Remove the layer selector control from the map}
 \usage{
 remove_layer_selector_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
 \item{panel_id}{Optional. If provided, removes the layer selector control from the specified
-control panel. If NULL, removes the standalone layer selector control.}
+control panel. If NULL, removes the standalone layer selector control}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove the layer selector control from the map.
+Remove the layer selector control from the map
 }
 \examples{
 \dontrun{

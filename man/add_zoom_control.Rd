@@ -2,8 +2,7 @@
 % Please edit documentation in R/view_controls.R
 \name{add_zoom_control}
 \alias{add_zoom_control}
-\title{Functions related to zoom controls.
-Add a zoom control to the map.}
+\title{Add a zoom control to the map}
 \usage{
 add_zoom_control(
   map,
@@ -15,27 +14,26 @@ add_zoom_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{position}{The position of the zoom control on the map. Default is \code{"top-right"}.}
+\item{position}{The position of the zoom control on the map. Default is \code{"top-right"}}
 
-\item{control_options}{Additional options for the zoom control. Default is an empty list.}
+\item{control_options}{Additional options for the zoom control. Default is an empty list}
 
-\item{panel_id}{ID of control panel to add to (optional).}
+\item{panel_id}{ID of control panel to add to (optional)}
 
-\item{section_title}{Section title when added to a control panel.}
+\item{section_title}{Section title when added to a control panel}
 
-\item{group_id}{Optional ID of the group to add the control to within a panel.}
+\item{group_id}{Optional ID of the group to add the control to within a panel}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Functions related to zoom controls.
-Add a zoom control to the map.
+Add a zoom control to the map
 }
 \note{
-See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/}{Maplibre NavigationControl docs}
+See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/}{MapLibre NavigationControl docs}
 for more information on available options.
 }
 \examples{

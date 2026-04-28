@@ -20,7 +20,7 @@ renderMap(expr, env = parent.frame(), quoted = FALSE)
 - width, height:
 
   Must be a valid CSS unit (like `'100%'`, `'400px'`, `'auto'`) or a
-  number, which will be coerced to a string and have `'px'` appended.
+  number, which will be coerced to a string and have `'px'` appended
 
 - expr:
 
@@ -28,10 +28,10 @@ renderMap(expr, env = parent.frame(), quoted = FALSE)
 
 - env:
 
-  The environment in which to evaluate `expr`.
+  The environment in which to evaluate `expr`
 
 - quoted:
 
   Is `expr` a quoted expression (with
   [`quote()`](https://rdrr.io/r/base/substitute.html))? This is useful
-  if you want to save an expression in a variable.
+  if you want to save an expression in a variable

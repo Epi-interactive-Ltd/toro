@@ -2,8 +2,7 @@
 % Please edit documentation in R/layer_controls.R
 \name{add_tile_selector_control}
 \alias{add_tile_selector_control}
-\title{Functions relating to layer controls on the map.
-Add a tile selector control to the map or control panel}
+\title{Add a tile selector control to the map or control panel}
 \usage{
 add_tile_selector_control(
   map,
@@ -17,28 +16,27 @@ add_tile_selector_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
 \item{available_tiles}{Vector of available tile options. If NULL, uses all loaded tiles
-from the map.}
+from the map}
 
-\item{labels}{Named vector of labels for tiles. If NULL, uses tile names directly.}
+\item{labels}{Named vector of labels for tiles. If NULL, uses tile names directly}
 
-\item{default_tile}{Default tile to select. If NULL, uses current map tile.}
+\item{default_tile}{Default tile to select. If NULL, uses current map tile}
 
-\item{position}{Position on the map if not using a control panel. Default is "top-right".}
+\item{position}{Position on the map if not using a control panel. Default is "top-right"}
 
-\item{panel_id}{ID of control panel to add to (optional).}
+\item{panel_id}{ID of control panel to add to (optional)}
 
-\item{section_title}{Section title when added to a control panel.}
+\item{section_title}{Section title when added to a control panel}
 
-\item{group_id}{ID of control group to add to (optional).}
+\item{group_id}{ID of control group to add to (optional)}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Functions relating to layer controls on the map.
 Add a tile selector control to the map or control panel
 }
 \examples{

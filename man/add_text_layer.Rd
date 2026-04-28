@@ -2,26 +2,24 @@
 % Please edit documentation in R/layers.R
 \name{add_text_layer}
 \alias{add_text_layer}
-\title{Add a text layer to a map or map proxy.
-This layer is typically used for text labels.}
+\title{Add a text layer to a map or map proxy}
 \usage{
 add_text_layer(map, ...)
 }
 \arguments{
-\item{map}{The map object or map proxy to which the layer will be added.}
+\item{map}{The map object or map proxy to which the layer will be added}
 
 \item{...}{Additional arguments to include in the layer definition.
 \itemize{
 \item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
 See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
-for details on available options.
+for details on available options
 }}
 }
 \value{
-The updated map object with the text layer added.
+The updated map object with the text layer added
 }
 \description{
-Add a text layer to a map or map proxy.
 This layer is typically used for text labels.
 }
 \examples{

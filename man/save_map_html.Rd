@@ -2,24 +2,23 @@
 % Please edit documentation in R/export.R
 \name{save_map_html}
 \alias{save_map_html}
-\title{Save map as standalone HTML file.}
+\title{Save map as standalone HTML file}
 \usage{
 save_map_html(map, filepath, title = "Toro Map", selfcontained = TRUE, ...)
 }
 \arguments{
-\item{map}{A map object created by \code{map()}.}
+\item{map}{A map object created by \code{map()}}
 
-\item{filepath}{The file path to save the HTML file (should end with .html).}
+\item{filepath}{The file path to save the HTML file (should end with .html)}
 
-\item{title}{The title for the HTML page. Default is "Toro Map".}
+\item{title}{The title for the HTML page. Default is "Toro Map"}
 
-\item{selfcontained}{Whether to create a self-contained HTML file. Default is TRUE.}
+\item{selfcontained}{Whether to create a self-contained HTML file. Default is TRUE}
 
-\item{...}{Additional arguments passed to htmlwidgets::saveWidget().}
+\item{...}{Additional arguments passed to htmlwidgets::saveWidget()}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{    The file path of the saved HTML file (invisibly).
-}\if{html}{\out{</div>}}
+The file path of the saved HTML file (invisibly)
 }
 \description{
 This function saves a map widget as a self-contained HTML file that can be

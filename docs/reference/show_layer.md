@@ -1,6 +1,6 @@
-# Show a previously hidden layer on the map.
+# Show a previously hidden layer on the map
 
-Show a previously hidden layer on the map.
+Show a previously hidden layer on the map
 
 ## Usage
 
@@ -13,15 +13,15 @@ show_layer(proxy, layer_id)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 
 - layer_id:
 
-  The ID of the layer to show.
+  The ID of the layer to show
 
 ## Value
 
-The map proxy object for chaining.
+The map proxy object for chaining
 
 ## Examples
 

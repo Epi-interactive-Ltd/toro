@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Contributing to toro • toro</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -21,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,8 +58,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Contributing to toro</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Contributing to toro</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/Epi-interactive-Ltd/toro/blob/HEAD/vignettes/articles/contributing.Rmd" class="external-link"><code>vignettes/articles/contributing.Rmd</code></a></small>
@@ -65,7 +69,7 @@
     
 <p>All types of contributions are encouraged and appreciated. See the <a href="#table-of-contents">Table of Contents</a> for more details.</p>
 <div class="section level2">
-<h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
+<h2 id="table-of-contents">Table of contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
 </h2>
 <ul>
 <li><a href="#code-of-conduct">Code of Conduct</a></li>
@@ -81,49 +85,48 @@ Documentation</a></li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+<h2 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>This project and everyone participating in it is governed by the <a href="blob/main/CODE_OF_CONDUCT.html">CONTRIBUTING.md Code of Conduct</a>.
-By participating, you are expected to uphold this code. Please report
-unacceptable behavior to <todo>.</todo></p>
+<p>This project and everyone participating in it is governed by the <a href="https://epi-interactive-ltd.github.io/toro/articles/blob/main/CODE_OF_CONDUCT.md">CONTRIBUTING.md
+Code of Conduct</a>. By participating, you are expected to uphold this
+code. Please report unacceptable behavior to .</p>
 </div>
 <div class="section level2">
-<h2 id="i-have-a-question">I Have a Question<a class="anchor" aria-label="anchor" href="#i-have-a-question"></a>
+<h2 id="i-have-a-question">I have a question<a class="anchor" aria-label="anchor" href="#i-have-a-question"></a>
 </h2>
 <blockquote>
 <p>If you want to ask a question, we assume that you have read the
-available <a href="">Documentation</a>.</p>
+available <a href="https://epi-interactive-ltd.github.io/toro/articles/">Documentation</a>.</p>
 </blockquote>
-<p>Before you ask a question, it is best to search for existing <a href="/issues">Issues</a> that might help you. In case you have found a
-suitable issue and still need clarification, you can write your question
-in this issue. It is also advisable to search the internet for answers
-first.</p>
+<p>Before you ask a question, it is best to search for existing <a href="https://github.com/Epi-interactive-Ltd/toro/issues" class="external-link">issues</a>
+that might help you. In case you have found a suitable issue and still
+need clarification, you can write your question in this issue. It is
+also advisable to search the internet for answers first.</p>
 <p>If you then still feel the need to ask a question and need
 clarification, we recommend the following:</p>
 <ul>
-<li>Open an <a href="/issues/new">Issue</a>.</li>
+<li>Open an <a href="https://github.com/Epi-interactive-Ltd/toro/issues/new" class="external-link">issue</a>.</li>
 <li>Provide as much context as you can about what you’re running
 into.</li>
 <li>Provide package and platform versions (R, RStudio, Positron, etc),
 depending on what seems relevant.</li>
 </ul>
-<p>We will then take care of the issue as soon as possible.</p>
 </div>
 <div class="section level2">
-<h2 id="i-want-to-contribute">I Want To Contribute<a class="anchor" aria-label="anchor" href="#i-want-to-contribute"></a>
+<h2 id="i-want-to-contribute">I want To contribute<a class="anchor" aria-label="anchor" href="#i-want-to-contribute"></a>
 </h2>
 <blockquote>
-<h3 id="legal-notice">Legal Notice</h3>
+<h3 id="legal-notice">Legal notice</h3>
 <p>When contributing to this project, you must agree that you have
 authored 100% of the content, that you have the necessary rights to the
 content and that the content you contribute may be provided under the
 project license.</p>
 </blockquote>
 <div class="section level3">
-<h3 id="reporting-bugs">Reporting Bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a>
+<h3 id="reporting-bugs">Reporting bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a>
 </h3>
 <div class="section level4">
-<h4 id="before-submitting-a-bug-report">Before Submitting a Bug Report<a class="anchor" aria-label="anchor" href="#before-submitting-a-bug-report"></a>
+<h4 id="before-submitting-a-bug-report">Before submitting a bug report<a class="anchor" aria-label="anchor" href="#before-submitting-a-bug-report"></a>
 </h4>
 <p>A good bug report shouldn’t leave others needing to chase you up for
 more information. Therefore, we ask you to investigate carefully,
@@ -138,11 +141,13 @@ you have read the documentation. If you are looking for support, you
 might want to check <a href="#i-have-a-question">this section</a>).</li>
 <li>To see if other users have experienced (and potentially already
 solved) the same issue you are having, check if there is not already a
-bug report existing for your bug or error in the <a href="issues?q=label%3Abug">bug tracker</a>.</li>
+bug report existing for your bug or error in the <a href="https://github.com/Epi-interactive-Ltd/toro/issues?q=label%3Abug" class="external-link">bug
+tracker</a>.</li>
 <li>Also make sure to search the internet (including Stack Overflow) to
 see if users outside of the GitHub community have discussed the
 issue.</li>
-<li>Collect information about the bug:</li>
+<li>Collect information about the bug:
+<ul>
 <li>Stack trace (Traceback)</li>
 <li>OS, Platform and Version (Windows, Linux, macOS, x86, ARM)</li>
 <li>Version of the interpreter, compiler, SDK, runtime environment,
@@ -151,9 +156,11 @@ package manager, depending on what seems relevant.</li>
 <li>Can you reliably reproduce the issue? And can you also reproduce it
 with older versions?</li>
 </ul>
+</li>
+</ul>
 </div>
 <div class="section level4">
-<h4 id="how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-bug-report"></a>
+<h4 id="how-do-i-submit-a-good-bug-report">How do I submit a good bug report?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-bug-report"></a>
 </h4>
 <blockquote>
 <p>You must never report security related issues, vulnerabilities or
@@ -163,9 +170,9 @@ in public. Instead sensitive bugs must be sent by email to &lt;&gt;.</p>
 <p>We use GitHub issues to track bugs and errors. If you run into an
 issue with the project:</p>
 <ul>
-<li>Open an <a href="/issues/new">Issue</a>. (Since we can’t be sure at
-this point whether it is a bug or not, we ask you not to talk about a
-bug yet and not to label the issue.)</li>
+<li>Open an <a href="https://github.com/Epi-interactive-Ltd/toro/issues/new" class="external-link">issue</a>.
+(Since we can’t be sure at this point whether it is a bug or not, we ask
+you not to talk about a bug yet and not to label the issue.)</li>
 <li>Explain the behavior you would expect and the actual behavior.</li>
 <li>Please provide as much context as possible and describe the
 <em>reproduction steps</em> that someone else can follow to recreate the
@@ -189,7 +196,7 @@ will not be addressed until they are reproduced.</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="suggesting-enhancements">Suggesting Enhancements<a class="anchor" aria-label="anchor" href="#suggesting-enhancements"></a>
+<h3 id="suggesting-enhancements">Suggesting enhancements<a class="anchor" aria-label="anchor" href="#suggesting-enhancements"></a>
 </h3>
 <p>This section guides you through submitting an enhancement suggestion
 for CONTRIBUTING.md, <strong>including completely new features and minor
@@ -197,17 +204,17 @@ improvements to existing functionality</strong>. Following these
 guidelines will help maintainers and the community to understand your
 suggestion and find related suggestions.</p>
 <div class="section level4">
-<h4 id="before-submitting-an-enhancement">Before Submitting an Enhancement<a class="anchor" aria-label="anchor" href="#before-submitting-an-enhancement"></a>
+<h4 id="before-submitting-an-enhancement">Before submitting an enhancement<a class="anchor" aria-label="anchor" href="#before-submitting-an-enhancement"></a>
 </h4>
 <ul>
 <li>Make sure that you are using the latest version.</li>
-<li>Read the <a href="">documentation</a> carefully and find out if the
-functionality is already covered, maybe by an individual
-configuration.</li>
-<li>Perform a <a href="/issues">search</a> to see if the enhancement has
-already been suggested (there is an <em>enhancement</em> label). If it
-has, add a comment to the existing issue instead of opening a new
-one.</li>
+<li>Read the <a href="https://epi-interactive-ltd.github.io/toro/articles/">documentation</a>
+carefully and find out if the functionality is already covered, maybe by
+an individual configuration.</li>
+<li>Perform a <a href="https://epi-interactive-ltd.github.io/issues" class="external-link">search</a> to see if
+the enhancement has already been suggested (there is an
+<em>enhancement</em> label). If it has, add a comment to the existing
+issue instead of opening a new one.</li>
 <li>Find out whether your idea fits with the scope and aims of the
 project. It’s up to you to make a strong case to convince the project’s
 developers of the merits of this feature. Keep in mind that we want
@@ -217,9 +224,9 @@ writing an add-on/plugin library.</li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-enhancement-suggestion"></a>
+<h4 id="how-do-i-submit-a-good-enhancement-suggestion">How do I submit a good enhancement suggestion?<a class="anchor" aria-label="anchor" href="#how-do-i-submit-a-good-enhancement-suggestion"></a>
 </h4>
-<p>Enhancement suggestions are tracked as <a href="/issues">GitHub
+<p>Enhancement suggestions are tracked as <a href="https://epi-interactive-ltd.github.io/issues" class="external-link">GitHub
 issues</a>.</p>
 <ul>
 <li>Use a <strong>clear and descriptive title</strong> for the issue to
@@ -243,7 +250,7 @@ inspiration.</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="your-first-code-contribution">Your First Code Contribution<a class="anchor" aria-label="anchor" href="#your-first-code-contribution"></a>
+<h3 id="your-first-code-contribution">Your first code contribution<a class="anchor" aria-label="anchor" href="#your-first-code-contribution"></a>
 </h3>
 <div class="section level4">
 <h4 id="fork-the-repository">Fork the repository<a class="anchor" aria-label="anchor" href="#fork-the-repository"></a>
@@ -252,13 +259,13 @@ inspiration.</li>
 copy of the repository under your own GitHub account.</p>
 </div>
 <div class="section level4">
-<h4 id="install-dependencies">Install Dependencies<a class="anchor" aria-label="anchor" href="#install-dependencies"></a>
+<h4 id="install-dependencies">Install dependencies<a class="anchor" aria-label="anchor" href="#install-dependencies"></a>
 </h4>
 <p>Make sure that you have all the necessary dependencies installed to
 run the project locally. This may include R, Positron, and any required
-packages. Check the <a href="DESCRIPTION">Description</a> file for a
-list of dependencies and their versions.</p>
-<p>Once you have the correct R version instaled, you can use the
+packages. Check the <a href="https://epi-interactive-ltd.github.io/toro/articles/DESCRIPTION">Description</a>
+file for a list of dependencies and their versions.</p>
+<p>Once you have the correct R version installed, you can use the
 following code to install the dependencies:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install dependencies from the DESCRIPTION file</span></span>
@@ -292,10 +299,11 @@ allow you to test your changes in a Shiny app.</p>
 <p>To test outside of a Shiny app simply run:</p>
 <ul>
 <li>
-<code><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">devtools::load_all()</a></code> to load the most recent changes
-from the local repository.</li>
+<a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link"><code>devtools::load_all()</code></a>
+to load the most recent changes from the local repository.</li>
 <li>
-<code><a href="../reference/map.html">map()</a></code> to test the map function.</li>
+<a href="https://epi-interactive-ltd.github.io/toro/reference/map.md"><code>map()</code></a>
+to test the map function.</li>
 </ul>
 </div>
 <div class="section level4">
@@ -309,9 +317,12 @@ easier for the maintainers to review and merge your changes.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="improving-the-documentation">Improving The Documentation<a class="anchor" aria-label="anchor" href="#improving-the-documentation"></a>
+<h3 id="improving-the-documentation">Improving the documentation<a class="anchor" aria-label="anchor" href="#improving-the-documentation"></a>
 </h3>
-<p>TODO</p>
+<p>We welcome contributions to the documentation, whether it’s fixing
+typos, clarifying explanations, or adding new examples. If you find an
+issue with the documentation, you can submit a pull request with your
+proposed changes.</p>
 </div>
 </div>
 <div class="section level2">

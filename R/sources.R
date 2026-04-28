@@ -1,24 +1,22 @@
-#' Utilities for the map related to map sources.
-
-#' Add a source to the map.
+#' Add a source to the map
 #'
 #' @note If you add a source directly in an add layer function, the source ID will
-#' be automatically generated as "source-<layer-id>".
+#' be automatically generated as `source-{layer-id}`.
 #'
-#' @param map The map or map proxy object.
-#' @param source_id The ID for the source.
-#' @param data The data for the source, typically in GeoJSON format.
+#' @param map The map or map proxy object
+#' @param source_id The ID for the source
+#' @param data The data for the source, typically in GeoJSON format
 #' @param type The type of the source. Default is `"geojson"`.
-#'    Other options include `"vector"` or `"raster"`.
-#' @param cluster Whether to enable clustering for this source. Default is `FALSE`.
-#' @param ... Additional arguments to in pass directly to the JS adSource function. Documentation
+#'    Other options include `"vector"` or `"raster"`
+#' @param cluster Whether to enable clustering for this source. Default is `FALSE`
+#' @param ... Additional arguments to in pass directly to the JS addSource function. Documentation
 #'  for this can be found on the
-#'  [Maplibre GL JS docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
+#'  [MapLibre GL JS docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
 #'  \itemize{
 #'    \item id: Alternative to `source_id` for backward compatibility. If both `source_id` and
-#'      `id` are provided, `source_id` will take precedence.
+#'      `id` are provided, `source_id` will take precedence
 #'  }
-#' @return The map or map proxy object for chaining.
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -74,19 +72,19 @@ add_source <- function(
 }
 
 
-#' Add a FeatureService source to the map.
+#' Add a FeatureService source to the map
 #'
 #' @note By default the function appends a query URL to the provided `source_url` to retrieve all
 #'    features in GeoJSON format. If you need more control over the query parameters, you can
 #'    provide the full query URL directly in the `source_url` argument and set `append_query_url`
 #'    to an empty string to prevent appending the default query parameters.
 #'
-#' @param map The map or map proxy object.
-#' @param source_url The URL of the FeatureService source.
-#' @param source_id The ID for the source.
+#' @param map The map or map proxy object
+#' @param source_url The URL of the FeatureService source
+#' @param source_id The ID for the source
 #' @param append_query_url The query URL to append to the source URL. Default is
-#'    `"/0/query?where=1=1&outFields=*&f=geojson"`.
-#' @return The map or map proxy object for chaining.
+#'    `"/0/query?where=1=1&outFields=*&f=geojson"`
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -128,12 +126,13 @@ add_feature_server_source <- function(
 }
 
 #' Add an Image Server source to a toro map
-#' TODO: WIP
 #'
-#' @param map A toro map object or a map proxy object.
-#' @param url The URL of the ArcGIS Image Server.
-#' @param ... Additional parameters for the Image Server source.
-#' @return The updated map object.
+#' WIP.
+#'
+#' @param map A toro map object or a map proxy object
+#' @param url The URL of the ArcGIS Image Server
+#' @param ... Additional parameters for the Image Server source
+#' @return The updated map object
 #' @keywords internal
 add_tiles_from_map_server <- function(
   map,
@@ -167,12 +166,13 @@ add_tiles_from_map_server <- function(
 }
 
 #' Add an Image Server source to a toro map
-#' TODO: WIP
 #'
-#' @param map A toro map object or a map proxy object.
-#' @param url The URL of the ArcGIS Image Server.
-#' @param ... Additional parameters for the Image Server source.
-#' @return The updated map object.
+#' WIP.
+#'
+#' @param map A toro map object or a map proxy object
+#' @param url The URL of the ArcGIS Image Server
+#' @param ... Additional parameters for the Image Server source
+#' @return The updated map object
 #' @keywords internal
 add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   source_options <- list(
@@ -203,12 +203,12 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   map
 }
 
-#' Add an image source to the map.
+#' Add an image source to the map
 #'
-#' @param map The map or map proxy object.
-#' @param image_id The ID of the image source.
-#' @param image_url The URL of the image to add.
-#' @return The map or map proxy object for chaining.
+#' @param map The map or map proxy object
+#' @param image_id The ID of the image source
+#' @param image_url The URL of the image to add
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -266,13 +266,13 @@ add_image <- function(map, image_id, image_url) {
 }
 
 
-#' Set data for a source on the map.
+#' Set data for a source on the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param source_id The ID of the source to update.
-#' @param data The data for the source, typically in GeoJSON format.
-#' @param type The type of the source. Default is `"geojson"`. Other options include `"vector"` or `"raster"`.
-#' @return The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param source_id The ID of the source to update
+#' @param data The data for the source, typically in GeoJSON format
+#' @param type The type of the source. Default is `"geojson"`. Other options include `"vector"` or `"raster"`
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples

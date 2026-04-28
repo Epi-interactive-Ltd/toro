@@ -2,21 +2,21 @@
 % Please edit documentation in R/view_controls.R
 \name{remove_zoom_control}
 \alias{remove_zoom_control}
-\title{Remove the zoom control from the map.}
+\title{Remove the zoom control from the map}
 \usage{
 remove_zoom_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
 \item{panel_id}{Optional. If provided, removes the zoom control from the specified control panel.
-If NULL, removes the standalone zoom control.}
+If NULL, removes the standalone zoom control}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove the zoom control from the map.
+Remove the zoom control from the map
 }
 \examples{
 \dontrun{

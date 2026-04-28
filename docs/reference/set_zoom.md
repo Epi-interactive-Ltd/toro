@@ -1,6 +1,6 @@
-# Utilites for the map related to the view. Set the map zoom level.
+# Set the map zoom level
 
-Utilites for the map related to the view. Set the map zoom level.
+Set the map zoom level
 
 ## Usage
 
@@ -12,15 +12,15 @@ set_zoom(map, zoom)
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - zoom:
 
-  The zoom level to set. Default is 2.
+  The zoom level to set. Default is 2
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

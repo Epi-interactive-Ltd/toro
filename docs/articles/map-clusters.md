@@ -73,7 +73,7 @@ adding the layer.
 
 ### Cluster circles
 
-`clusterOptions.circleOptions` changes the apperance of the clusters
+`clusterOptions.circleOptions` changes the appearance of the clusters
 circle.
 
 Available circle (paint/layout) properties can be found
@@ -139,7 +139,8 @@ map(
 
 ### Cluster text
 
-`clusterOptions.textOptions` changes the apperance of the clusters text.
+`clusterOptions.textOptions` changes the appearance of the clusters
+text.
 
 Available text(symbol) (paint/layout) properties can be found
 [here](https://maplibre.org/maplibre-style-spec/layers/#symbol).
@@ -220,7 +221,7 @@ base_map |>
   )
 ```
 
-## Cluster Spiderfying
+## Cluster spiderfying
 
 Spiderfying handles viewing multiple pins in a cluster (pins in close
 proximity). When the map is zoomed in to the max zoom level and cluster
@@ -237,7 +238,7 @@ There are two reasons why a cluster would need to spiderfy:
   **always** appear. This is due to the fact that without this there
   would be no way for the user to know that there are multiple pins
   there as they would all be stacked on top of each other and look like
-  a single pin.
+  a single pin
 
 ### Spiderfying on max zoom
 

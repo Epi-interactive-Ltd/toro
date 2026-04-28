@@ -2,22 +2,20 @@
 % Please edit documentation in R/views.R
 \name{set_zoom}
 \alias{set_zoom}
-\title{Utilites for the map related to the view.
-Set the map zoom level.}
+\title{Set the map zoom level}
 \usage{
 set_zoom(map, zoom)
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{zoom}{The zoom level to set. Default is 2.}
+\item{zoom}{The zoom level to set. Default is 2}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Utilites for the map related to the view.
-Set the map zoom level.
+Set the map zoom level
 }
 \examples{
 \dontrun{

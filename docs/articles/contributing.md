@@ -3,7 +3,7 @@
 All types of contributions are encouraged and appreciated. See the
 [Table of Contents](#table-of-contents) for more details.
 
-## Table of Contents
+## Table of contents
 
 - [Code of Conduct](#code-of-conduct)
 - [I Have a Question](#i-have-a-question)
@@ -14,7 +14,7 @@ All types of contributions are encouraged and appreciated. See the
 - [Improving The Documentation](#improving-the-documentation)
 - [Join The Project Team](#join-the-project-team)
 
-## Code of Conduct
+## Code of conduct
 
 This project and everyone participating in it is governed by the
 [CONTRIBUTING.md Code of
@@ -22,40 +22,39 @@ Conduct](https://epi-interactive-ltd.github.io/toro/articles/blob/main/CODE_OF_C
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to .
 
-## I Have a Question
+## I have a question
 
 > If you want to ask a question, we assume that you have read the
 > available
 > [Documentation](https://epi-interactive-ltd.github.io/toro/articles/).
 
 Before you ask a question, it is best to search for existing
-[Issues](https://epi-interactive-ltd.github.io/issues) that might help
-you. In case you have found a suitable issue and still need
+[issues](https://github.com/Epi-interactive-Ltd/toro/issues) that might
+help you. In case you have found a suitable issue and still need
 clarification, you can write your question in this issue. It is also
 advisable to search the internet for answers first.
 
 If you then still feel the need to ask a question and need
 clarification, we recommend the following:
 
-- Open an [Issue](https://epi-interactive-ltd.github.io/issues/new).
+- Open an
+  [issue](https://github.com/Epi-interactive-Ltd/toro/issues/new).
 - Provide as much context as you can about what you’re running into.
 - Provide package and platform versions (R, RStudio, Positron, etc),
   depending on what seems relevant.
 
-We will then take care of the issue as soon as possible.
+## I want To contribute
 
-## I Want To Contribute
-
-> ### Legal Notice
+> ### Legal notice
 >
 > When contributing to this project, you must agree that you have
 > authored 100% of the content, that you have the necessary rights to
 > the content and that the content you contribute may be provided under
 > the project license.
 
-### Reporting Bugs
+### Reporting bugs
 
-#### Before Submitting a Bug Report
+#### Before submitting a bug report
 
 A good bug report shouldn’t leave others needing to chase you up for
 more information. Therefore, we ask you to investigate carefully,
@@ -71,19 +70,19 @@ potential bug as fast as possible.
 - To see if other users have experienced (and potentially already
   solved) the same issue you are having, check if there is not already a
   bug report existing for your bug or error in the [bug
-  tracker](https://epi-interactive-ltd.github.io/toro/articles/issues?q=label%3Abug).
+  tracker](https://github.com/Epi-interactive-Ltd/toro/issues?q=label%3Abug).
 - Also make sure to search the internet (including Stack Overflow) to
   see if users outside of the GitHub community have discussed the issue.
 - Collect information about the bug:
-- Stack trace (Traceback)
-- OS, Platform and Version (Windows, Linux, macOS, x86, ARM)
-- Version of the interpreter, compiler, SDK, runtime environment,
-  package manager, depending on what seems relevant.
-- Possibly your input and the output
-- Can you reliably reproduce the issue? And can you also reproduce it
-  with older versions?
+  - Stack trace (Traceback)
+  - OS, Platform and Version (Windows, Linux, macOS, x86, ARM)
+  - Version of the interpreter, compiler, SDK, runtime environment,
+    package manager, depending on what seems relevant.
+  - Possibly your input and the output
+  - Can you reliably reproduce the issue? And can you also reproduce it
+    with older versions?
 
-#### How Do I Submit a Good Bug Report?
+#### How do I submit a good bug report?
 
 > You must never report security related issues, vulnerabilities or bugs
 > including sensitive information to the issue tracker, or elsewhere in
@@ -92,7 +91,8 @@ potential bug as fast as possible.
 We use GitHub issues to track bugs and errors. If you run into an issue
 with the project:
 
-- Open an [Issue](https://epi-interactive-ltd.github.io/issues/new).
+- Open an
+  [issue](https://github.com/Epi-interactive-Ltd/toro/issues/new).
   (Since we can’t be sure at this point whether it is a bug or not, we
   ask you not to talk about a bug yet and not to label the issue.)
 - Explain the behavior you would expect and the actual behavior.
@@ -115,7 +115,7 @@ Once it’s filed:
   the issue will be left to be [implemented by
   someone](#your-first-code-contribution).
 
-### Suggesting Enhancements
+### Suggesting enhancements
 
 This section guides you through submitting an enhancement suggestion for
 CONTRIBUTING.md, **including completely new features and minor
@@ -123,7 +123,7 @@ improvements to existing functionality**. Following these guidelines
 will help maintainers and the community to understand your suggestion
 and find related suggestions.
 
-#### Before Submitting an Enhancement
+#### Before submitting an enhancement
 
 - Make sure that you are using the latest version.
 - Read the
@@ -141,7 +141,7 @@ and find related suggestions.
   not just a small subset. If you’re just targeting a minority of users,
   consider writing an add-on/plugin library.
 
-#### How Do I Submit a Good Enhancement Suggestion?
+#### How do I submit a good enhancement suggestion?
 
 Enhancement suggestions are tracked as [GitHub
 issues](https://epi-interactive-ltd.github.io/issues).
@@ -162,14 +162,14 @@ issues](https://epi-interactive-ltd.github.io/issues).
   CONTRIBUTING.md users. You may also want to point out the other
   projects that solved it better and which could serve as inspiration.
 
-### Your First Code Contribution
+### Your first code contribution
 
 #### Fork the repository
 
 First, create a fork of the repository on GitHub. This will create a
 copy of the repository under your own GitHub account.
 
-#### Install Dependencies
+#### Install dependencies
 
 Make sure that you have all the necessary dependencies installed to run
 the project locally. This may include R, Positron, and any required
@@ -177,7 +177,7 @@ packages. Check the
 [Description](https://epi-interactive-ltd.github.io/toro/articles/DESCRIPTION)
 file for a list of dependencies and their versions.
 
-Once you have the correct R version instaled, you can use the following
+Once you have the correct R version installed, you can use the following
 code to install the dependencies:
 
 ``` r
@@ -230,9 +230,12 @@ you through the process of making a PR and ensuring that you have done
 all the necessary steps (like adding tests and documentation) to make it
 easier for the maintainers to review and merge your changes.
 
-### Improving The Documentation
+### Improving the documentation
 
-TODO
+We welcome contributions to the documentation, whether it’s fixing
+typos, clarifying explanations, or adding new examples. If you find an
+issue with the documentation, you can submit a pull request with your
+proposed changes.
 
 ## Attribution
 

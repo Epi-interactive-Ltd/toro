@@ -17,7 +17,7 @@ dependencies:
       file: htmlwidgets/lib/turf
     script: turf.min.js
   - name: map
-    version: 0.0.6
+    version: 0.1.0
     src:
       file: htmlwidgets/lib/map
     script:

@@ -18,31 +18,31 @@ add_layer_selector_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{layer_ids}{Vector of layer IDs to include in the selector.}
+\item{layer_ids}{Vector of layer IDs to include in the selector}
 
-\item{labels}{Named vector of labels for layers. If NULL, uses layer IDs directly.}
+\item{labels}{Named vector of labels for layers. If NULL, uses layer IDs directly}
 
-\item{default_layer}{Default layer to select. If NULL, uses the first layer.}
+\item{default_layer}{Default layer to select. If NULL, uses the first layer}
 
-\item{none_option}{Whether to include a "None" option that hides all layers. Default is FALSE.}
+\item{none_option}{Whether to include a "None" option that hides all layers. Default is FALSE}
 
-\item{none_label}{Label for the "None" option. Default is "None".}
+\item{none_label}{Label for the "None" option. Default is "None"}
 
-\item{position}{Position on the map if not using a control panel. Default is "top-right".}
+\item{position}{Position on the map if not using a control panel. Default is "top-right"}
 
-\item{panel_id}{ID of control panel to add to (optional).}
+\item{panel_id}{ID of control panel to add to (optional)}
 
-\item{section_title}{Section title when added to a control panel.}
+\item{section_title}{Section title when added to a control panel}
 
-\item{group_id}{ID of control group to add to (optional).}
+\item{group_id}{ID of control group to add to (optional)}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Creates a dropdown selector that allows switching between layers, showing only the
+Creates a drop-down selector that allows switching between layers, showing only the
 selected layer while hiding all others. This is useful for comparing different
 data layers or allowing users to choose between mutually exclusive visualizations.
 }

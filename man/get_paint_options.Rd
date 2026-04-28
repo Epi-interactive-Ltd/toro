@@ -7,30 +7,30 @@
 get_paint_options(layer_type, options = list())
 }
 \arguments{
-\item{layer_type}{A string indicating the type of layer (e.g., "fill", "circle", "line").}
+\item{layer_type}{A string indicating the type of layer (e.g., "fill", "circle", "line")}
 
 \item{options}{A list of additional options to customize the paint properties.
-See Maplibre docs for full options.
+See MapLibre docs for full options.
 \itemize{
 \item colour: The color to use for the layer. Default is "grey". \code{color} is also accepted as
-an alias for \code{colour}.
-\item opacity: The opacity to use for the layer. Default is 1 (fully opaque).
+an alias for \code{colour}
+\item opacity: The opacity to use for the layer. Default is 1 (fully opaque)
 \item line_width: The width of lines in line layers or the outline width for circle layers.
-Default is 1.
+Default is 1
 \item line_dash: The dash pattern for line layers. Default is no dash (solid line).
 You can provide a vector of numbers to specify the dash pattern (e.g., c(2, 4) for a
-pattern of 2 units on, 4 units off).
+pattern of 2 units on, 4 units off)
 \item outline_colour: The color to use for the outline of circle or fill layers.
 Default is the same as \code{colour}. \code{outline_color} is also accepted as an alias for
-\code{outline_colour}.
+\code{outline_colour}
 \item outline_opacity: The opacity to use for the outline of circle or fill layers.
-Default is the same as \code{opacity}.
-You can also provide any other paint options found in the Maplibre docs for the specific
-layer type, and they will be included in the returned list.
+Default is the same as \code{opacity}
+You can also provide any other paint options found in the MapLibre docs for the specific
+layer type, and they will be included in the returned list
 }}
 }
 \value{
-A list of paint options suitable for the specified layer type.
+A list of paint options suitable for the specified layer type
 }
 \description{
 This function returns a list of paint options based on the layer type and any
@@ -38,10 +38,10 @@ additional options provided.
 }
 \note{
 You can provide any paint options found in the
-\href{https://maplibre.org/maplibre-style-spec/layers/}{Maplibre Layers docs} in the \code{options}
+\href{https://maplibre.org/maplibre-style-spec/layers/}{MapLibre Layers docs} in the \code{options}
 argument, and they will be included in the returned list.
 The default options are just a starting point and can be overridden by providing them in the
-\code{options} argument.
+\code{options} argument
 }
 \examples{
 \dontrun{
