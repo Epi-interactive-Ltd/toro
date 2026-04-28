@@ -11,8 +11,15 @@ loading times waiting for a map to update with new data.
 
 ## Installation
 
-You can install the development version of toro from
-[GitHub](https://github.com/Epi-interactive-Ltd/toro) with:
+Install from CRAN:
+
+``` r
+
+install.packages("toro")
+```
+
+Or, install the development version from
+[GitHub](https://github.com/Epi-interactive-Ltd/toro):
 
 ``` r
 
