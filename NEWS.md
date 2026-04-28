@@ -1,3 +1,9 @@
+# toro 0.1.0 (2026-04-28)
+
+## Bug fixes and improvements
+
+- Added tests
+
 # toro 0.0.7 (2026-04-28)
 
 ## Bug fixes and improvements

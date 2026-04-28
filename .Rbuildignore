@@ -16,3 +16,4 @@
 ^inst/examples
 ^man/figures$
 ^vignettes/articles$
+^cran-comments\.md$

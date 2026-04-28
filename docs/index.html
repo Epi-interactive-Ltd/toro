@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Interactive and Customisable Maps using the MapLibre GL JS Library • toro</title>
+<title>Interactive &amp; Customisable Maps using the MapLibre GL JS Library • toro</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -16,9 +16,9 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Interactive and Customisable Maps using the MapLibre GL JS Library">
-<meta name="description" content="toro is an R package that provides a useful interface to the MapLibreGL JS package, allowing these maps to be embedded directly into a Shiny web application, and rendering of spatial data quickly with many customisable options (clusters, custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret and explore large spatial datasets within the context of a Shiny dashboard, without having long loading times waiting for a map to update with new data.">
-<meta property="og:description" content="toro is an R package that provides a useful interface to the MapLibreGL JS package, allowing these maps to be embedded directly into a Shiny web application, and rendering of spatial data quickly with many customisable options (clusters, custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret and explore large spatial datasets within the context of a Shiny dashboard, without having long loading times waiting for a map to update with new data.">
+<meta property="og:title" content="Interactive &amp; Customisable Maps using the MapLibre GL JS Library">
+<meta name="description" content="Create interactive maps that can keep up with complex visualisations and large datasets, with this useful interface to the MapLibre GL JS (&lt;https://maplibre.org/maplibre-gl-js/docs/&gt;) library. Users can create maps directly in the console, or as an HTML widget within Shiny web applications, and rendering of spatial data quickly with many customisable options (clusters, custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret and explore large spatial datasets within the context of a Shiny dashboard, without having long loading times waiting for a map to update with new data.">
+<meta property="og:description" content="Create interactive maps that can keep up with complex visualisations and large datasets, with this useful interface to the MapLibre GL JS (&lt;https://maplibre.org/maplibre-gl-js/docs/&gt;) library. Users can create maps directly in the console, or as an HTML widget within Shiny web applications, and rendering of spatial data quickly with many customisable options (clusters, custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret and explore large spatial datasets within the context of a Shiny dashboard, without having long loading times waiting for a map to update with new data.">
 <meta property="og:image" content="https://epi-interactive-ltd.github.io/toro/logo.png">
 </head>
 <body>
@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,12 +65,15 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p>toro is an R package that provides a useful interface to the <a href="https://maplibre.org/maplibre-gl-js/docs/" class="external-link">MapLibre GL JS</a> package, allowing these maps to be embedded directly into a Shiny web application, and rendering of spatial data quickly with many customisable options (clusters, custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret and explore large spatial datasets within the context of a Shiny dashboard, without having long loading times waiting for a map to update with new data.</p>
+<p>toro is an R package that provides a useful interface to the <a href="https://maplibre.org/maplibre-gl-js/docs/" class="external-link">MapLibre GL JS</a> library, allowing these maps to be embedded directly into a Shiny web application, and rendering of spatial data quickly with many customisable options (clusters, custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret and explore large spatial datasets within the context of a Shiny dashboard, without having long loading times waiting for a map to update with new data.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of toro from <a href="https://github.com/Epi-interactive-Ltd/toro" class="external-link">GitHub</a> with:</p>
+<p>Install from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"toro"</span><span class="op">)</span></span></code></pre></div>
+<p>Or, install the development version from <a href="https://github.com/Epi-interactive-Ltd/toro" class="external-link">GitHub</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Epi-interactive-Ltd/toro"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -83,7 +86,7 @@
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>The most basic use case is as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://epi-interactive-ltd.github.io/toro/">toro</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/map.html">map</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>More specific in-depth examples can be found <a href="https://epi-interactive-ltd.github.io/toro/articles/examples/index.html">here</a>.</p>
