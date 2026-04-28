@@ -1,6 +1,6 @@
 Type: Package
 Package: toro
-Title: Interactive and Customisable Maps using the MapLibre GL JS Library
+Title: Interactive & Customisable Maps using the 'MapLibre GL JS' Library
 Version: 0.1.0
 Authors@R: c(
     person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
@@ -10,12 +10,13 @@ Authors@R: c(
     person("Turf contributors", role = "cph", comment = "turf plugin"),
     person("Mapbox contributors", role = "cph", comment = "mapbox-gl-draw plugin"),
     person("epi", role = c("cph", "fnd")))
-Description: toro is an R package that provides a useful interface to the MapLibreGL JS package,
-    allowing these maps to be embedded directly into a Shiny web application, and rendering of
-    spatial data quickly with many customisable options (clusters, custom icons, map layers and
-    backgrounds). The goal of the package is to make it easier to interpret and explore large
-    spatial datasets within the context of a Shiny dashboard, without having long loading times
-    waiting for a map to update with new data.
+Description: Create interactive maps that can keep up with complex visualisations and large datasets,
+    with this useful interface to the 'MapLibre GL JS' (<https://maplibre.org/maplibre-gl-js/docs/>)
+    library. Users can create maps directly in the console, or as an HTML widget within 'Shiny' web
+    applications, and rendering of spatial data quickly with many customisable options (clusters,
+    custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret
+    and explore large spatial datasets within the context of a 'Shiny' dashboard, without having long
+    loading times waiting for a map to update with new data.
 URL: https://epi-interactive-ltd.github.io/toro/, https://github.com/Epi-interactive-Ltd/toro/
 BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
 License: AGPL (>= 3) + file LICENSE
