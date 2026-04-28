@@ -2,24 +2,22 @@
 % Please edit documentation in R/controls.R
 \name{toggle_control}
 \alias{toggle_control}
-\title{Utilities for the map related to controls.
-Toggle the visibility of a control on the map.}
+\title{Toggle the visibility of a control on the map}
 \usage{
 toggle_control(proxy, control_id, show = TRUE)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{control_id}{The ID of the control to toggle.}
+\item{control_id}{The ID of the control to toggle}
 
-\item{show}{Logical indicating whether to show or hide the control. Default is \code{TRUE}.}
+\item{show}{Logical indicating whether to show or hide the control. Default is \code{TRUE}}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Utilities for the map related to controls.
-Toggle the visibility of a control on the map.
+Toggle the visibility of a control on the map
 }
 \examples{
 \dontrun{

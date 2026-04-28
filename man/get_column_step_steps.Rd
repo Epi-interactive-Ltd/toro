@@ -2,19 +2,19 @@
 % Please edit documentation in R/get_column_values.R
 \name{get_column_step_steps}
 \alias{get_column_step_steps}
-\title{Get the properties for a column in a map layer based on step breaks.}
+\title{Get the properties for a column in a map layer based on step breaks}
 \usage{
 get_column_step_steps(column_name, breaks, values)
 }
 \arguments{
-\item{column_name}{String representing the name of the column to be used.}
+\item{column_name}{String representing the name of the column to be used}
 
-\item{breaks}{Numeric vector of thresholds (must be sorted ascending).}
+\item{breaks}{Numeric vector of thresholds (must be sorted ascending)}
 
-\item{values}{Vector of values, length = length(breaks) + 1.}
+\item{values}{Vector of values, length = length(breaks) + 1}
 }
 \value{
-List containing the paint or layout option to be set.
+List containing the paint or layout option to be set
 }
 \description{
 Allows the data to be styled by the step breaks in the column.

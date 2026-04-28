@@ -1,6 +1,6 @@
-# Utilities for the map related to map sources. Add a source to the map.
+# Add a source to the map
 
-Utilities for the map related to map sources. Add a source to the map.
+Add a source to the map
 
 ## Usage
 
@@ -12,24 +12,24 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - source_id:
 
-  The ID for the source.
+  The ID for the source
 
 - data:
 
-  The data for the source, typically in GeoJSON format.
+  The data for the source, typically in GeoJSON format
 
 - type:
 
   The type of the source. Default is `"geojson"`. Other options include
-  `"vector"` or `"raster"`.
+  `"vector"` or `"raster"`
 
 - cluster:
 
-  Whether to enable clustering for this source. Default is `FALSE`.
+  Whether to enable clustering for this source. Default is `FALSE`
 
 - ...:
 
@@ -38,11 +38,11 @@ add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
   docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
 
   - id: Alternative to `source_id` for backward compatibility. If both
-    `source_id` and `id` are provided, `source_id` will take precedence.
+    `source_id` and `id` are provided, `source_id` will take precedence
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Note
 

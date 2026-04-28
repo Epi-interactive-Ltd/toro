@@ -2,17 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{is_local_file}
 \alias{is_local_file}
-\title{Helper function to detect if URL is a local file path.}
+\title{Helper function to detect if URL is a local file path}
 \usage{
 is_local_file(url)
 }
 \arguments{
-\item{url}{The URL or file path to check.}
+\item{url}{The URL or file path to check}
 }
 \value{
-TRUE if it's a local file path, FALSE if it's a URL or data URI.
+TRUE if it's a local file path, FALSE if it's a URL or data URI
 }
 \description{
-Helper function to detect if URL is a local file path.
+Helper function to detect if URL is a local file path
 }
 \keyword{internal}

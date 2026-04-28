@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2025
-    COPYRIGHT HOLDER: Epi
+    YEAR: 2026
+    COPYRIGHT HOLDER: Epi-interactive-Ltd

@@ -2,21 +2,21 @@
 % Please edit documentation in R/controls.R
 \name{remove_cursor_coords_control}
 \alias{remove_cursor_coords_control}
-\title{Remove the cursor coordinates control from the map.}
+\title{Remove the cursor coordinates control from the map}
 \usage{
 remove_cursor_coords_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
 \item{panel_id}{Optional. If provided, removes the cursor coordinates control from the specified
-control panel. If NULL, removes the standalone cursor coordinates control.}
+control panel. If NULL, removes the standalone cursor coordinates control}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove the cursor coordinates control from the map.
+Remove the cursor coordinates control from the map
 }
 \examples{
 \dontrun{

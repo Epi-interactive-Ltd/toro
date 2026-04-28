@@ -7,11 +7,11 @@
 get_layer_filter(filter_str)
 }
 \arguments{
-\item{filter_str}{A string or vector of strings representing the filter conditions.}
+\item{filter_str}{A string or vector of strings representing the filter conditions}
 }
 \value{
 A list where the first element is "all" if multiple filters are provided,
-or a single filter condition.
+or a single filter condition
 }
 \description{
 Parse a filter string into a list of filters that the map can use.

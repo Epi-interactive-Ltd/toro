@@ -1,7 +1,6 @@
-# Utilities for the map related to exports. Check if Chrome/Chromium is available for webshot operations
+# Check if Chrome/Chromium is available for webshot operations
 
-Utilities for the map related to exports. Check if Chrome/Chromium is
-available for webshot operations
+Check if Chrome/Chromium is available for webshot operations
 
 ## Usage
 

@@ -1,21 +1,19 @@
-#' Functions to manage control panel elements in a map.
-
 #' Add a control panel to the map
 #'
 #' Creates a flexible control panel that can contain multiple controls.
 #'
-#' @param map The map or map proxy object.
-#' @param panel_id Unique identifier for the control panel.
-#' @param title Title for the control panel. If NULL, no title is shown.
+#' @param map The map or map proxy object
+#' @param panel_id Unique identifier for the control panel
+#' @param title Title for the control panel. If NULL, no title is shown
 #' @param position Position of the control panel on the map. Default is "bottom-left".
-#'    Options include "top-left", "top-right", "bottom-left", "bottom-right".
-#' @param collapsible Whether the panel can be collapsed. Default is FALSE.
-#' @param collapsed Initial collapsed state. Default is FALSE.
+#'    Options include "top-left", "top-right", "bottom-left", "bottom-right"
+#' @param collapsible Whether the panel can be collapsed. Default is FALSE
+#' @param collapsed Initial collapsed state. Default is FALSE
 #' @param direction Layout direction for controls within the panel. Either "row" or "column".
-#'    Default is "column".
+#'    Default is "column"
 #' @param custom_controls List of custom controls to add initially. Each should be a list with
-#'    elements: html, id (optional), title (optional).
-#' @return The map or map proxy object for chaining.
+#'    elements: html, id (optional), title (optional)
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -77,15 +75,15 @@ add_control_panel <- function(
 
 #' Add a control group to a control panel
 #'
-#' Creates a collapsible group within a control panel that can contain multiple controls.
+#' Creates a collapsible group within a control panel that can contain multiple controls
 #'
-#' @param map The map or map proxy object.
-#' @param panel_id ID of the target control panel.
-#' @param group_id Unique identifier for the control group.
-#' @param group_title Title for the control group (optional).
-#' @param collapsible Whether the group can be collapsed. Default is FALSE.
-#' @param collapsed Initial collapsed state. Default is FALSE.
-#' @return The map or map proxy object for chaining.
+#' @param map The map or map proxy object
+#' @param panel_id ID of the target control panel
+#' @param group_id Unique identifier for the control group
+#' @param group_title Title for the control group (optional)
+#' @param collapsible Whether the group can be collapsed. Default is FALSE
+#' @param collapsed Initial collapsed state. Default is FALSE
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -175,10 +173,10 @@ add_control_group <- function(
 
 #' Remove a control group from a control panel
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param panel_id The ID of the control panel.
-#' @param group_id The ID of the control group to remove.
-#' @return The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param panel_id The ID of the control panel
+#' @param group_id The ID of the control group to remove
+#' @return The map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -229,17 +227,17 @@ remove_control_group <- function(proxy, panel_id, group_id) {
 }
 
 
-#' Add a control to an existing control panel.
+#' Add a control to an existing control panel
 #'
 #' Used by other toro control functions to add controls to a panel.
 #'
-#' @param map The map or map proxy object.
-#' @param panel_id ID of the target control panel.
-#' @param control_type Type of control ("timeline", "speed", "custom").
-#' @param control_options Control-specific options.
-#' @param section_title Optional section title for the control.
-#' @param group_id Optional ID of the group to add the control to.
-#' @return The map or map proxy object for chaining.
+#' @param map The map or map proxy object
+#' @param panel_id ID of the target control panel
+#' @param control_type Type of control ("timeline", "speed", "custom")
+#' @param control_options Control-specific options
+#' @param section_title Optional section title for the control
+#' @param group_id Optional ID of the group to add the control to
+#' @return The map or map proxy object for chaining
 #' @keywords internal
 add_control_to_panel <- function(
   map,
@@ -295,14 +293,14 @@ add_control_to_panel <- function(
   map
 }
 
-#' Remove a control from a control panel.
+#' Remove a control from a control panel
 #'
 #' Used by other toro control functions to remove controls from a panel.
 #'
-#' @param proxy The map proxy object created by `mapProxy()`.
-#' @param panel_id The ID of the control panel.
-#' @param control_id The ID of the control to remove from the panel.
-#' @return The map proxy object for chaining.
+#' @param proxy The map proxy object created by `mapProxy()`
+#' @param panel_id The ID of the control panel
+#' @param control_id The ID of the control to remove from the panel
+#' @return The map proxy object for chaining
 #' @keywords internal
 remove_control_from_panel <- function(proxy, panel_id, control_id) {
   proxy$session$sendCustomMessage(

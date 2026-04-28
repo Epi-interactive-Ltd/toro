@@ -1,7 +1,6 @@
-# Functions related to animation controls. Add a timeline control to the map or control panel
+# Add a timeline control to the map or control panel
 
-Functions related to animation controls. Add a timeline control to the
-map or control panel
+Add a timeline control to the map or control panel
 
 ## Usage
 
@@ -22,40 +21,40 @@ add_timeline_control(
 
 - map:
 
-  The map or map proxy object.
+  The map or map proxy object
 
 - start_date:
 
-  Start date for the timeline (YYYY-MM-DD format).
+  Start date for the timeline (YYYY-MM-DD format)
 
 - end_date:
 
-  End date for the timeline (YYYY-MM-DD format).
+  End date for the timeline (YYYY-MM-DD format)
 
 - position:
 
   Position on the map if not using a control panel. Default is
-  "bottom-left".
+  "bottom-left"
 
 - max_ticks:
 
-  Maximum number of labeled ticks to prevent overlap. Default is 3.
+  Maximum number of labeled ticks to prevent overlap. Default is 3
 
 - panel_id:
 
-  ID of control panel to add to (optional).
+  ID of control panel to add to (optional)
 
 - section_title:
 
-  Section title when added to a control panel.
+  Section title when added to a control panel
 
 - group_id:
 
-  Optional ID of the group to add the control to within a panel.
+  Optional ID of the group to add the control to within a panel
 
 ## Value
 
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 
 ## Examples
 

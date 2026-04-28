@@ -2,23 +2,23 @@
 % Please edit documentation in R/controls.R
 \name{remove_custom_control}
 \alias{remove_custom_control}
-\title{Remove a custom control from the map.}
+\title{Remove a custom control from the map}
 \usage{
 remove_custom_control(proxy, control_id, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{control_id}{The ID of the custom control to remove.}
+\item{control_id}{The ID of the custom control to remove}
 
 \item{panel_id}{Optional. If provided, removes the control from the specified control panel.
-If NULL, removes the standalone custom control.}
+If NULL, removes the standalone custom control}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
-Remove a custom control from the map.
+Remove a custom control from the map
 }
 \examples{
 \dontrun{

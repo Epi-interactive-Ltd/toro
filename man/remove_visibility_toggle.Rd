@@ -7,14 +7,14 @@
 remove_visibility_toggle(proxy, layer_id, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}.}
+\item{proxy}{The map proxy object created by \code{mapProxy()}}
 
-\item{layer_id}{The ID of the layer whose visibility toggle control to remove.}
+\item{layer_id}{The ID of the layer whose visibility toggle control to remove}
 
-\item{panel_id}{Optional. If provided, removes the control from the specified control panel.}
+\item{panel_id}{Optional. If provided, removes the control from the specified control panel}
 }
 \value{
-The map proxy object for chaining.
+The map proxy object for chaining
 }
 \description{
 Remove a visibility toggle control from the map

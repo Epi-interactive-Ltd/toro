@@ -21,9 +21,9 @@ remotes::install_github("Epi-interactive-Ltd/toro")
 
 Once installed, this package can be used in the R console and within [Shiny](https://shiny.posit.co/) applications.
 
-## Basic Usage
+## Basic usage
 
-### Default Map
+### Default map
 
 To create the default map widget just call the `map` function.
 
@@ -31,7 +31,7 @@ To create the default map widget just call the `map` function.
 map()
 ```
 
-### Customise With Map Options
+### Customise with map options
 
 By passing parameters to the `map` function you can customise several features of the map.
 
@@ -43,7 +43,7 @@ map(
 )
 ```
 
-### Adding Layers
+### Adding layers
 
 You can add layers to the map using layer functions like `add_symbol_layer`, `add_fill_layer`, etc.
 
@@ -61,6 +61,6 @@ map() |>
   )
 ```
 
-## Where to Next?
+## Where to next?
 
 It is highly recommended that you read through the [layers vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html) next.

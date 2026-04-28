@@ -72,7 +72,7 @@ if (interactive()) {
 
 ```
 
-## Modifying the Map using IDs
+## Modifying the map using IDs
 
 In Shiny to modify parts of a map you need to provide the ID of the aspect you want to update.
 
@@ -220,9 +220,9 @@ shape with `delete_drawn_shape()`.
 
 ---
 
-## Inputs & Events
+## Inputs & events
 
-### Map Loaded Event
+### Map loaded event
 
 By default when the map initially loads it will trigger a _loaded_ event in Shiny.
 
@@ -242,7 +242,7 @@ observe({
   bindEvent(input$my_map_loaded)
 ```
 
-### Feature Click Events
+### Feature click events
 
 Anytime a feature (polygon, line, point) is clicked on the map, a _feature_click_ event is fired.
 
@@ -258,7 +258,7 @@ observe({
 })
 ```
 
-### Map View Status
+### Map view status
 
 Whenever the map view changes (zoom/bounds) a _bounds_ / _zoom_ event is fired. You can listen for this event using an observer in your Shiny app. Just append `_bounds` / `_zoom` to the map ID to get the input ID (`input$<mapId>_bounds` / `input$<mapId>_zoom`).
 

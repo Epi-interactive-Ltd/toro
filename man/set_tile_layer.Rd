@@ -2,21 +2,21 @@
 % Please edit documentation in R/layers.R
 \name{set_tile_layer}
 \alias{set_tile_layer}
-\title{Set the tile layer for the map.}
+\title{Set the tile layer for the map}
 \usage{
 set_tile_layer(map, tiles)
 }
 \arguments{
-\item{map}{The map or map proxy object.}
+\item{map}{The map or map proxy object}
 
-\item{tiles}{A character vector of tile layer names.
-Options include values returned from get_tile_options().}
+\item{tiles}{A character vector of tile layer names
+Options include values returned from get_tile_options()}
 }
 \value{
-The map or map proxy object for chaining.
+The map or map proxy object for chaining
 }
 \description{
-Set the tile layer for the map.
+Set the tile layer for the map
 }
 \examples{
 \dontrun{

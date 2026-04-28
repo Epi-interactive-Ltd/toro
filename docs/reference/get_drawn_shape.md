@@ -1,4 +1,4 @@
-# Get the drawn shape from the map widget.
+# Get the drawn shape from the map widget
 
 Parses the JSON string returned by the map widget when a shape is drawn.
 Ensures that the ID of the shape is included in the resulting `sf`
@@ -14,11 +14,11 @@ get_drawn_shape(create_input_string)
 
 - create_input_string:
 
-  A JSON string representing the drawn shape.
+  A JSON string representing the drawn shape
 
 ## Value
 
-A `sf` object representing the drawn shape, or `NULL`.
+A `sf` object representing the drawn shape, or `NULL`
 
 ## Details
 

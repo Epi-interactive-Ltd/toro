@@ -2,7 +2,7 @@
 % Please edit documentation in R/export.R
 \name{export_map_image}
 \alias{export_map_image}
-\title{Export map as an image (non-Shiny context).}
+\title{Export map as an image (non-Shiny context)}
 \usage{
 export_map_image(
   map,
@@ -15,23 +15,22 @@ export_map_image(
 )
 }
 \arguments{
-\item{map}{A map object created by \code{map()}.}
+\item{map}{A map object created by \code{map()}}
 
-\item{filepath}{The file path to save the image (including extension).}
+\item{filepath}{The file path to save the image (including extension)}
 
-\item{width}{The width of the image in pixels. Default is 800.}
+\item{width}{The width of the image in pixels. Default is 800}
 
-\item{height}{The height of the image in pixels. Default is 600.}
+\item{height}{The height of the image in pixels. Default is 600}
 
-\item{delay}{The delay in seconds before capturing. Default is 2.}
+\item{delay}{The delay in seconds before capturing. Default is 2}
 
-\item{zoom}{The zoom factor for the capture. Default is 1.}
+\item{zoom}{The zoom factor for the capture. Default is 1}
 
-\item{...}{Additional arguments passed to webshot2::webshot() or mapview::mapshot().}
+\item{...}{Additional arguments passed to webshot2::webshot() or mapview::mapshot()}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{    The file path of the saved image (invisibly).
-}\if{html}{\out{</div>}}
+The file path of the saved image (invisibly)
 }
 \description{
 This function exports a map widget as an image file using webshot2 or mapview.
