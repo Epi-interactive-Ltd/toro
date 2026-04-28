@@ -1,7 +1,7 @@
 Type: Package
 Package: toro
 Title: Interactive and Customisable Maps using the MapLibre GL JS Library
-Version: 0.0.7
+Version: 0.1.0
 Authors@R: c(
     person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
     person(given = "Jocelyn", family = "Qian", email = "jocelyn@epi.group", role = c("ctb")),
