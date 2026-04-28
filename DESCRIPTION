@@ -19,7 +19,7 @@ Description: Create interactive maps that can keep up with complex visualisation
     loading times waiting for a map to update with new data.
 URL: https://epi-interactive-ltd.github.io/toro/, https://github.com/Epi-interactive-Ltd/toro/
 BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
-License: AGPL (>= 3) + file LICENSE
+License: AGPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
