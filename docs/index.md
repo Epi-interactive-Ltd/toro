@@ -1,13 +1,15 @@
 # toro
 
-toro is an R package that provides a useful interface to the [MapLibre
-GL JS](https://maplibre.org/maplibre-gl-js/docs/) library, allowing
-these maps to be embedded directly into a Shiny web application, and
-rendering of spatial data quickly with many customisable options
-(clusters, custom icons, map layers and backgrounds). The goal of the
-package is to make it easier to interpret and explore large spatial
-datasets within the context of a Shiny dashboard, without having long
-loading times waiting for a map to update with new data.
+Create interactive maps that can keep up with complex visualisations and
+large datasets, with this useful interface to the [MapLibre GL
+JS](https://maplibre.org/maplibre-gl-js/docs/) library. Users can create
+maps directly in the console, or as an HTML widget within ‘Shiny’ web
+applications, and rendering of spatial data quickly with many
+customisable options (clusters, custom icons, map layers and
+backgrounds). The goal of the package is to make it easier to interpret
+and explore large spatial datasets within the context of a ‘Shiny’
+dashboard, without having long loading times waiting for a map to update
+with new data.
 
 ## Installation
 
