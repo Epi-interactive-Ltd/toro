@@ -138,21 +138,13 @@ map <- function(
   )
 }
 
-#' Shiny bindings for map
-#'
-#' Output and render functions for using map within Shiny
-#' applications and interactive Rmd documents.
+#' Create a MapLibre GL output for use in Shiny
 #'
 #' @param outputId output variable to read from
 #' @param width,height Must be a valid CSS unit (like \code{'100\%'},
 #'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
 #'   string and have \code{'px'} appended
-#' @param expr An expression that generates a map
-#' @param env The environment in which to evaluate \code{expr}
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable
-#'
-#' @name map-shiny
+#' @return A MapLibre GL map for use in a Shiny UI
 #'
 #' @export
 mapOutput <- function(outputId, width = "100%", height = "600px") {
@@ -165,7 +157,13 @@ mapOutput <- function(outputId, width = "100%", height = "600px") {
   )
 }
 
-#' @name map-shiny
+#' Render a MapLibre GL map in Shiny
+#'
+#' @param expr An expression that generates a map
+#' @param env The environment in which to evaluate \code{expr}
+#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
+#'   is useful if you want to save an expression in a variable
+#' @return A rendered MapLibre GL map for use in a Shiny server
 #' @export
 renderMap <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) {

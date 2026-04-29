@@ -14,7 +14,7 @@ remove_route(map, route_id, settings = list())
 \item{settings}{A list of settings for removing the route}
 }
 \value{
-The updated map object
+The updated map proxy object
 }
 \description{
 Remove an animation route from a toro map

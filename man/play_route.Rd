@@ -14,7 +14,7 @@ play_route(map, route_id, settings = list())
 \item{settings}{A list of settings for the animation (e.g., speed, loop)}
 }
 \value{
-The updated map object
+The updated map proxy object
 }
 \description{
 Play a route animation on a toro map
