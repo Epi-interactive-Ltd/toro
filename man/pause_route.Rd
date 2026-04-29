@@ -14,7 +14,7 @@ pause_route(map, route_id, settings = list())
 \item{settings}{A list of settings for pausing the animation}
 }
 \value{
-The updated map object
+The updated map proxy object
 }
 \description{
 Pause a route animation on a toro map

@@ -6,6 +6,9 @@
 \usage{
 chrome_error_message()
 }
+\value{
+No return value, prints to console
+}
 \description{
 Provide helpful error message for missing Chrome
 }

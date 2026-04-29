@@ -63,7 +63,7 @@ add_animation_controls(
 
 ## Value
 
-The updated map object
+The map or map proxy object for chaining
 
 ## Examples
 

@@ -70,8 +70,8 @@
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/image_to_data_uri.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/index.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/is_local_file.html</loc></url>
-<url><loc>https://epi-interactive-ltd.github.io/toro/reference/map-shiny.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/map.html</loc></url>
+<url><loc>https://epi-interactive-ltd.github.io/toro/reference/mapOutput.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/mapProxy.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/pause_route.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/play_route.html</loc></url>
@@ -89,6 +89,7 @@
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/remove_timeline_control.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/remove_visibility_toggle.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/remove_zoom_control.html</loc></url>
+<url><loc>https://epi-interactive-ltd.github.io/toro/reference/renderMap.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/save_map_html.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/set_bounds.html</loc></url>
 <url><loc>https://epi-interactive-ltd.github.io/toro/reference/set_layout_property.html</loc></url>

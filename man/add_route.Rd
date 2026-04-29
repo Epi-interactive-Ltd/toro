@@ -16,7 +16,7 @@ add_route(map, route_id, points, settings = list())
 \item{settings}{A list of settings for the route (e.g., color, weight)}
 }
 \value{
-The updated map object
+The map or map proxy object for chaining
 }
 \description{
 Add a route to a toro map

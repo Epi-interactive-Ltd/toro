@@ -24,7 +24,7 @@ remove_route(map, route_id, settings = list())
 
 ## Value
 
-The updated map object
+The updated map proxy object
 
 ## Examples
 

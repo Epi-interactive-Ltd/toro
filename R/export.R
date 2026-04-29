@@ -1,6 +1,6 @@
 #' Check if Chrome/Chromium is available for webshot operations
 #'
-#' @return TRUE if Chrome is available, FALSE otherwise
+#' @return `TRUE` if Chrome is available, `FALSE` otherwise
 #' @keywords internal
 check_chrome_available <- function() {
   # Check if CHROMOTE_CHROME environment variable is set
@@ -24,6 +24,7 @@ check_chrome_available <- function() {
 }
 
 #' Provide helpful error message for missing Chrome
+#' @return No return value, prints to console
 #' @keywords internal
 chrome_error_message <- function() {
   os_type <- Sys.info()[["sysname"]]

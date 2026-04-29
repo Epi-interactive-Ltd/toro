@@ -39,7 +39,7 @@ Default is c("Slow", "Normal", "Fast")}
 \item{settings}{A list of additional settings for the controls}
 }
 \value{
-The updated map object
+The map or map proxy object for chaining
 }
 \description{
 Adds play/pause/stop buttons to control route animations on the map.

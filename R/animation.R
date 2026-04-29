@@ -4,7 +4,7 @@
 #' @param route_id A unique identifier for the route
 #' @param points A sf object containing the points of the route
 #' @param settings A list of settings for the route (e.g., color, weight)
-#' @return The updated map object
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples
@@ -84,7 +84,7 @@ add_route <- function(map, route_id, points, settings = list()) {
 #' @param map A toro map proxy object
 #' @param route_id A unique identifier for the route
 #' @param settings A list of settings for the animation (e.g., speed, loop)
-#' @return The updated map object
+#' @return The updated map proxy object
 #' @export
 #'
 #' @examples
@@ -156,7 +156,7 @@ play_route <- function(map, route_id, settings = list()) {
 #' @param map A toro map proxy object
 #' @param route_id A unique identifier for the route
 #' @param settings A list of settings for pausing the animation
-#' @return The updated map object
+#' @return The updated map proxy object
 #' @export
 #'
 #' @examples
@@ -228,7 +228,7 @@ pause_route <- function(map, route_id, settings = list()) {
 #' @param map A toro map proxy object
 #' @param route_id A unique identifier for the route
 #' @param settings A list of settings for removing the route
-#' @return The updated map object
+#' @return The updated map proxy object
 #' @export
 #'
 #' @examples
@@ -312,7 +312,7 @@ remove_route <- function(map, route_id, settings = list()) {
 #' @param speed_labels Character vector of labels for speed values.
 #'   Default is c("Slow", "Normal", "Fast")
 #' @param settings A list of additional settings for the controls
-#' @return The updated map object
+#' @return The map or map proxy object for chaining
 #' @export
 #'
 #' @examples

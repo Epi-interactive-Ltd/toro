@@ -215,9 +215,10 @@ Functions to add/edit control panels for map interaction
 
 Functions to get information from map interaction
 
-- [`mapOutput()`](https://epi-interactive-ltd.github.io/toro/reference/map-shiny.md)
-  [`renderMap()`](https://epi-interactive-ltd.github.io/toro/reference/map-shiny.md)
-  : Shiny bindings for map
+- [`mapOutput()`](https://epi-interactive-ltd.github.io/toro/reference/mapOutput.md)
+  : Create a MapLibre GL output for use in Shiny
+- [`renderMap()`](https://epi-interactive-ltd.github.io/toro/reference/renderMap.md)
+  : Render a MapLibre GL map in Shiny
 - [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
   : Create a proxy object for updating the map
 

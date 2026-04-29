@@ -10,4 +10,4 @@ check_chrome_available()
 
 ## Value
 
-TRUE if Chrome is available, FALSE otherwise
+`TRUE` if Chrome is available, `FALSE` otherwise
