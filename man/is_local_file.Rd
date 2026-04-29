@@ -7,10 +7,10 @@
 is_local_file(url)
 }
 \arguments{
-\item{url}{The URL or file path to check}
+\item{url}{The URL or file path to check.}
 }
 \value{
-TRUE if it's a local file path, FALSE if it's a URL or data URI
+TRUE if it's a local file path, \code{FALSE} if it's a URL or data URI.
 }
 \description{
 Helper function to detect if URL is a local file path

@@ -10,14 +10,14 @@
 #'
 #' @note `time` is not used in this function, but it is included in the input so that
 #' the same feature can be clicked multiple times and the changed time means that the
-#' input will be updated
+#' input will be updated.
 #'
-#' @param clicked_feature_input A list representing the clicked feature
-#' @return A `sf` object representing the clicked feature, or `NULL`
+#' @param clicked_feature_input A list representing the clicked feature.
+#' @return A `sf` object representing the clicked feature, or `NULL`.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' library(shiny)
 #' library(spData)
 #' library(sf)
@@ -78,12 +78,12 @@ get_clicked_feature <- function(clicked_feature_input) {
 #' new shape is created using the draw control on the map. Pass this input to `get_drawn_shape()`
 #' to convert it into an `sf` object for easier manipulation in R.
 #'
-#' @param create_input_string A JSON string representing the drawn shape
-#' @return A `sf` object representing the drawn shape, or `NULL`
+#' @param create_input_string A JSON string representing the drawn shape.
+#' @return A `sf` object representing the drawn shape, or `NULL`.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' library(shiny)
 #' library(toro)
 #'

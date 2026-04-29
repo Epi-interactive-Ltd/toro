@@ -7,24 +7,24 @@
 show_layer(proxy, layer_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{layer_id}{The ID of the layer to show}
+\item{layer_id}{The ID of the layer to show.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Show a previously hidden layer on the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(sf)
 library(toro)
 
 data(quakes)
-quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
 
 ui <- fluidPage(
  tagList(

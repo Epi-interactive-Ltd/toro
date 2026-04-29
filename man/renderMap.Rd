@@ -7,16 +7,33 @@
 renderMap(expr, env = parent.frame(), quoted = FALSE)
 }
 \arguments{
-\item{expr}{An expression that generates a map}
+\item{expr}{An expression that generates a map.}
 
-\item{env}{The environment in which to evaluate \code{expr}}
+\item{env}{The environment in which to evaluate \code{expr}.}
 
 \item{quoted}{Is \code{expr} a quoted expression (with \code{quote()})? This
-is useful if you want to save an expression in a variable}
+is useful if you want to save an expression in a variable.}
 }
 \value{
-A rendered MapLibre GL map for use in a Shiny server
+A rendered MapLibre GL map for use in a Shiny server.
 }
 \description{
 Render a MapLibre GL map in Shiny
+}
+\examples{
+if(interactive()){
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map()
+ })
+}
+}
 }

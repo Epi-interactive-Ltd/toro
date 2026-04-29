@@ -16,30 +16,30 @@ add_timeline_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{start_date}{Start date for the timeline (YYYY-MM-DD format)}
+\item{start_date}{Start date for the timeline (YYYY-MM-DD format).}
 
-\item{end_date}{End date for the timeline (YYYY-MM-DD format)}
+\item{end_date}{End date for the timeline (YYYY-MM-DD format).}
 
-\item{position}{Position on the map if not using a control panel. Default is "bottom-left"}
+\item{position}{Position on the map if not using a control panel. Default is "bottom-left".}
 
-\item{max_ticks}{Maximum number of labeled ticks to prevent overlap. Default is 3}
+\item{max_ticks}{Maximum number of labeled ticks to prevent overlap. Default is 3.}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{Optional ID of the group to add the control to within a panel}
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
-Add a timeline control to the map or control panel
+The timeline control allows for users to interact with a date-based timeline,
+and can be used to control an animation of map data over time.
 }
 \examples{
-\dontrun{
 # Add to a map (no dates specified)
 map() |>
  add_timeline_control()
@@ -74,5 +74,4 @@ map() |>
    panel_id = "my_panel",
    group_id = "animation_controls"
  )
-}
 }

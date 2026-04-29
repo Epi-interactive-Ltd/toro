@@ -16,30 +16,32 @@ add_speed_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{values}{Vector of speed multiplier values. Default is c(0.5, 1, 2)}
+\item{values}{Vector of speed multiplier values. Default is c(0.5, 1, 2).}
 
-\item{labels}{Vector of labels for each speed value. Default is c("Slow", "Normal", "Fast")}
+\item{labels}{Vector of labels for each speed value. Default is c("Slow", "Normal", "Fast").}
 
-\item{default_index}{Index of the default speed (1-based). Default is 2}
+\item{default_index}{Index of the default speed (1-based). Default is 2.}
 
-\item{position}{Position on the map if not using a control panel. Default is "top-right"}
+\item{position}{Position on the map if not using a control panel. Default is "top-right".}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{Optional ID of the group to add the control to within a panel}
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
-Add a speed control to the map or control panel
+The speed control allows users to adjust the speed of an animation on the map,
+such as a time-based animation controlled by the timeline control.
+It can be added as a standalone control on the map or within a control panel
+for better organization of multiple controls.
 }
 \examples{
-\dontrun{
 # Add to a map (no dates specified)
 map() |>
  add_speed_control()
@@ -69,5 +71,4 @@ map() |>
    panel_id = "my_panel",
    group_id = "animation_controls"
  )
-}
 }

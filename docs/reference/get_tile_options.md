@@ -10,7 +10,7 @@ get_tile_options()
 
 ## Value
 
-A character vector of available tile layer options
+A character vector of available tile layer options.
 
 ## Examples
 

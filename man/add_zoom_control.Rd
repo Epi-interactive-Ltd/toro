@@ -14,20 +14,20 @@ add_zoom_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{position}{The position of the zoom control on the map. Default is \code{"top-right"}}
+\item{position}{The position of the zoom control on the map. Default is \code{"top-right"}.}
 
-\item{control_options}{Additional options for the zoom control. Default is an empty list}
+\item{control_options}{Additional options for the zoom control. Default is an empty list.}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{Optional ID of the group to add the control to within a panel}
+\item{group_id}{Optional ID of the group to add the control to within a panel.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Add a zoom control to the map
@@ -37,13 +37,10 @@ See \href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationCo
 for more information on available options.
 }
 \examples{
-\dontrun{
 add_zoom_control(map())
 
 # Inside a control panel
 map() |>
  add_control_panel(panel_id = "my_panel", title = "View Controls") |>
  add_zoom_control(panel_id = "my_panel")
-}
-
 }

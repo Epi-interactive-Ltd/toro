@@ -7,10 +7,10 @@
 get_clicked_feature(clicked_feature_input)
 }
 \arguments{
-\item{clicked_feature_input}{A list representing the clicked feature}
+\item{clicked_feature_input}{A list representing the clicked feature.}
 }
 \value{
-A \code{sf} object representing the clicked feature, or \code{NULL}
+A \code{sf} object representing the clicked feature, or \code{NULL}.
 }
 \description{
 The click input is a list containing the \code{layerId}, \code{properties}, \code{geometry}, and
@@ -25,10 +25,10 @@ feature is clicked on the map. Pass this input to \code{get_clicked_feature()} t
 \note{
 \code{time} is not used in this function, but it is included in the input so that
 the same feature can be clicked multiple times and the changed time means that the
-input will be updated
+input will be updated.
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(spData)
 library(sf)

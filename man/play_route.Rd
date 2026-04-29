@@ -7,20 +7,20 @@
 play_route(map, route_id, settings = list())
 }
 \arguments{
-\item{map}{A toro map proxy object}
+\item{map}{A toro map proxy object.}
 
-\item{route_id}{A unique identifier for the route}
+\item{route_id}{A unique identifier for the route.}
 
-\item{settings}{A list of settings for the animation (e.g., speed, loop)}
+\item{settings}{A list of settings for the animation (e.g., speed, loop).}
 }
 \value{
-The updated map proxy object
+The updated map proxy object.
 }
 \description{
 Play a route animation on a toro map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 library(sf)

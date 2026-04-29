@@ -12,11 +12,11 @@ get_column(column_name)
 
 - column_name:
 
-  String representing the name of the column to be used
+  String representing the name of the column to be used.
 
 ## Value
 
-List containing the paint or layout option to be set
+List containing the paint or layout option to be set.
 
 ## Examples
 

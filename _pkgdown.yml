@@ -90,7 +90,7 @@ reference:
       - get_column
       - get_column_boolean
       - get_column_group
-      - get_column_step_steps
+      - get_column_steps
   - title: 'Map tiles'
     desc: 'Functions to update map tiles'
     contents:

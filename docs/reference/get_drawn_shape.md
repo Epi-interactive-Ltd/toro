@@ -14,11 +14,11 @@ get_drawn_shape(create_input_string)
 
 - create_input_string:
 
-  A JSON string representing the drawn shape
+  A JSON string representing the drawn shape.
 
 ## Value
 
-A `sf` object representing the drawn shape, or `NULL`
+A `sf` object representing the drawn shape, or `NULL`.
 
 ## Details
 
@@ -32,7 +32,7 @@ manipulation in R.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -55,5 +55,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$map_shape_created)
 }
-} # }
+}
 ```

@@ -16,47 +16,48 @@ add_control_panel(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{panel_id}{Unique identifier for the control panel}
+\item{panel_id}{Unique identifier for the control panel.}
 
-\item{title}{Title for the control panel. If NULL, no title is shown}
+\item{title}{Title for the control panel. If NULL, no title is shown.}
 
 \item{position}{Position of the control panel on the map. Default is "bottom-left".
-Options include "top-left", "top-right", "bottom-left", "bottom-right"}
+Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 
-\item{collapsible}{Whether the panel can be collapsed. Default is FALSE}
+\item{collapsible}{Whether the panel can be collapsed. Default is FALSE.}
 
-\item{collapsed}{Initial collapsed state. Default is FALSE}
+\item{collapsed}{Initial collapsed state. Default is FALSE.}
 
 \item{direction}{Layout direction for controls within the panel. Either "row" or "column".
-Default is "column"}
+Default is "column".}
 
 \item{custom_controls}{List of custom controls to add initially. Each should be a list with
-elements: html, id (optional), title (optional)}
+elements: html, id (optional), title (optional).}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Creates a flexible control panel that can contain multiple controls.
 }
 \examples{
-\dontrun{
 map() |>
- add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
- add_cursor_coords_control(panel_id = "my_panel") |>
- add_zoom_control(panel_id = "my_panel")
+  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+  add_cursor_coords_control(panel_id = "my_panel") |>
+  add_zoom_control(panel_id = "my_panel")
 
 map() |>
- add_control_panel(
-   panel_id = "my_panel",
-   title = "Map Settings",
-   position = "top-right",
-   collapsible = TRUE,
-   collapsed = TRUE,
-   direction = "row"
- ) |>
- add_cursor_coords_control(panel_id = "my_panel", section_title = "Cursor Coordinates")
-}
+  add_control_panel(
+    panel_id = "my_panel",
+    title = "Map Settings",
+    position = "top-right",
+    collapsible = TRUE,
+    collapsed = TRUE,
+    direction = "row"
+  ) |>
+  add_cursor_coords_control(
+    panel_id = "my_panel",
+    section_title = "Cursor Coordinates"
+  )
 }

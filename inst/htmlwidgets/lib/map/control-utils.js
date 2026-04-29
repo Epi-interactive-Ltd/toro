@@ -540,7 +540,7 @@ function toggleControl(el, controlId, show) {
 
   if (controlId == 'zoom_control') {
     var buttons = el.querySelector(
-      '.toro-ctrl-group .toro-ctrl-zoom-in, .toro-ctrl-group .toro-ctrl-zoom-out, .toro-ctrl-group .toro-ctrl-compass'
+      '.maplibregl-ctrl-group .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group .maplibregl-ctrl-zoom-out, .maplibregl-ctrl-group .maplibregl-ctrl-compass'
     );
     if (buttons) {
       control = buttons.parentElement;
@@ -643,7 +643,9 @@ function removeControl(widgetInstance, controlId) {
     }
     return;
   }
-
+  if (controlId === 'zoom_control') {
+    controlId = 'zoom-control-' + widgetInstance?.id || 'map';
+  }
   // Check if this is a zoom control
   if (controlId.startsWith('zoom-control-')) {
     // Try to remove using stored reference first

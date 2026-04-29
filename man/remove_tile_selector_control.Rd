@@ -7,19 +7,20 @@
 remove_tile_selector_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
 \item{panel_id}{Optional. If provided, removes the tile selector control from the specified
-control panel. If NULL, removes the standalone tile selector control}
+control panel. If \code{NULL}, removes the standalone tile selector control.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove the tile selector control from the map
 }
 \examples{
-\dontrun{
+if(interactive()){
+# Load libraries
 library(shiny)
 library(toro)
 

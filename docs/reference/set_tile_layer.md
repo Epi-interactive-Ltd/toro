@@ -12,25 +12,27 @@ set_tile_layer(map, tiles)
 
 - map:
 
-  The map or map proxy object
+  The map or map proxy object.
 
 - tiles:
 
-  A character vector of tile layer names Options include values returned
-  from get_tile_options()
+  A character vector of tile layer names. Options include values
+  returned from
+  [`get_tile_options()`](https://epi-interactive-ltd.github.io/toro/reference/get_tile_options.md).
 
 ## Value
 
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 
 ## See also
 
-get_tile_options
+[`get_tile_options()`](https://epi-interactive-ltd.github.io/toro/reference/get_tile_options.md)
+for retrieving all tile options.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -53,5 +55,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$tile_layer)
 }
-} # }
+}
 ```

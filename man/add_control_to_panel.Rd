@@ -14,20 +14,20 @@ add_control_to_panel(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{panel_id}{ID of the target control panel}
+\item{panel_id}{ID of the target control panel.}
 
-\item{control_type}{Type of control ("timeline", "speed", "custom")}
+\item{control_type}{Type of control ("timeline", "speed", "custom").}
 
-\item{control_options}{Control-specific options}
+\item{control_options}{Control-specific options.}
 
-\item{section_title}{Optional section title for the control}
+\item{section_title}{Optional section title for the control.}
 
-\item{group_id}{Optional ID of the group to add the control to}
+\item{group_id}{Optional ID of the group to add the control to.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Used by other toro control functions to add controls to a panel.

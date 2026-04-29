@@ -7,20 +7,27 @@
 add_image(map, image_id, image_url)
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{image_id}{The ID of the image source}
+\item{image_id}{The ID of the image source.}
 
-\item{image_url}{The URL of the image to add}
+\item{image_url}{The URL of the image to add.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add an image source to the map
 }
 \examples{
-\dontrun{
+\donttest{
+# Load libraries
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
 image_url <- paste0(
  "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/",
  "Leaf_icon.png/600px-Leaf_icon.png"
@@ -33,8 +40,8 @@ image_url <- paste0(
    ) |>
    add_symbol_layer(
      id = "leaf_symbols",
-     source = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326),
-     layout = toro::get_layout_options(
+     source = sf::st_as_sf(quakes_data, coords = c("long", "lat"), crs = 4326),
+     layout = get_layout_options(
        "symbol",
        options = list(
          icon_image = "leaf-icon",

@@ -7,23 +7,23 @@
 get_column_group(column_name, named_group_values, default_value = "#cccccc")
 }
 \arguments{
-\item{column_name}{String representing the name of the column to be used}
+\item{column_name}{String representing the name of the column to be used.}
 
-\item{named_group_values}{Vector of value strings named by the group values
-The names of the vector should match the group values in the column}
+\item{named_group_values}{Vector of value strings named by the group values.
+The names of the vector should match the group values in the column.}
 
 \item{default_value}{String for the default value to use if no match is found.
-Default is "#cccccc"}
+Default is "#cccccc".}
 }
 \value{
-List containing the paint or layout option to be set
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the data to be styled by the group option in the column.
 }
 \note{
 If using numbers as the group values, then you need to use \code{stats::setNames} rather
-than a named vector, as the names of the vector will be coerced to strings
+than a named vector, as the names of the vector will be coerced to strings.
 }
 \examples{
 get_column_group("group", c("A" = "red", "B" = "blue"), "grey")

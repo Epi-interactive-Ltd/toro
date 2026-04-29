@@ -4,34 +4,66 @@
 \alias{add_symbol_layer}
 \title{Add a symbol layer to a map or map proxy}
 \usage{
-add_symbol_layer(map, ...)
+add_symbol_layer(
+  map,
+  id,
+  source,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
+  ...
+)
 }
 \arguments{
-\item{map}{The map object or map proxy to which the layer will be added}
+\item{map}{The map object or map proxy to which the layer will be added.}
+
+\item{id}{A unique identifier for the layer.}
+
+\item{source}{The data source for the layer, if not a GeoJSON, it will be converted.}
+
+\item{paint}{A list of paint options for styling the layer. See \code{get_paint_options()}
+for defaults and options.}
+
+\item{layout}{A list of layout options for the layer. See \code{get_layout_options()} for defaults
+and options.}
+
+\item{popup_column}{The column name to use for popups. Default is \code{NULL}.}
+
+\item{hover_column}{The column name to use for hover effects. Default is \code{NULL}.}
+
+\item{can_cluster}{Whether the layer can be clustered. Default is \code{FALSE}.}
+
+\item{under_id}{The ID of an layer already on the map to place this layer under.
+Default is \code{NULL}.}
+
+\item{filter}{A filter expression to apply to the layer. Default is \code{NULL}. See
+\code{get_layer_filter()} for more details on how to create filter expressions.}
 
 \item{...}{Additional arguments to include in the layer definition.
 \itemize{
 \item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
 See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
-for details on available options
+for details on available options.
 }}
 }
 \value{
-The updated map object with the symbol layer added
+The updated map object with the symbol layer added.
 }
 \description{
 This layer is typically used for icons or pins.
 }
 \examples{
-\dontrun{
 # Load libraries
-library(toro)
 library(sf)
 
 # Prepare data
 data(quakes)
 quakes_data <- quakes |>
- st_as_sf(coords = c("long", "lat"), crs = 4326)
+ sf::st_as_sf(coords = c("long", "lat"), crs = 4326)
 
 # Create map and add fill layer
 map() |>
@@ -39,5 +71,4 @@ map() |>
    id = "test_layer",
    source = quakes_data
  )
-}
 }

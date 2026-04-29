@@ -212,24 +212,24 @@ base_map |>
     clusterOptions = list(
       circleOptions = list(
         paint = list(
-          "circle-color" = get_column_step_steps(
+          "circle-color" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c("red", "orange", "yellow", "green")
           ),
-          "circle-stroke-color" = get_column_step_steps(
+          "circle-stroke-color" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c("red", "orange", "yellow", "green")
           ),
-          "circle-radius" = get_column_step_steps(
+          "circle-radius" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c(10, 20, 30, 40)
           )
         ),
         layout = list(
-          "circle-sort-key" = get_column_step_steps(
+          "circle-sort-key" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c(4, 3, 2, 1)
