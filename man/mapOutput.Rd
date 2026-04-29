@@ -7,15 +7,32 @@
 mapOutput(outputId, width = "100\%", height = "600px")
 }
 \arguments{
-\item{outputId}{output variable to read from}
+\item{outputId}{output variable to read from.}
 
 \item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
 \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-string and have \code{'px'} appended}
+string and have \code{'px'} appended.}
 }
 \value{
-A MapLibre GL map for use in a Shiny UI
+A MapLibre GL map for use in a Shiny UI.
 }
 \description{
 Create a MapLibre GL output for use in Shiny
+}
+\examples{
+if(interactive()){
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map()
+ })
+}
+}
 }

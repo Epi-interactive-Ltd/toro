@@ -7,7 +7,7 @@
 check_chrome_available()
 }
 \value{
-\code{TRUE} if Chrome is available, \code{FALSE} otherwise
+\code{TRUE} if Chrome is available, \code{FALSE} otherwise.
 }
 \description{
 Check if Chrome/Chromium is available for webshot operations

@@ -7,19 +7,17 @@
 add_lat_lng_grid(map, grid_colour = "#000000")
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{grid_colour}{The colour of the grid lines. Default is \code{"#000000"}}
+\item{grid_colour}{The colour of the grid lines. Default is \code{"#000000"}.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add a grid of latitude and longitude lines to the map
 }
 \examples{
-\dontrun{
 map() |>
  add_lat_lng_grid()
-}
 }

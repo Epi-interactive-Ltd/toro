@@ -7,10 +7,10 @@
 get_drawn_shape(create_input_string)
 }
 \arguments{
-\item{create_input_string}{A JSON string representing the drawn shape}
+\item{create_input_string}{A JSON string representing the drawn shape.}
 }
 \value{
-A \code{sf} object representing the drawn shape, or \code{NULL}
+A \code{sf} object representing the drawn shape, or \code{NULL}.
 }
 \description{
 Parses the JSON string returned by the map widget when a shape is drawn.
@@ -23,7 +23,7 @@ new shape is created using the draw control on the map. Pass this input to \code
 to convert it into an \code{sf} object for easier manipulation in R.
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

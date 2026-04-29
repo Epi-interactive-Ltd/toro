@@ -7,32 +7,52 @@
 remove_cursor_coords_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{Optional. If provided, removes the cursor coordinates control from the specified
-control panel. If NULL, removes the standalone cursor coordinates control}
+\item{panel_id}{Optional. If provided, removes the cursor coordinates control
+from the specified control panel. If \code{NULL}, removes the standalone cursor
+coordinates control.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove the cursor coordinates control from the map
 }
 \examples{
-\dontrun{
-# Add to a map
-map() |>
- add_cursor_coords_control()
-# In an observer
-mapProxy("map") |>
- remove_cursor_coords_control()
+if(interactive()){
+library(shiny)
+library(toro)
 
-# Add to a control panel
-map() |>
- add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
- add_cursor_coords_control(panel_id = "my_panel")
-# In an observer
-mapProxy("map") |>
- remove_cursor_coords_control(panel_id = "my_panel")
+ui <- fluidPage(
+ tagList(
+   fluidRow(
+     column(6, mapOutput("map_one")),
+     column(6, mapOutput("map_two"))
+   ),
+   actionButton("remove_control", "Remove control")
+ )
+)
+server <- function(input, output, session) {
+ output$map_one <- renderMap({
+   map() |>
+     add_cursor_coords_control()
+ })
+
+ output$map_two <- renderMap({
+   map() |>
+     add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
+     add_cursor_coords_control(panel_id = "my_panel")
+ })
+
+ observe({
+   req(input$map_one_loaded, input$map_two_loaded)
+   mapProxy("map_one") |>
+     remove_cursor_coords_control()
+   mapProxy("map_two") |>
+     remove_cursor_coords_control(panel_id = "my_panel")
+ }) |>
+   bindEvent(input$remove_control)
+}
 }
 }

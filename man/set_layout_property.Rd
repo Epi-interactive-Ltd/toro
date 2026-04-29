@@ -7,28 +7,28 @@
 set_layout_property(proxy, layer_id, property_name, value)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{layer_id}{The ID of the layer to update}
+\item{layer_id}{The ID of the layer to update.}
 
-\item{property_name}{The name of the layout property to set}
+\item{property_name}{The name of the layout property to set.}
 
-\item{value}{The value to set for the layout property}
+\item{value}{The value to set for the layout property.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Set a layout property for a layer on the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(sf)
 library(toro)
 
 data(quakes)
-quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
 
 ui <- fluidPage(
  tagList(

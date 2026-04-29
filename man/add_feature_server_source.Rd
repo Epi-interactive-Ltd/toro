@@ -12,17 +12,17 @@ add_feature_server_source(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{source_url}{The URL of the FeatureService source}
+\item{source_url}{The URL of the FeatureService source.}
 
-\item{source_id}{The ID for the source}
+\item{source_id}{The ID for the source.}
 
 \item{append_query_url}{The query URL to append to the source URL. Default is
-\code{"/0/query?where=1=1&outFields=*&f=geojson"}}
+\code{"/0/query?where=1=1&outFields=*&f=geojson"}.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add a FeatureService source to the map
@@ -34,7 +34,7 @@ provide the full query URL directly in the \code{source_url} argument and set \c
 to an empty string to prevent appending the default query parameters.
 }
 \examples{
-\dontrun{
+\donttest{
 service_url <- paste0(
  "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/",
  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"

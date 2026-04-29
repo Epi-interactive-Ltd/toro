@@ -7,14 +7,14 @@
 add_tiles_from_wms(map, url, tile_id, as_image_layer = FALSE, ...)
 }
 \arguments{
-\item{map}{A toro map object or a map proxy object}
+\item{map}{A toro map object or a map proxy object.}
 
-\item{url}{The URL of the ArcGIS Image Server}
+\item{url}{The URL of the ArcGIS Image Server.}
 
-\item{...}{Additional parameters for the Image Server source}
+\item{...}{Additional parameters for the Image Server source.}
 }
 \value{
-The updated map object
+The updated map object.
 }
 \description{
 WIP.

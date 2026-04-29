@@ -7,7 +7,7 @@
 set_bounds(map, bounds, padding = 50, max_zoom = map$maxZoom)
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
 \item{bounds}{One of two formats:
 \itemize{
@@ -15,18 +15,17 @@ set_bounds(map, bounds, padding = 50, max_zoom = map$maxZoom)
 \item An \code{sf} object, which will be converted to a bounding box
 }}
 
-\item{padding}{The padding around the bounds in pixels. Default is 50}
+\item{padding}{The padding around the bounds in pixels. Default is 50.}
 
-\item{max_zoom}{The maximum zoom level to set. Default is the object's \code{maxZoom}}
+\item{max_zoom}{The maximum zoom level to set. Default is the object's \code{maxZoom}.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Set the map bounds
 }
 \examples{
-\dontrun{
 # Load libraries
 library(toro)
 library(spData)
@@ -40,5 +39,4 @@ map() |>
 
 map() |>
  set_bounds(bounds = nz_data)
-}
 }

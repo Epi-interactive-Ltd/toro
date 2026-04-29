@@ -139,7 +139,7 @@ server <- function(input, output, session) {
       set_paint_property(
         layer_id = "quakes",
         property_name = "circle-color",
-        value = toro::get_column_step_steps(
+        value = toro::get_column_steps(
           column_name = "mag",
           breaks = c(4, 5, 6),
           values = c("black", input$small, input$med, input$large)

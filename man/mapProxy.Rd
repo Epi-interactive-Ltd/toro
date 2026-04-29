@@ -7,18 +7,18 @@
 mapProxy(outputId, session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
-\item{outputId}{The ID of the output element}
+\item{outputId}{The ID of the output element.}
 
-\item{session}{The Shiny session object (default is the current session)}
+\item{session}{The Shiny session object (default is the current session).}
 }
 \value{
-A proxy object for the map
+A proxy object for the map.
 }
 \description{
 Create a proxy object for updating the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

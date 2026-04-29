@@ -7,10 +7,10 @@
 get_column(column_name)
 }
 \arguments{
-\item{column_name}{String representing the name of the column to be used}
+\item{column_name}{String representing the name of the column to be used.}
 }
 \value{
-List containing the paint or layout option to be set
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the column value to be used for styling features in a map layer.

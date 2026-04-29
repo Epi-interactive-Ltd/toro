@@ -7,14 +7,14 @@
 get_column_boolean(column_name, true_value, false_value)
 }
 \arguments{
-\item{column_name}{String representing the name of the column to be used}
+\item{column_name}{String representing the name of the column to be used.}
 
-\item{true_value}{Value to use when the column value is \code{TRUE}}
+\item{true_value}{Value to use when the column value is \code{TRUE}.}
 
-\item{false_value}{Value to use when the column value is \code{FALSE}}
+\item{false_value}{Value to use when the column value is \code{FALSE}.}
 }
 \value{
-List containing the paint or layout option to be set
+List containing the paint or layout option to be set.
 }
 \description{
 Allows the data to be styled by the group option in the column.

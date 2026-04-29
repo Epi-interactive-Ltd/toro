@@ -7,19 +7,18 @@
 remove_timeline_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
 \item{panel_id}{Optional. If provided, removes the timeline control from the specified control
-panel. If NULL, removes the standalone timeline control}
+panel. If NULL, removes the standalone timeline control.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove the timeline control from the map
 }
 \examples{
-\dontrun{
 # Add to a map
 map() |>
  add_timeline_control()
@@ -34,5 +33,4 @@ map() |>
 # In an observer
 mapProxy("map") |>
  remove_timeline_control(panel_id = "my_panel")
-}
 }

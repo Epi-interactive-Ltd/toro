@@ -7,14 +7,14 @@
 remove_control_from_panel(proxy, panel_id, control_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{The ID of the control panel}
+\item{panel_id}{The ID of the control panel.}
 
-\item{control_id}{The ID of the control to remove from the panel}
+\item{control_id}{The ID of the control to remove from the panel.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Used by other toro control functions to remove controls from a panel.

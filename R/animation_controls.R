@@ -1,18 +1,20 @@
 #' Add a timeline control to the map or control panel
 #'
-#' @param map The map or map proxy object
-#' @param start_date Start date for the timeline (YYYY-MM-DD format)
-#' @param end_date End date for the timeline (YYYY-MM-DD format)
-#' @param position Position on the map if not using a control panel. Default is "bottom-left"
-#' @param max_ticks Maximum number of labeled ticks to prevent overlap. Default is 3
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id Optional ID of the group to add the control to within a panel
-#' @return The map or map proxy object for chaining
+#' The timeline control allows for users to interact with a date-based timeline,
+#' and can be used to control an animation of map data over time.
+#'
+#' @param map The map or map proxy object.
+#' @param start_date Start date for the timeline (YYYY-MM-DD format).
+#' @param end_date End date for the timeline (YYYY-MM-DD format).
+#' @param position Position on the map if not using a control panel. Default is "bottom-left".
+#' @param max_ticks Maximum number of labeled ticks to prevent overlap. Default is 3.
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id Optional ID of the group to add the control to within a panel.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' # Add to a map (no dates specified)
 #' map() |>
 #'  add_timeline_control()
@@ -47,7 +49,6 @@
 #'    panel_id = "my_panel",
 #'    group_id = "animation_controls"
 #'  )
-#' }
 add_timeline_control <- function(
   map,
   start_date = NULL,
@@ -113,14 +114,13 @@ add_timeline_control <- function(
 
 #' Remove the timeline control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
+#' @param proxy The map proxy object created by `mapProxy()`.
 #' @param panel_id Optional. If provided, removes the timeline control from the specified control
-#'    panel. If NULL, removes the standalone timeline control
-#' @return The map proxy object for chaining
+#'    panel. If NULL, removes the standalone timeline control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' # Add to a map
 #' map() |>
 #'  add_timeline_control()
@@ -135,7 +135,6 @@ add_timeline_control <- function(
 #' # In an observer
 #' mapProxy("map") |>
 #'  remove_timeline_control(panel_id = "my_panel")
-#' }
 remove_timeline_control <- function(proxy, panel_id = NULL) {
   # Use the namespaced control ID pattern: timeline-control-{mapId}
   control_id <- paste0("timeline-control-container-", proxy$id)
@@ -152,19 +151,23 @@ remove_timeline_control <- function(proxy, panel_id = NULL) {
 
 #' Add a speed control to the map or control panel
 #'
-#' @param map The map or map proxy object
-#' @param values Vector of speed multiplier values. Default is c(0.5, 1, 2)
-#' @param labels Vector of labels for each speed value. Default is c("Slow", "Normal", "Fast")
-#' @param default_index Index of the default speed (1-based). Default is 2
-#' @param position Position on the map if not using a control panel. Default is "top-right"
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id Optional ID of the group to add the control to within a panel
-#' @return The map or map proxy object for chaining
+#' The speed control allows users to adjust the speed of an animation on the map,
+#' such as a time-based animation controlled by the timeline control.
+#' It can be added as a standalone control on the map or within a control panel
+#' for better organization of multiple controls.
+#'
+#' @param map The map or map proxy object.
+#' @param values Vector of speed multiplier values. Default is c(0.5, 1, 2).
+#' @param labels Vector of labels for each speed value. Default is c("Slow", "Normal", "Fast").
+#' @param default_index Index of the default speed (1-based). Default is 2.
+#' @param position Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id Optional ID of the group to add the control to within a panel.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' # Add to a map (no dates specified)
 #' map() |>
 #'  add_speed_control()
@@ -194,7 +197,6 @@ remove_timeline_control <- function(proxy, panel_id = NULL) {
 #'    panel_id = "my_panel",
 #'    group_id = "animation_controls"
 #'  )
-#' }
 add_speed_control <- function(
   map,
   values = c(0.5, 1, 2),
@@ -252,14 +254,13 @@ add_speed_control <- function(
 
 #' Remove the speed control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
+#' @param proxy The map proxy object created by `mapProxy()`.
 #' @param panel_id Optional. If provided, removes the speed control from the specified control
-#'    panel. If NULL, removes the standalone speed control
-#' @return The map proxy object for chaining
+#'    panel. If NULL, removes the standalone speed control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' # Add to a map
 #' map() |>
 #'  add_speed_control()
@@ -274,7 +275,6 @@ add_speed_control <- function(
 #' # In an observer
 #' mapProxy("map") |>
 #'  remove_speed_control(panel_id = "my_panel")
-#' }
 remove_speed_control <- function(proxy, panel_id = NULL) {
   # Use the namespaced control ID pattern: speed-control-{mapId}
   control_id <- paste0("speed-control-", proxy$id)

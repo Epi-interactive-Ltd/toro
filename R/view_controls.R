@@ -3,25 +3,22 @@
 #' @note See [MapLibre NavigationControl docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/NavigationControlOptions/)
 #' for more information on available options.
 #'
-#' @param map The map or map proxy object
-#' @param position The position of the zoom control on the map. Default is `"top-right"`
-#' @param control_options Additional options for the zoom control. Default is an empty list
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id Optional ID of the group to add the control to within a panel
-#' @return The map proxy object for chaining
+#' @param map The map or map proxy object.
+#' @param position The position of the zoom control on the map. Default is `"top-right"`.
+#' @param control_options Additional options for the zoom control. Default is an empty list.
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id Optional ID of the group to add the control to within a panel.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' add_zoom_control(map())
 #'
 #' # Inside a control panel
 #' map() |>
 #'  add_control_panel(panel_id = "my_panel", title = "View Controls") |>
 #'  add_zoom_control(panel_id = "my_panel")
-#' }
-#'
 add_zoom_control <- function(
   map,
   position = "top-right",
@@ -72,14 +69,14 @@ add_zoom_control <- function(
 
 #' Remove the zoom control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
+#' @param proxy The map proxy object created by `mapProxy()`.
 #' @param panel_id Optional. If provided, removes the zoom control from the specified control panel.
-#'    If NULL, removes the standalone zoom control
-#' @return The map proxy object for chaining
+#'    If `NULL`, removes the standalone zoom control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' library(shiny)
 #' library(toro)
 #'

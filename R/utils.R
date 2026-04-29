@@ -1,7 +1,7 @@
 #' Helper function to convert local image to data URI
 #'
-#' @param image_path The file path to the local image
-#' @return A data URI string representing the image
+#' @param image_path The file path to the local image.
+#' @return A data URI string representing the image.
 #' @keywords internal
 image_to_data_uri <- function(image_path) {
   if (!file.exists(image_path)) {
@@ -31,8 +31,8 @@ image_to_data_uri <- function(image_path) {
 
 #' Helper function to detect if URL is a local file path
 #'
-#' @param url The URL or file path to check
-#' @return TRUE if it's a local file path, FALSE if it's a URL or data URI
+#' @param url The URL or file path to check.
+#' @return TRUE if it's a local file path, `FALSE` if it's a URL or data URI.
 #' @keywords internal
 is_local_file <- function(url) {
   # Check if it's a URL (starts with http/https)
