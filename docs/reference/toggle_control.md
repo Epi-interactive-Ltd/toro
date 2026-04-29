@@ -13,38 +13,51 @@ toggle_control(proxy, control_id, show = TRUE)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - control_id:
 
-  The ID of the control to toggle
+  The ID of the control to toggle.
 
 - show:
 
   Logical indicating whether to show or hide the control. Default is
-  `TRUE`
+  `TRUE`.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# In a Shiny app:
-output$map <- renderMap({
- map() |>
-   add_zoom_control() |>
-   add_custom_control(
-     id = "custom_control",
-     html = "<p>I am a custom control</p>"
-   )
-})
+if(interactive()){
+library(shiny)
+library(toro)
 
-# In an observer:
-mapProxy("map") |>
- toggle_control("zoom_control", show = FALSE) |>
- toggle_control("custom_control", show = FALSE)
-} # }
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   checkboxInput("show_controls", "Show controls", value = TRUE)
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_zoom_control() |>
+     add_custom_control(
+       id = "custom_control",
+       html = "<p>I am a custom control</p>"
+     )
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     toggle_control("zoom_control", show = input$show_controls) |>
+     toggle_control("custom_control", show = input$show_controls)
+ }) |>
+   bindEvent(input$show_controls)
+}
+}
 ```

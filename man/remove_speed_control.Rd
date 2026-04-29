@@ -22,15 +22,9 @@ Remove the speed control from the map
 # Add to a map
 map() |>
  add_speed_control()
-# In an observer
-mapProxy("map") |>
- remove_speed_control()
 
 # Add to a control panel
 map() |>
  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
  add_speed_control(panel_id = "my_panel")
-# In an observer
-mapProxy("map") |>
- remove_speed_control(panel_id = "my_panel")
 }

@@ -12,20 +12,20 @@ mapProxy(outputId, session = shiny::getDefaultReactiveDomain())
 
 - outputId:
 
-  The ID of the output element
+  The ID of the output element.
 
 - session:
 
-  The Shiny session object (default is the current session)
+  The Shiny session object (default is the current session).
 
 ## Value
 
-A proxy object for the map
+A proxy object for the map.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -53,5 +53,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$has_zoom_controls)
 }
-} # }
+}
 ```

@@ -13,21 +13,21 @@ remove_draw_control(proxy, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - panel_id:
 
   Optional. If provided, removes the draw control from the specified
-  control panel. If NULL, removes the standalone draw control
+  control panel. If NULL, removes the standalone draw control.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -50,5 +50,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$remove_draw_control)
 }
-} # }
+}
 ```

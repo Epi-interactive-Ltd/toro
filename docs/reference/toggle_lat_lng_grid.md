@@ -13,20 +13,21 @@ toggle_lat_lng_grid(proxy, show = TRUE)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - show:
 
-  Logical indicating whether to show or hide the grid. Default is `TRUE`
+  Logical indicating whether to show or hide the grid. Default is
+  `TRUE`.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -56,5 +57,5 @@ server <- function(input, output, session) {
    }) |>
      bindEvent(input$hide_grid)
 }
-} # }
+}
 ```

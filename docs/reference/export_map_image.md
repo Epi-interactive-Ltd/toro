@@ -23,46 +23,52 @@ export_map_image(
 - map:
 
   A map object created by
-  [`map()`](https://epi-interactive-ltd.github.io/toro/reference/map.md)
+  [`map()`](https://epi-interactive-ltd.github.io/toro/reference/map.md).
 
 - filepath:
 
-  The file path to save the image (including extension)
+  The file path to save the image (including extension).
 
 - width:
 
-  The width of the image in pixels. Default is 800
+  The width of the image in pixels. Default is 800.
 
 - height:
 
-  The height of the image in pixels. Default is 600
+  The height of the image in pixels. Default is 600.
 
 - delay:
 
-  The delay in seconds before capturing. Default is 2
+  The delay in seconds before capturing. Default is 2.
 
 - zoom:
 
-  The zoom factor for the capture. Default is 1
+  The zoom factor for the capture. Default is 1.
 
 - ...:
 
-  Additional arguments passed to webshot2::webshot() or
-  mapview::mapshot()
+  Additional arguments passed to
+  [`webshot2::webshot()`](https://rstudio.github.io/webshot2/reference/webshot.html)
+  or
+  [`mapview::mapshot()`](https://r-spatial.github.io/mapview/reference/mapshot.html).
 
 ## Value
 
-The file path of the saved image (invisibly)
+The file path of the saved image (invisibly).
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
+# Load library
+library(sf)
+
+data <- data.frame(lon = 174.8210, lat = -41.3096) |>
+  sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
 # Create and export a map
 my_map <- map() |>
-  add_source("earthquakes", quakes_data) |>
-  add_circle_layer("quake_circles", source = "earthquakes")
+  add_circle_layer("epi_circle", source = data)
 
-export_map_image(my_map, "earthquake_map.png", width = 1200, height = 800)
+export_map_image(my_map, "my_map.png", width = 1200, height = 800)
 } # }
 ```

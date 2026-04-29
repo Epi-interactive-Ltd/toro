@@ -12,8 +12,8 @@ is_local_file(url)
 
 - url:
 
-  The URL or file path to check
+  The URL or file path to check.
 
 ## Value
 
-TRUE if it's a local file path, FALSE if it's a URL or data URI
+TRUE if it's a local file path, `FALSE` if it's a URL or data URI.

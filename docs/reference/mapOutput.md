@@ -12,13 +12,33 @@ mapOutput(outputId, width = "100%", height = "600px")
 
 - outputId:
 
-  output variable to read from
+  output variable to read from.
 
 - width, height:
 
   Must be a valid CSS unit (like `'100%'`, `'400px'`, `'auto'`) or a
-  number, which will be coerced to a string and have `'px'` appended
+  number, which will be coerced to a string and have `'px'` appended.
 
 ## Value
 
-A MapLibre GL map for use in a Shiny UI
+A MapLibre GL map for use in a Shiny UI.
+
+## Examples
+
+``` r
+if(interactive()){
+library(shiny)
+library(toro)
+
+ui <- fluidPage(
+ tagList(
+   mapOutput("map")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map()
+ })
+}
+}
+```

@@ -124,17 +124,11 @@ add_timeline_control <- function(
 #' # Add to a map
 #' map() |>
 #'  add_timeline_control()
-#' # In an observer
-#' mapProxy("map") |>
-#'  remove_timeline_control()
 #'
 #' # Add to a control panel
 #' map() |>
 #'  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
 #'  add_timeline_control(panel_id = "my_panel")
-#' # In an observer
-#' mapProxy("map") |>
-#'  remove_timeline_control(panel_id = "my_panel")
 remove_timeline_control <- function(proxy, panel_id = NULL) {
   # Use the namespaced control ID pattern: timeline-control-{mapId}
   control_id <- paste0("timeline-control-container-", proxy$id)
@@ -264,17 +258,11 @@ add_speed_control <- function(
 #' # Add to a map
 #' map() |>
 #'  add_speed_control()
-#' # In an observer
-#' mapProxy("map") |>
-#'  remove_speed_control()
 #'
 #' # Add to a control panel
 #' map() |>
 #'  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
 #'  add_speed_control(panel_id = "my_panel")
-#' # In an observer
-#' mapProxy("map") |>
-#'  remove_speed_control(panel_id = "my_panel")
 remove_speed_control <- function(proxy, panel_id = NULL) {
   # Use the namespaced control ID pattern: speed-control-{mapId}
   control_id <- paste0("speed-control-", proxy$id)

@@ -5,31 +5,31 @@ Allows the data to be styled by the step breaks in the column.
 ## Usage
 
 ``` r
-get_column_step_steps(column_name, breaks, values)
+get_column_steps(column_name, breaks, values)
 ```
 
 ## Arguments
 
 - column_name:
 
-  String representing the name of the column to be used
+  String representing the name of the column to be used.
 
 - breaks:
 
-  Numeric vector of thresholds (must be sorted ascending)
+  Numeric vector of thresholds (must be sorted ascending).
 
 - values:
 
-  Vector of values, length = length(breaks) + 1
+  Vector of values, length = length(breaks) + 1.
 
 ## Value
 
-List containing the paint or layout option to be set
+List containing the paint or layout option to be set.
 
 ## Examples
 
 ``` r
-get_column_step_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
+get_column_steps("value", c(10, 20, 30), c("red", "orange", "yellow", "green"))
 #> [[1]]
 #> [1] "step"
 #> 

@@ -8,13 +8,13 @@ add_line_layer(
   map,
   id,
   source,
-  paint,
-  layout,
-  popup_column,
-  hover_column,
-  can_cluster,
-  under_id,
-  filter,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
   ...
 )
 }

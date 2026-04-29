@@ -44,7 +44,6 @@ The default options are just a starting point and can be overridden by providing
 \code{options} argument.
 }
 \examples{
-\dontrun{
 get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 
 get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
@@ -62,7 +61,6 @@ get_paint_options("fill", list(
 
 # Provide options outside of the defaults
 get_paint_options("circle", list("circle-blur" = 0.5))
-}
 }
 \seealso{
 \code{\link[=get_column]{get_column()}} for getting options from column values directly, \code{\link[=get_column_group]{get_column_group()}} for

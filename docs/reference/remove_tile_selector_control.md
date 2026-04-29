@@ -13,22 +13,23 @@ remove_tile_selector_control(proxy, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - panel_id:
 
   Optional. If provided, removes the tile selector control from the
-  specified control panel. If NULL, removes the standalone tile selector
-  control
+  specified control panel. If `NULL`, removes the standalone tile
+  selector control.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
+# Load libraries
 library(shiny)
 library(toro)
 
@@ -53,5 +54,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$remove_control)
 }
-} # }
+}
 ```

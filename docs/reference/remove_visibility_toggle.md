@@ -13,25 +13,26 @@ remove_visibility_toggle(proxy, layer_id, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - layer_id:
 
-  The ID of the layer whose visibility toggle control to remove
+  The ID of the layer whose visibility toggle control to remove.
 
 - panel_id:
 
   Optional. If provided, removes the control from the specified control
-  panel
+  panel.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
+# Load libraries
 library(shiny)
 library(toro)
 library(sf)
@@ -63,5 +64,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$remove_control)
 }
-} # }
+}
 ```

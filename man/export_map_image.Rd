@@ -37,7 +37,7 @@ This function exports a map widget as an image file using webshot2 or mapview.
 Works in non-Shiny contexts like RMarkdown, scripts, or interactive sessions.
 }
 \examples{
-\donttest{
+\dontrun{
 # Load library
 library(sf)
 

@@ -22,15 +22,9 @@ Remove the timeline control from the map
 # Add to a map
 map() |>
  add_timeline_control()
-# In an observer
-mapProxy("map") |>
- remove_timeline_control()
 
 # Add to a control panel
 map() |>
  add_control_panel(panel_id = "my_panel", title = "Map Settings") |>
  add_timeline_control(panel_id = "my_panel")
-# In an observer
-mapProxy("map") |>
- remove_timeline_control(panel_id = "my_panel")
 }

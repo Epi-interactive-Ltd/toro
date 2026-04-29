@@ -12,27 +12,27 @@ get_column_group(column_name, named_group_values, default_value = "#cccccc")
 
 - column_name:
 
-  String representing the name of the column to be used
+  String representing the name of the column to be used.
 
 - named_group_values:
 
-  Vector of value strings named by the group values The names of the
-  vector should match the group values in the column
+  Vector of value strings named by the group values. The names of the
+  vector should match the group values in the column.
 
 - default_value:
 
   String for the default value to use if no match is found. Default is
-  "#cccccc"
+  "#cccccc".
 
 ## Value
 
-List containing the paint or layout option to be set
+List containing the paint or layout option to be set.
 
 ## Note
 
 If using numbers as the group values, then you need to use
 [`stats::setNames`](https://rdrr.io/r/stats/setNames.html) rather than a
-named vector, as the names of the vector will be coerced to strings
+named vector, as the names of the vector will be coerced to strings.
 
 ## Examples
 

@@ -25,7 +25,7 @@ This function saves a map widget as a self-contained HTML file that can be
 opened in any web browser.
 }
 \examples{
-\donttest{
+\dontrun{
 # Load library
 library(sf)
 

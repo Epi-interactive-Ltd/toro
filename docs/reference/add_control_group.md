@@ -1,7 +1,7 @@
 # Add a control group to a control panel
 
 Creates a collapsible group within a control panel that can contain
-multiple controls
+multiple controls.
 
 ## Usage
 
@@ -20,60 +20,64 @@ add_control_group(
 
 - map:
 
-  The map or map proxy object
+  The map or map proxy object.
 
 - panel_id:
 
-  ID of the target control panel
+  ID of the target control panel.
 
 - group_id:
 
-  Unique identifier for the control group
+  Unique identifier for the control group.
 
 - group_title:
 
-  Title for the control group (optional)
+  Title for the control group (optional).
 
 - collapsible:
 
-  Whether the group can be collapsed. Default is FALSE
+  Whether the group can be collapsed. Default is FALSE.
 
 - collapsed:
 
-  Initial collapsed state. Default is FALSE
+  Initial collapsed state. Default is FALSE.
 
 ## Value
 
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 map() |>
- add_control_panel(panel_id = "my_panel", direction = "row") |>
- add_control_group(
-   panel_id = "my_panel",
-   group_id = "group_1",
-   group_title = "Group 1"
- ) |>
- add_control_group(
-   panel_id = "my_panel",
-   group_id = "group_2",
-   group_title = "Group 2"
- ) |>
- add_cursor_coords_control(panel_id = "my_panel", group_id = "group_1") |>
- add_zoom_control(panel_id = "my_panel", group_id = "group_2")
+  add_control_panel(panel_id = "my_panel", direction = "row") |>
+  add_control_group(
+    panel_id = "my_panel",
+    group_id = "group_1",
+    group_title = "Group 1"
+  ) |>
+  add_control_group(
+    panel_id = "my_panel",
+    group_id = "group_2",
+    group_title = "Group 2"
+  ) |>
+  add_cursor_coords_control(panel_id = "my_panel", group_id = "group_1") |>
+  add_zoom_control(panel_id = "my_panel", group_id = "group_2")
 
+{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"controlPanels":{"my_panel":{"panelId":"my_panel","options":{"title":null,"position":"bottom-left","collapsible":false,"collapsed":false,"direction":"row","customControls":null,"panelControls":[{"type":"group","groupId":"group_1","groupTitle":"Group 1","collapsible":false,"collapsed":false},{"type":"group","groupId":"group_2","groupTitle":"Group 2","collapsible":false,"collapsed":false}]}}},"cursorControls":{"type":"cursor","position":"bottom-left","longLabel":"Lng","latLabel":"Lat","panelId":"my_panel","panelTitle":null,"groupId":"group_1"},"controls":[{"type":"cursor","position":"bottom-left","longLabel":"Lng","latLabel":"Lat","panelId":"my_panel","panelTitle":null,"groupId":"group_1"},{"type":"zoom","position":"top-right","controlOptions":[],"panelId":"my_panel","panelTitle":null,"groupId":"group_2"}],"zoomControl":{"type":"zoom","position":"top-right","controlOptions":[],"panelId":"my_panel","panelTitle":null,"groupId":"group_2"}},"evals":[],"jsHooks":[]}
 map() |>
- add_control_panel(
-   panel_id = "my_panel",
-   title = "Map Settings",
-   position = "top-right",
-   collapsible = TRUE,
-   collapsed = TRUE,
-   direction = "row"
- ) |>
- add_cursor_coords_control(panel_id = "my_panel", section_title = "Cursor Coordinates")
-} # }
+  add_control_panel(
+    panel_id = "my_panel",
+    title = "Map Settings",
+    position = "top-right",
+    collapsible = TRUE,
+    collapsed = TRUE,
+    direction = "row"
+  ) |>
+  add_cursor_coords_control(
+    panel_id = "my_panel",
+    section_title = "Cursor Coordinates"
+  )
+
+{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"controlPanels":{"my_panel":{"panelId":"my_panel","options":{"title":"Map Settings","position":"top-right","collapsible":true,"collapsed":true,"direction":"row","customControls":null}}},"cursorControls":{"type":"cursor","position":"bottom-left","longLabel":"Lng","latLabel":"Lat","panelId":"my_panel","panelTitle":"Cursor Coordinates","groupId":null},"controls":[{"type":"cursor","position":"bottom-left","longLabel":"Lng","latLabel":"Lat","panelId":"my_panel","panelTitle":"Cursor Coordinates","groupId":null}]},"evals":[],"jsHooks":[]}
 ```

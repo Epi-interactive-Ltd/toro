@@ -170,7 +170,6 @@ get_layout_options <- function(layer_type, options = list()) {
 #'   getting options by spiliting column values into groups based on steps.
 #'
 #' @examples
-#' \dontrun{
 #' get_paint_options("line", list(colour = "blue", opacity = 0.8, line_width = 2))
 #'
 #' get_paint_options("circle", list(colour = "red", circle_radius = 10, outline_colour = "black"))
@@ -188,7 +187,6 @@ get_layout_options <- function(layer_type, options = list()) {
 #'
 #' # Provide options outside of the defaults
 #' get_paint_options("circle", list("circle-blur" = 0.5))
-#' }
 get_paint_options <- function(layer_type, options = list()) {
   default_options <- list(
     colour = "grey",

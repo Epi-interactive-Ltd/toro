@@ -13,11 +13,11 @@ get_clicked_feature(clicked_feature_input)
 
 - clicked_feature_input:
 
-  A list representing the clicked feature
+  A list representing the clicked feature.
 
 ## Value
 
-A `sf` object representing the clicked feature, or `NULL`
+A `sf` object representing the clicked feature, or `NULL`.
 
 ## Details
 
@@ -31,12 +31,12 @@ an `sf` object for easier manipulation in R.
 
 `time` is not used in this function, but it is included in the input so
 that the same feature can be clicked multiple times and the changed time
-means that the input will be updated
+means that the input will be updated.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(spData)
 library(sf)
@@ -67,5 +67,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$map_feature_click)
 }
-} # }
+}
 ```

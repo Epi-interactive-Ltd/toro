@@ -12,8 +12,8 @@ image_to_data_uri(image_path)
 
 - image_path:
 
-  The file path to the local image
+  The file path to the local image.
 
 ## Value
 
-A data URI string representing the image
+A data URI string representing the image.

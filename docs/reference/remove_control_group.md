@@ -13,24 +13,24 @@ remove_control_group(proxy, panel_id, group_id)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - panel_id:
 
-  The ID of the control panel
+  The ID of the control panel.
 
 - group_id:
 
-  The ID of the control group to remove
+  The ID of the control group to remove.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -63,5 +63,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$remove_group1)
 }
-} # }
+}
 ```

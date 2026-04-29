@@ -19,28 +19,28 @@ add_control_to_panel(
 
 - map:
 
-  The map or map proxy object
+  The map or map proxy object.
 
 - panel_id:
 
-  ID of the target control panel
+  ID of the target control panel.
 
 - control_type:
 
-  Type of control ("timeline", "speed", "custom")
+  Type of control ("timeline", "speed", "custom").
 
 - control_options:
 
-  Control-specific options
+  Control-specific options.
 
 - section_title:
 
-  Optional section title for the control
+  Optional section title for the control.
 
 - group_id:
 
-  Optional ID of the group to add the control to
+  Optional ID of the group to add the control to.
 
 ## Value
 
-The map or map proxy object for chaining
+The map or map proxy object for chaining.

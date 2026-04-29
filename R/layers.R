@@ -151,16 +151,29 @@ add_fill_layer <- function(
   map,
   id,
   source,
-  paint,
-  layout,
-  popup_column,
-  hover_column,
-  can_cluster,
-  under_id,
-  filter,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
   ...
 ) {
-  add_layer(map = map, type = "fill", ...)
+  add_layer(
+    map = map,
+    type = "fill",
+    id,
+    source,
+    paint,
+    layout,
+    popup_column,
+    hover_column,
+    can_cluster,
+    under_id,
+    filter,
+    ...
+  )
 }
 
 #' Add a circle layer to a map or map proxy
@@ -206,16 +219,29 @@ add_circle_layer <- function(
   map,
   id,
   source,
-  paint,
-  layout,
-  popup_column,
-  hover_column,
-  can_cluster,
-  under_id,
-  filter,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
   ...
 ) {
-  add_layer(map = map, type = "circle", ...)
+  add_layer(
+    map = map,
+    type = "circle",
+    id,
+    source,
+    paint,
+    layout,
+    popup_column,
+    hover_column,
+    can_cluster,
+    under_id,
+    filter,
+    ...
+  )
 }
 
 #' Add a line layer to a map or map proxy
@@ -262,16 +288,29 @@ add_line_layer <- function(
   map,
   id,
   source,
-  paint,
-  layout,
-  popup_column,
-  hover_column,
-  can_cluster,
-  under_id,
-  filter,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
   ...
 ) {
-  add_layer(map = map, type = "line", ...)
+  add_layer(
+    map = map,
+    type = "line",
+    id,
+    source,
+    paint,
+    layout,
+    popup_column,
+    hover_column,
+    can_cluster,
+    under_id,
+    filter,
+    ...
+  )
 }
 
 #' Add a symbol layer to a map or map proxy
@@ -301,16 +340,29 @@ add_symbol_layer <- function(
   map,
   id,
   source,
-  paint,
-  layout,
-  popup_column,
-  hover_column,
-  can_cluster,
-  under_id,
-  filter,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
   ...
 ) {
-  add_layer(map = map, type = "symbol", ...)
+  add_layer(
+    map = map,
+    type = "symbol",
+    id,
+    source,
+    paint,
+    layout,
+    popup_column,
+    hover_column,
+    can_cluster,
+    under_id,
+    filter,
+    ...
+  )
 }
 
 #' Add a text layer to a map or map proxy
@@ -340,16 +392,29 @@ add_text_layer <- function(
   map,
   id,
   source,
-  paint,
-  layout,
-  popup_column,
-  hover_column,
-  can_cluster,
-  under_id,
-  filter,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
   ...
 ) {
-  add_layer(map = map, type = "text", ...)
+  add_layer(
+    map = map,
+    type = "text",
+    id,
+    source,
+    paint,
+    layout,
+    popup_column,
+    hover_column,
+    can_cluster,
+    under_id,
+    filter,
+    ...
+  )
 }
 
 #' Add a grid of latitude and longitude lines to the map

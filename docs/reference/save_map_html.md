@@ -14,37 +14,42 @@ save_map_html(map, filepath, title = "Toro Map", selfcontained = TRUE, ...)
 - map:
 
   A map object created by
-  [`map()`](https://epi-interactive-ltd.github.io/toro/reference/map.md)
+  [`map()`](https://epi-interactive-ltd.github.io/toro/reference/map.md).
 
 - filepath:
 
-  The file path to save the HTML file (should end with .html)
+  The file path to save the HTML file (should end with .html).
 
 - title:
 
-  The title for the HTML page. Default is "Toro Map"
+  The title for the HTML page. Default is "Toro Map".
 
 - selfcontained:
 
-  Whether to create a self-contained HTML file. Default is TRUE
+  Whether to create a self-contained HTML file. Default is TRUE.
 
 - ...:
 
-  Additional arguments passed to htmlwidgets::saveWidget()
+  Additional arguments passed to
+  [`htmlwidgets::saveWidget()`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html).
 
 ## Value
 
-The file path of the saved HTML file (invisibly)
+The file path of the saved HTML file (invisibly).
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-# Create and save a map as HTML
-my_map <- map() |>
-  add_source("earthquakes", quakes_data) |>
-  add_circle_layer("quake_circles", source = "earthquakes")
+# Load library
+library(sf)
 
-save_map_html(my_map, "earthquake_map.html", title = "Earthquake Data")
+data <- data.frame(lon = 174.8210, lat = -41.3096) |>
+  sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
+# Create and export a map
+my_map <- map() |>
+  add_circle_layer("epi_circle", source = data)
+
+save_map_html(my_map, "my_map")
 } # }
 ```

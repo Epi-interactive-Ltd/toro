@@ -52,39 +52,43 @@ opened in any web browser.</p>
 
 
 <dl><dt id="arg-map">map<a class="anchor" aria-label="anchor" href="#arg-map"></a></dt>
-<dd><p>A map object created by <code><a href="map.html">map()</a></code></p></dd>
+<dd><p>A map object created by <code><a href="map.html">map()</a></code>.</p></dd>
 
 
 <dt id="arg-filepath">filepath<a class="anchor" aria-label="anchor" href="#arg-filepath"></a></dt>
-<dd><p>The file path to save the HTML file (should end with .html)</p></dd>
+<dd><p>The file path to save the HTML file (should end with .html).</p></dd>
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
-<dd><p>The title for the HTML page. Default is "Toro Map"</p></dd>
+<dd><p>The title for the HTML page. Default is "Toro Map".</p></dd>
 
 
 <dt id="arg-selfcontained">selfcontained<a class="anchor" aria-label="anchor" href="#arg-selfcontained"></a></dt>
-<dd><p>Whether to create a self-contained HTML file. Default is TRUE</p></dd>
+<dd><p>Whether to create a self-contained HTML file. Default is TRUE.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments passed to htmlwidgets::saveWidget()</p></dd>
+<dd><p>Additional arguments passed to <code><a href="https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html" class="external-link">htmlwidgets::saveWidget()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The file path of the saved HTML file (invisibly)</p>
+    <p>The file path of the saved HTML file (invisibly).</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Create and save a map as HTML</span></span></span>
-<span class="r-in"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="add_source.html">add_source</a></span><span class="op">(</span><span class="st">"earthquakes"</span>, <span class="va">quakes_data</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="add_circle_layer.html">add_circle_layer</a></span><span class="op">(</span><span class="st">"quake_circles"</span>, source <span class="op">=</span> <span class="st">"earthquakes"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Load library</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">save_map_html</span><span class="op">(</span><span class="va">my_map</span>, <span class="st">"earthquake_map.html"</span>, title <span class="op">=</span> <span class="st">"Earthquake Data"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">174.8210</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">41.3096</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Create and export a map</span></span></span>
+<span class="r-in"><span><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="map.html">map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="add_circle_layer.html">add_circle_layer</a></span><span class="op">(</span><span class="st">"epi_circle"</span>, source <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">save_map_html</span><span class="op">(</span><span class="va">my_map</span>, <span class="st">"my_map"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

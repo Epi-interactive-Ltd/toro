@@ -69,7 +69,7 @@ chrome_error_message <- function() {
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Load library
 #' library(sf)
 #'
@@ -172,7 +172,7 @@ export_map_image <- function(
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Load library
 #' library(sf)
 #'
