@@ -49,7 +49,7 @@ More specific in-depth examples can be found
 ## Contributing
 
 If you would like to contribute to toro see: [Contributing to
-toro](https://epi-interactive-ltd.github.io/toro/docs/CONTRIBUTING.html).
+toro](https://epi-interactive-ltd.github.io/toro/CONTRIBUTING.html).
 
 ## Licensing
 
