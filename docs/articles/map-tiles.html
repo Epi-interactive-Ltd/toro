@@ -132,7 +132,7 @@ tiles on the map to any of the options defined in
 <span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
-<span>  <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map-shiny.html">mapOutput</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/mapOutput.html">mapOutput</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectInput</a></span><span class="op">(</span></span>
 <span>    <span class="st">"tiles"</span>,</span>
 <span>    <span class="st">"Tiles"</span>,</span>
@@ -142,7 +142,7 @@ tiles on the map to any of the options defined in
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map-shiny.html">renderMap</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/renderMap.html">renderMap</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"satellite"</span>, loadedTiles <span class="op">=</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/get_tile_options.html">get_tile_options</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span></span>
@@ -171,11 +171,11 @@ vignette</a>.</p>
 <span><span class="va">all_tiles</span> <span class="op">&lt;-</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/get_tile_options.html">get_tile_options</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
-<span>  <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map-shiny.html">mapOutput</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span></span>
+<span>  <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/mapOutput.html">mapOutput</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map-shiny.html">renderMap</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/renderMap.html">renderMap</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu">toro</span><span class="fu">::</span><span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span>style <span class="op">=</span> <span class="st">"satellite"</span>, loadedTiles <span class="op">=</span> <span class="va">all_tiles</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu"><a href="../reference/add_control_panel.html">add_control_panel</a></span><span class="op">(</span></span>
 <span>        panel_id <span class="op">=</span> <span class="st">"demo-panel"</span></span>

@@ -7,7 +7,7 @@
 get_tile_options()
 }
 \value{
-A character vector of available tile layer options
+A character vector of available tile layer options.
 }
 \description{
 Get available tile layer options

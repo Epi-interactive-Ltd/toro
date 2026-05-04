@@ -3,31 +3,37 @@
 #' @note If you add a source directly in an add layer function, the source ID will
 #' be automatically generated as `source-{layer-id}`.
 #'
-#' @param map The map or map proxy object
-#' @param source_id The ID for the source
-#' @param data The data for the source, typically in GeoJSON format
+#' @param map The map or map proxy object.
+#' @param source_id The ID for the source.
+#' @param data The data for the source, typically in GeoJSON format.
 #' @param type The type of the source. Default is `"geojson"`.
-#'    Other options include `"vector"` or `"raster"`
-#' @param cluster Whether to enable clustering for this source. Default is `FALSE`
+#'    Other options include `"vector"` or `"raster"`.
+#' @param cluster Whether to enable clustering for this source. Default is `FALSE`.
 #' @param ... Additional arguments to in pass directly to the JS addSource function. Documentation
 #'  for this can be found on the
 #'  [MapLibre GL JS docs](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource).
 #'  \itemize{
 #'    \item id: Alternative to `source_id` for backward compatibility. If both `source_id` and
-#'      `id` are provided, `source_id` will take precedence
+#'      `id` are provided, `source_id` will take precedence.
 #'  }
-#' @return The map or map proxy object for chaining
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'  map() |>
-#'    add_source(
-#'      source_id = "my_source",
-#'      data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
-#'    ) |>
-#'    add_circle_layer(id = "quakes", source = "my_source")
-#' }
+#' # Load libraries
+#' library(sf)
+#'
+#' # Prepare data
+#' data(quakes)
+#' quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
+#' # Display the source on map
+#' map() |>
+#'   add_source(
+#'     source_id = "my_source",
+#'     data = sf::st_as_sf(quakes_data, coords = c("long", "lat"), crs = 4326)
+#'   ) |>
+#'   add_circle_layer(id = "quakes", source = "my_source")
 add_source <- function(
   map,
   source_id,
@@ -79,16 +85,16 @@ add_source <- function(
 #'    provide the full query URL directly in the `source_url` argument and set `append_query_url`
 #'    to an empty string to prevent appending the default query parameters.
 #'
-#' @param map The map or map proxy object
-#' @param source_url The URL of the FeatureService source
-#' @param source_id The ID for the source
+#' @param map The map or map proxy object.
+#' @param source_url The URL of the FeatureService source.
+#' @param source_id The ID for the source.
 #' @param append_query_url The query URL to append to the source URL. Default is
-#'    `"/0/query?where=1=1&outFields=*&f=geojson"`
-#' @return The map or map proxy object for chaining
+#'    `"/0/query?where=1=1&outFields=*&f=geojson"`.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' service_url <- paste0(
 #'  "https://services1.arcgis.com/VwarAUbcaX64Jhub/arcgis/rest/services/",
 #'  "World_Exclusive_Economic_Zones_Boundaries/FeatureServer"
@@ -129,10 +135,10 @@ add_feature_server_source <- function(
 #'
 #' WIP.
 #'
-#' @param map A toro map object or a map proxy object
-#' @param url The URL of the ArcGIS Image Server
-#' @param ... Additional parameters for the Image Server source
-#' @return The updated map object
+#' @param map A toro map object or a map proxy object.
+#' @param url The URL of the ArcGIS Image Server.
+#' @param ... Additional parameters for the Image Server source.
+#' @return The updated map object.
 #' @keywords internal
 add_tiles_from_map_server <- function(
   map,
@@ -147,16 +153,6 @@ add_tiles_from_map_server <- function(
     ...
   )
 
-  # if (inherits(map, "mapProxy")) {
-  #   map$session$sendCustomMessage(
-  #     "addTilesFromMapServer",
-  #     list(
-  #       id = map$id,
-  #       sourceOptions = source_options,
-  #       sourceId = tile_id
-  #     )
-  #   )
-  # }
   key <- ifelse(as_image_layer, "imageLayerTiles", "mapServerTiles")
   map$x[[key]] <- c(
     map$x[[key]],
@@ -169,32 +165,18 @@ add_tiles_from_map_server <- function(
 #'
 #' WIP.
 #'
-#' @param map A toro map object or a map proxy object
-#' @param url The URL of the ArcGIS Image Server
-#' @param ... Additional parameters for the Image Server source
-#' @return The updated map object
+#' @param map A toro map object or a map proxy object.
+#' @param url The URL of the ArcGIS Image Server.
+#' @param ... Additional parameters for the Image Server source.
+#' @return The updated map object.
 #' @keywords internal
 add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
   source_options <- list(
     tileId = tile_id,
     tiles = url,
-    # tiles = paste0(
-    #   url,
-    #   "?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256"
-    # ),
     ...
   )
 
-  # if (inherits(map, "mapProxy")) {
-  #   map$session$sendCustomMessage(
-  #     "addTilesFromMapServer",
-  #     list(
-  #       id = map$id,
-  #       sourceOptions = source_options,
-  #       sourceId = tile_id
-  #     )
-  #   )
-  # }
   key <- ifelse(as_image_layer, "imageLayerTiles", "mapServerTiles")
   map$x[[key]] <- c(
     map$x[[key]],
@@ -205,14 +187,21 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 
 #' Add an image source to the map
 #'
-#' @param map The map or map proxy object
-#' @param image_id The ID of the image source
-#' @param image_url The URL of the image to add
-#' @return The map or map proxy object for chaining
+#' @param map The map or map proxy object.
+#' @param image_id The ID of the image source.
+#' @param image_url The URL of the image to add.
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' # Load libraries
+#' library(sf)
+#'
+#' # Prepare data
+#' data(quakes)
+#' quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#'
 #' image_url <- paste0(
 #'  "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/",
 #'  "Leaf_icon.png/600px-Leaf_icon.png"
@@ -225,8 +214,8 @@ add_tiles_from_wms <- function(map, url, tile_id, as_image_layer = FALSE, ...) {
 #'    ) |>
 #'    add_symbol_layer(
 #'      id = "leaf_symbols",
-#'      source = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326),
-#'      layout = toro::get_layout_options(
+#'      source = sf::st_as_sf(quakes_data, coords = c("long", "lat"), crs = 4326),
+#'      layout = get_layout_options(
 #'        "symbol",
 #'        options = list(
 #'          icon_image = "leaf-icon",
@@ -268,21 +257,22 @@ add_image <- function(map, image_id, image_url) {
 
 #' Set data for a source on the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
-#' @param source_id The ID of the source to update
-#' @param data The data for the source, typically in GeoJSON format
-#' @param type The type of the source. Default is `"geojson"`. Other options include `"vector"` or `"raster"`
-#' @return The map proxy object for chaining
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param source_id The ID of the source to update.
+#' @param data The data for the source, typically in GeoJSON format.
+#' @param type The type of the source. Default is `"geojson"`.
+#'   Other options include `"vector"` or `"raster"`.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' library(shiny)
 #' library(sf)
 #' library(toro)
 #'
 #' data(quakes)
-#' quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+#' quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
 #'
 #' ui <- fluidPage(
 #'  tagList(

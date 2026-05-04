@@ -7,20 +7,20 @@
 pause_route(map, route_id, settings = list())
 }
 \arguments{
-\item{map}{A toro map proxy object}
+\item{map}{A toro map proxy object.}
 
-\item{route_id}{A unique identifier for the route}
+\item{route_id}{A unique identifier for the route.}
 
-\item{settings}{A list of settings for pausing the animation}
+\item{settings}{A list of settings for pausing the animation.}
 }
 \value{
-The updated map object
+The updated map proxy object.
 }
 \description{
 Pause a route animation on a toro map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 library(sf)

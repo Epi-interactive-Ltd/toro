@@ -257,24 +257,24 @@ example</a>).</p>
 <span>    clusterOptions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      circleOptions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        paint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>          <span class="st">"circle-color"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_step_steps.html">get_column_step_steps</a></span><span class="op">(</span></span>
+<span>          <span class="st">"circle-color"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_steps.html">get_column_steps</a></span><span class="op">(</span></span>
 <span>            <span class="st">"point_count"</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"green"</span><span class="op">)</span></span>
 <span>          <span class="op">)</span>,</span>
-<span>          <span class="st">"circle-stroke-color"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_step_steps.html">get_column_step_steps</a></span><span class="op">(</span></span>
+<span>          <span class="st">"circle-stroke-color"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_steps.html">get_column_steps</a></span><span class="op">(</span></span>
 <span>            <span class="st">"point_count"</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"green"</span><span class="op">)</span></span>
 <span>          <span class="op">)</span>,</span>
-<span>          <span class="st">"circle-radius"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_step_steps.html">get_column_step_steps</a></span><span class="op">(</span></span>
+<span>          <span class="st">"circle-radius"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_steps.html">get_column_steps</a></span><span class="op">(</span></span>
 <span>            <span class="st">"point_count"</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span></span>
 <span>          <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>          <span class="st">"circle-sort-key"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_step_steps.html">get_column_step_steps</a></span><span class="op">(</span></span>
+<span>          <span class="st">"circle-sort-key"</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_column_steps.html">get_column_steps</a></span><span class="op">(</span></span>
 <span>            <span class="st">"point_count"</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
@@ -299,13 +299,13 @@ cluster.</p>
 <ul>
 <li><p>At the maps max zoom there are still pins with close enough
 coordinates that they are in a cluster (layer clustering is
-enabled)</p></li>
+enabled).</p></li>
 <li><p>A group of pins share the same coordinates. In this case,
 regardless of whether or not the layer has clustering enabled a cluster
 will <strong>always</strong> appear. This is due to the fact that
 without this there would be no way for the user to know that there are
 multiple pins there as they would all be stacked on top of each other
-and look like a single pin</p></li>
+and look like a single pin.</p></li>
 </ul>
 <div class="section level3">
 <h3 id="spiderfying-on-max-zoom">Spiderfying on max zoom<a class="anchor" aria-label="anchor" href="#spiderfying-on-max-zoom"></a>

@@ -193,24 +193,24 @@ base_map |>
     clusterOptions = list(
       circleOptions = list(
         paint = list(
-          "circle-color" = get_column_step_steps(
+          "circle-color" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c("red", "orange", "yellow", "green")
           ),
-          "circle-stroke-color" = get_column_step_steps(
+          "circle-stroke-color" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c("red", "orange", "yellow", "green")
           ),
-          "circle-radius" = get_column_step_steps(
+          "circle-radius" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c(10, 20, 30, 40)
           )
         ),
         layout = list(
-          "circle-sort-key" = get_column_step_steps(
+          "circle-sort-key" = get_column_steps(
             "point_count",
             c(2, 5, 10),
             c(4, 3, 2, 1)
@@ -231,14 +231,14 @@ user is able to view all pins even if they appear in the same cluster.
 There are two reasons why a cluster would need to spiderfy:
 
 - At the maps max zoom there are still pins with close enough
-  coordinates that they are in a cluster (layer clustering is enabled)
+  coordinates that they are in a cluster (layer clustering is enabled).
 
 - A group of pins share the same coordinates. In this case, regardless
   of whether or not the layer has clustering enabled a cluster will
   **always** appear. This is due to the fact that without this there
   would be no way for the user to know that there are multiple pins
   there as they would all be stacked on top of each other and look like
-  a single pin
+  a single pin.
 
 ### Spiderfying on max zoom
 

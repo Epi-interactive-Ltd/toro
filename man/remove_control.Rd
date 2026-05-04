@@ -7,31 +7,44 @@
 remove_control(proxy, control_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{control_id}{The ID of the control to remove}
+\item{control_id}{The ID of the control to remove.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove a control from the map
 }
 \examples{
-\dontrun{
-# In a Shiny app:
-output$map <- renderMap({
- map() |>
-   add_zoom_control() |>
-   add_custom_control(
-     id = "custom_control",
-     html = "<p>I am a custom control</p>"
-   )
-})
+if(interactive()){
+library(shiny)
+library(toro)
 
-# In an observer:
-mapProxy("map") |>
- remove_control("zoom_control") |>
- remove_control("custom_control")
+ui <- fluidPage(
+ tagList(
+   mapOutput("map"),
+   actionButton("remove_controls", "Remove controls")
+ )
+)
+server <- function(input, output, session) {
+ output$map <- renderMap({
+   map() |>
+     add_zoom_control() |>
+     add_custom_control(
+       id = "custom_control",
+       html = "<p>I am a custom control</p>"
+     )
+ })
+
+ observe({
+   req(input$map_loaded)
+   mapProxy("map") |>
+     remove_control("zoom_control") |>
+     remove_control("custom_control")
+ }) |>
+   bindEvent(input$remove_controls)
+}
 }
 }

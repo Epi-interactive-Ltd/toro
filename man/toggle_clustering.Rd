@@ -7,20 +7,20 @@
 toggle_clustering(proxy, layer_id, cluster = FALSE)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{layer_id}{The ID of the layer to toggle clustering for}
+\item{layer_id}{The ID of the layer to toggle clustering for.}
 
-\item{cluster}{Whether to enable clustering. Default is \code{FALSE}}
+\item{cluster}{Whether to enable clustering. Default is \code{FALSE}.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Toggle clustering for a layer on the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(sf)
 library(toro)

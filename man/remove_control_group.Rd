@@ -7,20 +7,20 @@
 remove_control_group(proxy, panel_id, group_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{panel_id}{The ID of the control panel}
+\item{panel_id}{The ID of the control panel.}
 
-\item{group_id}{The ID of the control group to remove}
+\item{group_id}{The ID of the control group to remove.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove a control group from a control panel
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

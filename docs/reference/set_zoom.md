@@ -12,24 +12,21 @@ set_zoom(map, zoom)
 
 - map:
 
-  The map or map proxy object
+  The map or map proxy object.
 
 - zoom:
 
-  The zoom level to set. Default is 2
+  The zoom level to set. Default is 2.
 
 ## Value
 
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
  map() |>
   set_zoom(5)
 
- mapProxy("map") |>
-   set_zoom(5)
-} # }
+{"x":{"style":"lightgrey","center":[174,-41],"zoom":2,"options":{"minZoom":2,"maxZoom":18,"clusterColour":"#808080","loadedTiles":["lightgrey","satellite"],"initialTileLayer":null,"backgroundColour":"#D0CFD4","enable3D":false,"initialLoadedLayers":null,"spinnerWhileBusy":false,"busyLoaderBgColour":"rgba(0, 0, 0, 0.2)","busyLoaderColour":"white","initialLoaderBgColour":"white","initialLoaderColour":"black"},"imageSources":null,"setZoom":5},"evals":[],"jsHooks":[]}
 ```

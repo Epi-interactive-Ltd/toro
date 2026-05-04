@@ -1,6 +1,6 @@
 #' Check if Chrome/Chromium is available for webshot operations
 #'
-#' @return TRUE if Chrome is available, FALSE otherwise
+#' @return `TRUE` if Chrome is available, `FALSE` otherwise.
 #' @keywords internal
 check_chrome_available <- function() {
   # Check if CHROMOTE_CHROME environment variable is set
@@ -24,6 +24,7 @@ check_chrome_available <- function() {
 }
 
 #' Provide helpful error message for missing Chrome
+#' @return No return value, prints to console.
 #' @keywords internal
 chrome_error_message <- function() {
   os_type <- Sys.info()[["sysname"]]
@@ -57,24 +58,28 @@ chrome_error_message <- function() {
 #' This function exports a map widget as an image file using webshot2 or mapview.
 #' Works in non-Shiny contexts like RMarkdown, scripts, or interactive sessions.
 #'
-#' @param map A map object created by `map()`
-#' @param filepath The file path to save the image (including extension)
-#' @param width The width of the image in pixels. Default is 800
-#' @param height The height of the image in pixels. Default is 600
-#' @param delay The delay in seconds before capturing. Default is 2
-#' @param zoom The zoom factor for the capture. Default is 1
-#' @param ... Additional arguments passed to webshot2::webshot() or mapview::mapshot()
-#' @return The file path of the saved image (invisibly)
+#' @param map A map object created by `map()`.
+#' @param filepath The file path to save the image (including extension).
+#' @param width The width of the image in pixels. Default is 800.
+#' @param height The height of the image in pixels. Default is 600.
+#' @param delay The delay in seconds before capturing. Default is 2.
+#' @param zoom The zoom factor for the capture. Default is 1.
+#' @param ... Additional arguments passed to `webshot2::webshot()` or `mapview::mapshot()`.
+#' @return The file path of the saved image (invisibly).
 #' @export
 #'
 #' @examples
 #' \dontrun{
+#' # Load library
+#' library(sf)
+#'
+#' data <- data.frame(lon = 174.8210, lat = -41.3096) |>
+#'   sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
 #' # Create and export a map
 #' my_map <- map() |>
-#'   add_source("earthquakes", quakes_data) |>
-#'   add_circle_layer("quake_circles", source = "earthquakes")
+#'   add_circle_layer("epi_circle", source = data)
 #'
-#' export_map_image(my_map, "earthquake_map.png", width = 1200, height = 800)
+#' export_map_image(my_map, file.path(tempdir(), "my_map.png"), width = 1200, height = 800)
 #' }
 export_map_image <- function(
   map,
@@ -111,43 +116,55 @@ export_map_image <- function(
 
   # Create temporary HTML file
   temp_html <- tempfile(fileext = ".html")
-  on.exit(unlink(temp_html), add = TRUE)
+  on.exit({
+    if (file.exists(temp_html)) {
+      unlink(temp_html)
+    }
+  }, add = TRUE)
 
   # Save widget as HTML
-  htmlwidgets::saveWidget(map, temp_html, selfcontained = TRUE)
+  tryCatch({
+    htmlwidgets::saveWidget(map, temp_html, selfcontained = TRUE)
+  }, error = function(e) {
+    stop("Failed to save widget as HTML: ", e$message)
+  })
 
   # Capture image based on available package
-  if (webshot_pkg == "webshot2") {
-    webshot2::webshot(
-      url = temp_html,
-      file = filepath,
-      vwidth = width,
-      vheight = height,
-      delay = delay,
-      zoom = zoom,
-      ...
-    )
-  } else if (webshot_pkg == "mapview") {
-    mapview::mapshot(
-      x = map,
-      file = filepath,
-      vwidth = width,
-      vheight = height,
-      delay = delay,
-      zoom = zoom,
-      ...
-    )
-  } else {
-    webshot::webshot(
-      url = temp_html,
-      file = filepath,
-      vwidth = width,
-      vheight = height,
-      delay = delay,
-      zoom = zoom,
-      ...
-    )
-  }
+  tryCatch({
+    if (webshot_pkg == "webshot2") {
+      webshot2::webshot(
+        url = temp_html,
+        file = filepath,
+        vwidth = width,
+        vheight = height,
+        delay = delay,
+        zoom = zoom,
+        ...
+      )
+    } else if (webshot_pkg == "mapview") {
+      mapview::mapshot(
+        x = map,
+        file = filepath,
+        vwidth = width,
+        vheight = height,
+        delay = delay,
+        zoom = zoom,
+        ...
+      )
+    } else {
+      webshot::webshot(
+        url = temp_html,
+        file = filepath,
+        vwidth = width,
+        vheight = height,
+        delay = delay,
+        zoom = zoom,
+        ...
+      )
+    }
+  }, error = function(e) {
+    stop("Failed to capture image: ", e$message)
+  })
 
   message("Map exported to: ", filepath)
   invisible(filepath)
@@ -158,22 +175,26 @@ export_map_image <- function(
 #' This function saves a map widget as a self-contained HTML file that can be
 #' opened in any web browser.
 #'
-#' @param map A map object created by `map()`
-#' @param filepath The file path to save the HTML file (should end with .html)
-#' @param title The title for the HTML page. Default is "Toro Map"
-#' @param selfcontained Whether to create a self-contained HTML file. Default is TRUE
-#' @param ... Additional arguments passed to htmlwidgets::saveWidget()
-#' @return The file path of the saved HTML file (invisibly)
+#' @param map A map object created by `map()`.
+#' @param filepath The file path to save the HTML file (should end with .html).
+#' @param title The title for the HTML page. Default is "Toro Map".
+#' @param selfcontained Whether to create a self-contained HTML file. Default is TRUE.
+#' @param ... Additional arguments passed to `htmlwidgets::saveWidget()`.
+#' @return The file path of the saved HTML file (invisibly).
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Create and save a map as HTML
-#' my_map <- map() |>
-#'   add_source("earthquakes", quakes_data) |>
-#'   add_circle_layer("quake_circles", source = "earthquakes")
+#' \donttest{
+#' # Load library
+#' library(sf)
 #'
-#' save_map_html(my_map, "earthquake_map.html", title = "Earthquake Data")
+#' data <- data.frame(lon = 174.8210, lat = -41.3096) |>
+#'   sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
+#' # Create and export a map
+#' my_map <- map() |>
+#'   add_circle_layer("epi_circle", source = data)
+#'
+#' save_map_html(my_map, file.path(tempdir(), "my_map.html"))
 #' }
 save_map_html <- function(
   map,
@@ -191,13 +212,17 @@ save_map_html <- function(
     filepath <- paste0(filepath, ".html")
   }
 
-  htmlwidgets::saveWidget(
-    widget = map,
-    file = filepath,
-    title = title,
-    selfcontained = selfcontained,
-    ...
-  )
+  tryCatch({
+    htmlwidgets::saveWidget(
+      widget = map,
+      file = filepath,
+      title = title,
+      selfcontained = selfcontained,
+      ...
+    )
+  }, error = function(e) {
+    stop("Failed to save HTML file: ", e$message)
+  })
 
   message("Map saved as HTML to: ", filepath)
   invisible(filepath)

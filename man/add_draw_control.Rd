@@ -18,38 +18,47 @@ add_draw_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{id}{The ID for the draw control}
+\item{id}{The ID for the draw control.}
 
 \item{position}{The position of the draw control on the map. Default is \code{"top-right"}.
-Options are "top-left", "top-right", "bottom-left", "bottom-right"}
+Options are "top-left", "top-right", "bottom-left", "bottom-right".}
 
 \item{modes}{A vector of modes to enable in the draw control. Default is \code{c("polygon")}.
-Options include "polygon", "delete", "line", and "point"}
+Options include "polygon", "delete", "line", and "point".}
 
-\item{active_colour}{The colour for the drawn shapes. Default is \code{"#04AAC1"}}
+\item{active_colour}{The colour for the drawn shapes. Default is \code{"#04AAC1"}.}
 
-\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#04AAC1"}}
+\item{inactive_colour}{The colour for the inactive shapes. Default is \code{"#04AAC1"}.}
 
 \item{mode_labels}{A named list of labels for each mode.
-For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}}
+For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}.}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{Optional group ID for grouping controls within a panel}
+\item{group_id}{Optional group ID for grouping controls within a panel.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
-Add a draw control to the map
+The draw control allows users to draw shapes (polygons, lines, points) on the map.
+The drawn shapes can be styled and managed through the control options.
+Information about the drawn shapes can be retrieved in Shiny using the
+\code{input$map_shape_created} (where \code{map} is the ID of the map) reactive value.
+}
+\details{
+For a more in-depth example see the
+\href{https://epi-interactive-ltd.github.io/toro/articles/examples/controls/draw-control.html}{Draw control}
+article.
 }
 \examples{
-\dontrun{
 map() |>
  add_draw_control()
 }
+\seealso{
+\code{\link[=get_drawn_shape]{get_drawn_shape()}} to retrieve the drawn shape as an \code{sf} object in Shiny.
 }

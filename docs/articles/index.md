@@ -28,11 +28,6 @@
 
 - [Animations](https://epi-interactive-ltd.github.io/toro/articles/animations.md):
 
-### Contributing
-
-- [Contributing to
-  toro](https://epi-interactive-ltd.github.io/toro/articles/contributing.md):
-
 ### Examples
 
 - [All

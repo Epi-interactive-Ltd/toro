@@ -15,29 +15,28 @@ add_custom_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{id}{The ID for the custom control}
+\item{id}{The ID for the custom control.}
 
-\item{html}{The HTML content to add as a control}
+\item{html}{The HTML content to add as a control.}
 
 \item{position}{The position of the control on the map. Default is \code{"top-right"}.
-Options include "top-left", "top-right", "bottom-left", "bottom-right"}
+Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{ID of control group to add to (optional)}
+\item{group_id}{ID of control group to add to (optional).}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add a custom HTML control to the map
 }
 \examples{
-\dontrun{
 # Add to a map
 map() |>
  add_custom_control(
@@ -69,5 +68,4 @@ map() |>
    panel_id = "my_panel",
    group_id = "custom_controls"
  )
-}
 }

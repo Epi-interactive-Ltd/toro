@@ -7,19 +7,19 @@
 remove_zoom_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
 \item{panel_id}{Optional. If provided, removes the zoom control from the specified control panel.
-If NULL, removes the standalone zoom control}
+If \code{NULL}, removes the standalone zoom control.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove the zoom control from the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

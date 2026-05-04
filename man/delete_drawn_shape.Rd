@@ -7,18 +7,18 @@
 delete_drawn_shape(proxy, shape_id)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{shape_id}{The ID of the shape to delete}
+\item{shape_id}{The ID of the shape to delete.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 The ID of the shape is provided by the draw control when a shape is created.
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

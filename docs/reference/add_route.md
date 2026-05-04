@@ -1,6 +1,8 @@
-# Add a route to a toro map
+# Add a route to a toro map which can be animated
 
-Add a route to a toro map
+A route is a line that can be animated along a set of points. This
+function adds a route to the map with a unique identifier and settings
+for the route's appearance and animation.
 
 ## Usage
 
@@ -12,28 +14,28 @@ add_route(map, route_id, points, settings = list())
 
 - map:
 
-  A toro map object or a map proxy object
+  A toro map object or a map proxy object.
 
 - route_id:
 
-  A unique identifier for the route
+  A unique identifier for the route.
 
 - points:
 
-  A sf object containing the points of the route
+  A sf object containing the points of the route.
 
 - settings:
 
-  A list of settings for the route (e.g., color, weight)
+  A list of settings for the route (e.g., color, weight).
 
 ## Value
 
-The updated map object
+The map or map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 library(sf)
@@ -83,5 +85,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$remove_route)
 }
-} # }
+}
 ```

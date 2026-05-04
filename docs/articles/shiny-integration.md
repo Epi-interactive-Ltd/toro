@@ -75,9 +75,9 @@ The ID of the map in the shiny context. This is the ID you use to render
 the map and also to modify it using `mapProxy`. The map ID is also used
 in the events and status in the below sections.
 
-- [`renderMap()`](https://epi-interactive-ltd.github.io/toro/reference/map-shiny.md)
+- [`renderMap()`](https://epi-interactive-ltd.github.io/toro/reference/renderMap.md)
 
-- [`mapOutput()`](https://epi-interactive-ltd.github.io/toro/reference/map-shiny.md)
+- [`mapOutput()`](https://epi-interactive-ltd.github.io/toro/reference/mapOutput.md)
 
 - [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
 

@@ -43,7 +43,7 @@ You can add layers to the map using layer functions like
 `add_symbol_layer`, `add_fill_layer`, etc.
 
 For more detailed information see the [layers
-vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html)
+vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html).
 
 ``` r
 

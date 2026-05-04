@@ -13,21 +13,21 @@ remove_zoom_control(proxy, panel_id = NULL)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - panel_id:
 
   Optional. If provided, removes the zoom control from the specified
-  control panel. If NULL, removes the standalone zoom control
+  control panel. If `NULL`, removes the standalone zoom control.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 
@@ -55,5 +55,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$has_zoom_controls)
 }
-} # }
+}
 ```

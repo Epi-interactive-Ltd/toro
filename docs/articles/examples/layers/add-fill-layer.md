@@ -60,7 +60,7 @@ map() |>
     paint = get_paint_options(
       "fill",
       options = list(
-        colour = get_column_step_steps(
+        colour = get_column_steps(
           "Population",
           c(50000, 500000, 1000000),
           c("#093d4a", "#11a366", "#20de60", "#dbe811")

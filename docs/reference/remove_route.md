@@ -12,24 +12,24 @@ remove_route(map, route_id, settings = list())
 
 - map:
 
-  A toro map proxy object
+  A toro map proxy object.
 
 - route_id:
 
-  A unique identifier for the route
+  A unique identifier for the route.
 
 - settings:
 
-  A list of settings for removing the route
+  A list of settings for removing the route.
 
 ## Value
 
-The updated map object
+The updated map proxy object.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 library(sf)
@@ -79,5 +79,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$remove_route)
 }
-} # }
+}
 ```

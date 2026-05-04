@@ -7,22 +7,17 @@
 set_zoom(map, zoom)
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{zoom}{The zoom level to set. Default is 2}
+\item{zoom}{The zoom level to set. Default is 2.}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Set the map zoom level
 }
 \examples{
-\dontrun{
  map() |>
   set_zoom(5)
-
- mapProxy("map") |>
-   set_zoom(5)
-}
 }

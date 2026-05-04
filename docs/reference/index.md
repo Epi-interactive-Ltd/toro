@@ -80,7 +80,7 @@ Functions to help with map/layer styling
 - [`get_column_group()`](https://epi-interactive-ltd.github.io/toro/reference/get_column_group.md)
   : Get the values for a paint or layout option in a map layer based on
   a column value
-- [`get_column_step_steps()`](https://epi-interactive-ltd.github.io/toro/reference/get_column_step_steps.md)
+- [`get_column_steps()`](https://epi-interactive-ltd.github.io/toro/reference/get_column_steps.md)
   : Get the properties for a column in a map layer based on step breaks
 
 ## Map tiles
@@ -165,7 +165,7 @@ Controls for updating map layers
 Controls for performing map animations
 
 - [`add_route()`](https://epi-interactive-ltd.github.io/toro/reference/add_route.md)
-  : Add a route to a toro map
+  : Add a route to a toro map which can be animated
 - [`play_route()`](https://epi-interactive-ltd.github.io/toro/reference/play_route.md)
   : Play a route animation on a toro map
 - [`pause_route()`](https://epi-interactive-ltd.github.io/toro/reference/pause_route.md)
@@ -183,7 +183,7 @@ Controls for performing map animations
 - [`add_animation_controls()`](https://epi-interactive-ltd.github.io/toro/reference/add_animation_controls.md)
   : Add animation controls to a toro map
 
-## Controls — Misc
+## Controls - Misc
 
 Additional interactive controls
 
@@ -215,9 +215,10 @@ Functions to add/edit control panels for map interaction
 
 Functions to get information from map interaction
 
-- [`mapOutput()`](https://epi-interactive-ltd.github.io/toro/reference/map-shiny.md)
-  [`renderMap()`](https://epi-interactive-ltd.github.io/toro/reference/map-shiny.md)
-  : Shiny bindings for map
+- [`mapOutput()`](https://epi-interactive-ltd.github.io/toro/reference/mapOutput.md)
+  : Create a MapLibre GL output for use in Shiny
+- [`renderMap()`](https://epi-interactive-ltd.github.io/toro/reference/renderMap.md)
+  : Render a MapLibre GL map in Shiny
 - [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
   : Create a proxy object for updating the map
 

@@ -7,18 +7,18 @@
 toggle_lat_lng_grid(proxy, show = TRUE)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
-\item{show}{Logical indicating whether to show or hide the grid. Default is \code{TRUE}}
+\item{show}{Logical indicating whether to show or hide the grid. Default is \code{TRUE}.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Show/hide the latitude and longitude grid on the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

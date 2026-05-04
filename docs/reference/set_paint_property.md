@@ -13,34 +13,34 @@ set_paint_property(proxy, layer_id, property_name, value)
 - proxy:
 
   The map proxy object created by
-  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md)
+  [`mapProxy()`](https://epi-interactive-ltd.github.io/toro/reference/mapProxy.md).
 
 - layer_id:
 
-  The ID of the layer to update
+  The ID of the layer to update.
 
 - property_name:
 
-  The name of the paint property to set
+  The name of the paint property to set.
 
 - value:
 
-  The value to set for the paint property
+  The value to set for the paint property.
 
 ## Value
 
-The map proxy object for chaining
+The map proxy object for chaining.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if(interactive()){
 library(shiny)
 library(sf)
 library(toro)
 
 data(quakes)
-quakes_data <- st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
 
 ui <- fluidPage(
  tagList(
@@ -77,5 +77,5 @@ server <- function(input, output, session) {
  }) |>
    bindEvent(input$colour)
 }
-} # }
+}
 ```

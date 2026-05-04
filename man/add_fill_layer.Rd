@@ -4,33 +4,66 @@
 \alias{add_fill_layer}
 \title{Add a fill layer to a map or map proxy}
 \usage{
-add_fill_layer(map, ...)
+add_fill_layer(
+  map,
+  id,
+  source,
+  paint = NULL,
+  layout = NULL,
+  popup_column = NULL,
+  hover_column = NULL,
+  can_cluster = FALSE,
+  under_id = NULL,
+  filter = NULL,
+  ...
+)
 }
 \arguments{
-\item{map}{The map object or map proxy to which the layer will be added}
+\item{map}{The map object or map proxy to which the layer will be added.}
+
+\item{id}{A unique identifier for the layer.}
+
+\item{source}{The data source for the layer, if not a GeoJSON, it will be converted.}
+
+\item{paint}{A list of paint options for styling the layer. See \code{get_paint_options()}
+for defaults and options.}
+
+\item{layout}{A list of layout options for the layer. See \code{get_layout_options()} for defaults
+and options.}
+
+\item{popup_column}{The column name to use for popups. Default is \code{NULL}.}
+
+\item{hover_column}{The column name to use for hover effects. Default is \code{NULL}.}
+
+\item{can_cluster}{Whether the layer can be clustered. Default is \code{FALSE}.}
+
+\item{under_id}{The ID of an layer already on the map to place this layer under.
+Default is \code{NULL}.}
+
+\item{filter}{A filter expression to apply to the layer. Default is \code{NULL}. See
+\code{get_layer_filter()} for more details on how to create filter expressions.}
 
 \item{...}{Additional arguments to include in the layer definition.
 \itemize{
 \item clusterOptions: A list of options for clustering, if \code{can_cluster} is \code{TRUE}.
 See the \href{https://epi-interactive-ltd.github.io/toro/articles/layers.html}{cluster vignette}
-for details on available options
+for details on available options.
 }}
 }
 \value{
-The updated map object with the fill layer added
+The updated map object with the fill layer added.
 }
 \description{
 Add a fill layer to a map or map proxy
 }
 \examples{
-\dontrun{
 # Load libraries
-library(toro)
+library(dplyr)
 library(spData)
 library(sf)
 
 nz_data <- spData::nz |>
-  rename(geometry = geom) |>
+  dplyr::rename(geometry = geom) |>
   sf::st_transform(4326)
 
 map() |>
@@ -54,5 +87,4 @@ map() |>
      )
    )
  )
-}
 }

@@ -15,30 +15,29 @@ add_cursor_coords_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
 \item{position}{The position of the cursor coordinates control on the map.
-Default is \code{"bottom-left"}.
-Options include "top-left", "top-right", "bottom-left", "bottom-right"}
+Default is \code{"bottom-left"}. Options include "top-left", "top-right",
+"bottom-left", "bottom-right".}
 
-\item{long_label}{The label for the longitude coordinate. Default is \code{"Lng"}}
+\item{long_label}{The label for the longitude coordinate. Default is \code{"Lng"}.}
 
-\item{lat_label}{The label for the latitude coordinate. Default is \code{"Lat"}}
+\item{lat_label}{The label for the latitude coordinate. Default is \code{"Lat"}.}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{ID of control group to add to (optional)}
+\item{group_id}{ID of control group to add to (optional).}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add a cursor coordinates control to the map
 }
 \examples{
-\dontrun{
 # Add to a map
 map() |>
  add_cursor_coords_control()
@@ -65,5 +64,4 @@ map() |>
    group_title = "Map State"
    ) |>
  add_cursor_coords_control(panel_id = "my_panel", group_id = "map_state")
-}
 }

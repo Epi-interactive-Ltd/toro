@@ -2,27 +2,29 @@
 % Please edit documentation in R/animation.R
 \name{add_route}
 \alias{add_route}
-\title{Add a route to a toro map}
+\title{Add a route to a toro map which can be animated}
 \usage{
 add_route(map, route_id, points, settings = list())
 }
 \arguments{
-\item{map}{A toro map object or a map proxy object}
+\item{map}{A toro map object or a map proxy object.}
 
-\item{route_id}{A unique identifier for the route}
+\item{route_id}{A unique identifier for the route.}
 
-\item{points}{A sf object containing the points of the route}
+\item{points}{A sf object containing the points of the route.}
 
-\item{settings}{A list of settings for the route (e.g., color, weight)}
+\item{settings}{A list of settings for the route (e.g., color, weight).}
 }
 \value{
-The updated map object
+The map or map proxy object for chaining.
 }
 \description{
-Add a route to a toro map
+A route is a line that can be animated along a set of points.
+This function adds a route to the map with a unique identifier and settings
+for the route's appearance and animation.
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 library(sf)

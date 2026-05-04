@@ -7,19 +7,19 @@
 remove_draw_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
 \item{panel_id}{Optional. If provided, removes the draw control from the specified control
-panel. If NULL, removes the standalone draw control}
+panel. If NULL, removes the standalone draw control.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove the draw control from the map
 }
 \examples{
-\dontrun{
+if(interactive()){
 library(shiny)
 library(toro)
 

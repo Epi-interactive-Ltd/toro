@@ -7,19 +7,20 @@
 remove_layer_selector_control(proxy, panel_id = NULL)
 }
 \arguments{
-\item{proxy}{The map proxy object created by \code{mapProxy()}}
+\item{proxy}{The map proxy object created by \code{mapProxy()}.}
 
 \item{panel_id}{Optional. If provided, removes the layer selector control from the specified
-control panel. If NULL, removes the standalone layer selector control}
+control panel. If \code{NULL}, removes the standalone layer selector control.}
 }
 \value{
-The map proxy object for chaining
+The map proxy object for chaining.
 }
 \description{
 Remove the layer selector control from the map
 }
 \examples{
-\dontrun{
+if(interactive()){
+# Load libraries
 library(shiny)
 library(toro)
 library(spData)

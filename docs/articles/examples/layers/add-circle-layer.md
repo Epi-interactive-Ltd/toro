@@ -56,12 +56,12 @@ map() |>
     paint = get_paint_options(
       "circle",
       options = list(
-        colour = get_column_step_steps(
+        colour = get_column_steps(
           "elevation",
           c(3000, 3500),
           c("#093d4a", "#11a366", "#dbe811")
         ),
-        circle_radius = get_column_step_steps(
+        circle_radius = get_column_steps(
           "elevation",
           c(3000, 3500),
           c(2, 3, 4)
@@ -71,7 +71,7 @@ map() |>
     layout = get_layout_options(
       "circle",
       options = list(
-        "circle-sort-key" = get_column_step_steps(
+        "circle-sort-key" = get_column_steps(
           "elevation",
           c(3000, 3500),
           c(1, 2, 3)

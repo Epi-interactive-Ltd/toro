@@ -7,10 +7,10 @@
 image_to_data_uri(image_path)
 }
 \arguments{
-\item{image_path}{The file path to the local image}
+\item{image_path}{The file path to the local image.}
 }
 \value{
-A data URI string representing the image
+A data URI string representing the image.
 }
 \description{
 Helper function to convert local image to data URI

@@ -1,24 +1,23 @@
 #' Add a tile selector control to the map or control panel
 #'
-#' @param map The map or map proxy object
-#' @param available_tiles Vector of available tile options. If NULL, uses all loaded tiles
-#'    from the map
-#' @param labels Named vector of labels for tiles. If NULL, uses tile names directly
-#' @param default_tile Default tile to select. If NULL, uses current map tile
-#' @param position Position on the map if not using a control panel. Default is "top-right"
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id ID of control group to add to (optional)
-#' @return The map or map proxy object for chaining
+#' @param map The map or map proxy object.
+#' @param available_tiles Vector of available tile options. If `NULL`, uses all loaded tiles
+#'    from the map.
+#' @param labels Named vector of labels for tiles. If `NULL`, uses tile names directly.
+#' @param default_tile Default tile to select. If `NULL`, uses current map tile.
+#' @param position Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id ID of control group to add to (optional).
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' # Add a tile selector that gives the ability to switch between all available tilesets
 #' all_tiles <- get_tile_options()
 #'
 #' map(loadedTiles = all_tiles) |>
 #'  add_tile_selector_control(available_tiles = all_tiles)
-#' }
 add_tile_selector_control <- function(
   map,
   available_tiles = NULL,
@@ -29,17 +28,6 @@ add_tile_selector_control <- function(
   section_title = NULL,
   group_id = NULL
 ) {
-  # If no tiles specified, get them from the map's loaded tiles
-  # if (is.null(available_tiles)) {
-  #   if (inherits(map, "mapProxy")) {
-  #     # For proxy, we'll need to get this from the map instance in JS
-  #     available_tiles <- get_tile_options() # Fallback to all options
-  #   } else {
-  #     # For initial map creation, get from map object
-  #     available_tiles <- map$x$loadedTiles %||% get_tile_options()
-  #   }
-  # }
-
   # Create default labels if not provided
   if (is.null(labels)) {
     labels <- stats::setNames(
@@ -121,14 +109,15 @@ add_tile_selector_control <- function(
 
 #' Remove the tile selector control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
+#' @param proxy The map proxy object created by `mapProxy()`.
 #' @param panel_id Optional. If provided, removes the tile selector control from the specified
-#'    control panel. If NULL, removes the standalone tile selector control
-#' @return The map proxy object for chaining
+#'    control panel. If `NULL`, removes the standalone tile selector control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
+#' # Load libraries
 #' library(shiny)
 #' library(toro)
 #'
@@ -174,23 +163,21 @@ remove_tile_selector_control <- function(proxy, panel_id = NULL) {
 #' selected layer while hiding all others. This is useful for comparing different
 #' data layers or allowing users to choose between mutually exclusive visualizations.
 #'
-#' @param map The map or map proxy object
-#' @param layer_ids Vector of layer IDs to include in the selector
-#' @param labels Named vector of labels for layers. If NULL, uses layer IDs directly
-#' @param default_layer Default layer to select. If NULL, uses the first layer
-#' @param none_option Whether to include a "None" option that hides all layers. Default is FALSE
-#' @param none_label Label for the "None" option. Default is "None"
-#' @param position Position on the map if not using a control panel. Default is "top-right"
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id ID of control group to add to (optional)
-#' @return The map or map proxy object for chaining
+#' @param map The map or map proxy object.
+#' @param layer_ids Vector of layer IDs to include in the selector.
+#' @param labels Named vector of labels for layers. If `NULL`, uses layer IDs directly.
+#' @param default_layer Default layer to select. If `NULL`, uses the first layer.
+#' @param none_option Whether to include a "None" option that hides all layers. Default is `FALSE`.
+#' @param none_label Label for the "None" option. Default is "None".
+#' @param position Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id ID of control group to add to (optional).
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' library(shiny)
-#' library(toro)
+#' # Load libraries
 #' library(spData)
 #' library(sf)
 #'
@@ -215,7 +202,6 @@ remove_tile_selector_control <- function(proxy, panel_id = NULL) {
 #'    layer_ids = c("quakes", "nz_elevation"),
 #'    labels = c("quakes" = "Earthquakes", "nz_elevation" = "NZ Elevation")
 #'  )
-#' }
 add_layer_selector_control <- function(
   map,
   layer_ids,
@@ -296,14 +282,15 @@ add_layer_selector_control <- function(
 
 #' Remove the layer selector control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
+#' @param proxy The map proxy object created by `mapProxy()`.
 #' @param panel_id Optional. If provided, removes the layer selector control from the specified
-#'    control panel. If NULL, removes the standalone layer selector control
-#' @return The map proxy object for chaining
+#'    control panel. If `NULL`, removes the standalone layer selector control.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
+#' # Load libraries
 #' library(shiny)
 #' library(toro)
 #' library(spData)
@@ -366,24 +353,22 @@ remove_layer_selector_control <- function(proxy, panel_id = NULL) {
 #'
 #' Creates a toggle button that can enable/disable clustering for a specific layer.
 #'
-#' @param map The map or map proxy object
-#' @param layer_id ID of the layer to toggle clustering for
-#' @param control_id ID for the control. If NULL, defaults to "cluster-toggle-<layer_id>"
-#' @param left_label Label text for the toggle button. Default is "Toggle Clustering"
+#' @param map The map or map proxy object.
+#' @param layer_id ID of the layer to toggle clustering for.
+#' @param control_id ID for the control. If `NULL`, defaults to "cluster-toggle-<layer_id>".
+#' @param left_label Label text for the toggle button. Default is "Toggle Clustering".
 #' @param right_label Label text for the toggle button when clustering is off.
-#'    Default is "Clustering Off"
-#' @param initial_state Initial clustering state. Default is FALSE
-#' @param position Position on the map if not using a control panel. Default is "top-right"
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id ID of control group to add to (optional)
-#' @return The map or map proxy object for chaining
+#'    Default is "Clustering Off".
+#' @param initial_state Initial clustering state. Default is `FALSE`.
+#' @param position Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id ID of control group to add to (optional).
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' library(shiny)
-#' library(toro)
+#' # Load libraries
 #' library(sf)
 #'
 #' # Prepare data
@@ -398,7 +383,6 @@ remove_layer_selector_control <- function(proxy, panel_id = NULL) {
 #'    can_cluster = TRUE
 #'  ) |>
 #'  add_cluster_toggle(layer_id = "quakes")
-#' }
 add_cluster_toggle <- function(
   map,
   layer_id,
@@ -458,14 +442,15 @@ add_cluster_toggle <- function(
 
 #' Remove a cluster toggle control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
-#' @param layer_id The ID of the layer whose cluster toggle control to remove
-#' @param panel_id Optional. If provided, removes the control from the specified control panel
-#' @return The map proxy object for chaining
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer whose cluster toggle control to remove.
+#' @param panel_id Optional. If provided, removes the control from the specified control panel.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
+#' # Load libraries
 #' library(shiny)
 #' library(toro)
 #' library(sf)
@@ -518,24 +503,22 @@ remove_cluster_toggle <- function(proxy, layer_id, panel_id = NULL) {
 #'
 #' Creates a toggle button that can show/hide a specific layer.
 #'
-#' @param map The map or map proxy object
-#' @param layer_id ID of the layer to toggle visibility for
-#' @param control_id ID for the control. If NULL, defaults to "visibility-toggle-<layer_id>"
-#' @param left_label Label text for the toggle button. Default is "Toggle Layer"
+#' @param map The map or map proxy object.
+#' @param layer_id ID of the layer to toggle visibility for.
+#' @param control_id ID for the control. If `NULL`, defaults to "visibility-toggle-<layer_id>".
+#' @param left_label Label text for the toggle button. Default is "Toggle Layer".
 #' @param right_label Label text for the toggle button when layer is hidden.
-#'     Default is "Layer Hidden"
-#' @param initial_state Initial visibility state. Default is TRUE
-#' @param position Position on the map if not using a control panel. Default is "top-right"
-#' @param panel_id ID of control panel to add to (optional)
-#' @param section_title Section title when added to a control panel
-#' @param group_id ID of control group to add to (optional)
-#' @return The map or map proxy object for chaining
+#'     Default is "Layer Hidden".
+#' @param initial_state Initial visibility state. Default is `TRUE`.
+#' @param position Position on the map if not using a control panel. Default is "top-right".
+#' @param panel_id ID of control panel to add to (optional).
+#' @param section_title Section title when added to a control panel.
+#' @param group_id ID of control group to add to (optional).
+#' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' library(shiny)
-#' library(toro)
+#' # Load libraries
 #' library(sf)
 #'
 #' # Prepare data
@@ -549,7 +532,6 @@ remove_cluster_toggle <- function(proxy, layer_id, panel_id = NULL) {
 #'    source = quakes_data
 #'  ) |>
 #'  add_visibility_toggle(layer_id = "quakes")
-#' }
 add_visibility_toggle <- function(
   map,
   layer_id,
@@ -609,14 +591,15 @@ add_visibility_toggle <- function(
 
 #' Remove a visibility toggle control from the map
 #'
-#' @param proxy The map proxy object created by `mapProxy()`
-#' @param layer_id The ID of the layer whose visibility toggle control to remove
-#' @param panel_id Optional. If provided, removes the control from the specified control panel
-#' @return The map proxy object for chaining
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param layer_id The ID of the layer whose visibility toggle control to remove.
+#' @param panel_id Optional. If provided, removes the control from the specified control panel.
+#' @return The map proxy object for chaining.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(interactive()){
+#' # Load libraries
 #' library(shiny)
 #' library(toro)
 #' library(sf)

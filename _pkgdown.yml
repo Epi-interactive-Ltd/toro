@@ -26,9 +26,6 @@ authors:
 home:
   sidebar:
     structure: [links, license, community, citation, authors, dev]
-  links:
-    - text: 'Roadmap coming soon! :soon:'
-      href: '#'
 
 navbar:
   structure:
@@ -90,7 +87,7 @@ reference:
       - get_column
       - get_column_boolean
       - get_column_group
-      - get_column_step_steps
+      - get_column_steps
   - title: 'Map tiles'
     desc: 'Functions to update map tiles'
     contents:
@@ -145,7 +142,7 @@ reference:
       - add_speed_control
       - remove_speed_control
       - add_animation_controls
-  - title: 'Controls — Misc'
+  - title: 'Controls - Misc'
     desc: 'Additional interactive controls'
     contents:
       - add_cursor_coords_control
@@ -191,9 +188,6 @@ articles:
   - title: 'Advanced features'
     contents:
       - articles/animations
-  - title: 'Contributing'
-    contents:
-      - articles/contributing
   - title: 'Examples'
     contents:
       - articles/examples/index

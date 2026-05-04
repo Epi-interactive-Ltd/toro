@@ -16,34 +16,33 @@ add_tile_selector_control(
 )
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{available_tiles}{Vector of available tile options. If NULL, uses all loaded tiles
-from the map}
+\item{available_tiles}{Vector of available tile options. If \code{NULL}, uses all loaded tiles
+from the map.}
 
-\item{labels}{Named vector of labels for tiles. If NULL, uses tile names directly}
+\item{labels}{Named vector of labels for tiles. If \code{NULL}, uses tile names directly.}
 
-\item{default_tile}{Default tile to select. If NULL, uses current map tile}
+\item{default_tile}{Default tile to select. If \code{NULL}, uses current map tile.}
 
-\item{position}{Position on the map if not using a control panel. Default is "top-right"}
+\item{position}{Position on the map if not using a control panel. Default is "top-right".}
 
-\item{panel_id}{ID of control panel to add to (optional)}
+\item{panel_id}{ID of control panel to add to (optional).}
 
-\item{section_title}{Section title when added to a control panel}
+\item{section_title}{Section title when added to a control panel.}
 
-\item{group_id}{ID of control group to add to (optional)}
+\item{group_id}{ID of control group to add to (optional).}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add a tile selector control to the map or control panel
 }
 \examples{
-\dontrun{
+# Add a tile selector that gives the ability to switch between all available tilesets
 all_tiles <- get_tile_options()
 
 map(loadedTiles = all_tiles) |>
  add_tile_selector_control(available_tiles = all_tiles)
-}
 }

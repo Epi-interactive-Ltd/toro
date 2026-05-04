@@ -7,27 +7,27 @@
 add_source(map, source_id, data, type = "geojson", cluster = FALSE, ...)
 }
 \arguments{
-\item{map}{The map or map proxy object}
+\item{map}{The map or map proxy object.}
 
-\item{source_id}{The ID for the source}
+\item{source_id}{The ID for the source.}
 
-\item{data}{The data for the source, typically in GeoJSON format}
+\item{data}{The data for the source, typically in GeoJSON format.}
 
 \item{type}{The type of the source. Default is \code{"geojson"}.
-Other options include \code{"vector"} or \code{"raster"}}
+Other options include \code{"vector"} or \code{"raster"}.}
 
-\item{cluster}{Whether to enable clustering for this source. Default is \code{FALSE}}
+\item{cluster}{Whether to enable clustering for this source. Default is \code{FALSE}.}
 
 \item{...}{Additional arguments to in pass directly to the JS addSource function. Documentation
 for this can be found on the
 \href{https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#addsource}{MapLibre GL JS docs}.
 \itemize{
 \item id: Alternative to \code{source_id} for backward compatibility. If both \code{source_id} and
-\code{id} are provided, \code{source_id} will take precedence
+\code{id} are provided, \code{source_id} will take precedence.
 }}
 }
 \value{
-The map or map proxy object for chaining
+The map or map proxy object for chaining.
 }
 \description{
 Add a source to the map
@@ -37,12 +37,18 @@ If you add a source directly in an add layer function, the source ID will
 be automatically generated as \code{source-{layer-id}}.
 }
 \examples{
-\dontrun{
- map() |>
-   add_source(
-     source_id = "my_source",
-     data = sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
-   ) |>
-   add_circle_layer(id = "quakes", source = "my_source")
-}
+# Load libraries
+library(sf)
+
+# Prepare data
+data(quakes)
+quakes_data <- sf::st_as_sf(quakes, coords = c("long", "lat"), crs = 4326)
+
+# Display the source on map
+map() |>
+  add_source(
+    source_id = "my_source",
+    data = sf::st_as_sf(quakes_data, coords = c("long", "lat"), crs = 4326)
+  ) |>
+  add_circle_layer(id = "quakes", source = "my_source")
 }
