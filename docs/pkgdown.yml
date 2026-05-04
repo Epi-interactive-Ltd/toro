@@ -11,7 +11,6 @@ articles:
   articles/examples/layers/add-symbol-layer: examples/layers/add-symbol-layer.html
   articles/examples/layers/add-text-layer: examples/layers/add-text-layer.html
   articles/animations: animations.html
-  articles/contributing: contributing.html
   articles/controls: controls.html
   articles/examples/controls/draw-control: examples/controls/draw-control.html
   articles/getting-started: getting-started.html
@@ -22,7 +21,7 @@ articles:
   articles/map-tiles: map-tiles.html
   articles/popups: popups.html
   articles/shiny-integration: shiny-integration.html
-last_built: 2026-04-29T23:16Z
+last_built: 2026-05-04T21:57Z
 urls:
   reference: https://epi-interactive-ltd.github.io/toro/reference
   article: https://epi-interactive-ltd.github.io/toro/articles

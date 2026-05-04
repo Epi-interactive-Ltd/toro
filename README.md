@@ -9,8 +9,8 @@
 Create interactive maps that can keep up with complex visualisations and large datasets,
 with this useful interface to the [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/)
 library. Users can create maps directly in the console, or as an HTML widget within 'Shiny' web
-applications, and rendering of spatial data quickly with many customisable options (clusters,
-custom icons, map layers and backgrounds). The goal of the package is to make it easier to interpret
+applications, and render spatial data quickly with many customisable options (clusters, custom
+icons, map layers, and backgrounds). The goal of the package is to make it easier to interpret
 and explore large spatial datasets within the context of a 'Shiny' dashboard, without having long
 loading times waiting for a map to update with new data.
 
@@ -50,7 +50,7 @@ More specific in-depth examples can be found
 ## Contributing
 
 If you would like to contribute to toro see: [Contributing to
-toro](https://epi-interactive-ltd.github.io/toro/articles/contributing.html).
+toro](https://epi-interactive-ltd.github.io/toro/docs/CONTRIBUTING.html).
 
 ## Licensing
 

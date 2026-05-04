@@ -40,7 +40,7 @@ The file path of the saved HTML file (invisibly).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Load library
 library(sf)
 
@@ -50,6 +50,7 @@ data <- data.frame(lon = 174.8210, lat = -41.3096) |>
 my_map <- map() |>
   add_circle_layer("epi_circle", source = data)
 
-save_map_html(my_map, "my_map")
-} # }
+save_map_html(my_map, file.path(tempdir(), "my_map.html"))
+#> Map saved as HTML to: /var/folders/60/t3r81yp572q7bdlk6hg3rc6w0000gn/T//RtmpWCS2Pt/my_map.html
+# }
 ```

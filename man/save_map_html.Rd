@@ -25,7 +25,7 @@ This function saves a map widget as a self-contained HTML file that can be
 opened in any web browser.
 }
 \examples{
-\dontrun{
+\donttest{
 # Load library
 library(sf)
 
@@ -35,6 +35,6 @@ data <- data.frame(lon = 174.8210, lat = -41.3096) |>
 my_map <- map() |>
   add_circle_layer("epi_circle", source = data)
 
-save_map_html(my_map, "my_map")
+save_map_html(my_map, file.path(tempdir(), "my_map.html"))
 }
 }
