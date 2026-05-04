@@ -69,6 +69,6 @@ data <- data.frame(lon = 174.8210, lat = -41.3096) |>
 my_map <- map() |>
   add_circle_layer("epi_circle", source = data)
 
-export_map_image(my_map, "my_map.png", width = 1200, height = 800)
+export_map_image(my_map, file.path(tempdir(), "my_map.png"), width = 1200, height = 800)
 } # }
 ```

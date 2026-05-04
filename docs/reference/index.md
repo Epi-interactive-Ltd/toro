@@ -183,7 +183,7 @@ Controls for performing map animations
 - [`add_animation_controls()`](https://epi-interactive-ltd.github.io/toro/reference/add_animation_controls.md)
   : Add animation controls to a toro map
 
-## Controls — Misc
+## Controls - Misc
 
 Additional interactive controls
 

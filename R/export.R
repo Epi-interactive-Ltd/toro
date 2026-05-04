@@ -79,7 +79,7 @@ chrome_error_message <- function() {
 #' my_map <- map() |>
 #'   add_circle_layer("epi_circle", source = data)
 #'
-#' export_map_image(my_map, "my_map.png", width = 1200, height = 800)
+#' export_map_image(my_map, file.path(tempdir(), "my_map.png"), width = 1200, height = 800)
 #' }
 export_map_image <- function(
   map,
@@ -116,43 +116,55 @@ export_map_image <- function(
 
   # Create temporary HTML file
   temp_html <- tempfile(fileext = ".html")
-  on.exit(unlink(temp_html), add = TRUE)
+  on.exit({
+    if (file.exists(temp_html)) {
+      unlink(temp_html)
+    }
+  }, add = TRUE)
 
   # Save widget as HTML
-  htmlwidgets::saveWidget(map, temp_html, selfcontained = TRUE)
+  tryCatch({
+    htmlwidgets::saveWidget(map, temp_html, selfcontained = TRUE)
+  }, error = function(e) {
+    stop("Failed to save widget as HTML: ", e$message)
+  })
 
   # Capture image based on available package
-  if (webshot_pkg == "webshot2") {
-    webshot2::webshot(
-      url = temp_html,
-      file = filepath,
-      vwidth = width,
-      vheight = height,
-      delay = delay,
-      zoom = zoom,
-      ...
-    )
-  } else if (webshot_pkg == "mapview") {
-    mapview::mapshot(
-      x = map,
-      file = filepath,
-      vwidth = width,
-      vheight = height,
-      delay = delay,
-      zoom = zoom,
-      ...
-    )
-  } else {
-    webshot::webshot(
-      url = temp_html,
-      file = filepath,
-      vwidth = width,
-      vheight = height,
-      delay = delay,
-      zoom = zoom,
-      ...
-    )
-  }
+  tryCatch({
+    if (webshot_pkg == "webshot2") {
+      webshot2::webshot(
+        url = temp_html,
+        file = filepath,
+        vwidth = width,
+        vheight = height,
+        delay = delay,
+        zoom = zoom,
+        ...
+      )
+    } else if (webshot_pkg == "mapview") {
+      mapview::mapshot(
+        x = map,
+        file = filepath,
+        vwidth = width,
+        vheight = height,
+        delay = delay,
+        zoom = zoom,
+        ...
+      )
+    } else {
+      webshot::webshot(
+        url = temp_html,
+        file = filepath,
+        vwidth = width,
+        vheight = height,
+        delay = delay,
+        zoom = zoom,
+        ...
+      )
+    }
+  }, error = function(e) {
+    stop("Failed to capture image: ", e$message)
+  })
 
   message("Map exported to: ", filepath)
   invisible(filepath)
@@ -172,7 +184,7 @@ export_map_image <- function(
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Load library
 #' library(sf)
 #'
@@ -182,7 +194,7 @@ export_map_image <- function(
 #' my_map <- map() |>
 #'   add_circle_layer("epi_circle", source = data)
 #'
-#' save_map_html(my_map, "my_map")
+#' save_map_html(my_map, file.path(tempdir(), "my_map.html"))
 #' }
 save_map_html <- function(
   map,
@@ -200,13 +212,17 @@ save_map_html <- function(
     filepath <- paste0(filepath, ".html")
   }
 
-  htmlwidgets::saveWidget(
-    widget = map,
-    file = filepath,
-    title = title,
-    selfcontained = selfcontained,
-    ...
-  )
+  tryCatch({
+    htmlwidgets::saveWidget(
+      widget = map,
+      file = filepath,
+      title = title,
+      selfcontained = selfcontained,
+      ...
+    )
+  }, error = function(e) {
+    stop("Failed to save HTML file: ", e$message)
+  })
 
   message("Map saved as HTML to: ", filepath)
   invisible(filepath)
