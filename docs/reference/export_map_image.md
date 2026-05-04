@@ -59,7 +59,7 @@ The file path of the saved image (invisibly).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Load library
 library(sf)
 
@@ -70,5 +70,7 @@ my_map <- map() |>
   add_circle_layer("epi_circle", source = data)
 
 export_map_image(my_map, file.path(tempdir(), "my_map.png"), width = 1200, height = 800)
-} # }
+#> file:////private/var/folders/60/t3r81yp572q7bdlk6hg3rc6w0000gn/T/Rtmp5ZrbGt/file75af51d5200e.html screenshot completed
+#> Map exported to: /var/folders/60/t3r81yp572q7bdlk6hg3rc6w0000gn/T//Rtmp5ZrbGt/my_map.png
+# }
 ```

@@ -51,6 +51,6 @@ my_map <- map() |>
   add_circle_layer("epi_circle", source = data)
 
 save_map_html(my_map, file.path(tempdir(), "my_map.html"))
-#> Map saved as HTML to: /var/folders/60/t3r81yp572q7bdlk6hg3rc6w0000gn/T//RtmpINM9rN/my_map.html
+#> Map saved as HTML to: /var/folders/60/t3r81yp572q7bdlk6hg3rc6w0000gn/T//Rtmp5ZrbGt/my_map.html
 # }
 ```
