@@ -3,7 +3,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Epi-interactive-Ltd/toro/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Epi-interactive-Ltd/toro/actions)
-
+[![CRAN status](https://www.r-pkg.org/badges/version/toro)](https://CRAN.R-project.org/package=toro)
 <!-- badges: end -->
 
 Create interactive maps that can keep up with complex visualisations and large datasets,
@@ -32,8 +32,7 @@ remotes::install_github("Epi-interactive-Ltd/toro")
 
 ## Documentation
 
-You can find extensive documentation, guides, and examples at:
-<https://epi-interactive-ltd.github.io/toro/>.
+Extensive documentation, guides, and examples will be available soon.
 
 ## Example
 
@@ -44,13 +43,7 @@ library(toro)
 map()
 ```
 
-More specific in-depth examples can be found
-[here](https://epi-interactive-ltd.github.io/toro/articles/examples/index.html).
-
-## Contributing
-
-If you would like to contribute to toro see: [Contributing to
-toro](https://epi-interactive-ltd.github.io/toro/CONTRIBUTING.html).
+More specific in-depth examples will be available soon.
 
 ## Licensing
 
