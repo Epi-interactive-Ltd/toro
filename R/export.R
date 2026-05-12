@@ -69,7 +69,7 @@ chrome_error_message <- function() {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Load library
 #' library(sf)
 #'
@@ -116,55 +116,87 @@ export_map_image <- function(
 
   # Create temporary HTML file
   temp_html <- tempfile(fileext = ".html")
-  on.exit({
-    if (file.exists(temp_html)) {
-      unlink(temp_html)
-    }
-  }, add = TRUE)
+  on.exit(
+    {
+      if (file.exists(temp_html)) {
+        unlink(temp_html)
+      }
+      # Force garbage collection to clean up any remaining connections
+      gc()
+      # Close any lingering FIFO connections from webshot processes
+      tryCatch(
+        {
+          open_cons <- showConnections(all = TRUE)
+          if (nrow(open_cons) > 0) {
+            fifo_cons <- which(open_cons[, "class"] == "fifo")
+            if (length(fifo_cons) > 0) {
+              for (i in fifo_cons) {
+                tryCatch(
+                  close(getConnection(as.integer(rownames(open_cons)[i]))),
+                  error = function(e) {}
+                )
+              }
+            }
+          }
+        },
+        error = function(e) {}
+      )
+    },
+    add = TRUE
+  )
 
   # Save widget as HTML
-  tryCatch({
-    htmlwidgets::saveWidget(map, temp_html, selfcontained = TRUE)
-  }, error = function(e) {
-    stop("Failed to save widget as HTML: ", e$message)
-  })
+  tryCatch(
+    {
+      htmlwidgets::saveWidget(map, temp_html, selfcontained = TRUE)
+    },
+    error = function(e) {
+      stop("Failed to save widget as HTML: ", e$message)
+    }
+  )
 
   # Capture image based on available package
-  tryCatch({
-    if (webshot_pkg == "webshot2") {
-      webshot2::webshot(
-        url = temp_html,
-        file = filepath,
-        vwidth = width,
-        vheight = height,
-        delay = delay,
-        zoom = zoom,
-        ...
-      )
-    } else if (webshot_pkg == "mapview") {
-      mapview::mapshot(
-        x = map,
-        file = filepath,
-        vwidth = width,
-        vheight = height,
-        delay = delay,
-        zoom = zoom,
-        ...
-      )
-    } else {
-      webshot::webshot(
-        url = temp_html,
-        file = filepath,
-        vwidth = width,
-        vheight = height,
-        delay = delay,
-        zoom = zoom,
-        ...
-      )
+  tryCatch(
+    {
+      if (webshot_pkg == "webshot2") {
+        webshot2::webshot(
+          url = temp_html,
+          file = filepath,
+          vwidth = width,
+          vheight = height,
+          delay = delay,
+          zoom = zoom,
+          ...
+        )
+      } else if (webshot_pkg == "mapview") {
+        mapview::mapshot(
+          x = map,
+          file = filepath,
+          vwidth = width,
+          vheight = height,
+          delay = delay,
+          zoom = zoom,
+          ...
+        )
+      } else {
+        webshot::webshot(
+          url = temp_html,
+          file = filepath,
+          vwidth = width,
+          vheight = height,
+          delay = delay,
+          zoom = zoom,
+          ...
+        )
+      }
+      # Force cleanup after webshot
+      Sys.sleep(0.1) # Brief pause to allow process cleanup
+      gc() # Force garbage collection
+    },
+    error = function(e) {
+      stop("Failed to capture image: ", e$message)
     }
-  }, error = function(e) {
-    stop("Failed to capture image: ", e$message)
-  })
+  )
 
   message("Map exported to: ", filepath)
   invisible(filepath)
@@ -212,17 +244,41 @@ save_map_html <- function(
     filepath <- paste0(filepath, ".html")
   }
 
-  tryCatch({
-    htmlwidgets::saveWidget(
-      widget = map,
-      file = filepath,
-      title = title,
-      selfcontained = selfcontained,
-      ...
-    )
-  }, error = function(e) {
-    stop("Failed to save HTML file: ", e$message)
-  })
+  tryCatch(
+    {
+      htmlwidgets::saveWidget(
+        widget = map,
+        file = filepath,
+        title = title,
+        selfcontained = selfcontained,
+        ...
+      )
+      # Force cleanup after saveWidget
+      gc() # Force garbage collection
+    },
+    error = function(e) {
+      stop("Failed to save HTML file: ", e$message)
+    }
+  )
+
+  # Additional cleanup for any lingering connections
+  tryCatch(
+    {
+      open_cons <- showConnections(all = TRUE)
+      if (nrow(open_cons) > 0) {
+        fifo_cons <- which(open_cons[, "class"] == "fifo")
+        if (length(fifo_cons) > 0) {
+          for (i in fifo_cons) {
+            tryCatch(
+              close(getConnection(as.integer(rownames(open_cons)[i]))),
+              error = function(e) {}
+            )
+          }
+        }
+      }
+    },
+    error = function(e) {}
+  )
 
   message("Map saved as HTML to: ", filepath)
   invisible(filepath)
