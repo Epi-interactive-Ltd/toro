@@ -30,8 +30,7 @@ remotes::install_github("Epi-interactive-Ltd/toro")
 
 ## Documentation
 
-You can find extensive documentation, guides, and examples at:
-<https://epi-interactive-ltd.github.io/toro/>.
+Extensive documentation, guides, and examples will be available soon.
 
 ## Example
 
@@ -43,13 +42,7 @@ library(toro)
 map()
 ```
 
-More specific in-depth examples can be found
-[here](https://epi-interactive-ltd.github.io/toro/articles/examples/index.html).
-
-## Contributing
-
-If you would like to contribute to toro see: [Contributing to
-toro](https://epi-interactive-ltd.github.io/toro/docs/CONTRIBUTING.html).
+More specific in-depth examples will be available soon.
 
 ## Licensing
 
