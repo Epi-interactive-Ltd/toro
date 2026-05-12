@@ -81,8 +81,8 @@ add_layer <- function(
     geojson <- geojsonsf::sf_geojson(source)
 
     source <- list(type = "geojson", data = geojson, generateId = TRUE)
-  } else {
-    source <- list(type = "geojson", data = source)
+  } else if (inherits(source, c("geojson"))) {
+    source <- list(type = "geojson", data = source, generateId = TRUE)
   }
 
   layer <- list(
