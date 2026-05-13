@@ -302,7 +302,7 @@ add_image <- function(map, image_id, image_url) {
 #' }
 #' }
 set_source_data <- function(proxy, source_id, data, type = "geojson") {
-  data <- .validate_source_data(data)
+  data <- .validate_source_data(data, type)
 
   proxy$session$sendCustomMessage(
     "updateSourceData",
