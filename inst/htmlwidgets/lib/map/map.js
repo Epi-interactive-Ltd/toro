@@ -141,7 +141,12 @@ HTMLWidgets.widget({
           }
 
           if (x.setBounds) {
-            setMapBounds(mapInstance, x.setBounds.bounds, x.setBounds.maxZoom, x.setBounds.padding);
+            setMapBounds(
+              mapInstance,
+              x.setBounds.bounds,
+              x.setBounds.padding,
+              x.setBounds?.options || {}
+            );
           }
 
           if (x.setZoom) {
@@ -904,11 +909,12 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('setMapBounds', function (message) {
     withMapInstance(message.id, function (el) {
+      console.log('AAAA', message);
       setMapBounds(
         el.mapInstance,
         message.options.bounds,
-        message.options.maxZoom,
-        message.options.padding
+        message.options.padding,
+        message.options?.options || {}
       );
     });
   });

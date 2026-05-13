@@ -4,7 +4,12 @@
 \alias{set_bounds}
 \title{Set the map bounds}
 \usage{
-set_bounds(map, bounds, padding = 50, max_zoom = map$maxZoom)
+set_bounds(
+  map,
+  bounds,
+  padding = 50,
+  options = list(maxZoom = map$maxZoom, linear = FALSE)
+)
 }
 \arguments{
 \item{map}{The map or map proxy object.}
@@ -17,7 +22,13 @@ set_bounds(map, bounds, padding = 50, max_zoom = map$maxZoom)
 
 \item{padding}{The padding around the bounds in pixels. Default is 50.}
 
-\item{max_zoom}{The maximum zoom level to set. Default is the object's \code{maxZoom}.}
+\item{options}{A list of extra options to pass directly to the
+\href{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/FitBoundsOptions/}{MapLibre GL JS \code{fitBounds} function}.
+\itemize{
+\item maxZoom: The maximum zoom level to set. Default is the object's \code{maxZoom}.
+\item linear: The type of map transition, see the above \code{fitBounds} function documentation
+for more information.
+}}
 }
 \value{
 The map or map proxy object for chaining.

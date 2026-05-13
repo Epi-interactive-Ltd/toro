@@ -42,9 +42,7 @@ add_source <- function(
   cluster = FALSE,
   ...
 ) {
-  if (type == "geojson" && !inherits(data, "geojson")) {
-    data <- geojsonsf::sf_geojson(data)
-  }
+  data <- .validate_source_data(data, type)
   source_options <- list(
     type = type,
     data = data,
@@ -304,9 +302,8 @@ add_image <- function(map, image_id, image_url) {
 #' }
 #' }
 set_source_data <- function(proxy, source_id, data, type = "geojson") {
-  if (type == "geojson" && !inherits(data, "geojson")) {
-    data <- geojsonsf::sf_geojson(data)
-  }
+  data <- .validate_source_data(data)
+
   proxy$session$sendCustomMessage(
     "updateSourceData",
     list(
@@ -316,4 +313,34 @@ set_source_data <- function(proxy, source_id, data, type = "geojson") {
     )
   )
   proxy
+}
+
+#' Validate source data so that it is valid to be added to the map
+#'
+#' Validation checks:
+#' 1. Source data must be of GeoJSON format.
+#' 2. Geometry objects with only a single (`geometry`) column cause a crash. If the data only has a
+#'   single column, add a dummy `id` column.
+#'
+#' @param data The data for the source, typically in GeoJSON format.
+#' @param type The type of the source. Default is `"geojson"`.
+#'    Other options include `"vector"` or `"raster"`.
+#' @returns The validated geojson source data.
+#'
+#' @keywords internal
+#' @noRd
+.validate_source_data <- function(data, type = "geojson") {
+  if (type == "geojson" && !inherits(data, "geojson")) {
+    if (inherits(data, c("sf", "data.frame", "tbl")) && ncol(data) == 1) {
+      # Sources fail to add when there is a single geometry column, add a
+      # generic id column to prevent this.
+      if (nrow(data) > 0) {
+        data$id <- 1:nrow(data)
+      } else {
+        data$id <- numeric(0)
+      }
+    }
+    data <- geojsonsf::sf_geojson(data)
+  }
+  data
 }
