@@ -64,8 +64,31 @@ function setMapBounds(map, bounds, padding = 50, options = {}) {
   if (!options?.maxZoom) {
     options.maxZoom = map.getMaxZoom();
   }
-  map.fitBounds(bounds, {
-    padding: padding,
-    ...options,
+  const doFit = () => {
+    map.resize();
+    map.fitBounds(bounds, {
+      padding: padding,
+      ...options,
+    });
+  };
+  const container = map.getContainer();
+  if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+    doFit();
+    return;
+  }
+  // Container has no size yet (e.g. inside a modal still animating in).
+  // Wait until it has real dimensions before fitting.
+  const observer = new ResizeObserver(() => {
+    if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+      doFit();
+    }
   });
+  observer.observe(container);
+  // Fallback in case the ResizeObserver never fires (e.g. permanently hidden)
+  const fallbackTimer = setTimeout(() => {
+    observer.disconnect();
+    doFit();
+  }, 1000);
 }

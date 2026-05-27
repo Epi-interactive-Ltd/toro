@@ -78,12 +78,28 @@ function addDataSourceToMap(mapInstance, sourceId, sourceOptions) {
  * @note If the source is a GeoJSON source with clustering enabled, the coordinates will be
  * normalized to handle antimeridian crossings.
  *
- * @param {object} mapInstance A MapLibre map instance.
+ * @param {object} widgetInstance A toro widget instance.
  * @param {string} sourceId ID of the source to update.
  * @param {object} data Data to update the source with.
+ * @param {object} [options={}] Extra options for updating the source, such as:
+ *   - `bounds`: If provided, the map will fit to these bounds after updating the source.
+ *   - `padding`: Padding in pixels when fitting to bounds (default: 50).
+ *   - `maxZoom`: Maximum zoom level when fitting to bounds (default: map's max zoom).
+ *   - `linear`: Whether to use linear easing when fitting to bounds (default: false).
  * @returns {void}
  */
-function updateSourceData(mapInstance, sourceId, data) {
+function updateSourceData(
+  widgetInstance,
+  sourceId,
+  data,
+  options = {
+    bounds: null,
+    padding: 50,
+    maxZoom: null,
+    linear: false,
+  }
+) {
+  const mapInstance = widgetInstance.getMap();
   const source = mapInstance.getSource(sourceId);
 
   if (source) {
@@ -94,6 +110,17 @@ function updateSourceData(mapInstance, sourceId, data) {
     }
 
     source.setData(data);
+    if (options.bounds) {
+      if (!options.maxZoom) {
+        // If there is no maxZoom provided in options, use the map's max zoom level
+        options.maxZoom = mapInstance.getMaxZoom();
+      }
+
+      setMapBounds(mapInstance, options.bounds, options.padding, {
+        maxZoom: options.maxZoom,
+        linear: options.linear,
+      });
+    }
   } else {
     console.warn('Source not found or not a GeoJSON source:', sourceId);
   }
