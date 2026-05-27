@@ -26,8 +26,7 @@ Or, install the development version from
 [GitHub](https://github.com/Epi-interactive-Ltd/toro):
 
 ```r
-# install.packages("remotes")
-remotes::install_github("Epi-interactive-Ltd/toro")
+pak::pak("Epi-interactive-Ltd/toro")
 ```
 
 ## Documentation

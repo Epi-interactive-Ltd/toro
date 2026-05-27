@@ -4,7 +4,13 @@
 \alias{set_source_data}
 \title{Set data for a source on the map}
 \usage{
-set_source_data(proxy, source_id, data, type = "geojson")
+set_source_data(
+  proxy,
+  source_id,
+  data,
+  type = "geojson",
+  options = list(bounds = NULL, padding = 50, max_zoom = NULL, linear = FALSE)
+)
 }
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
@@ -15,6 +21,18 @@ set_source_data(proxy, source_id, data, type = "geojson")
 
 \item{type}{The type of the source. Default is \code{"geojson"}.
 Other options include \code{"vector"} or \code{"raster"}.}
+
+\item{options}{Additional options for updating the source data, such as:
+\itemize{
+\item bounds: Optional bounding box to fit the map to after updating the source data. Can be
+provided as a list of two coordinate pairs (e.g., \code{list(c(lon1, lat1), c(lon2, lat2))}) or
+as an \code{sf} object.
+\item padding: Padding in pixels to apply when setting map bounds. Default is \code{50}.
+\item max_zoom: Maximum zoom level to allow when fitting the map to the bounds. If not
+provided, it will default to the map's maximum zoom level.
+\item linear: Whether to use a linear animation when fitting the map to the bounds. Default
+is \code{FALSE} (uses a fly animation).
+}}
 }
 \value{
 The map proxy object for chaining.

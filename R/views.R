@@ -18,6 +18,26 @@ set_zoom <- function(map, zoom) {
   map
 }
 
+#' Get the bounds in the correct format
+#'
+#' This function takes either a list of two coordinate pairs or an sf object and returns the bounds
+#' in the correct format for the JS function.
+#'
+#' @param bounds A list of two coordinate pairs or an sf object.
+#' @return A list of two coordinate pairs in the format `list(list(lon1, lat1), list(lon2, lat2))`.
+#' @keywords internal
+validate_bounds <- function(bounds) {
+  if (inherits(bounds, "sf")) {
+    # Convert sf object to bounding box
+    bbox <- sf::st_bbox(bounds)
+    bounds <- list(
+      list(as.numeric(bbox["xmin"]), as.numeric(bbox["ymin"])),
+      list(as.numeric(bbox["xmax"]), as.numeric(bbox["ymax"]))
+    )
+  }
+  bounds
+}
+
 #' Set the map bounds
 #'
 #' @param map The map or map proxy object.
@@ -58,14 +78,7 @@ set_bounds <- function(
     linear = FALSE
   )
 ) {
-  if (inherits(bounds, "sf")) {
-    # Convert sf object to bounding box
-    bbox <- sf::st_bbox(bounds)
-    bounds <- list(
-      list(as.numeric(bbox["xmin"]), as.numeric(bbox["ymin"])),
-      list(as.numeric(bbox["xmax"]), as.numeric(bbox["ymax"]))
-    )
-  }
+  bounds <- validate_bounds(bounds)
   options <- list(
     bounds = bounds,
     padding = padding,

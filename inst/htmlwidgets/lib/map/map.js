@@ -697,6 +697,15 @@ HTMLWidgets.widget({
           return null;
         }
       },
+
+      /**
+       * Get the maximum zoom level for the map.
+       *
+       * @returns {number} The maximum zoom level for the map.
+       */
+      getMaxZoom: function () {
+        return el.maxZoom;
+      },
     };
   },
 });
@@ -909,7 +918,6 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('setMapBounds', function (message) {
     withMapInstance(message.id, function (el) {
-      console.log('AAAA', message);
       setMapBounds(
         el.mapInstance,
         message.options.bounds,
@@ -981,7 +989,7 @@ if (HTMLWidgets.shinyMode) {
 
   Shiny.addCustomMessageHandler('updateSourceData', function (message) {
     withMapInstance(message.id, function (el) {
-      updateSourceData(el.mapInstance, message.sourceId, message.data);
+      updateSourceData(el.widgetInstance, message.sourceId, message.data, message.options);
     });
   });
 
