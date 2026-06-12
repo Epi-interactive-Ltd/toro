@@ -28,6 +28,8 @@ const validDrawModes = ['polygon', 'delete', 'line', 'point']; // Accepted draw 
  * @param {object} modeLabels A named list of labels for each mode.
  *   For example, `{ polygon: "Draw Polygon", delete: "Delete Shape" }
  * @param {string} controlId Optional custom control ID. If not provided, uses default pattern.
+ * @param {object|object[]} features Optional GeoJSON Feature or FeatureCollection (or array of Features)
+ *   to pre-populate the draw control with on initialisation.
  * @returns {void}
  */
 function addDrawControl(
@@ -38,6 +40,7 @@ function addDrawControl(
   inactiveColour,
   modeLabels,
   controlId = null,
+  features = null,
 ) {
   modes = modes.flat ? modes.flat() : [].concat(...modes);
   modes = modes.filter((mode) => validDrawModes.includes(mode));
@@ -82,6 +85,25 @@ function addDrawControl(
   el.draw = draw;
   el.drawControlId = drawControlId;
   el.mapInstance.addControl(draw, position);
+
+  // Pre-populate with any supplied features once the control is ready
+  if (features) {
+    setTimeout(() => {
+      try {
+        // Accept a FeatureCollection, a single Feature, or an array of Features
+        if (Array.isArray(features)) {
+          draw.add({ type: 'FeatureCollection', features });
+        } else if (features.type === 'FeatureCollection') {
+          draw.add(features);
+        } else {
+          draw.add(features); // single Feature
+        }
+        updateAllDrawnFeatures(el.widgetInstance);
+      } catch (e) {
+        console.warn('addDrawControl: failed to add pre-drawn features', e);
+      }
+    }, 0);
+  }
 
   // Add the ID to the draw control container after it's added to the DOM
   setTimeout(() => {
@@ -138,7 +160,7 @@ function addDrawControl(
       Shiny.setInputValue(el.id + '_shape_created', geojson, {
         priority: 'event',
       });
-      updateAllDrawnFeatures();
+      updateAllDrawnFeatures(el.widgetInstance);
       /**
        * Change mode to static after a short delay to avoid recursion.
        * Stops shapes from being editable after creation, but only if
@@ -153,10 +175,17 @@ function addDrawControl(
 
     // Trigger Shiny input when a feature is deleted
     el.mapInstance.on('draw.delete', function (e) {
-      Shiny.setInputValue(el.id + '_shape_deleted', e.features.id, {
-        priority: 'event',
-      });
-      updateAllDrawnFeatures();
+      const deletedIds = (e.features || []).map((feature) => feature.id).filter(Boolean);
+      if (deletedIds.length > 0) {
+        Shiny.setInputValue(
+          el.id + '_shape_deleted',
+          deletedIds.length === 1 ? deletedIds[0] : deletedIds,
+          {
+            priority: 'event',
+          },
+        );
+      }
+      updateAllDrawnFeatures(el.widgetInstance);
     });
 
     // Store updated features to send to Shiny when selection changes
@@ -175,22 +204,13 @@ function addDrawControl(
       }
     });
 
-    // Update a Shiny input to hold all current drawn shape data
-    function updateAllDrawnFeatures() {
-      const allFeatures = el.draw.getAll();
-      const allGeoJSON = JSON.stringify(allFeatures);
-      Shiny.setInputValue(el.id + '_all_drawn_shapes', allGeoJSON, {
-        priority: 'event',
-      });
-    }
-
     // Store updated features when they are modified, but don't trigger Shiny immediately
     el.mapInstance.on('draw.update', function (e) {
       // Store the updated feature(s) to be sent when selection changes
       e.features.forEach((feature) => {
         pendingUpdatedFeatures.push(feature);
       });
-      updateAllDrawnFeatures();
+      updateAllDrawnFeatures(el.widgetInstance);
     });
 
     el.mapInstance.on('click', function (e) {
@@ -1357,6 +1377,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
       options.inactiveColour || '#999999',
       options.modeLabels || {},
       options.controlId,
+      options.features || null,
     );
 
     // Hide the default MapboxDraw control UI since we're using panel buttons
@@ -1453,15 +1474,22 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
           Shiny.setInputValue(mapElement.id + '_shape_created', geojson, {
             priority: 'event',
           });
+          updateAllDrawnFeatures(el.widgetInstance);
         });
 
         // Trigger Shiny input when a feature is deleted
         map.on('draw.delete', function (e) {
-          const feature = e.features[0];
-          const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + '_shape_deleted', geojson, {
-            priority: 'event',
-          });
+          const deletedIds = (e.features || []).map((feature) => feature.id).filter(Boolean);
+          if (deletedIds.length > 0) {
+            Shiny.setInputValue(
+              mapElement.id + '_shape_deleted',
+              deletedIds.length === 1 ? deletedIds[0] : deletedIds,
+              {
+                priority: 'event',
+              },
+            );
+            updateAllDrawnFeatures(el.widgetInstance);
+          }
         });
 
         // Trigger Shiny input when a feature is updated
@@ -1471,6 +1499,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
           Shiny.setInputValue(mapElement.id + '_shape_updated', geojson, {
             priority: 'event',
           });
+          updateAllDrawnFeatures(el.widgetInstance);
         });
       }
     }

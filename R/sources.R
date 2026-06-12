@@ -368,7 +368,7 @@ set_source_data <- function(
       # Sources fail to add when there is a single geometry column, add a
       # generic id column to prevent this.
       if (nrow(data) > 0) {
-        data$id <- 1:nrow(data)
+        data$id <- seq_len(nrow(data))
       } else {
         data$id <- numeric(0)
       }

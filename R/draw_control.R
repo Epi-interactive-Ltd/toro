@@ -19,6 +19,8 @@
 #' @param inactive_colour The colour for the inactive shapes. Default is `"#04AAC1"`.
 #' @param mode_labels A named list of labels for each mode.
 #'    For example, `list(polygon = "Draw Polygon", delete = "Delete Shape")`.
+#' @param features Optional. An `sf` object or GeoJSON string of pre-drawn shapes to
+#'    populate the draw control with on initialisation.
 #' @param panel_id ID of control panel to add to (optional).
 #' @param section_title Section title when added to a control panel.
 #' @param group_id Optional group ID for grouping controls within a panel.
@@ -38,10 +40,21 @@ add_draw_control <- function(
   active_colour = "#04AAC1",
   inactive_colour = "#04AAC1",
   mode_labels = list(),
+  features = NULL,
   panel_id = NULL,
   section_title = NULL,
   group_id = NULL
 ) {
+  # Convert sf or GeoJSON string to a plain list for JSON serialisation
+  if (!is.null(features)) {
+    if (inherits(features, "sf") || inherits(features, "sfc")) {
+      features <- geojsonsf::sf_geojson(features, atomise = FALSE)
+    }
+    if (is.character(features)) {
+      features <- jsonlite::fromJSON(features, simplifyVector = FALSE)
+    }
+  }
+
   control <- list(
     type = "draw",
     controlId = id,
@@ -50,6 +63,7 @@ add_draw_control <- function(
     activeColour = active_colour,
     inactiveColour = inactive_colour,
     modeLabels = mode_labels,
+    features = features,
     panelId = panel_id,
     panelTitle = section_title,
     groupId = group_id
@@ -189,4 +203,98 @@ delete_drawn_shape <- function(proxy, shape_id) {
     list(id = proxy$id, shapeId = shape_id)
   )
   proxy
+}
+
+#' Update the geometry of an existing drawn shape on the map
+#'
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param shape_id The ID of the shape to update.
+#' @param new_geometry The new geometry for the shape, provided as an `sf`
+#' object, GeoJSON string, or list that can be converted to GeoJSON.
+#' @return The map proxy object for chaining.
+#' @export
+#'
+#' @example inst/examples/draw-controls.R
+update_drawn_shape <- function(proxy, shape_id, new_geometry) {
+  new_geometry <- .normalize_draw_geometry(new_geometry, shape_id = shape_id)
+
+  proxy$session$sendCustomMessage(
+    "addDrawnShape",
+    list(id = proxy$id, geometry = new_geometry)
+  )
+  proxy
+}
+
+#' Add a shape to the map as a drawn shape object
+#'
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param new_geometry The geometry for the new shape, provided as an `sf`
+#' object, GeoJSON string, or list that can be converted to GeoJSON.
+#' @return The map proxy object for chaining.
+#' @export
+#'
+#' @example inst/examples/draw-controls.R
+add_drawn_shape <- function(proxy, new_geometry) {
+  new_geometry <- .normalize_draw_geometry(new_geometry)
+
+  proxy$session$sendCustomMessage(
+    "addDrawnShape",
+    list(id = proxy$id, geometry = new_geometry)
+  )
+  proxy
+}
+
+#' Normalize the geometry input for adding/updating drawn shapes
+#'
+#' @keywords internal
+#' @noRd
+.normalize_draw_geometry <- function(geometry, shape_id = NULL) {
+  if (inherits(geometry, c("sf", "data.frame", "tbl"))) {
+    geometry <- .validate_source_data(geometry)
+  }
+
+  if (is.character(geometry)) {
+    geometry <- jsonlite::fromJSON(geometry, simplifyVector = FALSE)
+  }
+
+  if (!is.list(geometry) || is.null(geometry$type)) {
+    stop("new_geometry must be a GeoJSON Feature or FeatureCollection")
+  }
+
+  if (!is.null(shape_id)) {
+    shape_id <- as.character(shape_id[[1]])
+  }
+
+  promote_id <- function(feature) {
+    if (is.null(feature$id) && !is.null(feature$properties$id)) {
+      feature$id <- feature$properties$id
+    }
+    feature
+  }
+
+  if (identical(geometry$type, "FeatureCollection")) {
+    features <- geometry$features
+    if (is.null(features)) {
+      features <- list()
+    }
+    features <- lapply(features, promote_id)
+
+    # update_drawn_shape should target a single existing feature id
+    if (!is.null(shape_id) && length(features) == 1) {
+      features[[1]]$id <- shape_id
+    }
+
+    geometry$features <- features
+    return(geometry)
+  }
+
+  if (identical(geometry$type, "Feature")) {
+    geometry <- promote_id(geometry)
+    if (!is.null(shape_id)) {
+      geometry$id <- shape_id
+    }
+    return(geometry)
+  }
+
+  stop("new_geometry must be a GeoJSON Feature or FeatureCollection")
 }
