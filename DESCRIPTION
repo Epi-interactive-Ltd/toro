@@ -1,7 +1,7 @@
 Type: Package
 Package: toro
 Title: Interactive & Customisable Maps using the 'MapLibre GL JS' Library
-Version: 0.1.1.9001
+Version: 0.1.1.9002
 Authors@R: c(
     person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
     person(given = "Jocelyn", family = "Qian", email = "jocelyn@epi.group", role = c("ctb")),
@@ -22,7 +22,6 @@ BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
 License: AGPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends:
     R (>= 4.5.0)
 Imports:
@@ -47,3 +46,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/Needs/website: rmarkdown
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
