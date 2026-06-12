@@ -37,7 +37,7 @@ function addDrawControl(
   activeColour,
   inactiveColour,
   modeLabels,
-  controlId = null
+  controlId = null,
 ) {
   modes = modes.flat ? modes.flat() : [].concat(...modes);
   modes = modes.filter((mode) => validDrawModes.includes(mode));
@@ -70,7 +70,7 @@ function addDrawControl(
       {
         static: StaticMode,
       },
-      MapboxDraw.modes
+      MapboxDraw.modes,
     ),
   });
 
@@ -104,6 +104,28 @@ function addDrawControl(
           controlBtn.innerHTML = label; // Set the button label if provided
           controlBtn.style.backgroundImage = 'none'; // Remove default background image
         }
+
+        // Override trash button to handle direct_select mode.
+        // In direct_select mode (after double-clicking to edit vertices), MapboxDraw
+        // exits the mode instead of deleting the feature, firing draw.selectionchange
+        // rather than draw.delete. Intercept the click to force deletion in that case.
+        if (mode === 'delete') {
+          controlBtn.addEventListener(
+            'click',
+            function (e) {
+              if (el.draw.getMode() === 'direct_select') {
+                e.stopImmediatePropagation();
+                const selectedIds = el.draw.getSelectedIds();
+                if (selectedIds.length > 0) {
+                  const features = selectedIds.map((id) => el.draw.get(id)).filter(Boolean);
+                  el.draw.delete(selectedIds);
+                  el.mapInstance.fire('draw.delete', { features });
+                }
+              }
+            },
+            true, // Capture phase — runs before MapboxDraw's own listener
+          );
+        }
       }
     }, 0);
   });
@@ -116,6 +138,7 @@ function addDrawControl(
       Shiny.setInputValue(el.id + '_shape_created', geojson, {
         priority: 'event',
       });
+      updateAllDrawnFeatures();
       /**
        * Change mode to static after a short delay to avoid recursion.
        * Stops shapes from being editable after creation, but only if
@@ -133,6 +156,7 @@ function addDrawControl(
       Shiny.setInputValue(el.id + '_shape_deleted', e.features.id, {
         priority: 'event',
       });
+      updateAllDrawnFeatures();
     });
 
     // Store updated features to send to Shiny when selection changes
@@ -151,12 +175,22 @@ function addDrawControl(
       }
     });
 
+    // Update a Shiny input to hold all current drawn shape data
+    function updateAllDrawnFeatures() {
+      const allFeatures = el.draw.getAll();
+      const allGeoJSON = JSON.stringify(allFeatures);
+      Shiny.setInputValue(el.id + '_all_drawn_shapes', allGeoJSON, {
+        priority: 'event',
+      });
+    }
+
     // Store updated features when they are modified, but don't trigger Shiny immediately
     el.mapInstance.on('draw.update', function (e) {
       // Store the updated feature(s) to be sent when selection changes
       e.features.forEach((feature) => {
         pendingUpdatedFeatures.push(feature);
       });
+      updateAllDrawnFeatures();
     });
 
     el.mapInstance.on('click', function (e) {
@@ -540,7 +574,7 @@ function toggleControl(el, controlId, show) {
 
   if (controlId == 'zoom_control') {
     var buttons = el.querySelector(
-      '.maplibregl-ctrl-group .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group .maplibregl-ctrl-zoom-out, .maplibregl-ctrl-group .maplibregl-ctrl-compass'
+      '.maplibregl-ctrl-group .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group .maplibregl-ctrl-zoom-out, .maplibregl-ctrl-group .maplibregl-ctrl-compass',
     );
     if (buttons) {
       control = buttons.parentElement;
@@ -868,7 +902,7 @@ function addControlPanel(el, panelId, options = {}) {
       controlId = null,
       sectionTitle = null,
       panelClass = null,
-      groupId = null
+      groupId = null,
     ) {
       // If groupId is specified, add control to the group instead
       if (groupId) {
@@ -908,7 +942,7 @@ function addControlPanel(el, panelId, options = {}) {
       controlId = null,
       sectionTitle = null,
       panelClass = null,
-      groupId
+      groupId,
     ) {
       const groupElement = el.querySelector(`#${groupId}`);
       if (!groupElement) {
@@ -990,7 +1024,7 @@ function addControlPanel(el, panelId, options = {}) {
         customControl.html,
         customControl.id || null,
         customControl.title || null,
-        'toro-custom-panel-control'
+        'toro-custom-panel-control',
       );
     });
   }
@@ -1013,7 +1047,7 @@ function addHtmlToPanel(
   htmlContent,
   sectionTitle = null,
   controlId = null,
-  groupId = null
+  groupId = null,
 ) {
   const map = widgetInstance.getMap();
   const panel = map._controlPanels && map._controlPanels[panelId];
@@ -1083,7 +1117,7 @@ function addControlToPanel(el, panelId, controlConfig) {
           customControlId,
           sectionTitle,
           'toro-custom-panel-control',
-          groupId
+          groupId,
         );
       }
       break;
@@ -1184,7 +1218,7 @@ function addCursorCoordinateControlToPanel(widgetInstance, panelId, options, sec
     html,
     `cursor-coords-${widgetInstance.getId()}`,
     sectionTitle,
-    'toro-cursor-coords-panel-control'
+    'toro-cursor-coords-panel-control',
   );
 
   // Add mouse move listener
@@ -1256,7 +1290,7 @@ function addZoomControlToPanel(widgetInstance, panelId, options, sectionTitle) {
     html,
     `zoom-control-${widgetInstance.getId()}`,
     sectionTitle,
-    'toro-zoom-panel-control'
+    'toro-zoom-panel-control',
   );
 
   // Add event listeners
@@ -1322,7 +1356,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
       options.activeColour || '#007cbf',
       options.inactiveColour || '#999999',
       options.modeLabels || {},
-      options.controlId
+      options.controlId,
     );
 
     // Hide the default MapboxDraw control UI since we're using panel buttons
@@ -1332,7 +1366,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
       if (
         drawControls &&
         drawControls.querySelector(
-          '.mapbox-gl-draw_polygon, .mapbox-gl-draw_trash, .mapbox-gl-draw_line'
+          '.mapbox-gl-draw_polygon, .mapbox-gl-draw_trash, .mapbox-gl-draw_line',
         )
       ) {
         drawControls.style.display = 'none';
@@ -1361,7 +1395,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
     html,
     `draw-control-${widgetInstance.getId()}`,
     sectionTitle,
-    'toro-draw-panel-control'
+    'toro-draw-panel-control',
   );
 
   // Add event listeners to make the buttons functional
@@ -1504,7 +1538,7 @@ function addTimelineControl(
   endDate,
   onPlayPause,
   onSliderChange,
-  options = {}
+  options = {},
 ) {
   const map = widgetInstance.getMap();
   // Format dates as needed
@@ -1620,7 +1654,7 @@ function addTimelineControl(
       timelineContainerId,
       options.panelTitle,
       'toro-timeline-panel-control',
-      groupId
+      groupId,
     );
   } else {
     // Add as standalone control
@@ -1705,7 +1739,7 @@ function addTimelineControl(
 
     const currentDate = new Date(
       currentStartDate.getTime() +
-        progress * (currentEndDate.getTime() - currentStartDate.getTime())
+        progress * (currentEndDate.getTime() - currentStartDate.getTime()),
     );
     const currentDateDisplay = document.getElementById(currentDateId);
 
@@ -1898,7 +1932,7 @@ function addTimelineControl(
 
       // Rebuild axis ticks with new date range
       const axisContainer = document.querySelector(
-        `#${timelineContainerId} .timeline-axis-container`
+        `#${timelineContainerId} .timeline-axis-container`,
       );
       if (axisContainer) {
         // Remove existing ticks
@@ -2041,7 +2075,7 @@ function addSpeedControl(widgetInstance, onSpeedChange, options = {}) {
       speedControlId,
       options.panelTitle,
       'toro-speed-panel-control',
-      groupId
+      groupId,
     );
   } else {
     // Add as standalone control
@@ -2486,7 +2520,7 @@ function generateToggleInputHtml(
   initialState,
   mapId,
   useInlineHandler = false,
-  includeWrapper = false
+  includeWrapper = false,
 ) {
   const dataAttribute = type === 'cluster' ? 'data-clustered' : 'data-visible';
 
@@ -2544,7 +2578,7 @@ function addClusterToggleControl(
   rightLabel = null,
   initialState = false,
   position = 'top-right',
-  widgetInstance = null
+  widgetInstance = null,
 ) {
   // Generate proper namespaced ID if widgetInstance is available
   const finalControlId = widgetInstance ? `${controlId}-${widgetInstance.getId()}` : controlId;
@@ -2564,7 +2598,7 @@ function addClusterToggleControl(
         rightLabel,
         initialState,
         mapId,
-        false
+        false,
       );
       this._container.innerHTML = buttonHtml;
 
@@ -2660,7 +2694,7 @@ function addVisibilityToggleControl(
   rightLabel = '',
   initialState = true,
   position = 'top-right',
-  widgetInstance = null
+  widgetInstance = null,
 ) {
   // Generate proper namespaced ID if widgetInstance is available
   const finalControlId = widgetInstance ? `${controlId}-${widgetInstance.getId()}` : controlId;
@@ -2680,7 +2714,7 @@ function addVisibilityToggleControl(
         rightLabel,
         initialState,
         mapId,
-        false
+        false,
       );
       this._container.innerHTML = buttonHtml;
 
@@ -2801,7 +2835,7 @@ function addClusterToggleControlToPanel(widgetInstance, panelId, options, sectio
     initialState,
     widgetInstance.getId(),
     true, // Use inline onclick handler for panels
-    true // Include wrapper div with control classes
+    true, // Include wrapper div with control classes
   );
 
   // Add to panel (include groupId from options)
@@ -2811,7 +2845,7 @@ function addClusterToggleControlToPanel(widgetInstance, panelId, options, sectio
     controlId,
     sectionTitle,
     'toro-cluster-toggle-panel-control',
-    groupId
+    groupId,
   );
 }
 
@@ -2847,7 +2881,7 @@ function addVisibilityToggleControlToPanel(widgetInstance, panelId, options, sec
     initialState,
     widgetInstance.getId(),
     true, // Use inline onclick handler for panels
-    true // Include wrapper div with control classes
+    true, // Include wrapper div with control classes
   );
 
   // Add to panel
@@ -3124,7 +3158,7 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
         },
         {
           priority: 'event',
-        }
+        },
       );
     }
   };
@@ -3530,7 +3564,7 @@ function addAnimationControlButton(widgetInstance, options = {}) {
               },
               {
                 priority: 'event',
-              }
+              },
             );
           }
         });
@@ -3579,7 +3613,7 @@ function addAnimationControlButton(widgetInstance, options = {}) {
     setPlaying: function (isPlaying) {
       // Update play/pause button state externally
       const playPauseButton = document.getElementById(
-        `play-pause-button-${widgetInstance.getId()}`
+        `play-pause-button-${widgetInstance.getId()}`,
       );
       if (playPauseButton) {
         if (isPlaying) {
@@ -3653,7 +3687,7 @@ function setupAnimationSpeedControl(widgetInstance, routeId, speedValues, speedL
         },
         {
           priority: 'event',
-        }
+        },
       );
     }
   };
