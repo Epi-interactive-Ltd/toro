@@ -88,9 +88,24 @@ function addDrawnShape(widgetInstance, geometry) {
 
 // Update a Shiny input to hold all current drawn shape data
 function updateAllDrawnFeatures(widgetInstance) {
-  const allFeatures = widgetInstance.getDraw().getAll();
+  if (!widgetInstance || typeof widgetInstance.getDraw !== 'function') {
+    return;
+  }
+
+  const drawObject = widgetInstance.getDraw();
+  if (!drawObject || typeof drawObject.getAll !== 'function') {
+    return;
+  }
+
+  const mapId =
+    typeof widgetInstance.getId === 'function' ? widgetInstance.getId() : widgetInstance.id;
+  if (!mapId) {
+    return;
+  }
+
+  const allFeatures = drawObject.getAll();
   const allGeoJSON = JSON.stringify(allFeatures);
-  Shiny.setInputValue(widgetInstance.id + '_all_drawn_shapes', allGeoJSON, {
+  Shiny.setInputValue(mapId + '_all_drawn_shapes', allGeoJSON, {
     priority: 'event',
   });
 }

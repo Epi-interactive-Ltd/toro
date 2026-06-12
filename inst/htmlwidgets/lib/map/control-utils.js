@@ -175,9 +175,16 @@ function addDrawControl(
 
     // Trigger Shiny input when a feature is deleted
     el.mapInstance.on('draw.delete', function (e) {
-      Shiny.setInputValue(el.id + '_shape_deleted', e.features.id, {
-        priority: 'event',
-      });
+      const deletedIds = (e.features || []).map((feature) => feature.id).filter(Boolean);
+      if (deletedIds.length > 0) {
+        Shiny.setInputValue(
+          el.id + '_shape_deleted',
+          deletedIds.length === 1 ? deletedIds[0] : deletedIds,
+          {
+            priority: 'event',
+          },
+        );
+      }
       updateAllDrawnFeatures(el.widgetInstance);
     });
 
@@ -1467,15 +1474,22 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
           Shiny.setInputValue(mapElement.id + '_shape_created', geojson, {
             priority: 'event',
           });
+          updateAllDrawnFeatures(el.widgetInstance);
         });
 
         // Trigger Shiny input when a feature is deleted
         map.on('draw.delete', function (e) {
-          const feature = e.features[0];
-          const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + '_shape_deleted', geojson, {
-            priority: 'event',
-          });
+          const deletedIds = (e.features || []).map((feature) => feature.id).filter(Boolean);
+          if (deletedIds.length > 0) {
+            Shiny.setInputValue(
+              mapElement.id + '_shape_deleted',
+              deletedIds.length === 1 ? deletedIds[0] : deletedIds,
+              {
+                priority: 'event',
+              },
+            );
+            updateAllDrawnFeatures(el.widgetInstance);
+          }
         });
 
         // Trigger Shiny input when a feature is updated
@@ -1485,6 +1499,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
           Shiny.setInputValue(mapElement.id + '_shape_updated', geojson, {
             priority: 'event',
           });
+          updateAllDrawnFeatures(el.widgetInstance);
         });
       }
     }
