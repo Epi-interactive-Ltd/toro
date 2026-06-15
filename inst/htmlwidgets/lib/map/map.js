@@ -157,6 +157,12 @@ HTMLWidgets.widget({
             addLatLngGrid(el, x.latLngGrid.gridColour);
           }
 
+          if (x.layerLegends) {
+            x.layerLegends?.forEach((legend) => {
+              addLegendForLayer(el.widgetInstance, legend.layerId, legend.legendConfig);
+            });
+          }
+
           // Ensures that the controls are added in the desired order
           if (x.controls) {
             x.controls.forEach((control) => {
@@ -912,6 +918,18 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
+  Shiny.addCustomMessageHandler('addLegendForLayer', function (message) {
+    withMapInstance(message.id, function (el) {
+      addLegendForLayer(el.widgetInstance, message.layerId, message.legendConfig);
+    });
+  });
+
+  Shiny.addCustomMessageHandler('removeLegendForLayer', function (message) {
+    withMapInstance(message.id, function (el) {
+      removeLegendForLayer(el.widgetInstance, message.layerId);
+    });
+  });
+
   Shiny.addCustomMessageHandler('deleteDrawnShape', function (message) {
     withMapInstance(message.id, function (el) {
       deleteDrawnShape(el, message.shapeId);
@@ -998,12 +1016,31 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('setPaintProp', function (message) {
     withMapInstance(message.id, function (el) {
       el.mapInstance.setPaintProperty(message.layerId, message.property, message.value);
+
+      const map = el.mapInstance;
+      const layer = map.getLayer(message.layerId);
+      if (!layer) {
+        return;
+      }
+
+      const legendPaintKey = _getLegendPaintKey(map, message.layerId, layer.type);
+      if (
+        legendPaintKey &&
+        legendPaintKey === message.property &&
+        hasLegendForLayer(el.widgetInstance, message.layerId)
+      ) {
+        addLegendForLayer(el.widgetInstance, message.layerId);
+      }
     });
   });
 
   Shiny.addCustomMessageHandler('setLayoutProp', function (message) {
     withMapInstance(message.id, function (el) {
       el.mapInstance.setLayoutProperty(message.layerId, message.property, message.value);
+
+      if (message.property === 'visibility') {
+        syncLegendVisibilityByMap(el.mapInstance, message.layerId);
+      }
     });
   });
 

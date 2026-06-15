@@ -3171,6 +3171,8 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
       map.setLayoutProperty(selectedLayer, 'visibility', 'visible');
     }
 
+    syncAllLegendVisibility(map);
+
     // Call the callback with the selected layer
     if (typeof onLayerChange === 'function') {
       onLayerChange(selectedLayer, previousLayer);
@@ -3248,6 +3250,7 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
         }
       });
     }
+    syncAllLegendVisibility(map);
   }
 
   setupEventHandlers();
@@ -3281,6 +3284,8 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
         if (layerId && map.getLayer(layerId)) {
           map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
+
+        syncAllLegendVisibility(map);
 
         if (typeof onLayerChange === 'function') {
           onLayerChange(currentLayer, previousLayer);

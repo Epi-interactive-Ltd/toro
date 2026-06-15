@@ -44,6 +44,49 @@
   gap: 4px;
 }
 
+.toro-legend-control {
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  color: #1f2937;
+  font-size: 12px;
+  min-width: 140px;
+  max-width: 220px;
+  padding: 8px 10px;
+}
+
+.toro-legend-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.toro-legend-item {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin: 3px 0;
+}
+
+.toro-legend-swatch {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  display: inline-block;
+  flex: 0 0 14px;
+  height: 14px;
+}
+
+.toro-legend-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toro-legend-meta {
+  color: #6b7280;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
 .animation-controls-group {
   display: flex;
   flex-direction: column;
