@@ -125,7 +125,7 @@ function addLayerToMap(el, layer) {
         {
           cluster: layer.canCluster !== false,
         },
-        layer.type
+        layer.type,
       ),
     };
 
@@ -166,7 +166,7 @@ function addLayerToMap(el, layer) {
       sourceId,
       layer.popupColumn,
       layer.canCluster,
-      layer.clusterOptions
+      layer.clusterOptions,
     );
   }
 
@@ -241,6 +241,7 @@ function hideLayer(map, layerId) {
   const visibility = map.getLayoutProperty(layerId, 'visibility');
   if (visibility !== 'none' && layerId !== 'satellite') {
     map.setLayoutProperty(layerId, 'visibility', 'none');
+    syncLegendVisibilityByMap(map, layerId);
   }
 }
 
@@ -255,6 +256,7 @@ function showLayer(map, layerId) {
   const visibility = map.getLayoutProperty(layerId, 'visibility');
   if (visibility !== 'visible') {
     map.setLayoutProperty(layerId, 'visibility', 'visible');
+    syncLegendVisibilityByMap(map, layerId);
   }
 }
 
@@ -423,12 +425,12 @@ function addLatLngGrid(el, gridColour = '#000000') {
                     maxzoom: maxZoomLevels[layerId],
                     minzoom: minZoomLevels[layerId],
                   },
-                  el.ourLayers[0] // Add before any other layer added by user
+                  el.ourLayers[0], // Add before any other layer added by user
                 );
                 el.ourLayers.push(`lat-lng-grid-zoom${layerId}`);
               }
             });
-        })
+        }),
       );
     });
 }
@@ -801,7 +803,7 @@ function copyLayerStyle(map, fromLayerId, toLayerId) {
       } catch (error) {
         console.warn(
           `Failed to copy paint property ${prop} from ${fromLayerId} to ${toLayerId}:`,
-          error
+          error,
         );
       }
     });
@@ -818,7 +820,7 @@ function copyLayerStyle(map, fromLayerId, toLayerId) {
       } catch (error) {
         console.warn(
           `Failed to copy layout property ${prop} from ${fromLayerId} to ${toLayerId}:`,
-          error
+          error,
         );
       }
     });

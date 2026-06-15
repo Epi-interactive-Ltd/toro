@@ -30,4 +30,5 @@ dependencies:
       - cluster-utils.js
       - view-utils.js
       - animation-utils.js
+      - legend-utils.js
     style: map.css

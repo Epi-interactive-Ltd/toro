@@ -48,6 +48,7 @@ data layers or allowing users to choose between mutually exclusive visualization
 }
 \examples{
 # Load libraries
+library(toro)
 library(spData)
 library(sf)
 
