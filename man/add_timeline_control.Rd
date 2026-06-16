@@ -12,7 +12,9 @@ add_timeline_control(
   max_ticks = 3,
   panel_id = NULL,
   section_title = NULL,
-  group_id = NULL
+  group_id = NULL,
+  button_icons = list(),
+  button_text = list()
 )
 }
 \arguments{
@@ -31,6 +33,14 @@ add_timeline_control(
 \item{section_title}{Section title when added to a control panel.}
 
 \item{group_id}{Optional ID of the group to add the control to within a panel.}
+
+\item{button_icons}{Optional named list of custom icons for the play/pause button.
+Accepts names \code{"play"} and \code{"pause"}. Each value can be an inline SVG string,
+a local PNG or SVG file path (automatically converted to a data URI), or plain
+text. \code{NULL} entries fall back to the default icon.}
+
+\item{button_text}{Optional named list of text labels shown alongside icons.
+Accepts names \code{"play"} and \code{"pause"}. Pass an empty list to show icons only.}
 }
 \value{
 The map or map proxy object for chaining.

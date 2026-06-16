@@ -1650,10 +1650,24 @@ function addTimelineControl(
   const sliderId = `timeline-slider-${mapId}`;
   const controlId = `timeline-control-${mapId}`;
 
+  // Resolve custom icons and text for play/pause button
+  const icons = options.icons || {};
+  const buttonText = options.buttonText || {};
+  const timelinePlayIcon = icons.play ? renderIcon(icons.play) : '▶';
+  const timelinePauseIcon = icons.pause ? renderIcon(icons.pause) : '⏸';
+  const timelinePlayText = 'play' in buttonText ? buttonText.play : '';
+  const timelinePauseText = 'pause' in buttonText ? buttonText.pause : '';
+
   // HTML for the control
   const html = `
     <div class="timeline-control-container">
-      <button id="${playPauseId}" class="timeline-play-btn">▶</button>
+      <button id="${playPauseId}" class="timeline-play-btn"
+              data-play-icon="${timelinePlayIcon.replace(/"/g, '&quot;')}"
+              data-pause-icon="${timelinePauseIcon.replace(/"/g, '&quot;')}"
+              data-play-text="${timelinePlayText}"
+              data-pause-text="${timelinePauseText}">
+        <span class="button-icon">${timelinePlayIcon}</span>${timelinePlayText ? `<span class="button-text">${timelinePlayText}</span>` : ''}
+      </button>
       <div class="timeline-axis-container">
         <!-- Current date display above slider - always visible -->
         <div id="${currentDateId}">${start}</div>
@@ -1731,7 +1745,11 @@ function addTimelineControl(
 
     playing = !playing;
     if (playPauseBtn) {
-      playPauseBtn.innerHTML = playing ? '⏸' : '▶';
+      const iconHtml = playing ? timelinePauseIcon : timelinePlayIcon;
+      const textHtml = playing
+        ? (timelinePauseText ? `<span class="button-text">${timelinePauseText}</span>` : '')
+        : (timelinePlayText ? `<span class="button-text">${timelinePlayText}</span>` : '');
+      playPauseBtn.innerHTML = `<span class="button-icon">${iconHtml}</span>${textHtml}`;
     }
 
     // Disable/enable slider based on play state
@@ -3385,6 +3403,24 @@ function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectio
  *     - settings: object - Additional settings
  * @returns {void}
  */
+
+/**
+ * Render an icon value as HTML.
+ * - SVG strings are inlined directly.
+ * - Data URIs (e.g. base64-encoded PNG) are rendered as <img>.
+ * - Everything else is treated as plain text.
+ *
+ * @param {string} value The icon value to render.
+ * @returns {string} HTML string.
+ */
+function renderIcon(value) {
+  if (!value) return '';
+  if (value.trimStart().startsWith('<svg')) return value;
+  if (value.startsWith('data:'))
+    return `<img src="${value}" alt="" style="height:1em;vertical-align:middle;">`;
+  return value;
+}
+
 function addAnimationControlButton(widgetInstance, options = {}) {
   const map = widgetInstance.getMap();
   const el = widgetInstance.getElement();
@@ -3400,20 +3436,6 @@ function addAnimationControlButton(widgetInstance, options = {}) {
   const speedValues = options.speedValues || [0.5, 1, 2];
   const speedLabels = options.speedLabels || ['Slow', 'Normal', 'Fast'];
   const settings = options.settings || {};
-
-  /**
-   * Render an icon value as HTML.
-   * - SVG strings are inlined directly.
-   * - Data URIs (e.g. base64-encoded PNG) are rendered as <img>.
-   * - Everything else is treated as plain text.
-   */
-  function renderIcon(value) {
-    if (!value) return '';
-    if (value.trimStart().startsWith('<svg')) return value;
-    if (value.startsWith('data:'))
-      return `<img src="${value}" alt="" style="height:1em;vertical-align:middle;">`;
-    return value;
-  }
 
   // Generate unique IDs
   const controlGroupId = `animation-controls-${widgetInstance.getId()}`;

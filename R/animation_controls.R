@@ -11,6 +11,12 @@
 #' @param panel_id ID of control panel to add to (optional).
 #' @param section_title Section title when added to a control panel.
 #' @param group_id Optional ID of the group to add the control to within a panel.
+#' @param button_icons Optional named list of custom icons for the play/pause button.
+#'   Accepts names `"play"` and `"pause"`. Each value can be an inline SVG string,
+#'   a local PNG or SVG file path (automatically converted to a data URI), or plain
+#'   text. \code{NULL} entries fall back to the default icon.
+#' @param button_text Optional named list of text labels shown alongside icons.
+#'   Accepts names `"play"` and `"pause"`. Pass an empty list to show icons only.
 #' @return The map or map proxy object for chaining.
 #' @export
 #'
@@ -57,7 +63,9 @@ add_timeline_control <- function(
   max_ticks = 3,
   panel_id = NULL,
   section_title = NULL,
-  group_id = NULL
+  group_id = NULL,
+  button_icons = list(),
+  button_text = list()
 ) {
   # Use default dates if not provided
   # if (is.null(start_date)) {
@@ -67,6 +75,24 @@ add_timeline_control <- function(
   #   end_date <- Sys.Date() + 365
   # }
 
+  # Validate button_icons names
+  valid_buttons <- c("play", "pause")
+  if (length(button_icons) > 0) {
+    invalid_names <- setdiff(names(button_icons), valid_buttons)
+    if (length(invalid_names) > 0) {
+      stop(
+        "Invalid icon name(s): ",
+        paste(invalid_names, collapse = ", "),
+        ". Must be one of: ",
+        paste(valid_buttons, collapse = ", ")
+      )
+    }
+    button_icons <- lapply(button_icons, function(icon) {
+      if (is.null(icon)) return(NULL)
+      if (is_local_file(icon)) image_to_data_uri(icon) else icon
+    })
+  }
+
   options <- list(
     startDate = as.character(start_date),
     endDate = as.character(end_date),
@@ -75,7 +101,9 @@ add_timeline_control <- function(
     useControlPanel = !is.null(panel_id),
     panelId = panel_id,
     panelTitle = section_title,
-    groupId = group_id
+    groupId = group_id,
+    icons = button_icons,
+    buttonText = button_text
   )
 
   if (inherits(map, "mapProxy")) {
