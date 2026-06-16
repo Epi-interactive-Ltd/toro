@@ -88,7 +88,9 @@ add_timeline_control <- function(
       )
     }
     button_icons <- lapply(button_icons, function(icon) {
-      if (is.null(icon)) return(NULL)
+      if (is.null(icon)) {
+        return(NULL)
+      }
       if (is_local_file(icon)) image_to_data_uri(icon) else icon
     })
   }

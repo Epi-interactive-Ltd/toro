@@ -132,6 +132,40 @@ HTMLWidgets.widget({
           if (x.layers) {
             x.layers.forEach((layer) => addLayerToMap(el, layer));
           }
+
+          // Process timeline controls before routes so they are available for connection
+          if (x.timelineControls && Object.keys(x.timelineControls).length > 0) {
+            Object.keys(x.timelineControls).forEach(function (controlId) {
+              const timelineOptions = x.timelineControls[controlId];
+
+              // Pass null callbacks for initial timeline control so it starts disabled
+              // It will be enabled automatically when connected to an animation
+              addTimelineControl(
+                el.widgetInstance,
+                timelineOptions.startDate,
+                timelineOptions.endDate,
+                null, // No play/pause callback - will be disabled
+                null, // No slider callback - will be disabled
+                timelineOptions,
+              );
+            });
+          }
+
+          // Process speed controls before routes so they are available for connection
+          if (x.speedControls && Object.keys(x.speedControls).length > 0) {
+            Object.keys(x.speedControls).forEach(function (controlId) {
+              const speedOptions = x.speedControls[controlId];
+
+              // Pass null callback for initial speed control so it starts disabled
+              // It will be enabled automatically when connected to an animation
+              addSpeedControl(
+                el.widgetInstance,
+                null, // No speed change callback - will be disabled
+                speedOptions,
+              );
+            });
+          }
+
           if (x.routes) {
             x.routes.forEach((layer) => addRoute(el, layer));
           }
@@ -285,36 +319,16 @@ HTMLWidgets.widget({
           }
 
           // Process timeline controls (both standalone and panel-based)
+          // Note: standalone timeline controls are already processed before routes above.
+          // This block handles any panel-based timeline controls that were not yet added.
           if (x.timelineControls && Object.keys(x.timelineControls).length > 0) {
-            Object.keys(x.timelineControls).forEach(function (controlId) {
-              const timelineOptions = x.timelineControls[controlId];
-
-              // Pass null callbacks for initial timeline control so it starts disabled
-              // It will be enabled automatically when connected to an animation
-              addTimelineControl(
-                el.widgetInstance,
-                timelineOptions.startDate,
-                timelineOptions.endDate,
-                null, // No play/pause callback - will be disabled
-                null, // No slider callback - will be disabled
-                timelineOptions,
-              );
-            });
+            // Already handled before routes - skip to avoid duplicate rendering
           }
 
           // Process speed controls (both standalone and panel-based)
+          // Note: standalone speed controls are already processed before routes above.
           if (x.speedControls && Object.keys(x.speedControls).length > 0) {
-            Object.keys(x.speedControls).forEach(function (controlId) {
-              const speedOptions = x.speedControls[controlId];
-
-              // Pass null callback for initial speed control so it starts disabled
-              // It will be enabled automatically when connected to an animation
-              addSpeedControl(
-                el.widgetInstance,
-                null, // No speed change callback - will be disabled
-                speedOptions,
-              );
-            });
+            // Already handled before routes - skip to avoid duplicate rendering
           }
 
           // Process tile selector controls (both standalone and panel-based)

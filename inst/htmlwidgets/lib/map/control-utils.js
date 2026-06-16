@@ -1747,8 +1747,12 @@ function addTimelineControl(
     if (playPauseBtn) {
       const iconHtml = playing ? timelinePauseIcon : timelinePlayIcon;
       const textHtml = playing
-        ? (timelinePauseText ? `<span class="button-text">${timelinePauseText}</span>` : '')
-        : (timelinePlayText ? `<span class="button-text">${timelinePlayText}</span>` : '');
+        ? timelinePauseText
+          ? `<span class="button-text">${timelinePauseText}</span>`
+          : ''
+        : timelinePlayText
+          ? `<span class="button-text">${timelinePlayText}</span>`
+          : '';
       playPauseBtn.innerHTML = `<span class="button-icon">${iconHtml}</span>${textHtml}`;
     }
 
@@ -1946,7 +1950,15 @@ function addTimelineControl(
     setPlaying: function (isPlaying) {
       playing = isPlaying;
       if (playPauseBtn) {
-        playPauseBtn.innerHTML = playing ? '⏸' : '▶';
+        const iconHtml = playing ? timelinePauseIcon : timelinePlayIcon;
+        const textHtml = playing
+          ? timelinePauseText
+            ? `<span class="button-text">${timelinePauseText}</span>`
+            : ''
+          : timelinePlayText
+            ? `<span class="button-text">${timelinePlayText}</span>`
+            : '';
+        playPauseBtn.innerHTML = `<span class="button-icon">${iconHtml}</span>${textHtml}`;
       }
       if (timelineSlider) {
         timelineSlider.disabled = playing;
