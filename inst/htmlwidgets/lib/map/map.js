@@ -132,6 +132,45 @@ HTMLWidgets.widget({
           if (x.layers) {
             x.layers.forEach((layer) => addLayerToMap(el, layer));
           }
+
+          // Process timeline controls before routes so they are available for connection
+          // Only process standalone controls here (panel_id-less); panel-based ones are
+          // stored in controlPanels[panelId].options.panelControls and handled below.
+          if (x.timelineControls && Object.keys(x.timelineControls).length > 0) {
+            Object.keys(x.timelineControls).forEach(function (controlId) {
+              const timelineOptions = x.timelineControls[controlId];
+
+              // Skip panel-bound controls — they are handled during panel processing
+              if (timelineOptions.panelId) return;
+
+              // Pass null callbacks for initial timeline control so it starts disabled
+              // It will be enabled automatically when connected to an animation
+              addTimelineControl(
+                el.widgetInstance,
+                timelineOptions.startDate,
+                timelineOptions.endDate,
+                null, // No play/pause callback - will be disabled
+                null, // No slider callback - will be disabled
+                timelineOptions,
+              );
+            });
+          }
+
+          // Process speed controls before routes so they are available for connection
+          if (x.speedControls && Object.keys(x.speedControls).length > 0) {
+            Object.keys(x.speedControls).forEach(function (controlId) {
+              const speedOptions = x.speedControls[controlId];
+
+              // Pass null callback for initial speed control so it starts disabled
+              // It will be enabled automatically when connected to an animation
+              addSpeedControl(
+                el.widgetInstance,
+                null, // No speed change callback - will be disabled
+                speedOptions,
+              );
+            });
+          }
+
           if (x.routes) {
             x.routes.forEach((layer) => addRoute(el, layer));
           }
@@ -235,31 +274,66 @@ HTMLWidgets.widget({
               if (options.panelControls && options.panelControls.length > 0) {
                 options.panelControls.forEach(function (control) {
                   if (control.type === 'timeline') {
-                    // Create dummy callback functions for initial rendering
-                    const dummyPlayPause = function (playing) {};
-                    const dummySliderChange = function (progress) {};
+                    // By this point routes are already registered, so try to connect
+                    // real animation callbacks instead of dummies.
+                    const animations = el.widgetInstance.getAnimations();
+                    const animationKeys = animations ? Object.keys(animations) : [];
+                    let playPauseCallback = null;
+                    let sliderCallback = null;
 
-                    const timelineElement = addTimelineControl(
+                    if (animationKeys.length > 0) {
+                      const routeId = animationKeys[0];
+                      const routeOptions = { routeId: routeId, options: animations[routeId]?.options || {} };
+                      playPauseCallback = function (playing) {
+                        if (playing) {
+                          animateRoute(el.widgetInstance, routeOptions);
+                        } else {
+                          pauseAnimation(el.widgetInstance, routeOptions);
+                        }
+                      };
+                      sliderCallback = function (progress) {
+                        const route = el.widgetInstance.getAnimations()[routeId];
+                        if (route && !route.isAnimating) {
+                          const targetStep = Math.floor(progress * (route.linePoints.length - 1));
+                          route.counter = targetStep;
+                          const coordinates = route.linePoints[targetStep].geometry.coordinates;
+                          const properties = route.points.features[0]?.properties || {};
+                          updateAnimatedPointPosition(
+                            route.map,
+                            route.routePointLayerId,
+                            coordinates,
+                            properties,
+                          );
+                          if (route.dropVisited) {
+                            updateVisitedPoints(route, targetStep);
+                          }
+                        }
+                      };
+                    }
+
+                    addTimelineControl(
                       el.widgetInstance,
                       control.options.startDate,
                       control.options.endDate,
-                      dummyPlayPause,
-                      dummySliderChange,
+                      playPauseCallback,
+                      sliderCallback,
                       control.options,
                     );
-                    addHtmlToPanel(el.widgetInstance, panelId, timelineElement, control.title);
                   } else if (control.type === 'speed') {
-                    // Create dummy callback function for initial rendering
-                    const dummySpeedChange = function (speed) {
-                      // console.log("Speed changed to:", speed);
-                    };
+                    // By this point routes are registered — connect a real speed callback
+                    const animations = el.widgetInstance.getAnimations();
+                    const animationKeys = animations ? Object.keys(animations) : [];
+                    let speedCallback = null;
 
-                    const speedElement = addSpeedControl(
-                      el.widgetInstance,
-                      dummySpeedChange,
-                      control.options,
-                    );
-                    addHtmlToPanel(el.widgetInstance, panelId, speedElement, control.title);
+                    if (animationKeys.length > 0) {
+                      const routeId = animationKeys[0];
+                      speedCallback = function (speed) {
+                        const route = el.widgetInstance.getAnimations()[routeId];
+                        if (route) route.animationSpeed = speed;
+                      };
+                    }
+
+                    addSpeedControl(el.widgetInstance, speedCallback, control.options);
                   } else if (control.type === 'custom') {
                     addHtmlToPanel(el.widgetInstance, panelId, control.options.html, control.title);
                   } else if (control.type === 'group') {
@@ -285,36 +359,16 @@ HTMLWidgets.widget({
           }
 
           // Process timeline controls (both standalone and panel-based)
+          // Note: standalone timeline controls are already processed before routes above.
+          // This block handles any panel-based timeline controls that were not yet added.
           if (x.timelineControls && Object.keys(x.timelineControls).length > 0) {
-            Object.keys(x.timelineControls).forEach(function (controlId) {
-              const timelineOptions = x.timelineControls[controlId];
-
-              // Pass null callbacks for initial timeline control so it starts disabled
-              // It will be enabled automatically when connected to an animation
-              addTimelineControl(
-                el.widgetInstance,
-                timelineOptions.startDate,
-                timelineOptions.endDate,
-                null, // No play/pause callback - will be disabled
-                null, // No slider callback - will be disabled
-                timelineOptions,
-              );
-            });
+            // Already handled before routes - skip to avoid duplicate rendering
           }
 
           // Process speed controls (both standalone and panel-based)
+          // Note: standalone speed controls are already processed before routes above.
           if (x.speedControls && Object.keys(x.speedControls).length > 0) {
-            Object.keys(x.speedControls).forEach(function (controlId) {
-              const speedOptions = x.speedControls[controlId];
-
-              // Pass null callback for initial speed control so it starts disabled
-              // It will be enabled automatically when connected to an animation
-              addSpeedControl(
-                el.widgetInstance,
-                null, // No speed change callback - will be disabled
-                speedOptions,
-              );
-            });
+            // Already handled before routes - skip to avoid duplicate rendering
           }
 
           // Process tile selector controls (both standalone and panel-based)

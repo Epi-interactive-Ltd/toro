@@ -310,6 +310,15 @@ remove_route <- function(map, route_id, settings = list()) {
 #' @param panel_id Optional control panel ID to add controls to instead of map.
 #' @param buttons Character vector of buttons to include.
 #'   Options: "play", "pause", "stop". Default is c("play", "pause").
+#' @param button_icons Optional named list of custom icons for the buttons. Names should
+#'   match button names (e.g., `list(play = ..., pause = ..., stop = ...)`).
+#'   Each value can be an inline SVG string, a local PNG or SVG file path
+#'   (automatically converted to a data URI), or plain text to use as the
+#'   button label. \code{NULL} entries fall back to the default icon.
+#' @param button_text Optional named list of custom text labels for the buttons. Names should match
+#'   button names (e.g., `list(play = "Start", pause = "Hold", stop = "End")`). This allows you to
+#'   customize the text shown on the buttons, which can be used in combination with or instead of
+#'   custom icons. If no name is provided for a button, no text will be shown.
 #' @param include_speed_control Logical. Whether to include a speed control slider.
 #'   Default is FALSE.
 #' @param speed_values Numeric vector of speed values for the speed slider.
@@ -322,6 +331,7 @@ remove_route <- function(map, route_id, settings = list()) {
 #'
 #' @examples
 #' library(sf)
+#' library(toro)
 #'
 #' line_data <- sf::st_sf(
 #'   id = 1,
@@ -335,13 +345,24 @@ remove_route <- function(map, route_id, settings = list()) {
 #'
 #' map() |>
 #'   add_route(route_id = "route_line", points = line_data) |>
-#'   add_animation_controls(route_id = "route_line", include_speed_control = TRUE)
+#'   add_animation_controls(
+#'     route_id = "route_line",
+#'     include_speed_control = TRUE,
+#'     button_icons = list(play = "\u25b6", pause = "\u23f8", stop = "\u23f9"),
+#'     button_text = list() # Remove labels, show only icons
+#'   )
 add_animation_controls <- function(
   map,
   route_id = NULL,
   position = "top-right",
   panel_id = NULL,
   buttons = c("play", "pause"),
+  button_icons = list(),
+  button_text = list(
+    play = "Play",
+    pause = "Pause",
+    stop = "Stop"
+  ),
   include_speed_control = FALSE,
   speed_values = c(0.5, 1, 2),
   speed_labels = c("Slow", "Normal", "Fast"),
@@ -368,12 +389,33 @@ add_animation_controls <- function(
     }
   }
 
+  # Process button_icons: convert local file paths to data URIs
+  if (length(button_icons) > 0) {
+    invalid_names <- setdiff(names(button_icons), valid_buttons)
+    if (length(invalid_names) > 0) {
+      stop(
+        "Invalid icon name(s): ",
+        paste(invalid_names, collapse = ", "),
+        ". Must be one of: ",
+        paste(valid_buttons, collapse = ", ")
+      )
+    }
+    button_icons <- lapply(button_icons, function(icon) {
+      if (is.null(icon)) {
+        return(NULL)
+      }
+      if (is_local_file(icon)) image_to_data_uri(icon) else icon
+    })
+  }
+
   options <- list(
     type = "animation",
     routeId = route_id,
     position = position,
     panelId = panel_id,
     buttons = buttons,
+    icons = button_icons,
+    buttonText = button_text,
     includeSpeedControl = include_speed_control,
     speedValues = speed_values,
     speedLabels = speed_labels,

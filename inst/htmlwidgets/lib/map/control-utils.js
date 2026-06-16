@@ -1650,10 +1650,24 @@ function addTimelineControl(
   const sliderId = `timeline-slider-${mapId}`;
   const controlId = `timeline-control-${mapId}`;
 
+  // Resolve custom icons and text for play/pause button
+  const icons = options.icons || {};
+  const buttonText = options.buttonText || {};
+  const timelinePlayIcon = icons.play ? renderIcon(icons.play) : '▶';
+  const timelinePauseIcon = icons.pause ? renderIcon(icons.pause) : '⏸';
+  const timelinePlayText = 'play' in buttonText ? buttonText.play : '';
+  const timelinePauseText = 'pause' in buttonText ? buttonText.pause : '';
+
   // HTML for the control
   const html = `
     <div class="timeline-control-container">
-      <button id="${playPauseId}" class="timeline-play-btn">▶</button>
+      <button id="${playPauseId}" class="timeline-play-btn"
+              data-play-icon="${timelinePlayIcon.replace(/"/g, '&quot;')}"
+              data-pause-icon="${timelinePauseIcon.replace(/"/g, '&quot;')}"
+              data-play-text="${timelinePlayText}"
+              data-pause-text="${timelinePauseText}">
+        <span class="button-icon">${timelinePlayIcon}</span>${timelinePlayText ? `<span class="button-text">${timelinePlayText}</span>` : ''}
+      </button>
       <div class="timeline-axis-container">
         <!-- Current date display above slider - always visible -->
         <div id="${currentDateId}">${start}</div>
@@ -1731,7 +1745,15 @@ function addTimelineControl(
 
     playing = !playing;
     if (playPauseBtn) {
-      playPauseBtn.innerHTML = playing ? '⏸' : '▶';
+      const iconHtml = playing ? timelinePauseIcon : timelinePlayIcon;
+      const textHtml = playing
+        ? timelinePauseText
+          ? `<span class="button-text">${timelinePauseText}</span>`
+          : ''
+        : timelinePlayText
+          ? `<span class="button-text">${timelinePlayText}</span>`
+          : '';
+      playPauseBtn.innerHTML = `<span class="button-icon">${iconHtml}</span>${textHtml}`;
     }
 
     // Disable/enable slider based on play state
@@ -1928,7 +1950,15 @@ function addTimelineControl(
     setPlaying: function (isPlaying) {
       playing = isPlaying;
       if (playPauseBtn) {
-        playPauseBtn.innerHTML = playing ? '⏸' : '▶';
+        const iconHtml = playing ? timelinePauseIcon : timelinePlayIcon;
+        const textHtml = playing
+          ? timelinePauseText
+            ? `<span class="button-text">${timelinePauseText}</span>`
+            : ''
+          : timelinePlayText
+            ? `<span class="button-text">${timelinePlayText}</span>`
+            : '';
+        playPauseBtn.innerHTML = `<span class="button-icon">${iconHtml}</span>${textHtml}`;
       }
       if (timelineSlider) {
         timelineSlider.disabled = playing;
@@ -3385,6 +3415,24 @@ function addLayerSelectorControlToPanel(widgetInstance, panelId, options, sectio
  *     - settings: object - Additional settings
  * @returns {void}
  */
+
+/**
+ * Render an icon value as HTML.
+ * - SVG strings are inlined directly.
+ * - Data URIs (e.g. base64-encoded PNG) are rendered as <img>.
+ * - Everything else is treated as plain text.
+ *
+ * @param {string} value The icon value to render.
+ * @returns {string} HTML string.
+ */
+function renderIcon(value) {
+  if (!value) return '';
+  if (value.trimStart().startsWith('<svg')) return value;
+  if (value.startsWith('data:'))
+    return `<img src="${value}" alt="" style="height:1em;vertical-align:middle;">`;
+  return value;
+}
+
 function addAnimationControlButton(widgetInstance, options = {}) {
   const map = widgetInstance.getMap();
   const el = widgetInstance.getElement();
@@ -3394,6 +3442,8 @@ function addAnimationControlButton(widgetInstance, options = {}) {
   const position = options.position || 'top-right';
   const panelId = options.panelId || null;
   const buttons = options.buttons || ['play', 'pause'];
+  const icons = options.icons || {};
+  const buttonText = options.buttonText || {};
   const includeSpeedControl = options.includeSpeedControl || false;
   const speedValues = options.speedValues || [0.5, 1, 2];
   const speedLabels = options.speedLabels || ['Slow', 'Normal', 'Fast'];
@@ -3402,36 +3452,44 @@ function addAnimationControlButton(widgetInstance, options = {}) {
   // Generate unique IDs
   const controlGroupId = `animation-controls-${widgetInstance.getId()}`;
 
+  // Resolve custom icons (falling back to defaults)
+  const playIcon = icons.play ? renderIcon(icons.play) : '▶';
+  const playText = buttonText.play || '';
+  const pauseIcon = icons.pause ? renderIcon(icons.pause) : '⏸';
+  const pauseText = buttonText.pause || '';
+  const stopIcon = icons.stop ? renderIcon(icons.stop) : '⏹';
+  const stopText = buttonText.stop || '';
+
   // Create button configurations with play/pause toggle support
   const buttonConfigs = {
     play: {
       id: `play-pause-button-${widgetInstance.getId()}`,
-      text: 'Play',
-      icon: '▶',
+      text: playText,
+      icon: playIcon,
       action: 'play',
       color: '#007cba',
       isPlaying: false,
     },
     pause: {
       id: `play-pause-button-${widgetInstance.getId()}`,
-      text: 'Play', // Will be handled by toggle logic
-      icon: '▶',
+      text: pauseText, // Will be handled by toggle logic
+      icon: playIcon,
       action: 'play',
       color: '#007cba',
       isPlaying: false,
     },
     'play-pause': {
       id: `play-pause-button-${widgetInstance.getId()}`,
-      text: 'Play',
-      icon: '▶',
+      text: playText,
+      icon: playIcon,
       action: 'play',
       color: '#007cba',
       isPlaying: false,
     },
     stop: {
       id: `stop-button-${widgetInstance.getId()}`,
-      text: 'Stop',
-      icon: '⏹',
+      text: stopText,
+      icon: stopIcon,
       action: 'stop',
       color: '#e74c3c',
     },
@@ -3472,7 +3530,7 @@ function addAnimationControlButton(widgetInstance, options = {}) {
               data-is-playing="false"
               style="background-color: ${config.color};">
         <span class="button-icon">${config.icon}</span>
-        <span class="button-text">${config.text}</span>
+        <span class="button-text sr-only">${config.text}</span>
       </button>
     `;
     })
@@ -3535,15 +3593,15 @@ function addAnimationControlButton(widgetInstance, options = {}) {
             if (isPlaying) {
               action = 'pause';
               // Update button to show play state
-              this.querySelector('.button-icon').textContent = '▶';
-              this.querySelector('.button-text').textContent = 'Play';
+              this.querySelector('.button-icon').innerHTML = playIcon;
+              this.querySelector('.button-text').textContent = playText;
               this.setAttribute('data-action', 'play');
               this.setAttribute('data-is-playing', 'false');
             } else {
               action = 'play';
               // Update button to show pause state
-              this.querySelector('.button-icon').textContent = '⏸';
-              this.querySelector('.button-text').textContent = 'Pause';
+              this.querySelector('.button-icon').innerHTML = pauseIcon;
+              this.querySelector('.button-text').textContent = pauseText;
               this.setAttribute('data-action', 'pause');
               this.setAttribute('data-is-playing', 'true');
             }
@@ -3651,14 +3709,14 @@ function addAnimationControlButton(widgetInstance, options = {}) {
       );
       if (playPauseButton) {
         if (isPlaying) {
-          playPauseButton.querySelector('.button-icon').textContent = '⏸';
-          playPauseButton.querySelector('.button-text').textContent = 'Pause';
+          playPauseButton.querySelector('.button-icon').textContent = pauseIcon;
+          playPauseButton.querySelector('.button-text').textContent = pauseText;
           playPauseButton.setAttribute('data-action', 'pause');
           playPauseButton.setAttribute('data-is-playing', 'true');
           playPauseButton.style.backgroundColor = '#f39c12';
         } else {
-          playPauseButton.querySelector('.button-icon').textContent = '▶';
-          playPauseButton.querySelector('.button-text').textContent = 'Play';
+          playPauseButton.querySelector('.button-icon').textContent = playIcon;
+          playPauseButton.querySelector('.button-text').textContent = playText;
           playPauseButton.setAttribute('data-action', 'play');
           playPauseButton.setAttribute('data-is-playing', 'false');
           playPauseButton.style.backgroundColor = '#007cba';
