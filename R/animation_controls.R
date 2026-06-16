@@ -111,7 +111,7 @@ add_timeline_control <- function(
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(
+      map <- add_control_to_panel(
         map,
         panel_id,
         "timeline",
@@ -128,15 +128,16 @@ add_timeline_control <- function(
     }
   } else {
     # Store for initial map creation
-    if (is.null(map$x$timelineControls)) {
-      map$x$timelineControls <- list()
-    }
-    control_id <- if (!is.null(panel_id)) {
-      paste0(panel_id, "_timeline")
+    if (!is.null(panel_id)) {
+      # Route through add_control_to_panel so it ends up inside the panel's
+      # panelControls list, not in the top-level timelineControls
+      map <- add_control_to_panel(map, panel_id, "timeline", options, section_title, group_id)
     } else {
-      "standalone_timeline"
+      if (is.null(map$x$timelineControls)) {
+        map$x$timelineControls <- list()
+      }
+      map$x$timelineControls[["standalone_timeline"]] <- options
     }
-    map$x$timelineControls[[control_id]] <- options
   }
 
   map
@@ -245,7 +246,7 @@ add_speed_control <- function(
   if (inherits(map, "mapProxy")) {
     if (!is.null(panel_id)) {
       # Add to control panel
-      add_control_to_panel(
+      map <- add_control_to_panel(
         map,
         panel_id,
         "speed",
@@ -262,15 +263,14 @@ add_speed_control <- function(
     }
   } else {
     # Store for initial map creation
-    if (is.null(map$x$speedControls)) {
-      map$x$speedControls <- list()
-    }
-    control_id <- if (!is.null(panel_id)) {
-      paste0(panel_id, "_speed")
+    if (!is.null(panel_id)) {
+      map <- add_control_to_panel(map, panel_id, "speed", options, section_title, group_id)
     } else {
-      "standalone_speed"
+      if (is.null(map$x$speedControls)) {
+        map$x$speedControls <- list()
+      }
+      map$x$speedControls[["standalone_speed"]] <- options
     }
-    map$x$speedControls[[control_id]] <- options
   }
 
   map
