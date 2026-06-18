@@ -21,7 +21,7 @@ dependencies:
     src:
       file: htmlwidgets/lib/map
     script:
-      - map.js
+      - controls/paint-controls.js
       - source-utils.js
       - map-utils.js
       - control-utils.js
@@ -31,4 +31,5 @@ dependencies:
       - view-utils.js
       - animation-utils.js
       - legend-utils.js
+      - map.js
     style: map.css
