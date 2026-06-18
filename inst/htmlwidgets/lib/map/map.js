@@ -58,6 +58,9 @@ HTMLWidgets.widget({
 
         el.openClusterId = null; // ID of the currently open cluster
 
+        el.controlPanels = [];
+        el.controls = [];
+
         // Global cluster options to apply to all clusters unless overridden at the layer level
         el.clusterOptions = {
           circleOptions: getClusterCircleOptions(x.options.clusterColour, x.options.clusterOptions),
@@ -168,6 +171,17 @@ HTMLWidgets.widget({
                 null, // No speed change callback - will be disabled
                 speedOptions,
               );
+            });
+          }
+
+          // Process standalone paint controls before routes
+          // Panel-based paint controls are added after control panels are initialized.
+          if (x.paintControls && Object.keys(x.paintControls).length > 0) {
+            Object.keys(x.paintControls).forEach(function (controlId) {
+              const paintOptions = x.paintControls[controlId];
+
+              if (paintOptions.panelId) return;
+              addPaintControl(el, paintOptions);
             });
           }
 
@@ -283,7 +297,10 @@ HTMLWidgets.widget({
 
                     if (animationKeys.length > 0) {
                       const routeId = animationKeys[0];
-                      const routeOptions = { routeId: routeId, options: animations[routeId]?.options || {} };
+                      const routeOptions = {
+                        routeId: routeId,
+                        options: animations[routeId]?.options || {},
+                      };
                       playPauseCallback = function (playing) {
                         if (playing) {
                           animateRoute(el.widgetInstance, routeOptions);
@@ -355,6 +372,16 @@ HTMLWidgets.widget({
                   }
                 });
               }
+            });
+          }
+
+          // Process panel-based paint controls after control panels exist.
+          if (x.paintControls && Object.keys(x.paintControls).length > 0) {
+            Object.keys(x.paintControls).forEach(function (controlId) {
+              const paintOptions = x.paintControls[controlId];
+
+              if (!paintOptions.panelId) return;
+              addPaintControl(el, paintOptions);
             });
           }
 
@@ -767,6 +794,22 @@ HTMLWidgets.widget({
       getMaxZoom: function () {
         return el.maxZoom;
       },
+
+      getControlPanels: function () {
+        return el.controlPanels;
+      },
+
+      setControlPanels: function (controlPanels) {
+        el.controlPanels = controlPanels;
+      },
+
+      getControls: function () {
+        return el.controls;
+      },
+
+      setControls: function (controls) {
+        el.controls = controls;
+      },
     };
   },
 });
@@ -788,6 +831,7 @@ function withMapInstance(id, fn) {
 }
 
 if (HTMLWidgets.shinyMode) {
+  addPaintControlListeners();
   Shiny.addCustomMessageHandler('addCursorCoordsControl', function (message) {
     withMapInstance(message.id, function (el) {
       const control = message.control || message;
