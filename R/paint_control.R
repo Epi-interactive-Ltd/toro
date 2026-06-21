@@ -5,7 +5,7 @@
 #' @param map A toro map or mapProxy object.
 #' @param id Unique identifier for the paint control.
 #' @param layer_id The ID of the layer to control.
-#' @param paint_options A list of paint options to control
+#' @param options_list A list of layer options to control
 #'   (e.g., list(
 #'     list(id = "default", label = "Default", paint = list('fill-color' = 'red')),
 #'     list(id = "alternative", label = "Alternative", paint = list('fill-color' = 'blue'))
@@ -22,7 +22,7 @@ add_paint_control <- function(
   map,
   id,
   layer_id,
-  paint_options,
+  options_list,
   label = NULL,
   default = NULL,
   position = "top-right",
@@ -31,7 +31,7 @@ add_paint_control <- function(
   options <- list(
     id = id,
     layerId = layer_id,
-    paintOptions = paint_options,
+    optionsList = options_list,
     label = label,
     default = default,
     position = position,

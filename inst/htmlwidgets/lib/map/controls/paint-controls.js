@@ -27,7 +27,7 @@ class PaintControl {
     this._container.appendChild(this._renderInput());
     this._syncControlRegistry();
 
-    this._updatePaint(this.getDefaultValue());
+    this._updateSelectedOption(this.getDefaultValue());
     return this._container;
   }
 
@@ -67,8 +67,8 @@ class PaintControl {
 
   getDefaultValue() {
     let defaultValue = this._options.default;
-    if (!defaultValue || (defaultValue === undefined && this._options.paintOptions?.length > 0)) {
-      defaultValue = this._options.paintOptions[0].value || this._options.paintOptions[0].id;
+    if (!defaultValue || (defaultValue === undefined && this._options.optionsList?.length > 0)) {
+      defaultValue = this._options.optionsList[0].value || this._options.optionsList[0].id;
     }
     return defaultValue;
   }
@@ -83,7 +83,7 @@ class PaintControl {
     if (this?._options?.inputType === 'radio') {
       inputElement.classList.add('paint-control-radio');
       let radioGroupName = `paint-control-radio-${this._widgetInstance.getId()}`;
-      this._options.paintOptions?.forEach((option) => {
+      this._options.optionsList?.forEach((option) => {
         let optionId = option.id || option.value;
         let radioId = `paint-control-radio-${optionId}-${this._widgetInstance.getId()}`;
         const inputContainer = document.createElement('div');
@@ -99,7 +99,7 @@ class PaintControl {
         }
         radioElement.addEventListener('change', (event) => {
           if (event.target.checked) {
-            this._updatePaint(event.target.value);
+            this._updateSelectedOption(event.target.value);
           }
         });
 
@@ -116,7 +116,7 @@ class PaintControl {
       inputElement.classList.add('paint-control-select');
       let selectElement = document.createElement('select');
       selectElement.id = this._inputElId;
-      this._options.paintOptions?.forEach((option) => {
+      this._options.optionsList?.forEach((option) => {
         let optionElement = document.createElement('option');
         const optValue = option.value || option.id;
         optionElement.value = optValue;
@@ -127,30 +127,46 @@ class PaintControl {
         selectElement.appendChild(optionElement);
       });
       selectElement.addEventListener('change', (event) => {
-        this._updatePaint(event.target.value);
+        this._updateSelectedOption(event.target.value);
       });
       inputElement.appendChild(selectElement);
     }
     return inputElement;
   }
 
-  _updatePaint(inputValue) {
+  _updateSelectedOption(inputValue) {
     // Find the selected paint option based on the input value
-    let selectedOption = this._options.paintOptions.find(
+    let selectedOption = this._options.optionsList.find(
       (option) => option.value === inputValue || option.id === inputValue,
     );
     if (!selectedOption) {
-      const firstOption = this._options.paintOptions?.[0];
+      const firstOption = this._options.optionsList?.[0];
       if (firstOption) {
         selectedOption = firstOption;
       }
     }
+    Shiny.setInputValue(this._inputElId, inputValue, {
+      priority: 'event',
+    });
+
     // Update the map layer's paint properties using the selected option
     const layerId = this._options.layerId;
     const paintProperties = selectedOption.paint;
-    Object.entries(paintProperties).forEach(([property, value]) => {
-      this._map.setPaintProperty(layerId, property, value);
-    });
+    const layoutProperties = selectedOption.layout;
+    const legendProperties = selectedOption.legend;
+    if (paintProperties) {
+      Object.entries(paintProperties)?.forEach(([property, value]) => {
+        this._map.setPaintProperty(layerId, property, value);
+      });
+    }
+    if (layoutProperties) {
+      Object.entries(layoutProperties)?.forEach(([property, value]) => {
+        this._map.setLayoutProperty(layerId, property, value);
+      });
+    }
+    if (legendProperties) {
+      addLegendForLayer(this._widgetInstance, layerId, legendProperties || {});
+    }
   }
 }
 
