@@ -145,9 +145,8 @@ class PaintControl {
         selectedOption = firstOption;
       }
     }
-    Shiny.setInputValue(this._inputElId, inputValue, {
-      priority: 'event',
-    });
+
+    updateShiny(this._inputElId, inputValue);
 
     // Update the map layer's paint properties using the selected option
     const layerId = this._options.layerId;

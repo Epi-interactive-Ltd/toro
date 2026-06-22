@@ -495,12 +495,8 @@ HTMLWidgets.widget({
             });
           }
 
-          if (HTMLWidgets.shinyMode) {
-            // Trigger a input event to notify Shiny that the map is loaded
-            Shiny.setInputValue(el.id + '_loaded', Math.random(), {
-              priority: 'event',
-            });
-          }
+          // Trigger a input event to notify Shiny that the map is loaded
+          updateShiny(el.id + '_loaded', Math.random());
 
           // Add event handlers to close popups on various map interactions
           setupPopupCloseHandlers(mapInstance);

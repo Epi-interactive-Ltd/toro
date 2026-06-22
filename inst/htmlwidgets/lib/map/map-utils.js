@@ -23,6 +23,21 @@ function addImagesToMap(map, imageSources) {
 }
 
 /**
+ * Update a Shiny input only if in Shiny.
+ *
+ * @param {string} id ID of Shiny input to update.
+ * @param {any} value Value to update the Shiny input to.
+ * @return {void}
+ */
+function updateShiny(id, value) {
+  if (HTMLWidgets.shinyMode) {
+    Shiny.setInputValue(id, value, {
+      priority: 'event',
+    });
+  }
+}
+
+/**
  * Add an image (for pin icons) to the map source.
  *
  * @param {object} map A MapLibre map instance.
@@ -48,7 +63,7 @@ function getPointFeaturesBounds(features) {
   // Initialize bounds with the first point
   let bounds = new maplibregl.LngLatBounds(
     features[0].geometry.coordinates,
-    features[0].geometry.coordinates
+    features[0].geometry.coordinates,
   );
   for (let i = 1; i < features.length; i++) {
     bounds.extend(features[i].geometry.coordinates);
@@ -231,7 +246,7 @@ function getTileIds(tilesItem) {
 function setShinyClickedFeature(mapId, layerId, feature) {
   if (!mapId || !layerId || !feature) return;
   // Trigger a Shiny input event with the clicked feature's properties
-  Shiny.setInputValue(`${mapId}_feature_click`, {
+  updateShiny(`${mapId}_feature_click`, {
     layerId: layerId,
     properties: feature.properties,
     geometry: feature.geometry,

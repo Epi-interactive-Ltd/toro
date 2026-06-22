@@ -157,9 +157,7 @@ function addDrawControl(
     el.mapInstance.on('draw.create', function (e) {
       const feature = e.features[0]; // The drawn feature
       const geojson = JSON.stringify(feature);
-      Shiny.setInputValue(el.id + '_shape_created', geojson, {
-        priority: 'event',
-      });
+      updateShiny(el.id + '_shape_created', geojson);
       updateAllDrawnFeatures(el.widgetInstance);
       /**
        * Change mode to static after a short delay to avoid recursion.
@@ -177,13 +175,7 @@ function addDrawControl(
     el.mapInstance.on('draw.delete', function (e) {
       const deletedIds = (e.features || []).map((feature) => feature.id).filter(Boolean);
       if (deletedIds.length > 0) {
-        Shiny.setInputValue(
-          el.id + '_shape_deleted',
-          deletedIds.length === 1 ? deletedIds[0] : deletedIds,
-          {
-            priority: 'event',
-          },
-        );
+        updateShiny(el.id + '_shape_deleted', deletedIds.length === 1 ? deletedIds[0] : deletedIds);
       }
       updateAllDrawnFeatures(el.widgetInstance);
     });
@@ -196,9 +188,7 @@ function addDrawControl(
       if (pendingUpdatedFeatures.length > 0) {
         pendingUpdatedFeatures.forEach((feature) => {
           const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(el.id + '_shape_updated', geojson, {
-            priority: 'event',
-          });
+          updateShiny(el.id + '_shape_updated', geojson);
         });
         pendingUpdatedFeatures = []; // Clear pending updates
       }
@@ -1471,9 +1461,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
         map.on('draw.create', function (e) {
           const feature = e.features[0];
           const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + '_shape_created', geojson, {
-            priority: 'event',
-          });
+          updateShiny(mapElement.id + '_shape_created', geojson);
           updateAllDrawnFeatures(el.widgetInstance);
         });
 
@@ -1481,12 +1469,9 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
         map.on('draw.delete', function (e) {
           const deletedIds = (e.features || []).map((feature) => feature.id).filter(Boolean);
           if (deletedIds.length > 0) {
-            Shiny.setInputValue(
+            updateShiny(
               mapElement.id + '_shape_deleted',
               deletedIds.length === 1 ? deletedIds[0] : deletedIds,
-              {
-                priority: 'event',
-              },
             );
             updateAllDrawnFeatures(el.widgetInstance);
           }
@@ -1496,9 +1481,7 @@ function addDrawControlToPanel(el, panelId, options, sectionTitle) {
         map.on('draw.update', function (e) {
           const feature = e.features[0];
           const geojson = JSON.stringify(feature);
-          Shiny.setInputValue(mapElement.id + '_shape_updated', geojson, {
-            priority: 'event',
-          });
+          updateShiny(mapElement.id + '_shape_updated', geojson);
           updateAllDrawnFeatures(el.widgetInstance);
         });
       }
@@ -3209,19 +3192,11 @@ function addLayerSelectorControl(widgetInstance, onLayerChange, options = {}) {
     }
 
     // Trigger Shiny event if in Shiny mode
-    if (HTMLWidgets.shinyMode) {
-      Shiny.setInputValue(
-        el.id + '_layer_selected',
-        {
-          selected: selectedLayer,
-          previous: previousLayer,
-          timestamp: new Date().getTime(),
-        },
-        {
-          priority: 'event',
-        },
-      );
-    }
+    updateShiny(el.id + '_layer_selected', {
+      selected: selectedLayer,
+      previous: previousLayer,
+      timestamp: new Date().getTime(),
+    });
   };
 
   /**
@@ -3646,19 +3621,11 @@ function addAnimationControlButton(widgetInstance, options = {}) {
           }
 
           // Trigger Shiny event if in Shiny mode
-          if (HTMLWidgets.shinyMode) {
-            Shiny.setInputValue(
-              el.id + '_animation_control',
-              {
-                action: action,
-                routeId: targetRouteId,
-                timestamp: new Date().getTime(),
-              },
-              {
-                priority: 'event',
-              },
-            );
-          }
+          updateShiny(el.id + '_animation_control', {
+            action: action,
+            routeId: targetRouteId,
+            timestamp: new Date().getTime(),
+          });
         });
 
         button.addEventListener('mousedown', function (e) {
@@ -3768,20 +3735,13 @@ function setupAnimationSpeedControl(widgetInstance, routeId, speedValues, speedL
     }
 
     // Trigger Shiny event if in Shiny mode
-    if (HTMLWidgets.shinyMode) {
-      const el = widgetInstance.getElement();
-      Shiny.setInputValue(
-        el.id + '_animation_speed_changed',
-        {
-          speed: speed,
-          routeId: routeId,
-          timestamp: new Date().getTime(),
-        },
-        {
-          priority: 'event',
-        },
-      );
-    }
+
+    const el = widgetInstance.getElement();
+    updateShiny(el.id + '_animation_speed_changed', {
+      speed: speed,
+      routeId: routeId,
+      timestamp: new Date().getTime(),
+    });
   };
 
   // Set up options for the existing addSpeedControl function

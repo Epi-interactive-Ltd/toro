@@ -35,13 +35,13 @@ function updateShinyView(el, map) {
   var bounds = map.getBounds();
   var zoom = map.getZoom();
 
-  Shiny.setInputValue(el.id + '_bounds', {
+  updateShiny(el.id + '_bounds', {
     xmin: bounds.getWest(),
     ymin: bounds.getSouth(),
     xmax: bounds.getEast(),
     ymax: bounds.getNorth(),
   });
-  Shiny.setInputValue(el.id + '_zoom', zoom);
+  updateShiny(el.id + '_zoom', zoom);
 }
 
 /**
