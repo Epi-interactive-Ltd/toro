@@ -8,7 +8,7 @@ add_paint_control(
   map,
   id,
   layer_id,
-  paint_options,
+  options_list,
   label = NULL,
   default = NULL,
   position = "top-right",
@@ -22,7 +22,7 @@ add_paint_control(
 
 \item{layer_id}{The ID of the layer to control.}
 
-\item{paint_options}{A list of paint options to control
+\item{options_list}{A list of layer options to control
 (e.g., list(
 list(id = "default", label = "Default", paint = list('fill-color' = 'red')),
 list(id = "alternative", label = "Alternative", paint = list('fill-color' = 'blue'))
@@ -91,7 +91,7 @@ nz_points$group <- c("A", "B", "A", "C", "D")
 nz_points$colour <- c("red", "pink", "green", "orange", "blue")
 nz_points$bool <- c(FALSE, FALSE, FALSE, TRUE, TRUE)
 
-paint_options <- list(
+options_list <- list(
   list(
     id = "default",
     label = "Default",
@@ -178,7 +178,7 @@ server <- function(input, output, session) {
       add_paint_control(
         "my_paint_control",
         "circle_layer",
-        paint_options,
+        options_list,
         label = "Index",
         default = "steps"
       )
@@ -198,7 +198,7 @@ server <- function(input, output, session) {
       mapProxy("map"),
       "my_paint_control",
       "circle_layer",
-      paint_options,
+      options_list,
       default = "bool"
     )
   }) |>
