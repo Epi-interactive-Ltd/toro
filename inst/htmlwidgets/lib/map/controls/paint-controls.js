@@ -164,7 +164,18 @@ class PaintControl {
         this._map.setLayoutProperty(layerId, property, value);
       });
     }
-    if (legendProperties) {
+    if (legendProperties && legendProperties.html) {
+      const allLegendIds = this._options.optionsList?.map(
+        (item) => item.legend?.id || `${item.id}_legend`,
+      );
+      allLegendIds?.forEach((legendId) => removeControl(this._widgetInstance, legendId));
+      addCustomControl(
+        this._map,
+        legendProperties.id || `${selectedOption.id}_legend`,
+        legendProperties.html,
+        legendProperties.position,
+      );
+    } else if (legendProperties) {
       addLegendForLayer(this._widgetInstance, layerId, legendProperties || {});
     }
   }
