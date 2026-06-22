@@ -105,7 +105,5 @@ function updateAllDrawnFeatures(widgetInstance) {
 
   const allFeatures = drawObject.getAll();
   const allGeoJSON = JSON.stringify(allFeatures);
-  Shiny.setInputValue(mapId + '_all_drawn_shapes', allGeoJSON, {
-    priority: 'event',
-  });
+  updateShiny(mapId + '_all_drawn_shapes', allGeoJSON);
 }

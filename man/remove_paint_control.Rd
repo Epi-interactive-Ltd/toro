@@ -65,7 +65,7 @@ nz_points$group <- c("A", "B", "A", "C", "D")
 nz_points$colour <- c("red", "pink", "green", "orange", "blue")
 nz_points$bool <- c(FALSE, FALSE, FALSE, TRUE, TRUE)
 
-paint_options <- list(
+options_list <- list(
   list(
     id = "default",
     label = "Default",
@@ -152,7 +152,7 @@ server <- function(input, output, session) {
       add_paint_control(
         "my_paint_control",
         "circle_layer",
-        paint_options,
+        options_list,
         label = "Index",
         default = "steps"
       )
@@ -172,7 +172,7 @@ server <- function(input, output, session) {
       mapProxy("map"),
       "my_paint_control",
       "circle_layer",
-      paint_options,
+      options_list,
       default = "bool"
     )
   }) |>

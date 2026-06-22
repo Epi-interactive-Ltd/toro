@@ -136,6 +136,12 @@ HTMLWidgets.widget({
             x.layers.forEach((layer) => addLayerToMap(el, layer));
           }
 
+          if (x.layerLegends) {
+            x.layerLegends?.forEach((legend) => {
+              addLegendForLayer(el.widgetInstance, legend.layerId, legend.legendConfig);
+            });
+          }
+
           // Process timeline controls before routes so they are available for connection
           // Only process standalone controls here (panel_id-less); panel-based ones are
           // stored in controlPanels[panelId].options.panelControls and handled below.
@@ -178,10 +184,10 @@ HTMLWidgets.widget({
           // Panel-based paint controls are added after control panels are initialized.
           if (x.paintControls && Object.keys(x.paintControls).length > 0) {
             Object.keys(x.paintControls).forEach(function (controlId) {
-              const paintOptions = x.paintControls[controlId];
+              const optionsList = x.paintControls[controlId];
 
-              if (paintOptions.panelId) return;
-              addPaintControl(el, paintOptions);
+              if (optionsList.panelId) return;
+              addPaintControl(el, optionsList);
             });
           }
 
@@ -208,12 +214,6 @@ HTMLWidgets.widget({
 
           if (x.latLngGrid) {
             addLatLngGrid(el, x.latLngGrid.gridColour);
-          }
-
-          if (x.layerLegends) {
-            x.layerLegends?.forEach((legend) => {
-              addLegendForLayer(el.widgetInstance, legend.layerId, legend.legendConfig);
-            });
           }
 
           // Ensures that the controls are added in the desired order
@@ -378,10 +378,10 @@ HTMLWidgets.widget({
           // Process panel-based paint controls after control panels exist.
           if (x.paintControls && Object.keys(x.paintControls).length > 0) {
             Object.keys(x.paintControls).forEach(function (controlId) {
-              const paintOptions = x.paintControls[controlId];
+              const optionsList = x.paintControls[controlId];
 
-              if (!paintOptions.panelId) return;
-              addPaintControl(el, paintOptions);
+              if (!optionsList.panelId) return;
+              addPaintControl(el, optionsList);
             });
           }
 
@@ -495,12 +495,8 @@ HTMLWidgets.widget({
             });
           }
 
-          if (HTMLWidgets.shinyMode) {
-            // Trigger a input event to notify Shiny that the map is loaded
-            Shiny.setInputValue(el.id + '_loaded', Math.random(), {
-              priority: 'event',
-            });
-          }
+          // Trigger a input event to notify Shiny that the map is loaded
+          updateShiny(el.id + '_loaded', Math.random());
 
           // Add event handlers to close popups on various map interactions
           setupPopupCloseHandlers(mapInstance);
