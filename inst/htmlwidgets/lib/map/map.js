@@ -63,6 +63,7 @@ HTMLWidgets.widget({
 
         // Global cluster options to apply to all clusters unless overridden at the layer level
         el.clusterOptions = {
+          ...x.options.clusterOptions,
           circleOptions: getClusterCircleOptions(x.options.clusterColour, x.options.clusterOptions),
           textOptions: getClusterTextOptions(x.options.clusterOptions),
           spiderfyOptions: {
