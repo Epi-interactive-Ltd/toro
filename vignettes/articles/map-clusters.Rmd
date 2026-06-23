@@ -93,9 +93,13 @@ base_map  |>
 
 ## Cluster customisation
 
-You can customise the cluster appearance using `clusterOptions`.
-This can be set globally when creating the `map` or for specific layers when adding the layer.
+You can customise the cluster appearance using `clusterOptions` list passed either the the `map()`,
+or any of the add layer functions, there are several items that can be configured. These include:
 
+- [`circleOptions`](#cluster-circles)
+- [`textOptions`](#cluster-text)
+- [`spiderfyOptions`](#cluster-spiderfying)
+- [`zoomOnClick`](#cluster-zoom-on-click)
 
 
 ### Cluster circles
@@ -240,7 +244,7 @@ base_map |>
   )
 ```
 
-## Cluster spiderfying
+### Cluster spiderfying
 
 Spiderfying handles viewing multiple pins in a cluster (pins in close proximity).
 When the map is zoomed in to the max zoom level and cluster that still appear will spiderfy when clicked on.
@@ -386,3 +390,17 @@ map(
     can_cluster = FALSE
   )
 ```
+
+
+### Cluster zoom on click
+
+To control the behaviour that happens when a cluster is clicked, use the
+`clusterOptions.zoomOnClick` parameter.
+By default, a click on a cluster will zoom into the pins in that cluster until the maps max zoom is
+reached. After this point a click on a cluster will result in it spiderfying.
+To turn off the zooming on cluster click functionality, set the `clusterOptions.zoomOnClick` to
+`FALSE`.
+
+Setting `clusterOptions.zoomOnClick` to be `FALSE` in the `map()` function will determine the
+default across all layers on the map. Setting `clusterOptions.zoomOnClick` on individual layers
+will override this for that specific layer.
