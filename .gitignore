@@ -1,5 +1,6 @@
 *.toml
 inst/examples/app.R
+inst/examples/www
 
 renv
 .Rprofile
@@ -13,3 +14,5 @@ renv
 inst/doc
 /doc/
 /Meta/
+
+.Renviron

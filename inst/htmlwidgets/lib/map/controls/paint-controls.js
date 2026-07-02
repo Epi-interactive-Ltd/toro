@@ -1,6 +1,7 @@
 class PaintControl {
-  constructor(widgetInstance, options) {
-    this._widgetInstance = widgetInstance;
+  constructor(el, options) {
+    this._el = el;
+    this._widgetInstance = el.widgetInstance;
     this._options = options;
     this._inputElId = this._options.id;
 
@@ -135,6 +136,8 @@ class PaintControl {
   }
 
   _updateSelectedOption(inputValue) {
+    // If the target layer has a cluster open (spiderfying), close it first
+    closeSpiderfy(this._el);
     // Find the selected paint option based on the input value
     let selectedOption = this._options.optionsList.find(
       (option) => option.value === inputValue || option.id === inputValue,
@@ -182,14 +185,15 @@ class PaintControl {
 
 function addPaintControl(el, options) {
   // Enforce unique paint control IDs by replacing an existing control with the same ID.
-  removePaintControl(el.widgetInstance, options.id);
+  removePaintControl(el, options.id);
 
-  const control = new PaintControl(el.widgetInstance, options);
+  const control = new PaintControl(el, options);
 
   el.mapInstance.addControl(control, options.position);
 }
 
-function removePaintControl(widgetInstance, controlId) {
+function removePaintControl(el, controlId) {
+  const widgetInstance = el.widgetInstance;
   const map = widgetInstance.getMap();
 
   const trackedControls = widgetInstance.getControls() || [];
@@ -222,7 +226,7 @@ function addPaintControlListeners() {
 
   Shiny.addCustomMessageHandler('removePaintControl', function (message) {
     withMapInstance(message.id, function (el) {
-      removePaintControl(el.widgetInstance, message.controlId);
+      removePaintControl(el, message.controlId);
     });
   });
 }
