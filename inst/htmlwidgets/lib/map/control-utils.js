@@ -833,25 +833,34 @@ function addControlPanel(el, panelId, options = {}) {
   const title = options.title;
   const showTitle = title && options.showTitle !== false;
   const collapsible = options.collapsible || false;
-  const collapsed = options.collapsed || false;
   const direction = options.direction || 'column';
+  const {
+    collapsed = false,
+    collapseVertically = true,
+    openIcon = '\u25BC',
+    collapsedIcon = '\u25B2',
+  } = options.collapseConfig || {};
+
+  // Render a header whenever we need either the title or the collapse toggle.
+  const showHeader = showTitle || collapsible;
 
   // Generate collapse button if collapsible
   const collapseButton = collapsible
-    ? `<button class="panel-collapse-btn" id="${panelId}-collapse-btn">${
-        collapsed ? '▶' : '▼'
-      }</button>`
+    ? `<button class="panel-collapse-btn ${collapsed ? 'collapsed' : ''}" id="${panelId}-collapse-btn">
+    <span class="collapsed-icon">${collapsedIcon}</span>
+    <span class="open-icon">${openIcon}</span>
+    </button>`
     : '';
 
   // HTML for the control panel container
   const html = `
-    <div class="control-panel direction-${direction}" id="${panelId}-panel">
+    <div class="control-panel direction-${direction} collapse-direction-${collapseVertically ? 'vertical' : 'horizontal'}" id="${panelId}-panel">
       ${
-        showTitle
+        showHeader
           ? `
         <div class="panel-header">
           ${collapseButton}
-          <div class="panel-title">${title}</div>
+          ${showTitle ? `<div class="panel-title">${title}</div>` : ''}
         </div>
       `
           : ''
@@ -880,7 +889,11 @@ function addControlPanel(el, panelId, options = {}) {
 
           const isCollapsed = panelContent.style.display === 'none';
           panelContent.style.display = isCollapsed ? 'flex' : 'none';
-          collapseBtn.textContent = isCollapsed ? '▼' : '▶';
+          if (isCollapsed) {
+            collapseBtn.classList.remove('collapsed');
+          } else {
+            collapseBtn.classList.add('collapsed');
+          }
         });
       }
     }, 100);
@@ -1004,18 +1017,14 @@ function addControlPanel(el, panelId, options = {}) {
     },
     collapse: function () {
       const panelContent = el.querySelector(`#${panelId}-content`);
-      const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
       if (panelContent) {
         panelContent.style.display = 'none';
-        if (collapseBtn) collapseBtn.textContent = '▶';
       }
     },
     expand: function () {
       const panelContent = el.querySelector(`#${panelId}-content`);
-      const collapseBtn = el.querySelector(`#${panelId}-collapse-btn`);
       if (panelContent) {
         panelContent.style.display = 'flex';
-        if (collapseBtn) collapseBtn.textContent = '▼';
       }
     },
   };
@@ -2953,18 +2962,27 @@ function addControlGroup(el, panelId, groupConfig) {
   const groupId = groupConfig.groupId;
   const groupTitle = groupConfig.groupTitle || 'Control Group';
   const collapsible = groupConfig.collapsible !== false;
-  const collapsed = groupConfig.collapsed === true;
+  // const collapsed = groupConfig.collapsed === true;
+  const {
+    collapsed = false,
+    collapseVertically = true,
+    openIcon = '\u25BC',
+    collapsedIcon = '\u25B2',
+  } = groupConfig.collapseConfig || {};
 
   // Create the group HTML structure
   const groupHTML = `
-    <div class="control-group ${collapsed ? 'collapsed' : ''}" id="${groupId}">
+    <div class="control-group ${collapsed ? 'collapsed' : ''} collapse-direction-${collapseVertically ? 'vertical' : 'horizontal'}" id="${groupId}">
       <div class="control-group-header ${collapsible ? 'collapsible' : ''}" ${
         collapsible ? 'onclick="toggleControlGroup(\'' + groupId + '\')"' : ''
       }>
         <span class="control-group-title">${groupTitle}</span>
         ${
           collapsible
-            ? '<span class="control-group-toggle">' + (collapsed ? '▶' : '▼') + '</span>'
+            ? `<span class="control-group-toggle ${collapsed ? 'collapsed' : ''}">
+            <span class="collapsed-icon">${collapsedIcon}</span>
+            <span class="open-icon">${openIcon}</span>
+            </span>`
             : ''
         }
       </div>
@@ -3019,12 +3037,12 @@ function toggleControlGroup(groupId) {
     // Expand the group
     groupElement.classList.remove('collapsed');
     contentElement.classList.remove('hidden');
-    if (toggleElement) toggleElement.textContent = '▼';
+    toggleElement.classList.add('collapsed');
   } else {
     // Collapse the group
     groupElement.classList.add('collapsed');
     contentElement.classList.add('hidden');
-    if (toggleElement) toggleElement.textContent = '▶';
+    toggleElement.classList.remove('collapsed');
   }
 }
 

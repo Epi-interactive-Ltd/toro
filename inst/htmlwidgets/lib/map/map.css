@@ -539,9 +539,9 @@ input {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  min-width: 200px;
   max-width: 100%;
   pointer-events: auto !important;
+  overflow: hidden;
 }
 
 .control-panel .panel-header {
@@ -559,7 +559,6 @@ input {
   font-size: 12px;
   cursor: pointer;
   padding: 2px 6px;
-  margin-right: 8px;
   border-radius: 3px;
   transition: background-color 0.2s;
 }
@@ -568,11 +567,17 @@ input {
   background: rgba(0, 0, 0, 0.1);
 }
 
+.panel-collapse-btn:not(.collapsed) .collapsed-icon,
+.panel-collapse-btn.collapsed .open-icon {
+  display: none;
+}
+
 .control-panel .panel-title {
   font-weight: 600;
   font-size: 14px;
   color: #333;
   flex: 1;
+  margin-left: 8px;
 }
 
 .control-panel .panel-content {
