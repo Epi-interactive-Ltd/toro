@@ -10,7 +10,7 @@ add_control_group(
   group_id,
   group_title = NULL,
   collapsible = FALSE,
-  collapsed = FALSE
+  collapse_config = list()
 )
 }
 \arguments{
@@ -24,7 +24,16 @@ add_control_group(
 
 \item{collapsible}{Whether the group can be collapsed. Default is FALSE.}
 
-\item{collapsed}{Initial collapsed state. Default is FALSE.}
+\item{collapse_config}{List of configuration options for the collapsible behavior.
+\itemize{
+\item \code{collapsed}: Initial collapsed state. Default is FALSE.
+\item \code{collapseVertically}: Whether the panel collapses vertically (TRUE) or
+horizontally (FALSE). Default is TRUE.
+\item \code{openIcon}: HTML string for the icon when the panel is open. Default is a simple
+arrow.
+\item \code{collapsedIcon}: HTML string for the icon when the panel is collapsed. Default is
+a simple arrow.
+}}
 }
 \value{
 The map or map proxy object for chaining.
@@ -54,7 +63,7 @@ map() |>
     title = "Map Settings",
     position = "top-right",
     collapsible = TRUE,
-    collapsed = TRUE,
+    collapse_config = list(collapsed = TRUE),
     direction = "row"
   ) |>
   add_cursor_coords_control(
