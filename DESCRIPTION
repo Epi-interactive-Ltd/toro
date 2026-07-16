@@ -35,7 +35,6 @@ Suggests:
     knitr,
     usethis,
     rmarkdown,
-    lintr,
     devtools,
     dplyr,
     webshot2,
