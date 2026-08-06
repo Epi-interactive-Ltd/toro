@@ -95,7 +95,7 @@ HTMLWidgets.widget({
 
           if (x.sources) {
             x.sources.forEach((source) =>
-              addDataSourceToMap(mapInstance, source.sourceId, source.sourceOptions),
+              addDataSourceToMap(mapInstance, source.sourceId, source.sourceOptions)
             );
           }
 
@@ -109,25 +109,25 @@ HTMLWidgets.widget({
           _addImageToMapSource(
             mapInstance,
             'toro-pin',
-            'https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png',
+            'https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'
           );
 
           if (x.imageSources) {
             x.imageSources.forEach((imageSource) =>
-              _addImageToMapSource(mapInstance, imageSource.imageId, imageSource.imageUrl),
+              _addImageToMapSource(mapInstance, imageSource.imageId, imageSource.imageUrl)
             );
           }
 
           initiateTiles(el, x);
           if (x.mapServerTiles) {
             x.mapServerTiles.forEach((layer) =>
-              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl),
+              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl)
             );
           }
 
           if (x.imageLayerTiles) {
             x.imageLayerTiles.forEach((layer) =>
-              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl, true),
+              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl, true)
             );
           }
 
@@ -161,7 +161,7 @@ HTMLWidgets.widget({
                 timelineOptions.endDate,
                 null, // No play/pause callback - will be disabled
                 null, // No slider callback - will be disabled
-                timelineOptions,
+                timelineOptions
               );
             });
           }
@@ -176,7 +176,7 @@ HTMLWidgets.widget({
               addSpeedControl(
                 el.widgetInstance,
                 null, // No speed change callback - will be disabled
-                speedOptions,
+                speedOptions
               );
             });
           }
@@ -205,7 +205,7 @@ HTMLWidgets.widget({
               mapInstance,
               x.setBounds.bounds,
               x.setBounds.padding,
-              x.setBounds?.options || {},
+              x.setBounds?.options || {}
             );
           }
 
@@ -219,6 +219,7 @@ HTMLWidgets.widget({
 
           // Ensures that the controls are added in the desired order
           if (x.controls) {
+            console.log('cc', x.controls);
             x.controls.forEach((control) => {
               if (control.type === 'cursor') {
                 if (control.panelId) {
@@ -230,7 +231,7 @@ HTMLWidgets.widget({
                   control.position,
                   control.longLabel,
                   control.latLabel,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
               } else if (control.type === 'zoom') {
                 if (control.panelId) {
@@ -241,8 +242,14 @@ HTMLWidgets.widget({
                   mapInstance,
                   control.position,
                   control.controlOptions,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
+              } else if (control.type === 'scale') {
+                if (control.panelId) {
+                  // Will be added to panel later during panel processing
+                  return;
+                }
+                addScaleControl(el, control);
               } else if (control.type === 'custom') {
                 if (control.panelId) {
                   // Will be added to panel later during panel processing
@@ -262,7 +269,7 @@ HTMLWidgets.widget({
                   control.inactiveColour,
                   control.modeLabels,
                   control.controlId,
-                  control.features || null,
+                  control.features || null
                 );
               } else if (control.type === 'animation') {
                 addAnimationControlButton(el.widgetInstance, control);
@@ -320,7 +327,7 @@ HTMLWidgets.widget({
                             route.map,
                             route.routePointLayerId,
                             coordinates,
-                            properties,
+                            properties
                           );
                           if (route.dropVisited) {
                             updateVisitedPoints(route, targetStep);
@@ -335,7 +342,7 @@ HTMLWidgets.widget({
                       control.options.endDate,
                       playPauseCallback,
                       sliderCallback,
-                      control.options,
+                      control.options
                     );
                   } else if (control.type === 'speed') {
                     // By this point routes are registered — connect a real speed callback
@@ -449,7 +456,7 @@ HTMLWidgets.widget({
                   el.widgetInstance,
                   toggleOptions.panelId,
                   toggleOptions,
-                  toggleOptions.panelTitle,
+                  toggleOptions.panelTitle
                 );
               } else {
                 // Add as standalone control
@@ -461,7 +468,7 @@ HTMLWidgets.widget({
                   toggleOptions.rightLabel,
                   toggleOptions.initialState,
                   toggleOptions.position,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
               }
             });
@@ -478,7 +485,7 @@ HTMLWidgets.widget({
                   el.widgetInstance,
                   toggleOptions.panelId,
                   toggleOptions,
-                  toggleOptions.panelTitle,
+                  toggleOptions.panelTitle
                 );
               } else {
                 // Add as standalone control
@@ -490,7 +497,7 @@ HTMLWidgets.widget({
                   toggleOptions.rightLabel,
                   toggleOptions.initialState,
                   toggleOptions.position,
-                  el.widgetInstance,
+                  el.widgetInstance
                 );
               }
             });
@@ -507,7 +514,7 @@ HTMLWidgets.widget({
               compact: true,
               collapsible: true,
             }),
-            x.options.attributionPosition || 'bottom-right',
+            x.options.attributionPosition || 'bottom-right'
           );
 
           closeAttribution(el.id, el.widgetInstance); // By default, close the attribution panel
@@ -522,7 +529,7 @@ HTMLWidgets.widget({
             el,
             false,
             x.options.initialLoaderBgColour,
-            toRgbValues(x.options.initialLoaderColour),
+            toRgbValues(x.options.initialLoaderColour)
           );
         }
 
@@ -569,7 +576,7 @@ HTMLWidgets.widget({
               el,
               (changeLoader = true),
               x.options.busyLoaderBgColour,
-              x.options.busyLoaderColour,
+              x.options.busyLoaderColour
             );
           }
           /**
@@ -770,7 +777,7 @@ HTMLWidgets.widget({
 
           // If no other tile is visible, check if satellite is the only one visible
           const satelliteLayer = layers.find(
-            (layer) => layer.id === 'satellite' && layer.type === 'raster',
+            (layer) => layer.id === 'satellite' && layer.type === 'raster'
           );
           if (satelliteLayer) {
             return 'satellite';
@@ -846,7 +853,7 @@ if (HTMLWidgets.shinyMode) {
           control.position,
           control.longLabel,
           control.latLabel,
-          el.widgetInstance,
+          el.widgetInstance
         );
       }
     });
@@ -902,7 +909,7 @@ if (HTMLWidgets.shinyMode) {
           options.inactiveColour,
           options.modeLabels,
           options.controlId,
-          options.features || null,
+          options.features || null
         );
       }
     });
@@ -968,7 +975,7 @@ if (HTMLWidgets.shinyMode) {
           el.widgetInstance,
           options.panelId,
           options,
-          options.panelTitle,
+          options.panelTitle
         );
       } else {
         // Add as standalone control
@@ -980,7 +987,7 @@ if (HTMLWidgets.shinyMode) {
           options.rightLabel,
           options.initialState,
           options.position,
-          el.widgetInstance,
+          el.widgetInstance
         );
       }
     });
@@ -995,7 +1002,7 @@ if (HTMLWidgets.shinyMode) {
           el.widgetInstance,
           options.panelId,
           options,
-          options.panelTitle,
+          options.panelTitle
         );
       } else {
         // Add as standalone control
@@ -1007,7 +1014,7 @@ if (HTMLWidgets.shinyMode) {
           options.rightLabel,
           options.initialState,
           options.position,
-          el.widgetInstance,
+          el.widgetInstance
         );
       }
     });
@@ -1037,7 +1044,7 @@ if (HTMLWidgets.shinyMode) {
         el.mapInstance,
         message.options.bounds,
         message.options.padding,
-        message.options?.options || {},
+        message.options?.options || {}
       );
     });
   });
@@ -1210,7 +1217,7 @@ if (HTMLWidgets.shinyMode) {
         message.options.endDate,
         null, // No play/pause callback - will be disabled
         null, // No slider callback - will be disabled
-        message.options,
+        message.options
       );
     });
   });
@@ -1222,7 +1229,7 @@ if (HTMLWidgets.shinyMode) {
       addSpeedControl(
         el.widgetInstance,
         null, // No speed change callback - will be disabled
-        message.options,
+        message.options
       );
     });
   });
