@@ -16,7 +16,10 @@ check_chrome_available <- function() {
     "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser", # macOS Brave
     "/usr/bin/google-chrome", # Linux
     "/usr/bin/chromium-browser", # Linux
-    "/usr/bin/brave-browser" # Linux Brave
+    "/usr/bin/brave-browser", # Linux Brave
+    "C:/Program Files/Google/Chrome/Application/chrome.exe", # Windows
+    "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", # Windows 32-bit
+    "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" # Windows Brave
   )
 
   # Check if any of the common paths exist
