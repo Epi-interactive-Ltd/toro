@@ -3,13 +3,14 @@ Package: toro
 Title: Interactive & Customisable Maps using the 'MapLibre GL JS' Library
 Version: 0.1.1.9005
 Authors@R: c(
-    person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut", "cre")),
+    person("Epi, NZ", role = c("aut", "cre"), email = "office@epi.group", comment = "The package was designed and developed by Epi (<https://www.epi.group/>)"),
+    person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut")),
     person(given = "Jocelyn", family = "Qian", email = "jocelyn@epi.group", role = c("ctb")),
     person(given = "Nick", family = "Snellgrove", email = "nick@epi.group", role = c("ctb")),
+    person(given = "Kiel", family = "Hards", email = "kiel@epi.group", role = c("ctb")),
     person("MapLibre contributors", role = "cph", comment = "MapLibre GL JS library"),
     person("Turf contributors", role = "cph", comment = "turf plugin"),
-    person("Mapbox contributors", role = "cph", comment = "mapbox-gl-draw plugin"),
-    person("epi", role = c("cph", "fnd")))
+    person("Mapbox contributors", role = "cph", comment = "mapbox-gl-draw plugin"))
 Description: Create interactive maps that can keep up with complex visualisations and large datasets,
     with this useful interface to the 'MapLibre GL JS' (<https://maplibre.org/maplibre-gl-js/docs/>)
     library. Users can create maps directly in the console, or as an HTML widget within 'Shiny' web
