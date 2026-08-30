@@ -3,47 +3,61 @@ Package: toro
 Title: Interactive & Customisable Maps using the 'MapLibre GL JS' Library
 Version: 0.1.1.9005
 Authors@R: c(
-    person("Epi, NZ", role = c("aut", "cre"), email = "office@epi.group", comment = "The package was designed and developed by Epi (<https://www.epi.group/>)"),
-    person(given = "Poppy", family = "Pakinui", email = "poppy@epi.group", role = c("aut")),
-    person(given = "Jocelyn", family = "Qian", email = "jocelyn@epi.group", role = c("ctb")),
-    person(given = "Nick", family = "Snellgrove", email = "nick@epi.group", role = c("ctb")),
-    person(given = "Kiel", family = "Hards", email = "kiel@epi.group", role = c("ctb")),
-    person("MapLibre contributors", role = "cph", comment = "MapLibre GL JS library"),
-    person("Turf contributors", role = "cph", comment = "turf plugin"),
-    person("Mapbox contributors", role = "cph", comment = "mapbox-gl-draw plugin"))
-Description: Create interactive maps that can keep up with complex visualisations and large datasets,
-    with this useful interface to the 'MapLibre GL JS' (<https://maplibre.org/maplibre-gl-js/docs/>)
-    library. Users can create maps directly in the console, or as an HTML widget within 'Shiny' web
-    applications, and render spatial data quickly with many customisable options (clusters, custom
-    icons, map layers, and backgrounds). The goal of the package is to make it easier to interpret
-    and explore large spatial datasets within the context of a 'Shiny' dashboard, without having long
-    loading times waiting for a map to update with new data.
-URL: https://epi-interactive-ltd.github.io/toro/, https://github.com/Epi-interactive-Ltd/toro/
-BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
+    person("Epi, NZ", , , "office@epi.group", role = c("aut", "cre"),
+           comment = "The package was designed and developed by Epi (<https://www.epi.group/>)"),
+    person("Poppy", "Pakinui", , "poppy@epi.group", role = "aut"),
+    person("Jocelyn", "Qian", , "jocelyn@epi.group", role = "ctb"),
+    person("Nick", "Snellgrove", , "nick@epi.group", role = "ctb"),
+    person("Kiel", "Hards", , "kiel@epi.group", role = "ctb"),
+    person("MapLibre contributors", role = "cph",
+           comment = "MapLibre GL JS library"),
+    person("Turf contributors", role = "cph",
+           comment = "turf plugin"),
+    person("Mapbox contributors", role = "cph",
+           comment = "mapbox-gl-draw plugin")
+  )
+Description: Interactive spatial visualisations are a cornerstone for
+    understanding and communicating complexity in almost all technical and
+    scientific disciplines, as well as being commonly embedded in reports
+    or interactive dashboards. As the amount of data grows, so does the
+    pressure to create timely operational intelligence. Modern
+    high-performance approaches are needed to keep up with this growing
+    demand. MapLibre GL JS is an open-source JavaScript/TypeScript library
+    for rendering interactive maps in the browser, built from the ground
+    up for responsiveness and scale. Toro provides R bindings to MapLibre
+    GL JS, allowing users to create interactive maps that can easily be
+    integrated into both Quarto and the R Shiny dashboard framework. Toro
+    enables spatial visualisation and exploration of data that might
+    otherwise be too limited, too slow, or too hard to scale using
+    traditional tools.
 License: AGPL (>= 3)
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
+URL: https://epi-interactive-ltd.github.io/toro/,
+    https://github.com/Epi-interactive-Ltd/toro/
+BugReports: https://github.com/Epi-interactive-Ltd/toro/issues
 Depends:
     R (>= 4.5.0)
 Imports:
-    htmlwidgets,
-    shiny,
-    jsonlite,
-    geojsonsf,
     base64enc,
-    sf
+    geojsonsf,
+    htmlwidgets,
+    jsonlite,
+    sf,
+    shiny
 Suggests: 
-    knitr,
-    usethis,
-    rmarkdown,
+    devtools,
     devtools,
     dplyr,
-    webshot2,
+    knitr,
     mapview,
-    webshot,
-    devtools,
+    rmarkdown,
     spData,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    usethis,
+    webshot,
+    webshot2
 Config/Needs/website: rmarkdown
-Config/testthat/edition: 3
 Config/roxygen2/version: 8.1.0
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
