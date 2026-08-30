@@ -10,13 +10,13 @@
 
 Interactive spatial visualisations are a cornerstone for understanding and communicating complexity in almost all technical and scientific disciplines, as well as being commonly embedded in reports or interactive dashboards. As the amount of data grows, so does the pressure to create timely operational intelligence. Modern high-performance approaches are needed to keep up with this growing demand. MapLibre GL JS is an open-source JavaScript/TypeScript library for rendering interactive maps in the browser, built from the ground up for responsiveness and scale. 
 
-toro provides R bindings to MapLibre GL JS, allowing users to create interactive maps that can easily be integrated into both Quarto and the R Shiny dashboard framework. toro enables spatial visualisation and exploration of data that might otherwise be too limited, too slow, or too hard to scale using traditional tools. toro was created by Epi (link to Epi website).
+_toro_ provides R bindings to MapLibre GL JS, allowing users to create interactive maps that can easily be integrated into both Quarto and the R Shiny dashboard framework. _toro_ enables spatial visualisation and exploration of data that might otherwise be too limited, too slow, or too hard to scale using traditional tools. _toro_ was created by Epi (link to Epi website).
 
 If you have any comments, questions, or suggestions, please contact us (links to email).
 
 ## Why might you want to use _toro_
 
-As a general purpose library with a focus on interactivity and performance, toro maps are ideal for complex data that may be used in web apps, teaching, interactive reports and presentations. Use cases for toro include, but are not limited to:
+As a general purpose library with a focus on interactivity and performance, _toro_ maps are ideal for complex data that may be used in web apps, teaching, interactive reports and presentations. Use cases for _toro_ include, but are not limited to:
 
 - **eDNA and biodiversity monitoring:** map sampling sites, species detections, read counts, and habitat layers to spot spatial biodiversity patterns and guide future field sampling. 
 - **Ecology and conservation:** visualise telemetry tracks, protected-area boundaries, invasive species records, or restoration sites with interactive layers and clustering. 
@@ -89,7 +89,7 @@ map(
 
 ![alt text](man/figures/streets_map_with_point.png)
 
-As a `htmlwidget`, all toro maps are supported in any supporting framework, including Shiny, Quarto and more. Maps can further be exported to standalone html files (for further interactive use), or static images can be saved:
+As a `htmlwidget`, all _toro_ maps are supported in any supporting framework, including Shiny, Quarto and more. Maps can further be exported to standalone html files (for further interactive use), or static images can be saved:
 
 ```r
 map(
