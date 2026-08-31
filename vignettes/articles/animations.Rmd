@@ -132,5 +132,42 @@ map() |>
   add_animation_controls(route_id = "nz_route")
 ```
 
+### Timeline controls
 
+Animated routes can be shown from a timeline perspective, where the animation is controlled by a timeline slider. This is useful for visualizing data that has a temporal component, such as the movement of a vessel over time. A dataframe with multiple points and a `date` column is required for this type of animation. Each point is plotted in the route and the animation is controlled by the timeline slider, which allows the user to select a date range to view the points that fall within that range. The timeline slider can be added to the map using the `add_timeline_control()` function.
 
+```{r}
+# A trip across a few New Zealand cities, one point per date.
+# The `date` column is what the timeline reads for its start/end range.
+trip <- sf::st_sf(
+  city = c("Auckland", "Taupo", "Wellington", "Christchurch", "Queenstown"),
+  date = as.Date(c(
+    "2024-01-01",
+    "2024-01-08",
+    "2024-01-15",
+    "2024-01-22",
+    "2024-01-29"
+  )),
+  geometry = sf::st_sfc(
+    sf::st_point(c(174.7633, -36.8485)), # Auckland
+    sf::st_point(c(176.0702, -38.6857)), # Taupo
+    sf::st_point(c(174.7762, -41.2865)), # Wellington
+    sf::st_point(c(172.6362, -43.5321)), # Christchurch
+    sf::st_point(c(168.6626, -45.0312)), # Queenstown
+    crs = 4326
+  )
+)
+
+map() |>
+  add_route(
+    route_id = "nz_trip",
+    points = trip,
+    # This flag is what actually turns the timeline on:
+    settings = list(showTimelineControls = TRUE)
+  ) |>
+  add_timeline_control(
+    position = "bottom-left",
+    start_date = min(trip$date),
+    end_date = max(trip$date)
+  )
+```
