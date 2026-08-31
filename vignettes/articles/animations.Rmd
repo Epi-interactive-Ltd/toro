@@ -10,11 +10,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-toro provides the ability to animate certain aspects of the map.
+toro provides the ability to animate certain aspects of the map, allowing you to visualize data in both space and time.
 
 ## Setup
 
-For the following examples we'll use a line representing a route around Aotearoa.
+For the following examples we'll use a line representing a route around Aotearoa, which could represent the path of a vessel taking samples around the country. We'll animate a point along this route to visualize the path of the vessel over time.
 
 ```{r setup}
 library(sf)
@@ -90,12 +90,12 @@ map() |>
   add_route(
     route_id = "nz_route",
     points = nz_line,
-    settings = c(list(
+    settings = list(
       animatingIcon = get_layout_options(
         "symbol",
         list(icon_image = "toro-pin", icon_size = 0.5)
       )
-    ))
+    )
   ) |>
   add_animation_controls(route_id = "nz_route")
 ```
@@ -112,7 +112,7 @@ map() |>
   add_route(
     route_id = "nz_route",
     points = nz_line,
-    settings = c(list(
+    settings = list(
       dropVisited = TRUE,
       routeLine = list(
         "line-color" = "#11a366",
@@ -127,7 +127,7 @@ map() |>
         "circle-color" = "#dbe811",
         "circle-radius" = 8
       )
-    ))
+    )
   ) |>
   add_animation_controls(route_id = "nz_route")
 ```
