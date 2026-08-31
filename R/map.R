@@ -2,7 +2,12 @@
 #'
 #' This function creates a map htmlwidget for use in R and Shiny applications.
 #'
-#' @param style The style of the map. Default is "lightgrey".
+#' @param style The style of the map. This can be either a preset name
+#'  (one of "lightgrey", "natgeo", "satellite", "topo", "terrain", "streets", "shaded")
+#'  or a URL to a MapLibre Style JSON endpoint (e.g.,
+#'  \code{"https://demotiles.maplibre.org/style.json"}). When a URL is provided,
+#'  the built-in raster tile layers are skipped and the external style is used directly.
+#'  Default is "lightgrey".
 #' @param center The initial center of the map as a longitude/latitude pair.
 #'  Default is c(174, -41).
 #' @param zoom The initial zoom level of the map. Default is 2.
@@ -48,6 +53,9 @@
 #'
 #' # Load two tilesets for the map to use and add maxzoom to satellite layer
 #' map(loadedTiles = list(natgeo = list(), satellite = list(maxZoom = 2)))
+#'
+#' # Use an external MapLibre vector tile style
+#' map(style = "https://demotiles.maplibre.org/style.json")
 map <- function(
   style = "lightgrey",
   center = c(174, -41),
@@ -101,14 +109,20 @@ map <- function(
     map_options$imageSources <- processed_image_sources
   }
 
-  # If the style is not in loadedTiles, add it
-  if (is.list(map_options$loadedTiles)) {
-    if (!style %in% names(map_options$loadedTiles)) {
-      map_options$loadedTiles[[style]] <- list()
-    }
-  } else {
-    if (!style %in% map_options$loadedTiles) {
-      map_options$loadedTiles <- c(map_options$loadedTiles, style)
+  # Detect whether style is a URL (MapLibre style JSON endpoint) or a preset name
+
+  style_is_url <- grepl("^https?://", style) || grepl("\\.json$", style)
+
+  # If the style is a preset name (not a URL), ensure it's in loadedTiles
+  if (!style_is_url) {
+    if (is.list(map_options$loadedTiles)) {
+      if (!style %in% names(map_options$loadedTiles)) {
+        map_options$loadedTiles[[style]] <- list()
+      }
+    } else {
+      if (!style %in% map_options$loadedTiles) {
+        map_options$loadedTiles <- c(map_options$loadedTiles, style)
+      }
     }
   }
 
@@ -116,6 +130,7 @@ map <- function(
     name = "map",
     x = list(
       style = style,
+      styleIsUrl = style_is_url,
       center = center,
       zoom = zoom,
       options = map_options,

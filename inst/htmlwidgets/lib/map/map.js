@@ -26,15 +26,21 @@ HTMLWidgets.widget({
         // Clear the container
         el.innerHTML = '';
 
+        // Determine the map style: use the URL directly for external styles,
+        // otherwise use an empty style that we populate with raster tile layers.
+        const mapStyle = x.styleIsUrl
+          ? x.style
+          : {
+              version: 8,
+              glyphs: 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf',
+              sources: {},
+              layers: [],
+            };
+
         // Create the map
         mapInstance = new maplibregl.Map({
           container: el.id,
-          style: {
-            version: 8,
-            glyphs: 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf',
-            sources: {},
-            layers: [],
-          },
+          style: mapStyle,
           center: x.center,
           zoom: x.zoom,
           attributionControl: false,
@@ -118,17 +124,20 @@ HTMLWidgets.widget({
             );
           }
 
-          initiateTiles(el, x);
-          if (x.mapServerTiles) {
-            x.mapServerTiles.forEach((layer) =>
-              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl)
-            );
-          }
+          // Only load preset raster tile layers when not using a URL style
+          if (!x.styleIsUrl) {
+            initiateTiles(el, x);
+            if (x.mapServerTiles) {
+              x.mapServerTiles.forEach((layer) =>
+                addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl)
+              );
+            }
 
-          if (x.imageLayerTiles) {
-            x.imageLayerTiles.forEach((layer) =>
-              addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl, true)
-            );
+            if (x.imageLayerTiles) {
+              x.imageLayerTiles.forEach((layer) =>
+                addTilesFromMapServer(el.widgetInstance, layer.tileId, layer.mapServiceUrl, true)
+              );
+            }
           }
 
           addSpiderfyingLayers(el);
