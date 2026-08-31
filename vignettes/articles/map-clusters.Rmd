@@ -48,7 +48,7 @@ base_map <- map(
 
 > **Note:** Clusters currently only work with symbol(icon/pin) layers.
 
-Clusters are disabled by default, but symbols with the same coordinates will **always** produce a cluster (even if `can_cluster` is set to false).
+Clusters are disabled by default, but symbols with the same coordinates will **always** produce a cluster (even if `can_cluster` is set to false). This is an intentional choice as it is the only way for the user to know that there are multiple pins at the same coordinates. Without this, all pins would be stacked on top of each other and appear as a single pin. If you want to avoid this behaviour, we recommend either adding a small amount of random noise to the coordinates or aggregating the data so that there is only ever one pin per coordinate.
 
 Clicking on a cluster will do one of two things:
 
@@ -73,6 +73,8 @@ base_map  |>
 ```
 
 ## Enabling clusters
+
+The `can_cluster` parameter is used to enable clustering for a symbol layer. When set to `TRUE` the layer will cluster symbols that are in close proximity to each other.
 
 ```{r default-clusters-map, results='asis'}
 base_map  |>
@@ -246,9 +248,7 @@ base_map |>
 
 ### Cluster spiderfying
 
-Spiderfying handles viewing multiple pins in a cluster (pins in close proximity).
-When the map is zoomed in to the max zoom level and cluster that still appear will spiderfy when clicked on.
-This is so that the user is able to view all pins even if they appear in the same cluster.
+Spiderfying handles viewing multiple pins in a cluster (pins in close proximity). When the map is zoomed in to the max zoom level and cluster that still appear will spiderfy when clicked on. This is so that the user is able to view all pins even if they appear in the same cluster.
 
 There are two reasons why a cluster would need to spiderfy:
 
