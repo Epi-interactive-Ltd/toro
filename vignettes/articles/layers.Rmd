@@ -13,10 +13,397 @@ library(toro)
 
 There are several types of layers in toro:
 
-- Line
-- Fill
 - Circle
 - Symbol
+- Line
+- Fill
 - Text
 
-For more in depth examples see the [layers portion of the Examples section](https://epi-interactive-ltd.github.io/toro/articles/examples/index.html#layers).
+## Data set up
+
+First, let's set up the data we will plot. We will plot the cycle hire stations and boroughs in London. The data is available in the `spData` package.
+
+```{r base-map}
+library(toro)
+library(sf)
+library(dplyr)
+library(spData)
+
+cycle_hire <- spData::cycle_hire
+
+# We will count the number of cycle hires in boroughs via a spatial join
+borough_counts <- cycle_hire |>
+  dplyr::select(id) |>
+  sf::st_join(spData::lnd, join = sf::st_within) |>
+  dplyr::group_by(NAME) |>
+  dplyr::summarise(cycle_hires = dplyr::n(), .groups = "drop") |>
+  sf::st_drop_geometry() |>
+  dplyr::select(cycle_hires, NAME)
+
+boroughs <- spData::lnd |>
+  dplyr::left_join(
+    borough_counts,
+    by = c("NAME")
+  ) |>
+  dplyr::mutate(
+    cycle_hires = dplyr::if_else(is.na(cycle_hires), 0L, cycle_hires)
+  )
+```
+
+## Adding fill layers
+
+Let's start off by working with the borough data, which we have created with a count of cycle hire stations in each borough. We can use the `add_fill_layer()` function to add a fill layer to the map. The `add_fill_layer()` function takes an `id` and a `source` argument, which is the data we want to plot. We can also specify a `hover_column` argument, which will display the value of the specified column when the user hovers over a feature on the map.
+
+Note how we center the map on London using the `center` argument in the `map()` function.
+
+We can additionally set the bounds of the map to the data we are plotting using the `set_bounds()` function. This will ensure that the map is zoomed to the extent of the data.
+
+```{r basic-fill, results='asis'}
+map(
+  center = c(-0.1, 51.5),
+) |>
+  set_bounds(boroughs, padding = 50) |>
+  add_fill_layer(
+    id = "boroughs",
+    source = boroughs
+  )
+```
+
+To further customize the fill layer, we can use the `paint` argument. This allows us to specify how the polygons are styled.
+
+Let's use the `paint` argument to style the polygons based on the number of cycle hire stations. We can use the `get_paint_options()` function to specify the paint options for the fill layer. In this example, we will use the `get_column_steps()` function to specify that the fill colour of the polygons should change based on the number of cycle hire stations.
+
+```{r}
+map(
+  center = c(-0.1, 51.5),
+) |>
+  set_bounds(boroughs, padding = 50) |>
+  add_fill_layer(
+    id = "boroughs",
+    source = boroughs,
+    paint = get_paint_options(
+      "fill",
+      options = list(
+        colour = get_column_steps(
+          "cycle_hires",
+          breaks = pretty(boroughs$cycle_hires, n = 5),
+          values = rev(viridis::magma(6))
+        ),
+        opacity = 0.3
+      )
+    )
+  )
+```
+
+
+Initial interactivity can be added to the map by specifying a `hover_column` argument. This will display the value of the specified column when the user hovers over a feature on the map. We can also specify a `popup_column` argument, which will display the value of the specified column when the user clicks on a feature on the map. Note how HTML can be used to format the text.
+
+The `get_column_steps()` function takes the column name from the source data, a vector of break points, and a vector of values to assign to each break point.
+
+```{r}
+boroughs <- boroughs |>
+  dplyr::mutate(
+    popup = paste0(
+      "<b>",
+      NAME,
+      "</b>: ",
+      cycle_hires,
+      " cycle hire stations"
+    )
+  )
+
+
+map <- map(
+  center = c(-0.1, 51.5),
+) |>
+  set_bounds(boroughs, padding = 50) |>
+  add_fill_layer(
+    id = "boroughs",
+    source = boroughs,
+    hover_column = "NAME",
+    popup_column = "popup",
+    paint = get_paint_options(
+      "fill",
+      options = list(
+        colour = get_column_steps(
+          "cycle_hires",
+          breaks = c(0, 1, 10, 100, 1000),
+          values = rev(viridis::magma(6)) # Values should be breaks + 1
+        ),
+        opacity = 0.3
+      )
+    )
+  )
+
+map
+```
+
+
+As can be seen, the cycle hire stations are focused on the center of London.
+
+
+## Adding circle layers
+
+### Basic example
+
+We can add a simple circle layer to the map to visualize the individual cycle hire stations. The syntax is similar to the previous functions. 
+
+```{r basic-circle, results='asis'}
+cycle_hire <- cycle_hire |>
+  dplyr::mutate(
+    hover = paste0(
+      "<b>",
+      name,
+      "</b>:",
+      " ",
+      nbikes,
+      " bikes available",
+      ", ",
+      nempty,
+      " empty docks"
+    )
+  )
+
+map |>
+  set_bounds(cycle_hire, padding = 50) |>
+  add_circle_layer(
+    id = "cycle_hire",
+    source = cycle_hire,
+    hover_column = "hover",
+    paint = get_paint_options(
+      "circle",
+      options = list(
+        colour = get_column_steps(
+          "nbikes",
+          breaks = cycle_hire$nbikes |> quantile(),
+          values = viridis::viridis(6) # Values should be breaks + 1
+        )
+      )
+    )
+  )
+```
+
+From there, we can use the `layout` argument to specify how the circles are arranged on the map. In this example, we will use the `get_layout_options()` function to specify that the circles should be sorted based on the number of bikes. We can use the `get_column_steps()` function to specify that the sort key should change based on the number of bikes currently parked, with the circles with the most bikes appearing on top of the circles with fewer parked bikes.
+
+```{r advanced-circle-layout, results='asis'}
+map <- map |>
+  set_bounds(cycle_hire, padding = 50) |>
+  add_circle_layer(
+    id = "cycle_hire",
+    source = cycle_hire,
+    hover_column = "name",
+    paint = get_paint_options(
+      "circle",
+      options = list(
+        colour = get_column_steps(
+          "nbikes",
+          breaks = cycle_hire$nbikes |> quantile(),
+          values = viridis::viridis(6) # Values should be breaks + 1
+        ),
+        circle_radius = 2 # You could make this dynamic with `get_column_steps()`
+      )
+    ),
+    layout = get_layout_options(
+      "circle",
+      options = list(
+        "circle-sort-key" = get_column_steps(
+          "nbikes",
+          breaks = cycle_hire$nbikes |> quantile(),
+          values = 6:1 # Note how we reverse the order
+        )
+      )
+    )
+  )
+
+map
+```
+
+Note how the layout option refers to the property as named in the Mapbox GL JS documentation, which is `circle-sort-key`. A full list of options for paints and layouts can be found [here](https://maplibre.org/maplibre-style-spec/layers/).
+
+
+## Adding symbol layers
+
+To show icons on the map, we can use the `add_symbol_layer()` function. The syntax is similar to the previous functions, but we can specify an icon to use for the symbols. In this example, we will use the `add_image()` function to add a custom icon to the map, and then use the `get_column_steps()` function to specify that the icon should change based on the number of parked bikes.
+
+```{r basic-symbol, results='asis'}
+icons <- list(
+  "pin1" = "man/figures/pin_1.png",
+  "pin2" = "man/figures/pin_2.png",
+  "pin3" = "man/figures/pin_3.png",
+  "pin4" = "man/figures/pin_4.png",
+  "pin5" = "man/figures/pin_5.png",
+  "pinother" = "man/figures/pin_other.png"
+)
+
+for (i in seq_along(icons)) {
+  map <- map |>
+    add_image(
+      image_id = names(icons)[i],
+      image_url = icons[[i]]
+    )
+}
+
+borough_centroids <- boroughs |>
+  dplyr::mutate(
+    geometry = sf::st_centroid(geometry)
+  ) |>
+  dplyr::filter(
+    cycle_hires > 0
+  )
+
+map <- map |>
+  add_symbol_layer(
+    id = "centroid_symbols",
+    source = borough_centroids,
+    can_cluster = FALSE,
+    layout = get_layout_options(
+      "symbol",
+      options = list(
+        icon_image = get_column_steps(
+          "cycle_hires",
+          breaks = borough_centroids$cycle_hires |> quantile(),
+          values = c(
+            "pinother",
+            "pin1",
+            "pin2",
+            "pin3",
+            "pin4",
+            "pin5"
+          )
+        ),
+        icon_size = 0.5
+      )
+    )
+  )
+
+map
+```
+
+
+## Adding line layers
+
+Line layers can be added to the map using the `add_line_layer()` function. The syntax is similar to the previous functions. Here we will draw a line around the edges of the cycle hire stations in London. 
+
+```{r basic-line, results='asis'}
+cycle_hire_outline <- cycle_hire |>
+  dplyr::summarise(
+    geometry = sf::st_combine(geometry)
+  ) |>
+  sf::st_convex_hull()
+
+map <- map |>
+  add_line_layer(
+    id = "cycle_hire_outline_red",
+    source = cycle_hire_outline,
+    paint = get_paint_options(
+      "line",
+      options = list(
+        colour = "#ff0000",
+        line_dash = c(3,2)
+      )
+    )
+  )
+
+map
+```
+
+## Adding text layers
+
+Text layers can be added to the map using the `add_text_layer()` function. While the syntax is similar, note that we need to reference the column we want to use for the text using the `toro::get_column()` function. For single annotations, strings will be interpreted as text, but for multiple annotations, the column name must be specified.
+
+```{r basic-text, results='asis'}
+map <- map |>
+  add_text_layer(
+    id = "annotations",
+    source = boroughs,
+    layout = get_layout_options(
+      "text",
+      options = list(
+        text_field = toro::get_column("NAME")
+      )
+    ),
+    paint = get_paint_options(
+      "text",
+      options = list(
+        color = "#000000",
+        "text-halo-color" = "#ffffff",
+        "text-halo-width" = 1
+      )
+    )
+  )
+
+map
+```
+
+## Adding a legend
+
+At the moment, we have various data plotted, but can only interpret it via information passed to the hover or popup text. It would be useful to have the fills and cirlces represented in a legend. The `add_legend()` function can be used to add a legend to the map. The syntax is similar to the previous functions, but we can specify the type of legend we want to add using the `type` argument. In this example, we will add a fill legend and a circle legend.
+
+```{r basic-legend, results='asis'}
+map <- map |>
+  add_legend(
+    layer_id = "boroughs",
+    title = "Total Stations",
+    values = c(0, 1, 10, 100, 1000),
+    colours = rev(viridis::magma(6))
+  ) |>
+  add_legend(
+    layer_id = "cycle_hire",
+    title = "Bikes Available",
+    # Note that quantiles will be interpreted as ranges (e.g. 0-3, 3-11, etc)
+    # to disable this behaviour use `as.character`
+    values = cycle_hire$nbikes |> quantile() |> as.character(),
+    colours = viridis::viridis(6)
+  )
+
+map
+```
+
+## Adding a layer control
+
+At this point, we have quite an overwhelming map! It would be useful to have a menu to toggle layers on and off. To do this, we can use the `add_control_group()` function to create a control group, and then use the `add_visibility_toggle()` function to add a visibility toggle for each layer we want to control. The syntax is similar to the previous functions, but we can specify the layer we want to control using the `layer_id` argument. We can also specify the label for the toggle using the `left_label` argument.
+
+Hiding a layer will also hide its corresponding legend.
+
+```{r basic-layer-control, results='asis'}
+map <- map |>
+  add_control_group(
+    panel_id = "visibility_toggle",
+    group_id = "visibility_toggle", # Subgroups not used in this example,
+    group_title = "Toggle Icons"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("boroughs"),
+    left_label = "Boroughs",
+    panel_id = "visibility_toggle",
+    group_id = "visibility_toggle"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("annotations"),
+    left_label = "Borough Names",
+    panel_id = "visibility_toggle", 
+    group_id = "visibility_toggle"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("centroid_symbols"),
+    left_label = "Borough Centroids",
+    panel_id = "visibility_toggle",
+    group_id = "visibility_toggle"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("cycle_hire"),
+    left_label = "Cycle Hire Stations",
+    panel_id = "visibility_toggle",
+    group_id = "visibility_toggle"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("cycle_hire_outline_red"),
+    left_label = "Cycle Hire Outline",
+    panel_id = "visibility_toggle",
+    group_id = "visibility_toggle"
+  ) 
+
+map
+```
+
+With that, the map is complete! We have a map with multiple layers, a legend, and a control panel to toggle the visibility of the layers.

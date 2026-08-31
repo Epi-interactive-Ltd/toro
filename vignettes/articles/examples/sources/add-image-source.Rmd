@@ -47,5 +47,5 @@ map() |>
       )
     )
   ) |>
-  set_bounds(epi_location, max_zoom = 13)
+  set_bounds(epi_location, options = list(max_zoom = 13))
 ```

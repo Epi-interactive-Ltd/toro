@@ -45,7 +45,6 @@ Imports:
     shiny
 Suggests: 
     devtools,
-    devtools,
     dplyr,
     knitr,
     mapview,
