@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
 
 > Shiny is a framework for R and Python. [Learn more](https://shiny.posit.co/)
 
+_toro_ maps can be integrated into Shiny applications, allowing for interactive and dynamic visualizations. This allows more dynamic control over the structure of the map and the underlying data being visualized. 
+
+To use _toro_ maps in Shiny, you can use the `mapOutput()` function to create a map output element in the UI, and the `renderMap()` function to render the map in the server. You can also use `mapProxy()` to modify the map after it has been rendered, skipping the need to re-render the entire map when user inputs change.
+
 ```{r basic-app, results='asis'}
 library(shiny)
 library(toro)
@@ -39,10 +43,13 @@ To modify a map on a shiny page without re-rendering the whole widget you can us
 Typically you use `map` to create the initial static map widget, and then use `mapProxy` to update
 more dynamic aspects of the map.
 
+`mapProxy` requires the id of the map to be modified, which is the same as the output ID used in `mapOutput()` and `renderMap()`. This id will need to be appropriately scoped if the map is inside a module, via `NS` and `session$ns`.
+
+In this example, we will create a Shiny app that allows users to change the map tiles using a select input. The `set_tile_layer()` function is used to update the tiles on the map when the user selects a different option from the input.
+
 ```{r proxy-app, results='asis'}
 library(shiny)
 library(toro)
-
 
 ui <- fluidPage(
   toro::mapOutput("map"),
@@ -72,14 +79,147 @@ if (interactive()) {
 
 ```
 
-## Modifying the map using IDs
+## The data source
 
-In Shiny to modify parts of a map you need to provide the ID of the aspect you want to update.
+In other vignettes we have added layers and directly specified the data to be used in those layers. Instead, here we can use `add_source()` to add a data source to the map, and then use that source in multiple layers.
+
+```{r source-app, results='asis'}
+library(shiny)
+library(toro)
+
+sample_data <- spData::cycle_hire
+
+ui <- fluidPage(
+  toro::mapOutput("map")
+)
+
+server <- function(input, output, session) {
+  output$map <- toro::renderMap({
+    toro::map() |>
+      add_source("my_source", data = sample_data) |>
+      add_circle_layer(
+        id = "my_layer",
+        source = "my_source"
+      )
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
+}
+```
+
+Now that we have a source, we can use `set_source_data()` to update the data in that source without needing to re-render the entire map, via `mapProxy()`. This example randomly samples 10 points from the source every 2 seconds and updates the source with those points.
+
+```{r source-proxy-app, results='asis'}
+library(shiny)
+library(toro)
+sample_data <- spData::cycle_hire
+
+ui <- fluidPage(
+  toro::mapOutput("map")
+)
+
+server <- function(input, output, session) {
+  output$map <- toro::renderMap({
+    toro::map(
+      center = c(-0.1, 51.5),
+      zoom = 11
+    ) |>
+      add_source("my_source", data = sample_data |> dplyr::slice(1:10)) |>
+      add_circle_layer(
+        id = "my_layer",
+        source = "my_source"
+      )
+  })
+
+  observe({
+    # Randomly sample data to simulate a change in the data source
+    invalidateLater(2000, session)
+    new_data <- sample_data[sample(nrow(sample_data), 10), ]
+    toro::mapProxy("map") |>
+      set_source_data("my_source", new_data)
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
+}
+```
+
+Controlling the data source allows for animations to be performed via a pure R Shiny approach. In this example, a time-bound dataset is animated via a slider input. The slider input controls the date range of the data to be displayed on the map, and the map is updated accordingly using `set_source_data()`. This allows you to visualize data in both space and time.
+
+```{r}
+library(shiny)
+library(toro)
+library(sf)
+
+# Sample data: each point has a `date` it "appears" on.
+set.seed(1)
+n <- 60
+pts <- sf::st_as_sf(
+  data.frame(
+    id   = 1:n,
+    date = sort(as.Date("2024-01-01") + sample(0:120, n, replace = TRUE)),
+    lon  = runif(n, 172.5, 178.5),
+    lat  = runif(n, -41.5, -37.0)
+  ),
+  coords = c("lon", "lat"),
+  crs = 4326
+)
+
+date_range <- range(pts$date)
+
+ui <- fluidPage(
+  mapOutput("map", height = "600px"),
+  sliderInput(
+    "when", "Show points up to:",
+    min = date_range[1], max = date_range[2],
+    value = date_range[1],
+    timeFormat = "%Y-%m-%d",
+    width = "100%",
+    animate = animationOptions(interval = 400, loop = FALSE)  # gives you a play button
+  )
+)
+
+server <- function(input, output, session) {
+  output$map <- renderMap({
+    map() |>
+      set_bounds(bounds = pts, padding = 50) |>
+      # Start with just the first day's points in the source
+      add_source(
+        source_id = "events",
+        data = pts |> dplyr::filter(date <= date_range[1])
+      ) |>
+      add_circle_layer(
+        id = "events_layer",
+        source = "events"
+      )
+  })
+
+  # Every time the slider moves, push the cumulative subset to the source
+  observe({
+    req(input$map_loaded)
+    visible <- pts[pts$date <= input$when, ]
+    mapProxy("map") |>
+      set_source_data(source_id = "events", data = visible)
+  }) |>
+    bindEvent(input$when)
+}
+
+shinyApp(ui, server)
+```
+
+
+## Updating map components via IDs
+
+Up to this point all aspects of a _toro_ map have used IDs in the function arguments, although these attributes were only accessed in some situations. In Shiny to modify parts of a map you need to provide the ID of the aspect you want to update. This section provides a reference of the different IDs used in _toro_ maps, and which functions use them. As noted above, you will need to use `mapProxy()` to modify the map after it has been rendered, and the map ID will need to be appropriately scoped if the map is inside a module, via `NS` and `session$ns`.
+
+With data modification abstracted to the `add_source()` and `set_source_data()` functions, the remaining customization of _toro_ maps is handled via functions add, remove or update layers based on the IDs set on creation.
 
 ### Map IDs
 
 The ID of the map in the shiny context.
-This is the ID you use to render the map and also to modify it using `mapProxy`.
 The map ID is also used in the events and status in the below sections.
 
 - `renderMap()`
@@ -138,7 +278,7 @@ Layer customisation:
 
 ### Source IDs
 
-When you add a source to the map you can provide an ID for that source. This ID can then be used to
+When you add a data source to the map you can provide an ID for that source. This ID can then be used to
 modify the source later on.
 If you add a source inside of an add layer function then the source ID will be auto generated for
 you.
@@ -224,8 +364,7 @@ shape with `delete_drawn_shape()`.
 
 ### Map loaded event
 
-By default when the map initially loads it will trigger a _loaded_ event in Shiny.
-
+By default when the map initially loads it will trigger a _loaded_ event in Shiny. 
 You can use this event to trigger other actions in your Shiny app.
 
 The Shiny input value is available as `input$<mapId>_loaded`, where `<mapId>` is the output ID of the map.
@@ -275,3 +414,19 @@ observe({
   print(input$my_map_zoom)
 })
 ```
+
+### Event Reference
+
+| Event | Input ID | Description |
+|-------|----------|-------------|
+| Map loaded | `<mapId>_loaded` | Triggered when the map has finished loading. |
+| Feature click | `<mapId>_feature_click` | Triggered when a feature (polygon, line, point) is clicked on the map. |
+| Map bounds | `<mapId>_bounds` | Triggered when the map bounds change (e.g., zooming or panning). |
+| Map zoom | `<mapId>_zoom` | Triggered when the map zoom level changes. |
+| Shape Created | `<mapId>_shape_created` | Triggered when a new shape is drawn on the map. |
+| Shape Updated | `<mapId>_shape_updated` | Triggered when an existing shape is modified on the map. |
+| Shape Deleted | `<mapId>_shape_deleted` | Triggered when a shape is deleted from the map. |
+| Layer selected | `<mapId>_layer_selected` | Triggered when a layer is selected from a control panel. |
+| Animation control | `<mapId>_animation_control` | Triggered when an animation control is used. |
+| Animation speed changed | `<mapId>_animation_speed_changed` | Triggered when the animation speed is changed. |
+
