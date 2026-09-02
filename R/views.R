@@ -18,6 +18,59 @@ set_zoom <- function(map, zoom) {
   map
 }
 
+#' Compute a bounding box for an `sf` object that correctly handles antimeridian crossings
+#'
+#' A naive `sf::st_bbox()` calculation on data that straddles the antimeridian (180th meridian) -
+#' for example, data centered around Fiji - produces a bounding box spanning almost the entire
+#' globe. This happens because some coordinates are stored as longitudes just under 180 (e.g. 179)
+#' and others just under -180 (e.g. -179), even though they are geographically close together. The
+#' naive `xmin`/`xmax` then span nearly -180 to 180, centering the box near longitude 0 (over
+#' Africa) instead of over the actual data.
+#'
+#' This function detects that case by comparing the naive longitude span against the span you get
+#' if you "unroll" negative longitudes into the 0-360 range (so e.g. 179 and -179 become 179 and
+#' 181, a span of 2 rather than 358), and uses whichever span is narrower.
+#'
+#' @param bounds An `sf` object.
+#' @return A list with `xmin`, `ymin`, `xmax`, and `ymax` elements. Note that `xmax` (and, in
+#'    principle, `xmin`) may fall outside the usual -180 to 180 range when the bounding box crosses
+#'    the antimeridian - this is intentional, and is supported directly by MapLibre GL JS's
+#'    `fitBounds()`.
+#' @keywords internal
+#' @noRd
+.antimeridian_safe_bbox <- function(bounds) {
+  coords <- sf::st_coordinates(bounds)
+  lons <- coords[, "X"]
+  lats <- coords[, "Y"]
+
+  # The "naive" bounding box, equivalent to what sf::st_bbox() would give you.
+  naive_xmin <- min(lons)
+  naive_xmax <- max(lons)
+  naive_span <- naive_xmax - naive_xmin
+
+  # The bounding box if negative longitudes are shifted into the 0-360 range, giving a contiguous
+  # range for data that crosses the antimeridian.
+  shifted_lons <- ifelse(lons < 0, lons + 360, lons)
+  shifted_xmin <- min(shifted_lons)
+  shifted_xmax <- max(shifted_lons)
+  shifted_span <- shifted_xmax - shifted_xmin
+
+  if (shifted_span < naive_span) {
+    xmin <- shifted_xmin
+    xmax <- shifted_xmax
+  } else {
+    xmin <- naive_xmin
+    xmax <- naive_xmax
+  }
+
+  list(
+    xmin = xmin,
+    ymin = min(lats),
+    xmax = xmax,
+    ymax = max(lats)
+  )
+}
+
 #' Get the bounds in the correct format
 #'
 #' This function takes either a list of two coordinate pairs or an sf object and returns the bounds
@@ -28,11 +81,10 @@ set_zoom <- function(map, zoom) {
 #' @keywords internal
 validate_bounds <- function(bounds) {
   if (inherits(bounds, "sf")) {
-    # Convert sf object to bounding box
-    bbox <- sf::st_bbox(bounds)
+    bbox <- .antimeridian_safe_bbox(bounds)
     bounds <- list(
-      list(as.numeric(bbox["xmin"]), as.numeric(bbox["ymin"])),
-      list(as.numeric(bbox["xmax"]), as.numeric(bbox["ymax"]))
+      list(bbox$xmin, bbox$ymin),
+      list(bbox$xmax, bbox$ymax)
     )
   }
   bounds
