@@ -4,7 +4,7 @@
 \alias{delete_drawn_shape}
 \title{Delete a drawn shape from the map}
 \usage{
-delete_drawn_shape(proxy, shape_id)
+delete_drawn_shape(proxy, shape_id, draw_control_id = "draw_control")
 }
 \arguments{
 \item{proxy}{The map proxy object created by \code{mapProxy()}.}
@@ -18,48 +18,140 @@ The map proxy object for chaining.
 The ID of the shape is provided by the draw control when a shape is created.
 }
 \examples{
-if(interactive()){
 library(shiny)
+library(dplyr)
+library(sf)
+library(spData)
 library(toro)
 
+nz_data <- spData::nz |>
+  dplyr::rename(geometry = geom) |>
+  sf::st_transform(4326)
+
 ui <- fluidPage(
- tagList(
-   mapOutput("map"),
-   selectInput("shape_ids", "Drawn shape IDs", choices = NULL),
-   actionButton("remove_drawn_shape", "Remove drawn shape")
- )
+  toro::mapOutput("map"),
+  actionButton("add_control", "Add control"),
+  actionButton("remove_control", "Remove control"),
+  checkboxInput("toggle_control", "Toggle control", value = TRUE),
+  selectInput("drawn_shapes", "Drawn shapes", choices = c()),
+  actionButton("delete_selected_shape", "Delete selected shape"),
+  actionButton("update_selected_shape", "Randomise selected shape"),
+  selectInput("regions", "Regions", choices = nz_data$Name),
+  actionButton("add_selected_shape", "Add selected shape")
 )
+
 server <- function(input, output, session) {
- drawn_shape_ids <- reactiveVal(character())
+  # Render UI -------------------------------------------------------
 
- output$map <- renderMap({
-   map() |>
-    add_draw_control()
- })
+  output$map <- toro::renderMap({
+    toro::map() |>
+      add_draw_control(
+        modes = c("polygon", "circle", "delete"),
+        mode_labels = list(polygon = "POLYGON", circle = "&#11044;"),
+        active_colour = "#fff",
+        inactive_colour = "#000",
+        config = list(direction = "h")
+      ) |>
+      set_bounds(nz_data)
+  })
 
- # Update the select input options with current shape IDs
- observe({
-   req(input$map_loaded)
-   updateSelectInput(inputId = "shape_ids", choices = drawn_shape_ids())
- })
+  # Add the draw control
+  observe({
+    req(input$map_loaded)
+    mapProxy("map") |>
+      add_draw_control(
+        modes = c("polygon", "circle", "delete"),
+        mode_labels = list(polygon = "POLYGON", circle = "&#11044;"),
+        active_colour = "#fff",
+        inactive_colour = "#000",
+        config = list(direction = "h")
+      )
+  }) |>
+    bindEvent(input$add_control)
 
- # Update the list of drawn shape IDs when a new shape is created
- observe({
-   req(input$map_loaded, input$map_shape_created)
-   new_shape <- get_drawn_shape(input$map_shape_created)
-   drawn_shape_ids(c(drawn_shape_ids(), new_shape$id))
- }) |>
-   bindEvent(input$map_shape_created)
+  # Remove the draw control
+  observe({
+    req(input$map_loaded)
+    mapProxy("map") |>
+      remove_draw_control()
+  }) |>
+    bindEvent(input$remove_control)
 
- # Delete the selected drawn shape when the button is clicked
- observe({
-   req(input$map_loaded, input$shape_ids)
-   mapProxy("map") |>
-     delete_drawn_shape(input$shape_ids)
-   # Remove the deleted shape ID from the list of drawn shape IDs
-   drawn_shape_ids(setdiff(drawn_shape_ids(), input$shape_ids))
- }) |>
-   bindEvent(input$remove_drawn_shape)
+  # Toggle the draw control
+  observe({
+    req(input$map_loaded)
+    mapProxy("map") |>
+      toggle_draw_control(show = input$toggle_control)
+  }) |>
+    bindEvent(input$toggle_control)
+
+  # Add a shape
+  observe({
+    req(input$map_loaded)
+    req(input$regions)
+
+    region <- nz_data |>
+      filter(Name == input$regions) |>
+      rename(id = Name)
+
+    mapProxy("map") |>
+      add_drawn_shape(region) |>
+      set_bounds(region)
+  }) |>
+    bindEvent(input$add_selected_shape)
+
+  # Update a shape
+  observe({
+    req(input$map_loaded)
+    req(input$map_all_drawn_shapes)
+    req(input$drawn_shapes)
+
+    random_region <- nz_data[round(runif(1, 1, nrow(nz_data))), ]
+
+    mapProxy("map") |>
+      update_drawn_shape(shape_id = input$drawn_shapes, random_region)
+  }) |>
+    bindEvent(input$update_selected_shape)
+
+  # Delete a shape
+  observe({
+    req(input$map_loaded)
+    req(input$map_all_drawn_shapes)
+
+    mapProxy("map") |>
+      delete_drawn_shape(input$drawn_shapes)
+  }) |>
+    bindEvent(input$delete_selected_shape)
+
+  # Update the drawn shapes select input with all IDs of current shapes
+  observe({
+    req(input$map_loaded)
+
+    all_shapes <- get_drawn_shape(input$map_all_drawn_shapes)
+    choices <- all_shapes$id
+    if (length(choices) == 0) {
+      choices <- c()
+    }
+    selected <- input$drawn_shapes
+
+    if (!selected \%in\% choices) {
+      selected <- NULL
+    }
+    updateSelectInput(session, "drawn_shapes", choices = choices, selected = selected)
+  }) |>
+    bindEvent(input$map_all_drawn_shapes)
+
+  # Observe clicks on a feature
+  observe({
+    req(input$map_feature_click)
+    print(get_drawn_shape(input$map_feature_click))
+  }) |>
+    bindEvent(input$map_feature_click)
+
+  # Observers -------------------------------------------------------------
 }
+
+if (interactive()) {
+  shinyApp(ui, server)
 }
 }

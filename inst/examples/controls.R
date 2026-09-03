@@ -72,7 +72,11 @@ server <- function(input, output, session) {
     proxy <- toro::mapProxy("map")
 
     for (control in all_controls) {
-      toggle_control(proxy, control, show = control %in% input$controls)
+      if (control == "draw_control") {
+        toggle_draw_control(proxy, control, show = control %in% input$controls)
+      } else {
+        toggle_control(proxy, control, show = control %in% input$controls)
+      }
     }
   })
 }

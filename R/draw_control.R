@@ -14,24 +14,19 @@
 #' @param position The position of the draw control on the map. Default is `"top-right"`.
 #'    Options are "top-left", "top-right", "bottom-left", "bottom-right".
 #' @param modes A vector of modes to enable in the draw control. Default is `c("polygon")`.
-#'    Options include "polygon", "delete", "line", and "point".
+#'    Options include "polygon", "delete", "line", "circle", "freehand", and "point".
 #' @param active_colour The colour for the drawn shapes. Default is `"#04AAC1"`.
 #' @param inactive_colour The colour for the inactive shapes. Default is `"#04AAC1"`.
 #' @param mode_labels A named list of labels for each mode.
 #'    For example, `list(polygon = "Draw Polygon", delete = "Delete Shape")`.
 #' @param features Optional. An `sf` object or GeoJSON string of pre-drawn shapes to
 #'    populate the draw control with on initialisation.
-#' @param panel_id ID of control panel to add to (optional).
-#' @param section_title Section title when added to a control panel.
-#' @param group_id Optional group ID for grouping controls within a panel.
 #' @return The map or map proxy object for chaining.
 #' @export
 #'
 #' @seealso [get_drawn_shape()] to retrieve the drawn shape as an `sf` object in Shiny.
 #'
-#' @examples
-#' map() |>
-#'  add_draw_control()
+#' @example inst/examples/draw-control.R
 add_draw_control <- function(
   map,
   id = "draw_control",
@@ -41,12 +36,12 @@ add_draw_control <- function(
   inactive_colour = "#04AAC1",
   mode_labels = list(),
   features = NULL,
-  panel_id = NULL,
-  section_title = NULL,
-  group_id = NULL
+  config = list()
 ) {
   # Convert sf or GeoJSON string to a plain list for JSON serialisation
   if (!is.null(features)) {
+    features <- .normalise_draw_geometry(features)
+
     if (inherits(features, "sf") || inherits(features, "sfc")) {
       features <- geojsonsf::sf_geojson(features, atomise = FALSE)
     }
@@ -54,6 +49,12 @@ add_draw_control <- function(
       features <- jsonlite::fromJSON(features, simplifyVector = FALSE)
     }
   }
+
+  default_config <- list(
+    # editable = FALSE, # This is not currently supported
+    direction = "v"
+  )
+  draw_config <- utils::modifyList(default_config, config)
 
   control <- list(
     type = "draw",
@@ -64,29 +65,14 @@ add_draw_control <- function(
     inactiveColour = inactive_colour,
     modeLabels = mode_labels,
     features = features,
-    panelId = panel_id,
-    panelTitle = section_title,
-    groupId = group_id
+    config = draw_config
   )
 
   if (inherits(map, "mapProxy")) {
-    if (!is.null(panel_id)) {
-      # Add to control panel
-      add_control_to_panel(
-        map,
-        panel_id,
-        "draw",
-        control,
-        section_title,
-        group_id
-      )
-    } else {
-      # Add as standalone control
-      map$session$sendCustomMessage(
-        "addDraw",
-        list(id = map$id, options = control)
-      )
-    }
+    map$session$sendCustomMessage(
+      "addDraw",
+      list(id = map$id, options = control)
+    )
   } else {
     if (is.null(map$x$drawControl)) {
       map$x$drawControl <- control
@@ -99,46 +85,36 @@ add_draw_control <- function(
 #' Remove the draw control from the map
 #'
 #' @param proxy The map proxy object created by `mapProxy()`.
-#' @param panel_id  Optional. If provided, removes the draw control from the specified control
-#'    panel. If NULL, removes the standalone draw control.
+#' @param id Optional ID of the draw control to remove. Default is `"draw_control"`.
 #' @return The map proxy object for chaining.
 #' @export
 #'
-#' @examples
-#' if(interactive()){
-#' library(shiny)
-#' library(toro)
-#'
-#' ui <- fluidPage(
-#'  tagList(
-#'    mapOutput("map"),
-#'    actionButton("remove_draw_control", "Remove draw control")
-#'  )
-#' )
-#' server <- function(input, output, session) {
-#'  output$map <- renderMap({
-#'    map() |>
-#'     add_draw_control()
-#'  })
-#'
-#'  observe({
-#'    req(input$map_loaded)
-#'    mapProxy("map") |>
-#'      remove_draw_control()
-#'  }) |>
-#'    bindEvent(input$remove_draw_control)
-#' }
-#' }
-remove_draw_control <- function(proxy, panel_id = NULL) {
-  # Use the namespaced control ID pattern: draw-control-{mapId}
-  control_id <- paste0("draw-control-", proxy$id)
+#' @example inst/examples/draw-control.R
+remove_draw_control <- function(proxy, id = "draw_control") {
+  if (inherits(proxy, "mapProxy")) {
+    proxy$session$sendCustomMessage(
+      "removeDraw",
+      list(id = proxy$id, controlId = id)
+    )
+  }
+  proxy
+}
 
-  if (!is.null(panel_id)) {
-    # Remove from control panel
-    remove_control_from_panel(proxy, panel_id, control_id)
-  } else {
-    # Remove standalone control
-    remove_control(proxy, control_id)
+#' Toggle the visibility of the draw control on a map
+#'
+#' @param proxy The map proxy object created by `mapProxy()`.
+#' @param show Logical indicating whether to show or hide the control. Default is `TRUE`.
+#' @param id Optional ID of the draw control to remove. Default is `"draw_control"`.
+#' @return The map proxy object for chaining.
+#' @export
+#'
+#' @example inst/examples/draw-control.R
+toggle_draw_control <- function(proxy, show = TRUE, id = "draw_control") {
+  if (inherits(proxy, "mapProxy")) {
+    proxy$session$sendCustomMessage(
+      ifelse(show, "showDrawControl", "hideDrawControl"),
+      list(id = proxy$id, controlId = id)
+    )
   }
   proxy
 }
@@ -152,55 +128,11 @@ remove_draw_control <- function(proxy, panel_id = NULL) {
 #' @return The map proxy object for chaining.
 #' @export
 #'
-#' @examples
-#' if(interactive()){
-#' library(shiny)
-#' library(toro)
-#'
-#' ui <- fluidPage(
-#'  tagList(
-#'    mapOutput("map"),
-#'    selectInput("shape_ids", "Drawn shape IDs", choices = NULL),
-#'    actionButton("remove_drawn_shape", "Remove drawn shape")
-#'  )
-#' )
-#' server <- function(input, output, session) {
-#'  drawn_shape_ids <- reactiveVal(character())
-#'
-#'  output$map <- renderMap({
-#'    map() |>
-#'     add_draw_control()
-#'  })
-#'
-#'  # Update the select input options with current shape IDs
-#'  observe({
-#'    req(input$map_loaded)
-#'    updateSelectInput(inputId = "shape_ids", choices = drawn_shape_ids())
-#'  })
-#'
-#'  # Update the list of drawn shape IDs when a new shape is created
-#'  observe({
-#'    req(input$map_loaded, input$map_shape_created)
-#'    new_shape <- get_drawn_shape(input$map_shape_created)
-#'    drawn_shape_ids(c(drawn_shape_ids(), new_shape$id))
-#'  }) |>
-#'    bindEvent(input$map_shape_created)
-#'
-#'  # Delete the selected drawn shape when the button is clicked
-#'  observe({
-#'    req(input$map_loaded, input$shape_ids)
-#'    mapProxy("map") |>
-#'      delete_drawn_shape(input$shape_ids)
-#'    # Remove the deleted shape ID from the list of drawn shape IDs
-#'    drawn_shape_ids(setdiff(drawn_shape_ids(), input$shape_ids))
-#'  }) |>
-#'    bindEvent(input$remove_drawn_shape)
-#' }
-#' }
-delete_drawn_shape <- function(proxy, shape_id) {
+#' @example inst/examples/draw-control.R
+delete_drawn_shape <- function(proxy, shape_id, draw_control_id = "draw_control") {
   proxy$session$sendCustomMessage(
     "deleteDrawnShape",
-    list(id = proxy$id, shapeId = shape_id)
+    list(id = proxy$id, shapeId = shape_id, controlId = draw_control_id)
   )
   proxy
 }
@@ -214,13 +146,13 @@ delete_drawn_shape <- function(proxy, shape_id) {
 #' @return The map proxy object for chaining.
 #' @export
 #'
-#' @example inst/examples/draw-controls.R
-update_drawn_shape <- function(proxy, shape_id, new_geometry) {
-  new_geometry <- .normalize_draw_geometry(new_geometry, shape_id = shape_id)
+#' @example inst/examples/draw-control.R
+update_drawn_shape <- function(proxy, shape_id, new_geometry, draw_control_id = "draw_control") {
+  new_geometry <- .normalise_draw_geometry(new_geometry, shape_id = shape_id)
 
   proxy$session$sendCustomMessage(
-    "addDrawnShape",
-    list(id = proxy$id, geometry = new_geometry)
+    "updateDrawnShape",
+    list(id = proxy$id, geometry = new_geometry, controlId = draw_control_id, shapeId = shape_id)
   )
   proxy
 }
@@ -233,31 +165,33 @@ update_drawn_shape <- function(proxy, shape_id, new_geometry) {
 #' @return The map proxy object for chaining.
 #' @export
 #'
-#' @example inst/examples/draw-controls.R
-add_drawn_shape <- function(proxy, new_geometry) {
-  new_geometry <- .normalize_draw_geometry(new_geometry)
+#' @example inst/examples/draw-control.R
+add_drawn_shape <- function(proxy, new_geometry, draw_control_id = "draw_control") {
+  new_geometry <- .normalise_draw_geometry(new_geometry)
 
   proxy$session$sendCustomMessage(
     "addDrawnShape",
-    list(id = proxy$id, geometry = new_geometry)
+    list(id = proxy$id, geometry = new_geometry, controlId = draw_control_id)
   )
   proxy
 }
 
-#' Normalize the geometry input for adding/updating drawn shapes
+#' Normalise the geometry input for adding/updating drawn shapes.
 #'
 #' @keywords internal
 #' @noRd
-.normalize_draw_geometry <- function(geometry, shape_id = NULL) {
-  if (inherits(geometry, c("sf", "data.frame", "tbl"))) {
-    geometry <- .validate_source_data(geometry)
+.normalise_draw_geometry <- function(features, shape_id = NULL) {
+  features <- .fix_feature(features)
+
+  if (inherits(features, c("sf", "data.frame", "tbl"))) {
+    features <- .validate_source_data(features)
   }
 
-  if (is.character(geometry)) {
-    geometry <- jsonlite::fromJSON(geometry, simplifyVector = FALSE)
+  if (is.character(features)) {
+    features <- jsonlite::fromJSON(features, simplifyVector = FALSE)
   }
 
-  if (!is.list(geometry) || is.null(geometry$type)) {
+  if (!is.list(features) || is.null(features$type)) {
     stop("new_geometry must be a GeoJSON Feature or FeatureCollection")
   }
 
@@ -265,36 +199,117 @@ add_drawn_shape <- function(proxy, new_geometry) {
     shape_id <- as.character(shape_id[[1]])
   }
 
-  promote_id <- function(feature) {
+  .clean_feature <- function(feature) {
     if (is.null(feature$id) && !is.null(feature$properties$id)) {
       feature$id <- feature$properties$id
     }
+
+    # Terra draw does not accept coordinates with more than 9 decimal places
+    feature$geometry$coordinates <- rapply(
+      feature$geometry$coordinates,
+      round,
+      classes = "numeric",
+      how = "replace",
+      digits = 9
+    )
+
     feature
   }
 
-  if (identical(geometry$type, "FeatureCollection")) {
-    features <- geometry$features
-    if (is.null(features)) {
-      features <- list()
+  if (identical(features$type, "FeatureCollection")) {
+    feats <- features$features
+    if (is.null(feats)) {
+      feats <- list()
     }
-    features <- lapply(features, promote_id)
+
+    feats <- lapply(feats, .clean_feature)
 
     # update_drawn_shape should target a single existing feature id
-    if (!is.null(shape_id) && length(features) == 1) {
-      features[[1]]$id <- shape_id
+    if (!is.null(shape_id) && length(feats) == 1) {
+      feats[[1]]$id <- shape_id
     }
 
-    geometry$features <- features
-    return(geometry)
+    features$features <- feats
+    return(features)
   }
 
-  if (identical(geometry$type, "Feature")) {
-    geometry <- promote_id(geometry)
+  if (identical(features$type, "Feature")) {
+    features <- .clean_feature(features)
     if (!is.null(shape_id)) {
-      geometry$id <- shape_id
+      features$id <- shape_id
     }
-    return(geometry)
+    return(features)
   }
 
   stop("new_geometry must be a GeoJSON Feature or FeatureCollection")
+}
+
+.fix_feature <- function(geometry) {
+  if (nrow(geometry) == 0) {
+    return(geometry)
+  }
+  features <- lapply(seq_len(nrow(geometry)), function(i) {
+    geom <- geometry[i, ]
+    geom_type <- sf::st_geometry_type(geom)
+
+    if (geom_type %in% c("MULTIPOLYGON", "MULTILINESTRING")) {
+      converting_to <- ""
+      extra_message <- ""
+      # Remove all other columns to get rid of a warning about attribution duplication
+      info <- sf::st_drop_geometry(geom)
+      # Need to convert it to a polygon for terra draw to be able to handle it
+      geom <- geom |>
+        dplyr::select(geometry)
+
+      if (geom_type == "MULTIPOLYGON") {
+        converting_to <- "POLYGON"
+        geom <- geom |>
+          # Multi-polygon first to standardise the data
+          sf::st_cast("MULTIPOLYGON") |>
+          sf::st_cast("POLYGON")
+      } else if (geom_type == "MULTILINESTRING") {
+        converting_to <- "LINESTRING"
+        geom <- geom |>
+          # Multi-polygon first to standardise the data
+          sf::st_cast("MULTILINESTRING") |>
+          sf::st_cast("LINESTRING")
+      }
+
+      geom <- cbind(geom, info)
+
+      if (nrow(geom) > 1) {
+        # Draw can only handle a feature for each shape
+        if (geom_type == "MULTIPOLYGON") {
+          # By default get the largest polygon
+          geom <- geom |>
+            mutate(toro_draw_size = sf::st_area(geometry))
+        } else if (geom_type == "MULTILINESTRING") {
+          # By default get the longest line
+          geom <- geom |>
+            mutate(toro_draw_size = sf::st_length(geometry))
+        } else {
+          # Otherwise, just get the first row
+          geom$toro_draw_size <- 0
+          geom$toro_draw_size[1] <- 1
+        }
+        geom <- geom |>
+          slice_max(toro_draw_size, n = 1) |>
+          select(-toro_draw_size)
+        extra_message <- paste(
+          "\n The conversion has resulted in multiple features, only the largest will be kept."
+        )
+      }
+
+      warning(paste(
+        "The geometry being added is of type",
+        geom_type,
+        "which is not an accepted type (POLYGON, POINT, LINESTRING), attempting conversion to",
+        converting_to,
+        extra_message
+      ))
+    }
+
+    return(geom)
+  })
+  do.call(rbind, features)
 }

@@ -257,20 +257,7 @@ HTMLWidgets.widget({
                 }
                 addCustomControl(mapInstance, control.controlId, control.html, control.position);
               } else if (control.type === 'draw') {
-                if (control.panelId) {
-                  // Will be added to panel later during panel processing
-                  return;
-                }
-                addDrawControl(
-                  el,
-                  control.position,
-                  control.modes,
-                  control.activeColour,
-                  control.inactiveColour,
-                  control.modeLabels,
-                  control.controlId,
-                  control.features || null
-                );
+                addDrawControl(el, control);
               } else if (control.type === 'animation') {
                 addAnimationControlButton(el.widgetInstance, control);
               }
@@ -668,16 +655,6 @@ HTMLWidgets.widget({
       },
 
       /**
-       * Get the draw control instance for the map, if it has been added.
-       * This allows code to interact with the draw control directly, such as changing modes or accessing drawn features.
-       *
-       * @returns {object|null} The MapLibre Draw control instance, or null if it has not been added to the map.
-       */
-      getDraw: function () {
-        return el.draw;
-      },
-
-      /**
        * Get the ongoing animations for the map.
        * This returns an object containing any animations that are currently active on the map, such as flyTo or custom animations.
        * Each animation can be accessed by its unique ID, which can be used to manage the animation (e.g., stop it).
@@ -877,44 +854,6 @@ if (HTMLWidgets.shinyMode) {
     });
   });
 
-  Shiny.addCustomMessageHandler('hideDrawControls', function (message) {
-    withMapInstance(message.id, function (el) {
-      hideDrawControls(el);
-    });
-  });
-
-  Shiny.addCustomMessageHandler('showDrawControls', function (message) {
-    withMapInstance(message.id, function (el) {
-      showDrawControls(el);
-    });
-  });
-
-  Shiny.addCustomMessageHandler('addDraw', function (message) {
-    withMapInstance(message.id, function (el) {
-      const options = message.options;
-      if (options.panelId) {
-        // Add to control panel
-        addControlToPanel(el, options.panelId, {
-          type: 'draw',
-          options: options,
-          title: options.panelTitle,
-        });
-      } else {
-        // Add as standalone control
-        addDrawControl(
-          el,
-          options.position,
-          options.modes,
-          options.activeColour,
-          options.inactiveColour,
-          options.modeLabels,
-          options.controlId,
-          options.features || null
-        );
-      }
-    });
-  });
-
   Shiny.addCustomMessageHandler('addZoomControl', function (message) {
     withMapInstance(message.id, function (el) {
       if (message.panelId) {
@@ -1029,12 +968,6 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('removeLegendForLayer', function (message) {
     withMapInstance(message.id, function (el) {
       removeLegendForLayer(el.widgetInstance, message.layerId);
-    });
-  });
-
-  Shiny.addCustomMessageHandler('deleteDrawnShape', function (message) {
-    withMapInstance(message.id, function (el) {
-      deleteDrawnShape(el, message.shapeId);
     });
   });
 
@@ -1173,12 +1106,6 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('addAnimationControls', function (message) {
     withMapInstance(message.id, function (el) {
       addAnimationControlButton(el.widgetInstance, message.options);
-    });
-  });
-
-  Shiny.addCustomMessageHandler('addDrawnShape', function (message) {
-    withMapInstance(message.id, function (el) {
-      addDrawnShape(el.widgetInstance, message.geometry);
     });
   });
 

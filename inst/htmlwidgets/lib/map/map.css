@@ -743,3 +743,65 @@ input {
   margin-bottom: 4px;
   cursor: pointer;
 }
+
+/**
+Terra draw - draw control
+*/
+.toro-ctrl.draw-control {
+  display: flex;
+  flex-direction: column;
+}
+.toro-ctrl.draw-control.control-direction-v button + button {
+  margin-top: -1px;
+}
+.toro-ctrl.draw-control.control-direction-h {
+  flex-direction: row;
+}
+.toro-ctrl.draw-control.control-direction-h button + button {
+  margin-left: -1px;
+}
+.toro-draw-ctrl-mode {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 0;
+}
+.toro-draw-ctrl-mode.selected-mode {
+  background-color: #ccc;
+}
+
+.toro-draw-ctrl-polygon:empty {
+  /* background-image: url('https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'); */
+}
+.toro-draw-ctrl-polygon:empty::after {
+  content: 'Polygon';
+}
+.toro-draw-ctrl-line:empty {
+  /* background-image: url('https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'); */
+}
+.toro-draw-ctrl-line:empty::after {
+  content: 'Line';
+}
+.toro-draw-ctrl-circle:empty {
+  /* background-image: url('https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'); */
+}
+.toro-draw-ctrl-circle:empty::after {
+  content: 'Circle';
+}
+.toro-draw-ctrl-freehand:empty {
+  /* background-image: url('https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'); */
+}
+.toro-draw-ctrl-freehand:empty::after {
+  content: 'Freehand';
+}
+.toro-draw-ctrl-point:empty {
+  /* background-image: url('https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'); */
+}
+.toro-draw-ctrl-point:empty::after {
+  content: 'Point';
+}
+.toro-draw-ctrl-delete:empty {
+  /* background-image: url('https://raw.githubusercontent.com/Epi-interactive-Ltd/toro/refs/heads/dev/inst/assets/toro-pin.png'); */
+}
+.toro-draw-ctrl-delete:empty::after {
+  content: 'Delete';
+}
