@@ -634,7 +634,7 @@ set_tile_layer <- function(map, tiles) {
       list(id = map$id, tiles = tiles)
     )
   }
-  map$x$initialTileLayer <- tiles
+  map$x$options$initialTileLayer <- tiles
   map
 }
 
