@@ -5,11 +5,11 @@ Version: 0.1.1.9006
 Authors@R: c(
     person("Epi, NZ", , , "office@epi.group", role = c("aut", "cph", "fnd"),
            comment = "The package was designed and developed by Epi (<https://www.epi.group/>)"),
-    person("Kiel", "Hards", , "kiel@epi.group", role = "cre"),
+    person("Uli", "Muellner", , "uli@epi.group", role = "cre"),
     person("Poppy", "Pakinui", , "poppy@epi.group", role = "ctb"),
+    person("Kiel", "Hards", , "kiel@epi.group", role = "ctb"),
     person("Nick", "Snellgrove", , "nick@epi.group", role = "ctb"),
     person("Jocelyn", "Qian", , "jocelyn@epi.group", role = "ctb"),
-    person("Uli", "Muellner", , "uli@epi.group", role = "ctb"),
     person("Petra", "Mueller", , "petra@epi.group", role = "ctb"),
     person("MapLibre contributors", role = "cph",
            comment = "MapLibre GL JS library"),
@@ -20,10 +20,10 @@ Authors@R: c(
   )
 Description: Interactive spatial visualisations are a cornerstone for exploring 
   and communicating complexity, and are commonly embedded reports or interactive 
-  dashboards. However as the amount of data grows, so do the demands on 
+  dashboards. However, as the amount of data grows, so do the demands on 
   functionality, especially for technical and scientific data. To bridge this 
-  gap and create a mapping package that is high performing a modern approach is 
-  needed, that draws from best software engineering practices. Toro provides R 
+  gap and create a mapping package that is high performing, a modern approach is 
+  needed that draws from best software engineering practices. Toro provides R 
   bindings to MapLibre GL JS, an open-source JavaScript/TypeScript library for 
   rendering interactive maps in the browser, built from the ground up for 
   responsiveness and scale. This connection allows users to create interactive 

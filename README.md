@@ -8,15 +8,13 @@
 
 ## Overview
 
-Interactive spatial visualisations are a cornerstone for understanding and communicating complexity in almost all technical and scientific disciplines, as well as being commonly embedded in reports or interactive dashboards. As the amount of data grows, so does the pressure to create timely operational intelligence. Modern high-performance approaches are needed to keep up with this growing demand. MapLibre GL JS is an open-source JavaScript/TypeScript library for rendering interactive maps in the browser, built from the ground up for responsiveness and scale. 
+Interactive spatial visualisations are a cornerstone for exploring and communicating complexity, and are commonly embedded reports or interactive dashboards. However, as the amount of data grows, so do the demands on functionality, especially for technical and scientific data. To bridge this gap and create a mapping package that is high performing, a modern approach is needed that draws from best software engineering practices. _toro_ provides R bindings to MapLibre GL JS, an open-source JavaScript/TypeScript library for rendering interactive maps in the browser, built from the ground up for responsiveness and scale. This connection allows users to create interactive maps that can easily be integrated into both Quarto and the R Shiny dashboard framework. _toro_ thereby enables spatial visualisation and exploration of data that might otherwise be too limited, too slow, or too hard to scale using more traditional interactive mapping tools such as leaflet.
 
-_toro_ provides R bindings to MapLibre GL JS, allowing users to create interactive maps that can easily be integrated into both Quarto and the R Shiny dashboard framework. _toro_ enables spatial visualisation and exploration of data that might otherwise be too limited, too slow, or too hard to scale using traditional tools. _toro_ was created by Epi (link to Epi website).
+_toro_ was created by [Epi](https://epi.group/).
 
-If you have any comments, questions, or suggestions, please contact us (links to email).
+If you have any comments, questions, or suggestions, please [contact us](mailto:info@epi.group).
 
-## Why might you want to use _toro_
-
-As a general purpose library with a focus on interactivity and performance, _toro_ maps are ideal for complex data that may be used in web apps, teaching, interactive reports and presentations. Use cases for _toro_ include, but are not limited to:
+**Uses cases for _toro_:** As a general purpose library with a focus on interactivity and performance, _toro_ maps are ideal for complex data that may be used in web apps, teaching, interactive reports and presentations. Use cases for _toro_ include, but are not limited to:
 
 - **eDNA and biodiversity monitoring:** map sampling sites, species detections, read counts, and habitat layers to spot spatial biodiversity patterns and guide future field sampling. 
 - **Ecology and conservation:** visualise telemetry tracks, protected-area boundaries, invasive species records, or restoration sites with interactive layers and clustering. 
