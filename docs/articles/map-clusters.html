@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">toro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,13 @@ symbol(icon/pin) layers.</p>
 </blockquote>
 <p>Clusters are disabled by default, but symbols with the same
 coordinates will <strong>always</strong> produce a cluster (even if
-<code>can_cluster</code> is set to false).</p>
+<code>can_cluster</code> is set to false). This is an intentional choice
+as it is the only way for the user to know that there are multiple pins
+at the same coordinates. Without this, all pins would be stacked on top
+of each other and appear as a single pin. If you want to avoid this
+behaviour, we recommend either adding a small amount of random noise to
+the coordinates or aggregating the data so that there is only ever one
+pin per coordinate.</p>
 <p>Clicking on a cluster will do one of two things:</p>
 <ul>
 <li><p>Zoom into that clusters pins</p></li>
@@ -116,6 +122,9 @@ visible</p></li>
 <div class="section level2">
 <h2 id="enabling-clusters">Enabling clusters<a class="anchor" aria-label="anchor" href="#enabling-clusters"></a>
 </h2>
+<p>The <code>can_cluster</code> parameter is used to enable clustering
+for a symbol layer. When set to <code>TRUE</code> the layer will cluster
+symbols that are in close proximity to each other.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">base_map</span>  <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/add_symbol_layer.html">add_symbol_layer</a></span><span class="op">(</span></span>
@@ -488,7 +497,7 @@ override this for that specific layer.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Funded by .</p>
+  <p>Funded by Epi, NZ.</p>
 </div>
 
 <div class="pkgdown-footer-right">

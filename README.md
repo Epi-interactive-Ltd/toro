@@ -50,7 +50,7 @@ The central function of the package is the `map` function, this creates a `htmlw
 library(toro)
 map()
 ```
-![base toro map](man/figures/base_toro_map.png)
+![](man/figures/base_toro_map.png)
 
 Further arguments can be passed to customize the styling of the map:
 
@@ -62,7 +62,7 @@ map(
 )
 ```
 
-![alt text](man/figures/streets_toro_map.png)
+![](man/figures/streets_toro_map.png)
 
 From there, tidyverse-style pipelines are used to add various data, via geospatial simple-features objects, to the map in layers:
 
@@ -85,7 +85,7 @@ map(
   )
 ```
 
-![alt text](man/figures/streets_map_with_point.png)
+![](man/figures/streets_map_with_point.png)
 
 As a `htmlwidget`, all _toro_ maps are supported in any supporting framework, including Shiny, Quarto and more. Maps can further be exported to standalone html files (for further interactive use), or static images can be saved:
 
