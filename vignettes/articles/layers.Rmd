@@ -227,12 +227,12 @@ To show icons on the map, we can use the `add_symbol_layer()` function. The synt
 
 ```{r basic-symbol, results='asis'}
 icons <- list(
-  "pin1" = "man/figures/pin_1.png",
-  "pin2" = "man/figures/pin_2.png",
-  "pin3" = "man/figures/pin_3.png",
-  "pin4" = "man/figures/pin_4.png",
-  "pin5" = "man/figures/pin_5.png",
-  "pinother" = "man/figures/pin_other.png"
+  "pin1" = "../../man/figures/pin_1.png",
+  "pin2" = "../../man/figures/pin_2.png",
+  "pin3" = "../../man/figures/pin_3.png",
+  "pin4" = "../../man/figures/pin_4.png",
+  "pin5" = "../../man/figures/pin_5.png",
+  "pinother" = "../../man/figures/pin_other.png"
 )
 
 for (i in seq_along(icons)) {
