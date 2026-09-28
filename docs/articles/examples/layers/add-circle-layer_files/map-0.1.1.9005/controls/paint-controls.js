@@ -179,6 +179,21 @@ class PaintControl {
       );
     } else if (legendProperties) {
       addLegendForLayer(this._widgetInstance, layerId, legendProperties || {});
+    } else if (paintProperties && hasLegendForLayer(this._widgetInstance, layerId)) {
+      // The selected option did not supply its own legend, but a legend was
+      // created separately via add_legend() for this layer. Refresh it so its
+      // colours re-derive from the layer's newly applied paint value. Only do
+      // so when the changed paint property is the one the legend reads from.
+      const layer = this._map.getLayer(layerId);
+      if (layer) {
+        const legendPaintKey = _getLegendPaintKey(this._map, layerId, layer.type);
+        const paintChangedLegendKey = Object.keys(paintProperties).some(
+          (property) => property === legendPaintKey,
+        );
+        if (legendPaintKey && paintChangedLegendKey) {
+          addLegendForLayer(this._widgetInstance, layerId);
+        }
+      }
     }
   }
 }
