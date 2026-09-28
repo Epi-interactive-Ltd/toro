@@ -10,7 +10,7 @@ Authors@R: c(
     person("Kiel", "Hards", , "kiel@epi.group", role = "ctb"),
     person("Nick", "Snellgrove", , "nick@epi.group", role = "ctb"),
     person("Jocelyn", "Qian", , "jocelyn@epi.group", role = "ctb"),
-    person("Petra", "Mueller", , "petra@epi.group", role = "ctb"),
+    person("Petra", "Muellner", , "petra@epi.group", role = "ctb"),
     person("MapLibre contributors", role = "cph",
            comment = "MapLibre GL JS library"),
     person("Turf contributors", role = "cph",
