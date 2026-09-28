@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+body {
+  font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+}
+
 :root,
 [data-bs-theme='light'] {
   --epi-brightest-green: #e9fcef;
@@ -7,12 +13,12 @@
   --epi-dark-green: #11a366;
   --epi-dark-green-rgb: 17, 163, 102;
 
-  --epi-bright-blue: #04aac1;
-  --epi-bright-blue-rgb: 4, 171, 193;
-  --epi-dark-blue: #093d4a;
-  --epi-dark-blue-rgb: 9, 61, 74;
+  --epi-bright-blue: #04A1EF;
+  --epi-bright-blue-rgb: 4, 170, 193;
+  --epi-dark-blue: #0C303F;
+  --epi-dark-blue-rgb: 12, 48, 63;
 
-  --epi-bright-yellow: #dbe811;
+  --epi-bright-yellow: #D4F211;
   --epi-bright-yellow-rgb: 219, 232, 17;
 
   --epi-black: black;
@@ -44,14 +50,14 @@
 
   /** Overwrite bs defaults */
   --bs-primary-rgb: var(--epi-dark-green-rgb) !important;
-  --bs-link-color-rgb: var(--epi-dark-blue-rgb) !important;
-  --bs-link-hover-color-rgb: var(--epi-bright-blue-rgb) !important;
+  --bs-link-color-rgb: var(--epi-bright-blue-rgb) !important;
+  --bs-link-hover-color-rgb: var(--epi-dark-blue-rgb) !important;
   --bs-border-color: rgba(var(--epi-dark-blue-rgb), 0.5) !important;
   --bs-code-color: var(--epi-bright-blue) !important;
   --bs-emphasis-color-rgb: var(--epi-dark-blue-rgb) !important;
-  --bs-dropdown-header: var(--epi-bright-green) !important;
+  --bs-dropdown-header: var(--epi-bright-yellow) !important;
   --bs-dropdown-link-color: var(--epi-brightest-green) !important;
-  --bs-dropdown-link-hover-color: var(--epi-bright-green) !important;
+  --bs-dropdown-link-hover-color: var(--epi-bright-yellow) !important;
   --bs-dropdown-divider-bg: rgba(var(--epi-dark-blue-rgb), 0.45) !important;
   --bs-dropdown-link-hover-bg: rgba(var(--epi-dark-blue-rgb), 0.35) !important;
 }
@@ -78,8 +84,8 @@
   box-sizing: border-box;
 }
 
-body {
-  background-image: var(--epi-gradient-bg);
+#main p img {
+  width: 100%
 }
 
 .form-control:focus {
@@ -108,23 +114,23 @@ body > nav.navbar > .container .navbar-brand,
 body > nav.navbar > .container .nav-link,
 body > nav.navbar > .container .nav-text,
 body > nav.navbar > .container input[type='search'] {
-  color: rgba(var(--epi-bright-green-rgb), var(--epi-text-opacity));
+  color: rgba(var(--epi-bright-yellow-rgb), var(--epi-text-opacity));
 }
 
 body > nav.navbar > .container input[type='search']::placeholder,
 body > nav.navbar > .container .text-muted {
-  color: rgba(var(--epi-bright-green-rgb), var(--epi-text-muted-opacity)) !important;
+  color: rgba(var(--epi-bright-yellow-rgb), var(--epi-text-muted-opacity)) !important;
 }
 
 body > nav.navbar > .container input[type='search'] {
   background: rgba(var(--epi-dark-green-rgb), 0.05);
-  border: 1px solid rgba(var(--epi-bright-green-rgb), var(--epi-text-opacity));
+  border: 1px solid rgba(var(--epi-bright-yellow-rgb), var(--epi-text-opacity));
 }
 
 .dropdown-menu {
-  --bs-dropdown-header: var(--epi-bright-green) !important;
+  --bs-dropdown-header: var(--epi-bright-yellow) !important;
   --bs-dropdown-link-color: var(--epi-brightest-green) !important;
-  --bs-dropdown-link-hover-color: var(--epi-bright-green) !important;
+  --bs-dropdown-link-hover-color: var(--epi-bright-yellow) !important;
   --bs-dropdown-divider-bg: rgba(var(--epi-dark-blue-rgb), 0.45) !important;
   --bs-dropdown-link-hover-bg: rgba(var(--epi-dark-blue-rgb), 0.35) !important;
 

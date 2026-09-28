@@ -10,14 +10,190 @@ knitr::opts_chunk$set(
 )
 ```
 
+As your visualizations become increasingly complex, you may want to add controls to your map to allow users to interact with the data. Toro provides a number of controls that can be added to the map, including zoom controls, cursor coordinates, and more.
 
-Various controls can be added to the map.
+General controls can be added to the map without any prerequisites, but some controls require certain layers to be present on the map. In this example, we will add a zoom control and a cursor coordinates control to the map. The zoom control allows users to zoom in and out of the map, while the cursor coordinates control displays the latitude and longitude of the cursor position on the map. The scale control displays a scale bar.
 
-
-```{r setup}
+```{r controls}
 library(toro)
 
 map() |>
   add_cursor_coords_control() |>
-  add_zoom_control()
+  add_zoom_control() |>
+  add_scale_control()
+```
+
+## Customized plotted data
+
+### Paint options
+
+Options exist for modifying the properties of layers plotted, or which layers are plotted. For example, you can add a layer control to the map that allows users to toggle the visibility of different layers on the map. Options are defined as list-of-lists, with each sublist containing an id, label and the corresponding options. In this example, we will provide different options to color the cycle hire dataset used in the layers vignette. 
+
+```{r paint-control-options}
+cycle_hire <- spData::cycle_hire
+
+nbikes_quantiles <- cycle_hire$nbikes |> quantile(c(0.1, 0.25, 0.5, 0.75, 0.9), na.rm = TRUE)
+color_len <- length(nbikes_quantiles) + 1
+
+# For readability, we will define the options in a separate variable
+paint_control_options <- list(
+  # Sublist 1 - viridis palette
+  list(
+    id = "viridis",
+    label = "Viridis",
+    paint = get_paint_options(
+      "circle",
+      list(
+        color = get_column_steps(
+          "nbikes",
+          nbikes_quantiles,
+          viridis::viridis(color_len)
+        )
+      )
+    )
+  ),
+  # Sublist 2 - viridis magma palette
+  list(
+    id = "magma",
+    label = "Magma",
+    paint = get_paint_options(
+      "circle",
+      list(
+        color = get_column_steps(
+          "nbikes",
+          nbikes_quantiles,
+          viridis::magma(color_len)
+        )
+      )
+    )
+  ),
+  # Sublist 3 - viridis inferno palette
+  list(
+    id = "inferno",
+    label = "Inferno",
+    paint = get_paint_options(
+      "circle",
+      list(
+        color = get_column_steps(
+          "nbikes",
+          nbikes_quantiles,
+          viridis::inferno(color_len)
+        )
+      )
+    )
+  )
+)
+```
+
+Now with the options set up, we create a map as normal and add in the paint control. Note how the legend will also respond to the paint control, updating to reflect the current color scheme.
+
+```{r paint-control}
+map <- map(
+  center = c(-0.1, 51.5),
+) |>
+  set_bounds(cycle_hire) |>
+  add_circle_layer(
+    id = "cycle_hire",
+    source = cycle_hire,
+    paint = get_paint_options(
+      "circle",
+      list(
+        color = get_column_steps(
+          "nbikes",
+          nbikes_quantiles,
+          viridis::viridis(color_len)
+        )
+      )
+    )
+  ) |>
+  add_legend(
+    layer_id = "cycle_hire",
+    title = "Bikes Available",
+    values = nbikes_quantiles |> as.character()
+  ) |>
+  add_paint_control(
+    id = "paint_control",
+    layer_id = "cycle_hire",
+    label = "Color scheme",
+    options_list = paint_control_options
+  ) 
+
+map
+```
+
+### Layer selection
+
+Now we will overlay borough boundaries on top of the cycle hire dataset. We will add a layer control to the map that allows users to toggle the visibility of the two layers.
+
+```{r layer-control}
+boroughs <- spData::lnd
+
+map |>
+  add_fill_layer(
+    id = "boroughs",
+    source = boroughs,
+    paint = get_paint_options(
+      "fill",
+      list(
+        color = "#000000",
+        opacity = 0.1
+      )
+    )
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("boroughs"),
+    left_label = "Boroughs",
+    position = "bottom-left"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("cycle_hire"),
+    left_label = "Cycle Hire Stations",
+    position = "bottom-left"
+  )
+```
+
+### Control groups
+
+It would be nicer to have the toggles grouped into a control panel. We can do this by adding a control panel and control group to the map, and then specifying the `panel_id` and `group_id` in the visibility toggles. A group title can optionally be specified, with HTML to customize the styling, here we will suppress the group title output as it is clear from the context what the group is for.
+
+Multiple control groups can be added to a single control panel, and multiple control panels can be added to a single map. The position of the control panel can also be specified.
+
+```{r control-panel}
+map |>
+  add_fill_layer(
+    id = "boroughs",
+    source = boroughs,
+    paint = get_paint_options(
+      "fill",
+      list(
+        color = "#000000",
+        opacity = 0.1
+      )
+    )
+  ) |>
+  add_control_panel(
+    panel_id = "demo-panel",
+    position = "bottom-left",
+    collapsible = TRUE
+  ) |>
+  add_control_group(
+    group_id = "visibility",
+    panel_id = "demo-panel",
+    group_title = "<span style='display: none;'>Visibility</span>"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("boroughs"),
+    left_label = "Boroughs",
+    position = "bottom-left",
+    panel_id = "demo-panel",
+    group_id = "visibility"
+  ) |>
+  add_visibility_toggle(
+    layer_id = c("cycle_hire"),
+    left_label = "Cycle Hire Stations",
+    position = "bottom-left",
+    panel_id = "demo-panel",
+    group_id = "visibility"
+  )
+
 ```
