@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 
 > Shiny is a framework for R and Python. [Learn more](https://shiny.posit.co/)
 
-_toro_ maps can be integrated into Shiny applications, allowing for interactive and dynamic visualizations. This allows more dynamic control over the structure of the map and the underlying data being visualized. 
+_toro_ maps can be integrated into Shiny applications, allowing for interactive and dynamic visualisations. This allows more dynamic control over the structure of the map and the underlying data being visualised. 
 
 To use _toro_ maps in Shiny, you can use the `mapOutput()` function to create a map output element in the UI, and the `renderMap()` function to render the map in the server. You can also use `mapProxy()` to modify the map after it has been rendered, skipping the need to re-render the entire map when user inputs change.
 
@@ -147,7 +147,7 @@ if (interactive()) {
 }
 ```
 
-Controlling the data source allows for animations to be performed via a pure R Shiny approach. In this example, a time-bound dataset is animated via a slider input. The slider input controls the date range of the data to be displayed on the map, and the map is updated accordingly using `set_source_data()`. This allows you to visualize data in both space and time.
+Controlling the data source allows for animations to be performed via a pure R Shiny approach. In this example, a time-bound dataset is animated via a slider input. The slider input controls the date range of the data to be displayed on the map, and the map is updated accordingly using `set_source_data()`. This allows you to visualise data in both space and time.
 
 ```{r}
 library(shiny)
@@ -217,7 +217,7 @@ if (interactive()) {
 
 Up to this point all aspects of a _toro_ map have used IDs in the function arguments, although these attributes were only accessed in some situations. In Shiny to modify parts of a map you need to provide the ID of the aspect you want to update. This section provides a reference of the different IDs used in _toro_ maps, and which functions use them. As noted above, you will need to use `mapProxy()` to modify the map after it has been rendered, and the map ID will need to be appropriately scoped if the map is inside a module, via `NS` and `session$ns`.
 
-With data modification abstracted to the `add_source()` and `set_source_data()` functions, the remaining customization of _toro_ maps is handled via functions add, remove or update layers based on the IDs set on creation.
+With data modification abstracted to the `add_source()` and `set_source_data()` functions, the remaining customisation of _toro_ maps is handled via functions add, remove or update layers based on the IDs set on creation.
 
 ### Map IDs
 

@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-As your visualizations become increasingly complex, you may want to add controls to your map to allow users to interact with the data. Toro provides a number of controls that can be added to the map, including zoom controls, cursor coordinates, and more.
+As your visualisations become increasingly complex, you may want to add controls to your map to allow users to interact with the data. Toro provides a number of controls that can be added to the map, including zoom controls, cursor coordinates, and more.
 
 General controls can be added to the map without any prerequisites, but some controls require certain layers to be present on the map. In this example, we will add a zoom control and a cursor coordinates control to the map. The zoom control allows users to zoom in and out of the map, while the cursor coordinates control displays the latitude and longitude of the cursor position on the map. The scale control displays a scale bar.
 
@@ -23,7 +23,7 @@ map() |>
   add_scale_control()
 ```
 
-## Customized plotted data
+## Customised plotted data
 
 ### Paint options
 
@@ -154,7 +154,7 @@ map |>
 
 ### Control groups
 
-It would be nicer to have the toggles grouped into a control panel. We can do this by adding a control panel and control group to the map, and then specifying the `panel_id` and `group_id` in the visibility toggles. A group title can optionally be specified, with HTML to customize the styling, here we will suppress the group title output as it is clear from the context what the group is for.
+It would be nicer to have the toggles grouped into a control panel. We can do this by adding a control panel and control group to the map, and then specifying the `panel_id` and `group_id` in the visibility toggles. A group title can optionally be specified, with HTML to customise the styling, here we will suppress the group title output as it is clear from the context what the group is for.
 
 Multiple control groups can be added to a single control panel, and multiple control panels can be added to a single map. The position of the control panel can also be specified.
 
