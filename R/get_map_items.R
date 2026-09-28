@@ -113,6 +113,8 @@ get_drawn_shape <- function(create_input_string) {
   }
   feat <- jsonlite::fromJSON(create_input_string)
   sf_obj <- geojsonsf::geojson_sf(create_input_string)
-  sf_obj$id <- feat$id
+  if ("id" %in% colnames(feat$features)) {
+    sf_obj$id <- feat$features$id
+  }
   sf_obj
 }

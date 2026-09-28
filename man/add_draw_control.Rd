@@ -12,6 +12,7 @@ add_draw_control(
   active_colour = "#04AAC1",
   inactive_colour = "#04AAC1",
   mode_labels = list(),
+  features = NULL,
   panel_id = NULL,
   section_title = NULL,
   group_id = NULL
@@ -34,6 +35,9 @@ Options include "polygon", "delete", "line", and "point".}
 
 \item{mode_labels}{A named list of labels for each mode.
 For example, \code{list(polygon = "Draw Polygon", delete = "Delete Shape")}.}
+
+\item{features}{Optional. An \code{sf} object or GeoJSON string of pre-drawn shapes to
+populate the draw control with on initialisation.}
 
 \item{panel_id}{ID of control panel to add to (optional).}
 

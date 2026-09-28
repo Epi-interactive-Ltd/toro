@@ -10,7 +10,7 @@ add_control_panel(
   title = NULL,
   position = "bottom-left",
   collapsible = FALSE,
-  collapsed = FALSE,
+  collapse_config = list(),
   direction = "column",
   custom_controls = NULL
 )
@@ -27,7 +27,16 @@ Options include "top-left", "top-right", "bottom-left", "bottom-right".}
 
 \item{collapsible}{Whether the panel can be collapsed. Default is FALSE.}
 
-\item{collapsed}{Initial collapsed state. Default is FALSE.}
+\item{collapse_config}{List of configuration options for the collapsible behavior.
+\itemize{
+\item \code{collapsed}: Initial collapsed state. Default is FALSE.
+\item \code{collapseVertically}: Whether the panel collapses vertically (TRUE) or
+horizontally (FALSE). Default is TRUE.
+\item \code{openIcon}: HTML string for the icon when the panel is open. Default is a simple
+arrow.
+\item \code{collapsedIcon}: HTML string for the icon when the panel is collapsed. Default is
+a simple arrow.
+}}
 
 \item{direction}{Layout direction for controls within the panel. Either "row" or "column".
 Default is "column".}
@@ -53,7 +62,7 @@ map() |>
     title = "Map Settings",
     position = "top-right",
     collapsible = TRUE,
-    collapsed = TRUE,
+    collapse_config = list(collapsed = TRUE),
     direction = "row"
   ) |>
   add_cursor_coords_control(

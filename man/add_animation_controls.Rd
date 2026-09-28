@@ -10,6 +10,8 @@ add_animation_controls(
   position = "top-right",
   panel_id = NULL,
   buttons = c("play", "pause"),
+  button_icons = list(),
+  button_text = list(play = "Play", pause = "Pause", stop = "Stop"),
   include_speed_control = FALSE,
   speed_values = c(0.5, 1, 2),
   speed_labels = c("Slow", "Normal", "Fast"),
@@ -27,6 +29,17 @@ add_animation_controls(
 
 \item{buttons}{Character vector of buttons to include.
 Options: "play", "pause", "stop". Default is c("play", "pause").}
+
+\item{button_icons}{Optional named list of custom icons for the buttons. Names should
+match button names (e.g., \code{list(play = ..., pause = ..., stop = ...)}).
+Each value can be an inline SVG string, a local PNG or SVG file path
+(automatically converted to a data URI), or plain text to use as the
+button label. \code{NULL} entries fall back to the default icon.}
+
+\item{button_text}{Optional named list of custom text labels for the buttons. Names should match
+button names (e.g., \code{list(play = "Start", pause = "Hold", stop = "End")}). This allows you to
+customize the text shown on the buttons, which can be used in combination with or instead of
+custom icons. If no name is provided for a button, no text will be shown.}
 
 \item{include_speed_control}{Logical. Whether to include a speed control slider.
 Default is FALSE.}
@@ -48,6 +61,7 @@ Optionally includes a speed control slider for adjusting animation speed.
 }
 \examples{
 library(sf)
+library(toro)
 
 line_data <- sf::st_sf(
   id = 1,
@@ -61,5 +75,10 @@ line_data <- sf::st_sf(
 
 map() |>
   add_route(route_id = "route_line", points = line_data) |>
-  add_animation_controls(route_id = "route_line", include_speed_control = TRUE)
+  add_animation_controls(
+    route_id = "route_line",
+    include_speed_control = TRUE,
+    button_icons = list(play = "\u25b6", pause = "\u23f8", stop = "\u23f9"),
+    button_text = list() # Remove labels, show only icons
+  )
 }

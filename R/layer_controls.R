@@ -178,6 +178,7 @@ remove_tile_selector_control <- function(proxy, panel_id = NULL) {
 #'
 #' @examples
 #' # Load libraries
+#' library(toro)
 #' library(spData)
 #' library(sf)
 #'

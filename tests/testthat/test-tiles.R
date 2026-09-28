@@ -3,7 +3,7 @@ test_that("set_tile_layer sets tiles correctly", {
   m <- map()
   m2 <- set_tile_layer(m, tiles = "satellite")
   expect_s3_class(m2, "htmlwidget")
-  expect_equal(m2$x$initialTileLayer, "satellite")
+  expect_equal(m2$x$options$initialTileLayer, "satellite")
 })
 
 test_that("get_tile_options returns valid tile options", {
@@ -31,7 +31,7 @@ test_that("set_tile_layer works with different tile types", {
   for (tile in tiles) {
     result <- set_tile_layer(m, tiles = tile)
     expect_s3_class(result, "htmlwidget")
-    expect_equal(result$x$initialTileLayer, tile)
+    expect_equal(result$x$options$initialTileLayer, tile)
   }
 })
 
@@ -55,7 +55,7 @@ test_that("set_tile_layer works with map proxy", {
 
   result <- set_tile_layer(proxy, tiles = "satellite")
   expect_s3_class(result, "mapProxy")
-  expect_equal(result$x$initialTileLayer, "satellite")
+  expect_equal(result$x$options$initialTileLayer, "satellite")
 })
 
 test_that("map function accepts tile-related parameters", {
@@ -96,7 +96,7 @@ test_that("set_tile_layer preserves other map properties", {
   m2 <- set_tile_layer(m, tiles = "satellite")
 
   expect_s3_class(m2, "htmlwidget")
-  expect_equal(m2$x$initialTileLayer, "satellite")
+  expect_equal(m2$x$options$initialTileLayer, "satellite")
   expect_equal(m2$x$center, c(175, -40))
   expect_equal(m2$x$zoom, 5)
   expect_equal(m2$x$style, "lightgrey")
@@ -111,7 +111,7 @@ test_that("set_tile_layer returns map for chaining", {
     set_tile_layer(tiles = "satellite")
 
   expect_s3_class(result, "htmlwidget")
-  expect_equal(result$x$initialTileLayer, "satellite")
+  expect_equal(result$x$options$initialTileLayer, "satellite")
 })
 
 test_that("tile functions handle edge cases", {
@@ -159,5 +159,5 @@ test_that("tile layer setting with multiple simultaneous layers", {
     set_tile_layer(tiles = "terrain")
 
   expect_s3_class(result, "htmlwidget")
-  expect_equal(result$x$initialTileLayer, "terrain")
+  expect_equal(result$x$options$initialTileLayer, "terrain")
 })

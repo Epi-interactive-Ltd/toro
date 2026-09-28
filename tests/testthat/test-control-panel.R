@@ -31,11 +31,13 @@ test_that("add_control_panel accepts optional styling", {
     title = "Styled Panel",
     position = "bottom-right",
     collapsible = TRUE,
-    collapsed = TRUE
+    collapse_config = list(collapsed = TRUE)
   )
 
   expect_true(result$x$controlPanels[["styled_panel"]]$options$collapsible)
-  expect_true(result$x$controlPanels[["styled_panel"]]$options$collapsed)
+  expect_true(
+    result$x$controlPanels[["styled_panel"]]$options$collapseConfig$collapsed
+  )
 })
 
 test_that("add_control_group adds control group to map", {
@@ -74,7 +76,7 @@ test_that("add_control_group accepts optional parameters", {
     panel_id = "test_panel",
     group_title = "Styled Group",
     collapsible = TRUE,
-    collapsed = FALSE
+    collapse_config = list(collapsed = FALSE)
   )
 
   # Check the group config
@@ -82,7 +84,7 @@ test_that("add_control_group accepts optional parameters", {
     1
   ]]
   expect_true(group_config$collapsible)
-  expect_false(group_config$collapsed)
+  expect_false(group_config$collapseConfig$collapsed)
 })
 
 test_that("remove_control_group removes group from map proxy", {

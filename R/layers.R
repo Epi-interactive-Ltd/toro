@@ -73,15 +73,9 @@ add_layer <- function(
 
   # Need source to be a GeoJSON
   if (inherits(source, c("sf", "data.frame", "tbl"))) {
-    if (length(colnames(source)) == 1) {
-      # There is only a geometry column.
-      # To convert to geojson, we need to add a dummy column.
-      source$id <- seq_len(nrow(source))
-    }
-    geojson <- geojsonsf::sf_geojson(source)
-
-    source <- list(type = "geojson", data = geojson, generateId = TRUE)
-  } else if (inherits(source, c("geojson"))) {
+    source <- .validate_source_data(source)
+  }
+  if (inherits(source, c("sf", "data.frame", "tbl", "geojson"))) {
     source <- list(type = "geojson", data = source, generateId = TRUE)
   }
 
@@ -640,7 +634,7 @@ set_tile_layer <- function(map, tiles) {
       list(id = map$id, tiles = tiles)
     )
   }
-  map$x$initialTileLayer <- tiles
+  map$x$options$initialTileLayer <- tiles
   map
 }
 

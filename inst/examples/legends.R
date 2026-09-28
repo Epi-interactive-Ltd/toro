@@ -1,0 +1,134 @@
+library(shiny)
+library(dplyr)
+library(sf)
+library(toro)
+
+data(quakes)
+quakes_data <- quakes |>
+  dplyr::mutate(
+    description = paste(
+      "<div class='map-popup'>Location:",
+      lat,
+      ",",
+      long,
+      "<br>",
+      "Magnitude:",
+      mag,
+      "</div>"
+    )
+  ) |>
+  sf::st_as_sf(coords = c("long", "lat"), crs = 4326, remove = FALSE)
+
+
+ui <- fluidPage(
+  toro::mapOutput("map"),
+  div(
+    class = "row",
+    checkboxInput(
+      "include_quakes_legend",
+      "Include earthquakes magnitude legend",
+      value = TRUE
+    ),
+    checkboxInput(
+      "include_quakes_lat_legend",
+      "Include earthquakes latitude legend",
+      value = TRUE
+    )
+  )
+)
+
+colours <- c(
+  "#440154FF",
+  "#414487FF",
+  "#2A788EFF",
+  "#22A884FF",
+  "#7AD151FF",
+  "#FDE725FF"
+)
+
+server <- function(input, output, session) {
+  # Render UI -------------------------------------------------------
+
+  output$map <- toro::renderMap({
+    toro::map() |>
+      set_zoom(3) |>
+      add_circle_layer(
+        id = "quakes",
+        source = quakes_data,
+        hover_column = "description",
+        paint = get_paint_options(
+          "circle",
+          options = list(
+            color = get_column_steps(
+              "mag",
+              breaks = quantile(quakes_data$mag),
+              values = colours
+            )
+          )
+        )
+      ) |>
+      add_circle_layer(
+        id = "quakes_lat",
+        source = quakes_data,
+        hover_column = "description",
+        paint = get_paint_options(
+          "circle",
+          options = list(
+            color = get_column_steps(
+              "lat",
+              breaks = quantile(quakes_data$lat),
+              values = colours
+            )
+          )
+        )
+      ) |>
+      add_legend(
+        title = "Earthquake magnitude",
+        layer_id = "quakes"
+      ) |>
+      add_legend(
+        title = "Earthquake latitude",
+        layer_id = "quakes_lat"
+      ) |>
+      add_layer_selector_control(
+        layer_ids = c("quakes", "quakes_lat"),
+        position = "top-left"
+      )
+  })
+
+  # Observers -------------------------------------------------------------
+
+  observe({
+    req(input$map_loaded)
+    if (input$include_quakes_legend == TRUE) {
+      toro::mapProxy("map") |>
+        add_legend(
+          title = "Earthquake magnitude",
+          layer_id = "quakes"
+        )
+    } else {
+      toro::mapProxy("map") |>
+        remove_legend(layer_id = "quakes")
+    }
+  }) |>
+    bindEvent(input$include_quakes_legend)
+
+  observe({
+    req(input$map_loaded)
+    if (input$include_quakes_lat_legend == TRUE) {
+      toro::mapProxy("map") |>
+        add_legend(
+          title = "Earthquake latitude",
+          layer_id = "quakes_lat"
+        )
+    } else {
+      toro::mapProxy("map") |>
+        remove_legend(layer_id = "quakes_lat")
+    }
+  }) |>
+    bindEvent(input$include_quakes_lat_legend)
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
+}

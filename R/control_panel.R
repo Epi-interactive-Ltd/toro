@@ -8,7 +8,16 @@
 #' @param position Position of the control panel on the map. Default is "bottom-left".
 #'    Options include "top-left", "top-right", "bottom-left", "bottom-right".
 #' @param collapsible Whether the panel can be collapsed. Default is FALSE.
-#' @param collapsed Initial collapsed state. Default is FALSE.
+#' @param collapse_config List of configuration options for the collapsible behavior.
+#'   \itemize{
+#'     \item \code{collapsed}: Initial collapsed state. Default is FALSE.
+#'     \item \code{collapseVertically}: Whether the panel collapses vertically (TRUE) or
+#'       horizontally (FALSE). Default is TRUE.
+#'     \item \code{openIcon}: HTML string for the icon when the panel is open. Default is a simple
+#'       arrow.
+#'     \item \code{collapsedIcon}: HTML string for the icon when the panel is collapsed. Default is
+#'       a simple arrow.
+#' }
 #' @param direction Layout direction for controls within the panel. Either "row" or "column".
 #'    Default is "column".
 #' @param custom_controls List of custom controls to add initially. Each should be a list with
@@ -28,7 +37,7 @@
 #'     title = "Map Settings",
 #'     position = "top-right",
 #'     collapsible = TRUE,
-#'     collapsed = TRUE,
+#'     collapse_config = list(collapsed = TRUE),
 #'     direction = "row"
 #'   ) |>
 #'   add_cursor_coords_control(
@@ -41,17 +50,27 @@ add_control_panel <- function(
   title = NULL,
   position = "bottom-left",
   collapsible = FALSE,
-  collapsed = FALSE,
+  collapse_config = list(),
   direction = "column",
   custom_controls = NULL
 ) {
+  default_collapse_config <- list(
+    collapsed = FALSE,
+    collapseVertically = TRUE,
+    openIcon = '\u25BC',
+    collapsedIcon = '\u25B2'
+  )
+  merged_collapse_config <- utils::modifyList(
+    default_collapse_config,
+    collapse_config
+  )
   options <- list(
     title = title,
     position = position,
     collapsible = collapsible,
-    collapsed = collapsed,
     direction = direction,
-    customControls = custom_controls
+    customControls = custom_controls,
+    collapseConfig = merged_collapse_config
   )
 
   if (inherits(map, "mapProxy")) {
@@ -83,7 +102,16 @@ add_control_panel <- function(
 #' @param group_id Unique identifier for the control group.
 #' @param group_title Title for the control group (optional).
 #' @param collapsible Whether the group can be collapsed. Default is FALSE.
-#' @param collapsed Initial collapsed state. Default is FALSE.
+#' @param collapse_config List of configuration options for the collapsible behavior.
+#'   \itemize{
+#'     \item \code{collapsed}: Initial collapsed state. Default is FALSE.
+#'     \item \code{collapseVertically}: Whether the panel collapses vertically (TRUE) or
+#'       horizontally (FALSE). Default is TRUE.
+#'     \item \code{openIcon}: HTML string for the icon when the panel is open. Default is a simple
+#'       arrow.
+#'     \item \code{collapsedIcon}: HTML string for the icon when the panel is collapsed. Default is
+#'       a simple arrow.
+#' }
 #' @return The map or map proxy object for chaining.
 #' @export
 #'
@@ -109,7 +137,7 @@ add_control_panel <- function(
 #'     title = "Map Settings",
 #'     position = "top-right",
 #'     collapsible = TRUE,
-#'     collapsed = TRUE,
+#'     collapse_config = list(collapsed = TRUE),
 #'     direction = "row"
 #'   ) |>
 #'   add_cursor_coords_control(
@@ -122,16 +150,25 @@ add_control_group <- function(
   group_id,
   group_title = NULL,
   collapsible = FALSE,
-  collapsed = FALSE
+  collapse_config = list()
 ) {
+  default_collapse_config <- list(
+    collapsed = FALSE,
+    collapseVertically = TRUE,
+    openIcon = '\u25BC',
+    collapsedIcon = '\u25B2'
+  )
+  merged_collapse_config <- utils::modifyList(
+    default_collapse_config,
+    collapse_config
+  )
   group_config <- list(
     type = "group",
     groupId = group_id,
     groupTitle = group_title,
     collapsible = collapsible,
-    collapsed = collapsed
+    collapseConfig = collapse_config
   )
-
   if (inherits(map, "mapProxy")) {
     map$session$sendCustomMessage(
       "addControlGroup",
@@ -151,7 +188,7 @@ add_control_group <- function(
           title = NULL,
           position = "bottom-left",
           collapsible = TRUE,
-          collapsed = FALSE,
+          collapseConfig = list(collapsed = FALSE),
           customControls = list()
         )
       )
@@ -275,7 +312,7 @@ add_control_to_panel <- function(
           title = NULL,
           position = "bottom-left",
           collapsible = TRUE,
-          collapsed = FALSE,
+          collapseConfig = list(collapsed = FALSE),
           customControls = list()
         )
       )

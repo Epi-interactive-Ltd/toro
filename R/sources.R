@@ -42,9 +42,7 @@ add_source <- function(
   cluster = FALSE,
   ...
 ) {
-  if (type == "geojson" && !inherits(data, "geojson")) {
-    data <- geojsonsf::sf_geojson(data)
-  }
+  data <- .validate_source_data(data, type)
   source_options <- list(
     type = type,
     data = data,
@@ -262,6 +260,17 @@ add_image <- function(map, image_id, image_url) {
 #' @param data The data for the source, typically in GeoJSON format.
 #' @param type The type of the source. Default is `"geojson"`.
 #'   Other options include `"vector"` or `"raster"`.
+#' @param options Additional options for updating the source data, such as:
+#'   \itemize{
+#'     \item bounds: Optional bounding box to fit the map to after updating the source data. Can be
+#'       provided as a list of two coordinate pairs (e.g., `list(c(lon1, lat1), c(lon2, lat2))`) or
+#'       as an `sf` object.
+#'     \item padding: Padding in pixels to apply when setting map bounds. Default is `50`.
+#'     \item max_zoom: Maximum zoom level to allow when fitting the map to the bounds. If not
+#'       provided, it will default to the map's maximum zoom level.
+#'     \item linear: Whether to use a linear animation when fitting the map to the bounds. Default
+#'       is `FALSE` (uses a fly animation).
+#'   }
 #' @return The map proxy object for chaining.
 #' @export
 #'
@@ -303,17 +312,68 @@ add_image <- function(map, image_id, image_url) {
 #'  bindEvent(input$btn)
 #' }
 #' }
-set_source_data <- function(proxy, source_id, data, type = "geojson") {
-  if (type == "geojson" && !inherits(data, "geojson")) {
-    data <- geojsonsf::sf_geojson(data)
+set_source_data <- function(
+  proxy,
+  source_id,
+  data,
+  type = "geojson",
+  options = list(
+    bounds = NULL,
+    padding = 50,
+    max_zoom = NULL,
+    linear = FALSE
+  )
+) {
+  data <- .validate_source_data(data, type)
+
+  if ("max_zoom" %in% names(options)) {
+    # Transform to what the JS expects (camelCase)
+    max_zoom_idx <- which(names(options) == "max_zoom")
+    names(options)[max_zoom_idx] <- "maxZoom"
   }
+  if ("bounds" %in% names(options)) {
+    # Make sure the bounds are in the correct format (list of two coordinate pairs)
+    options$bounds <- validate_bounds(options$bounds)
+  }
+
   proxy$session$sendCustomMessage(
     "updateSourceData",
     list(
       id = proxy$id,
       sourceId = source_id,
-      data = data
+      data = data,
+      options = options
     )
   )
   proxy
+}
+
+#' Validate source data so that it is valid to be added to the map
+#'
+#' Validation checks:
+#' 1. Source data must be of GeoJSON format.
+#' 2. Geometry objects with only a single (`geometry`) column cause a crash. If the data only has a
+#'   single column, add a dummy `id` column.
+#'
+#' @param data The data for the source, typically in GeoJSON format.
+#' @param type The type of the source. Default is `"geojson"`.
+#'    Other options include `"vector"` or `"raster"`.
+#' @returns The validated geojson source data.
+#'
+#' @keywords internal
+#' @noRd
+.validate_source_data <- function(data, type = "geojson") {
+  if (type == "geojson" && !inherits(data, "geojson")) {
+    if (inherits(data, c("sf", "data.frame", "tbl")) && ncol(data) == 1) {
+      # Sources fail to add when there is a single geometry column, add a
+      # generic id column to prevent this.
+      if (nrow(data) > 0) {
+        data$id <- seq_len(nrow(data))
+      } else {
+        data$id <- numeric(0)
+      }
+    }
+    data <- geojsonsf::sf_geojson(data)
+  }
+  data
 }
