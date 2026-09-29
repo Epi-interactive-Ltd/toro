@@ -1,6 +1,7 @@
 Type: Package
 Package: toro
 Title: High-Performance Interactive Mapping in R
+Version: 0.2.0
 Authors@R: c(
     person("Epi, NZ", , , "office@epi.group", role = c("aut", "cph", "fnd"),
            comment = "The package was designed and developed by Epi (<https://www.epi.group/>)"),
