@@ -2,14 +2,21 @@
 % Please edit documentation in R/export.R
 \name{check_chrome_available}
 \alias{check_chrome_available}
-\title{Check if Chrome/Chromium is available for webshot operations}
+\title{Check if Chrome or a Chromium-based browser is available}
 \usage{
 check_chrome_available()
 }
 \value{
-\code{TRUE} if Chrome is available, \code{FALSE} otherwise.
+A single logical value: \code{TRUE} if a Chrome/Chromium executable was
+found, \code{FALSE} otherwise.
 }
 \description{
-Check if Chrome/Chromium is available for webshot operations
+Determines whether a Chrome/Chromium executable can be located, either via
+the \code{CHROMOTE_CHROME} environment variable or one of several common
+installation paths for macOS, Linux, and Windows. This is used to decide
+whether \code{\link[=export_map_image]{export_map_image()}} can render map images, since the underlying
+webshot packages require a Chromium-based browser to take screenshots.
 }
-\keyword{internal}
+\examples{
+check_chrome_available()
+}
