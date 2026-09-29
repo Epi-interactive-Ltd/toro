@@ -73,16 +73,18 @@ chrome_error_message <- function() {
 #'
 #' @examples
 #' \donttest{
-#' # Load library
-#' library(sf)
+#' if (check_chrome_available()) {
+#'   # Load library
+#'   library(sf)
 #'
-#' data <- data.frame(lon = 174.8210, lat = -41.3096) |>
-#'   sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
-#' # Create and export a map
-#' my_map <- map() |>
-#'   add_circle_layer("epi_circle", source = data)
+#'   data <- data.frame(lon = 174.8210, lat = -41.3096) |>
+#'     sf::st_as_sf(coords = c("lon", "lat"), crs = 4326)
+#'   # Create and export a map
+#'   my_map <- map() |>
+#'     add_circle_layer("epi_circle", source = data)
 #'
-#' export_map_image(my_map, file.path(tempdir(), "my_map.png"), width = 1200, height = 800)
+#'   export_map_image(my_map, file.path(tempdir(), "my_map.png"), width = 1200, height = 800)
+#' }
 #' }
 export_map_image <- function(
   map,
