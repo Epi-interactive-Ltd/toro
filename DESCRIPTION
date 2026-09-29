@@ -19,7 +19,7 @@ Authors@R: c(
            comment = "mapbox-gl-draw plugin")
   )
 Description: Interactive spatial visualisations are a cornerstone for exploring 
-  and communicating complexity, and are commonly embedded reports or interactive 
+  and communicating complexity, and are commonly embedded into reports or interactive 
   dashboards. However, as the amount of data grows, so do the demands on 
   functionality, especially for technical and scientific data. To bridge this 
   gap and create a mapping package that is high performing, a modern approach is 
