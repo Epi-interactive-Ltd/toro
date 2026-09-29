@@ -8,9 +8,9 @@
 
 ## Overview
 
-Interactive spatial visualisations are a cornerstone for exploring and communicating complexity, and are commonly embedded reports or interactive dashboards. However, as the amount of data grows, so do the demands on functionality, especially for technical and scientific data. To bridge this gap and create a mapping package that is high performing, a modern approach is needed that draws from best software engineering practices. _toro_ provides R bindings to MapLibre GL JS, an open-source JavaScript/TypeScript library for rendering interactive maps in the browser, built from the ground up for responsiveness and scale. This connection allows users to create interactive maps that can easily be integrated into both Quarto and the R Shiny dashboard framework. _toro_ thereby enables spatial visualisation and exploration of data that might otherwise be too limited, too slow, or too hard to scale using more traditional interactive mapping tools such as leaflet.
+Interactive spatial visualisations are a cornerstone for exploring and communicating complexity, and are commonly embedded into reports or interactive dashboards. However, as the amount of data grows, so do the demands on functionality, especially for technical and scientific data. To bridge this gap and create a mapping package that is high performing, a modern approach is needed that draws from best software engineering practices. _toro_ provides R bindings to MapLibre GL JS, an open-source JavaScript/TypeScript library for rendering interactive maps in the browser, built from the ground up for responsiveness and scale. This connection allows users to create interactive maps that can easily be integrated into both Quarto and the R Shiny dashboard framework. _toro_ thereby enables spatial visualisation and exploration of data that might otherwise be too limited, too slow, or too hard to scale using more traditional interactive mapping tools such as leaflet.
 
-_toro_ was created by [Epi](https://epi.group/).
+_toro_ was created by <a href="https://epi.group/" target="_blank">Epi</a>.
 
 If you have any comments, questions, or suggestions, please [contact us](mailto:info@epi.group).
 
@@ -52,7 +52,7 @@ map()
 ```
 ![](man/figures/base_toro_map.png)
 
-Further arguments can be passed to customize the styling of the map:
+Further arguments can be passed to customise the styling of the map:
 
 ```r
 map(
@@ -104,4 +104,4 @@ map(
 
 ## Where to next?
 
-The [layers vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html), details the different kinds of data that can be plotted and their different configurations. For styling the underlying base map, please see the [map tiles vignette](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.html). Users interested in integration with Shiny apps should see the integration with [Shiny vignette](https://epi-interactive-ltd.github.io/toro/articles/shiny-integration.html), which responsive and dynamic visualization in dashboard contexts.
+The [layers vignette](https://epi-interactive-ltd.github.io/toro/articles/layers.html), details the different kinds of data that can be plotted and their different configurations. For styling the underlying base map, please see the [map tiles vignette](https://epi-interactive-ltd.github.io/toro/articles/map-tiles.html). Users interested in integration with Shiny apps should see the integration with [Shiny vignette](https://epi-interactive-ltd.github.io/toro/articles/shiny-integration.html), which responsive and dynamic visualisation in dashboard contexts.

@@ -1,6 +1,6 @@
 Type: Package
 Package: toro
-Title: High-performance interactive mapping in R 
+Title: High-Performance Interactive Mapping in R
 Version: 0.2.0
 Authors@R: c(
     person("Epi, NZ", , , "office@epi.group", role = c("aut", "cph", "fnd"),
@@ -10,7 +10,7 @@ Authors@R: c(
     person("Kiel", "Hards", , "kiel@epi.group", role = "ctb"),
     person("Nick", "Snellgrove", , "nick@epi.group", role = "ctb"),
     person("Jocelyn", "Qian", , "jocelyn@epi.group", role = "ctb"),
-    person("Petra", "Mueller", , "petra@epi.group", role = "ctb"),
+    person("Petra", "Muellner", , "petra@epi.group", role = "ctb"),
     person("MapLibre contributors", role = "cph",
            comment = "MapLibre GL JS library"),
     person("Turf contributors", role = "cph",
@@ -19,7 +19,7 @@ Authors@R: c(
            comment = "mapbox-gl-draw plugin")
   )
 Description: Interactive spatial visualisations are a cornerstone for exploring 
-  and communicating complexity, and are commonly embedded reports or interactive 
+  and communicating complexity, and are commonly embedded into reports or interactive 
   dashboards. However, as the amount of data grows, so do the demands on 
   functionality, especially for technical and scientific data. To bridge this 
   gap and create a mapping package that is high performing, a modern approach is 

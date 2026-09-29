@@ -69,7 +69,7 @@ map(
   )
 ```
 
-To further customize the fill layer, we can use the `paint` argument. This allows us to specify how the polygons are styled.
+To further customise the fill layer, we can use the `paint` argument. This allows us to specify how the polygons are styled.
 
 Let's use the `paint` argument to style the polygons based on the number of cycle hire stations. We can use the `get_paint_options()` function to specify the paint options for the fill layer. In this example, we will use the `get_column_steps()` function to specify that the fill colour of the polygons should change based on the number of cycle hire stations.
 
@@ -146,7 +146,7 @@ As can be seen, the cycle hire stations are focused on the center of London.
 
 ### Basic example
 
-We can add a simple circle layer to the map to visualize the individual cycle hire stations. The syntax is similar to the previous functions. 
+We can add a simple circle layer to the map to visualise the individual cycle hire stations. The syntax is similar to the previous functions. 
 
 ```{r basic-circle, results='asis'}
 cycle_hire <- cycle_hire |>

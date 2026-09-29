@@ -10,11 +10,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-toro provides the ability to animate certain aspects of the map, allowing you to visualize data in both space and time.
+toro provides the ability to animate certain aspects of the map, allowing you to visualise data in both space and time.
 
 ## Setup
 
-For the following examples we'll use a line representing a route around Aotearoa, which could represent the path of a vessel taking samples around the country. We'll animate a point along this route to visualize the path of the vessel over time.
+For the following examples we'll use a line representing a route around Aotearoa, which could represent the path of a vessel taking samples around the country. We'll animate a point along this route to visualise the path of the vessel over time.
 
 ```{r setup}
 library(sf)
@@ -134,7 +134,7 @@ map() |>
 
 ### Timeline controls
 
-Animated routes can be shown from a timeline perspective, where the animation is controlled by a timeline slider. This is useful for visualizing data that has a temporal component, such as the movement of a vessel over time. A dataframe with multiple points and a `date` column is required for this type of animation. Each point is plotted in the route and the animation is controlled by the timeline slider, which allows the user to select a date range to view the points that fall within that range. The timeline slider can be added to the map using the `add_timeline_control()` function.
+Animated routes can be shown from a timeline perspective, where the animation is controlled by a timeline slider. This is useful for visualising data that has a temporal component, such as the movement of a vessel over time. A dataframe with multiple points and a `date` column is required for this type of animation. Each point is plotted in the route and the animation is controlled by the timeline slider, which allows the user to select a date range to view the points that fall within that range. The timeline slider can be added to the map using the `add_timeline_control()` function.
 
 ```{r}
 # A trip across a few New Zealand cities, one point per date.
