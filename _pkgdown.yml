@@ -175,6 +175,7 @@ reference:
     contents:
       - export_map_image
       - save_map_html
+      - check_chrome_available
 
 articles:
   - title: 'Integration'

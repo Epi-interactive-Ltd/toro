@@ -1,7 +1,17 @@
-#' Check if Chrome/Chromium is available for webshot operations
+#' Check if Chrome or a Chromium-based browser is available
 #'
-#' @return `TRUE` if Chrome is available, `FALSE` otherwise.
-#' @keywords internal
+#' Determines whether a Chrome/Chromium executable can be located, either via
+#' the `CHROMOTE_CHROME` environment variable or one of several common
+#' installation paths for macOS, Linux, and Windows. This is used to decide
+#' whether [export_map_image()] can render map images, since the underlying
+#' webshot packages require a Chromium-based browser to take screenshots.
+#'
+#' @return A single logical value: `TRUE` if a Chrome/Chromium executable was
+#'   found, `FALSE` otherwise.
+#' @export
+#'
+#' @examples
+#' check_chrome_available()
 check_chrome_available <- function() {
   # Check if CHROMOTE_CHROME environment variable is set
   chrome_env <- Sys.getenv("CHROMOTE_CHROME", unset = "")
