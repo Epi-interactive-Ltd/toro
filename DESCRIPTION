@@ -23,7 +23,7 @@ Description: Interactive spatial visualisations are a cornerstone for exploring
   dashboards. However, as the amount of data grows, so do the demands on 
   functionality, especially for technical and scientific data. To bridge this 
   gap and create a mapping package that is high performing, a modern approach is 
-  needed that draws from best software engineering practices. Toro provides R 
+  needed that draws from best software engineering practices. Toro provides 
   bindings to 'MapLibre GL JS', an open-source 'JavaScript'/'TypeScript' library for 
   rendering interactive maps in the browser, built from the ground up for 
   responsiveness and scale, by the MapLibre Organization (2020) <https://github.com/MapLibre>. 
