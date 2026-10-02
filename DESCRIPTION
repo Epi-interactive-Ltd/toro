@@ -1,6 +1,6 @@
 Type: Package
 Package: toro
-Title: High-Performance Interactive Mapping in R
+Title: High-Performance Interactive Mapping
 Version: 0.2.0
 Authors@R: c(
     person("Epi, NZ", , , "office@epi.group", role = c("aut", "cph", "fnd"),
@@ -24,13 +24,14 @@ Description: Interactive spatial visualisations are a cornerstone for exploring
   functionality, especially for technical and scientific data. To bridge this 
   gap and create a mapping package that is high performing, a modern approach is 
   needed that draws from best software engineering practices. Toro provides R 
-  bindings to MapLibre GL JS, an open-source JavaScript/TypeScript library for 
+  bindings to 'MapLibre GL JS', an open-source 'JavaScript'/'TypeScript' library for 
   rendering interactive maps in the browser, built from the ground up for 
-  responsiveness and scale. This connection allows users to create interactive 
-  maps that can easily be integrated into both Quarto and the R Shiny dashboard 
-  framework. Toro thereby enables spatial visualisation and exploration of data 
-  that might otherwise be too limited, too slow, or too hard to scale using more
-  traditional interactive mapping tools such as leaflet.
+  responsiveness and scale, by the MapLibre Organization (2020) <https://github.com/MapLibre>. 
+  This connection allows users to create interactive maps that can easily be 
+  integrated into both 'Quarto' and the 'R Shiny' dashboard framework. Toro 
+  thereby enables spatial visualisation and exploration of data that might 
+  otherwise be too limited, too slow, or too hard to scale using more traditional 
+  interactive mapping tools such as 'leaflet'.
 License: AGPL (>= 3)
 URL: https://epi-interactive-ltd.github.io/toro/,
     https://github.com/Epi-interactive-Ltd/toro/
